@@ -1,2 +1,1 @@
-# PACSCL Finding Aid Discovery
-
+# PACSCL Finding Aid Discovery site
