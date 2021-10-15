@@ -145,6 +145,16 @@ title = "gitlab gitleaks config"
 [[rules]]
     description = "Generic credentials"
     regex = '''(?i)[\w]*(auth|key|password|passwd|pw|salt|secret|token)[\s]*[:=>]+\s*['"]?[\S]{2,}['"]?'''
+    [rules.allowlist]
+        description = "ignore generic creds"
+        files = [
+            '''(?i)(Vagrantfile)'''
+        ]
+        regexes = [
+            '''\:\s+\"\{\{''',
+            '''\/run\/secrets''',
+            '''abcde12345'''
+        ]
 
 [[rules]]
     description = "Files with possible keys and credentials"
