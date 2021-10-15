@@ -1,0 +1,33 @@
+---
+- name: Create postgres dir
+  file:
+    path: "{{ project_root ~ '/postgres' }}"
+    state: directory
+
+- name: Copy docker-compose file
+  copy:
+    src: "../files/docker-compose.yml"
+    dest: "{{ project_root ~ '/postgres/' }}"
+
+- name: Create versioned docker secret
+  docker_secret:
+    name: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
+    data: "{{ postgres.secrets.password.value }}"
+    state: present
+  no_log: true
+
+- name: Deploy Postgres
+  docker_stack:
+    name: "fad"
+    compose:
+      - "{{ project_root ~ '/postgres/docker-compose.yml' }}"
+    state: present
+  changed_when: false
+  environment:
+    POSTGRES_DATABASE: "{{ postgres.database }}"
+    POSTGRES_IMAGE_NAME: "{{ postgres.image.name }}"
+    POSTGRES_IMAGE_TAG: "{{ postgres.image.tag }}"
+    POSTGRES_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
+    POSTGRES_USER: "{{ postgres.user }}"
+    REPLICAS: "{{ postgres.replicas }}"
+  no_log: true

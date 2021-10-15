@@ -1,0 +1,12 @@
+---
+nginx:
+  configs:
+    default_conf:
+      filename: "default.conf.j2"
+      version: 1
+  image:
+    name: "gitlab.library.upenn.edu/docker/nginx-modsec"
+    tag: "1-21-0"
+  port: 80
+  replicas: 1
+  url: "finding-aid-discovery-dev.library.upenn.edu"

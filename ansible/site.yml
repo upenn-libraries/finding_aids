@@ -1,0 +1,34 @@
+---
+- name: "Provision Docker Swarm Cluster"
+  become: yes
+  hosts: all
+  roles:
+    - { role: atosatto.docker-swarm }
+
+- hosts: docker_swarm_manager
+  become: yes
+  gather_facts: true
+  tasks:
+    - name: Install deps
+      pip:
+        name:
+          - jsondiff
+          - passlib
+          - pyyaml
+      tags: deps
+    - import_role:
+        name: traefik
+      tags: traefik
+    - import_role:
+        name: postgres
+      tags: postgres
+    - import_role:
+        name: finding_aid_discovery
+      tags: finding_aid_discovery
+    - import_role:
+        name: nginx
+      tags: nginx
+    - name: Recursively remove project directory
+      file:
+        path: "{{ project_root }}"
+        state: absent

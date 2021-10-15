@@ -1,0 +1,9 @@
+.bundle
+.cache
+
+Dockerfile
+docker-compose.dev.yml
+docker-compose.yml
+
+tmp
+vendor/bundle

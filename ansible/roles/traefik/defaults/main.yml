@@ -1,0 +1,16 @@
+---
+traefik:
+  dashboard:
+    enable: true
+    port: 8080
+  image:
+    name: "traefik"
+    tag: "2.5"
+  log_level: "DEBUG"
+  middlewares_auth:
+    salt: abcde12345
+    users:
+      test: 12345
+      tset: 54321
+    version: 1
+  url: "finding-aid-discovery-dev.library.upenn.edu"

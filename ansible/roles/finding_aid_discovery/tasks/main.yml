@@ -1,0 +1,103 @@
+---
+- name: Create finding_aid_discovery dir
+  file:
+    path: "{{ project_root ~ '/finding_aid_discovery' }}"
+    state: directory
+
+# If is_development = true and build_docker_images = false
+# Pull existing docker image from the registry to reduce build time
+- name: Pull and use docker image from registry
+  block:
+    # Get current branch
+    - name: Get current branch
+      become: false
+      local_action: command git branch --show-current
+      register: finding_aid_discovery_branch
+      when: is_development and not build_docker_images | default (false) == true
+      tags: dev_environment
+
+    # Get commit sha of branch
+    - name: Get commit sha of branch
+      become: false
+      local_action: command git rev-parse origin/{{ finding_aid_discovery_branch.stdout }}
+      register: finding_aid_discovery_image_tag
+      when: is_development and not build_docker_images | default (false) == true
+      tags: dev_environment
+
+    # Pull registry image
+    - name: Pull the registry image using the commit sha
+      docker_image:
+        name: "{{ finding_aid_discovery.image.registry ~ ':' ~ finding_aid_discovery_image_tag.stdout }}"
+        repository: "{{ finding_aid_discovery.image.name ~ ':' ~ finding_aid_discovery.image.tag }}"
+        source: pull
+      when: is_development and not build_docker_images and finding_aid_discovery_image_tag.stdout | default (false) == true
+      tags: dev_environment
+  rescue:
+    # An error occurred in the process of pulling the registry so build the image instead
+    - name: Failed to find registry image - building image instead
+      import_tasks: "./dev/build_docker_image.yml"
+      when: is_development and not build_docker_images | default (false) == true
+      tags: dev_environment
+
+# Build the docker image
+- name: "Build docker image"
+  import_tasks: "./dev/build_docker_image.yml"
+  when: is_development | default (false) == true
+  tags: dev_environment
+
+- name: Copy base and dev docker-compose files
+  copy:
+    src: "../files/{{ item }}"
+    dest: "{{ project_root ~ '/finding_aid_discovery/' }}"
+  when: is_development | default (false) == true
+  loop:
+    - "docker-compose.yml"
+    - "docker-compose.dev.yml"
+  tags: dev_environment
+
+- name: Deploy Finding Aid development environment
+  docker_stack:
+    name: "fad"
+    compose:
+      - "{{ project_root ~ '/finding_aid_discovery/docker-compose.yml' }}"
+      - "{{ project_root ~ '/finding_aid_discovery/docker-compose.dev.yml' }}"
+    state: present
+  changed_when: false
+  environment:
+    DATABASE_NAME: "{{ postgres.database }}"
+    DATABASE_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
+    DATABASE_USER: "{{ postgres.user }}"
+    FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.name }}"
+    FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"
+    FINDING_AID_DISCOVERY_PORT: "{{ finding_aid_discovery.port }}"
+    FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
+    REPLICAS: "{{ finding_aid_discovery.replicas }}"
+  no_log: true
+  when: is_development | default (false) == true
+  tags: dev_environment
+
+# Execute staging/production steps
+- name: Copy docker-compose file
+  copy:
+    src: "../files/docker-compose.yml"
+    dest: "{{ project_root ~ '/finding_aid_discovery/' }}"
+  when: not is_development | default (false) == true
+
+- name: Deploy Finding Aid
+  docker_stack:
+    name: "fad"
+    compose:
+      - "{{ project_root ~ '/finding_aid_discovery/docker-compose.yml' }}"
+    state: present
+  changed_when: false
+  environment:
+    DATABASE_NAME: "{{ postgres.database }}"
+    DATABASE_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
+    DATABASE_USER: "{{ postgres.user }}"
+    FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.name }}"
+    FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"
+    FINDING_AID_DISCOVERY_PORT: "{{ finding_aid_discovery.port }}"
+    FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
+    REPLICAS: "{{ finding_aid_discovery.replicas }}"
+  no_log: true
+  when: not is_development | default (false) == true

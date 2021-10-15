@@ -1,0 +1,34 @@
+---
+- name: Create nginx dir
+  file:
+    path: "{{ project_root ~ '/nginx' }}"
+    state: directory
+
+- name: Copy docker-compose file
+  copy:
+    src: "../files/docker-compose.yml"
+    dest: "{{ project_root ~ '/nginx/' }}"
+
+- name: Create nginx default.conf
+  docker_config:
+    name: "{{ 'nginx_default_conf_v' ~ nginx.configs.default_conf.version }}"
+    data: "{{ lookup('template', nginx.configs.default_conf.filename, convert_data=False) | string }}"
+    state: present
+  changed_when: false
+  no_log: true
+
+- name: Deploy Nginx development environment
+  docker_stack:
+    name: "fad"
+    compose:
+      - "{{ project_root ~ '/nginx/docker-compose.yml' }}"
+    state: present
+  changed_when: false
+  environment:
+    NGINX_DEFAULT_CONF: "{{ 'nginx_default_conf_v' ~ nginx.configs.default_conf.version }}"
+    NGINX_IMAGE_NAME: "{{ nginx.image.name }}"
+    NGINX_IMAGE_TAG: "{{ nginx.image.tag }}"
+    NGINX_PORT: "{{ nginx.port }}"
+    NGINX_URL: "{{ nginx.url }}"
+    REPLICAS: "{{ nginx.replicas }}"
+  no_log: true

@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  finding_aid_discovery:
+    image: gitlab.library.upenn.edu/pacscl/finding-aid-discovery
+    build:
+      args:
+        PROJECT_ENV: production
+      context: .
+      target: production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.finding_aid_discovery.entrypoints=web"
+      - "traefik.http.routers.finding_aid_discovery.rule=Host(`localhost`)"
+      - "traefik.http.routers.finding_aid_discovery.service=finding_aid_discovery"
+      - "traefik.http.services.finding_aid_discovery.loadbalancer.server.port=3000"
+    logging:
+      driver: json-file
+      options:
+        max-file: "3"
+        max-size: "10m"
+    networks:
+      - traefik
+
+  traefik:
+    image: traefik:2.5
+    command:
+      - "--accesslog=true"
+      - "--entrypoints.metrics.address=:8082"
+      - "--entrypoints.web.address=:80"
+      - "--metrics.prometheus=true"
+      - "--metrics.prometheus.entrypoint=metrics"
+      - "--providers.docker=true"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik"
+      - "--providers.docker.watch=true"
+    logging:
+      driver: json-file
+      options:
+        max-file: "3"
+        max-size: "10m"
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    driver: overlay
+    name: traefik

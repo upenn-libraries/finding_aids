@@ -1,0 +1,12 @@
+---
+is_development: true
+build_docker_images: true
+
+project_root: "/opt/devops"
+proxy:
+  ssl:
+    crt:
+      location: "/etc/ssl/proxy.crt"
+    key:
+      location: "/etc/ssl/proxy.key"
+url: "finding-aid-discovery-dev.library.upenn.edu"

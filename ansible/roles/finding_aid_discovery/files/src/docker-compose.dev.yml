@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  finding_aid_discovery:
+    image: finding-aid-discovery-dev
+    build:
+      args:
+        PROJECT_ENV: development
+      target: development
+    environment:
+      APP_UID: ${APP_UID:-1000}
+      APP_GID: ${APP_GID:-1000}
+    volumes:
+      - ${PWD}:/home/app

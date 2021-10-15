@@ -1,0 +1,5 @@
+---
+- name: Create solr dir
+  file:
+    path: "{{ project_root ~ '/solr' }}"
+    state: directory

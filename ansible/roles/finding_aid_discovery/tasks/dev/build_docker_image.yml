@@ -1,0 +1,12 @@
+---
+- name: Create custom docker image
+  docker_image:
+    build:
+      path: "{{ '/finding_aid_discovery/' }}"
+      pull: yes
+      target: development
+    force_tag: yes
+    force_source: yes
+    name: "{{ finding_aid_discovery.image.name ~ ':' ~ finding_aid_discovery.image.tag }}"
+    source: build
+    state: present

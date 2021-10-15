@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  finding_aid_discovery:
+    environment:
+      APP_UID: ${UID:-1000}
+      APP_GID: ${GID:-1000}
+    volumes:
+      - /finding_aid_discovery:/home/app
