@@ -21,7 +21,7 @@ services:
           "curl -fsSL localhost:${FINDING_AID_DISCOVERY_PORT} || exit 1",
         ]
       interval: 30s
-      retries: 3
+      retries: 6
       start_period: 30s
       timeout: 30s
     logging:

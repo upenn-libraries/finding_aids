@@ -12,7 +12,7 @@
 
 > Caveat: the vagrant development environment has only been tested in Linux.
 
-In order to use the integrated development environment you will need to install [Ansible 2.9.10+](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html), [VirtualBox](https://www.virtualbox.org/wiki/Linux_Downloads), [Vagrant](https://www.vagrantup.com/docs/installation), and the following Vagrant plugins: vagrant-vbguest, and vagrant-hostsupdater:
+In order to use the integrated development environment you will need to install [VirtualBox](https://www.virtualbox.org/wiki/Linux_Downloads) and [Vagrant](https://www.vagrantup.com/docs/installation), and the following Vagrant plugins: vagrant-vbguest, and vagrant-hostsupdater:
 
 ```
 vagrant plugin install vagrant-vbguest vagrant-hostsupdater
