@@ -3,3 +3,95 @@
   file:
     path: "{{ project_root ~ '/solr' }}"
     state: directory
+
+# If is_development = true and build_docker_images = false
+# Pull existing docker image from the registry to reduce build time
+- name: Pull and use docker image from registry
+  block:
+    # Get current branch
+    - name: Get current branch
+      become: false
+      local_action: command git branch --show-current
+      register: solr_branch
+      when: is_development and not build_docker_images | default (false) == true
+      tags: dev_environment
+
+    # Get commit sha of branch
+    - name: Get commit sha of branch
+      become: false
+      local_action: command git rev-parse origin/{{ solr_branch.stdout }}
+      register: solr_image_tag
+      when: is_development and not build_docker_images | default (false) == true
+      tags: dev_environment
+
+    # Pull registry image
+    - name: Pull the registry image using the commit sha
+      docker_image:
+        name: "{{ solr.image.registry ~ ':' ~ solr_image_tag.stdout }}"
+        repository: "{{ solr.image.name ~ ':' ~ solr.image.tag }}"
+        source: pull
+      when: is_development and not build_docker_images and solr_image_tag.stdout | default (false) == true
+      tags: dev_environment
+  rescue:
+    # An error occurred in the process of pulling the registry so build the image instead
+    - name: Failed to find registry image - building image instead
+      import_tasks: "./dev/build_docker_image.yml"
+      when: is_development and not build_docker_images | default (false) == true
+      tags: dev_environment
+
+# Build the docker image
+- name: "Build docker image"
+  import_tasks: "./dev/build_docker_image.yml"
+  when: is_development | default (false) == true
+  tags: dev_environment
+
+- name: Copy base and dev docker-compose files
+  copy:
+    src: "../files/{{ item }}"
+    dest: "{{ project_root ~ '/solr/' }}"
+  when: is_development | default (false) == true
+  loop:
+    - "docker-compose.yml"
+    - "docker-compose.dev.yml"
+  tags: dev_environment
+
+- name: Deploy Solr development environment
+  docker_stack:
+    name: "fad"
+    compose:
+      - "{{ project_root ~ '/solr/docker-compose.yml' }}"
+      - "{{ project_root ~ '/solr/docker-compose.dev.yml' }}"
+    state: present
+  changed_when: false
+  environment:
+    SOLR_CONFIG_LOCATION: "{{ solr.config_location }}"
+    SOLR_CORE_NAME: "{{ solr.core_name }}"
+    SOLR_IMAGE_NAME: "{{ solr.image.name }}"
+    SOLR_IMAGE_TAG: "{{ solr.image.tag }}"
+    REPLICAS: "{{ solr.replicas }}"
+  no_log: true
+  when: is_development | default (false) == true
+  tags: dev_environment
+
+# Execute production steps
+- name: Copy docker-compose file
+  copy:
+    src: "../files/docker-compose.yml"
+    dest: "{{ project_root ~ '/solr/' }}"
+  when: not is_development | default (false) == true
+
+- name: Deploy Solr
+  docker_stack:
+    name: "fad"
+    compose:
+      - "{{ project_root ~ '/solr/docker-compose.yml' }}"
+    state: present
+  changed_when: false
+  environment:
+    SOLR_CONFIG_LOCATION: "{{ solr.config_location }}"
+    SOLR_CORE_NAME: "{{ solr.core_name }}"
+    SOLR_IMAGE_NAME: "{{ solr.image.name }}"
+    SOLR_IMAGE_TAG: "{{ solr.image.tag }}"
+    REPLICAS: "{{ solr.replicas }}"
+  no_log: true
+  when: not is_development | default (false) == true

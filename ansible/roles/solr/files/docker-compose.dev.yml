@@ -1,0 +1,7 @@
+version: "3.8"
+
+services:
+  solr:
+    volumes:
+      - /finding_aid_discovery/ansible/roles/solr/files/src/conf:${SOLR_CONFIG_LOCATION}/conf
+      - /finding_aid_discovery/ansible/roles/solr/files/src/scripts:/docker-entrypoint-initdb.d

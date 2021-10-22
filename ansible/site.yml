@@ -31,6 +31,12 @@
     - import_role:
         name: postgres
       tags: postgres
+    - name: Create solr network
+      include_tasks: "roles/solr/tasks/create_solr_network.yml"
+      tags: solr
+    - import_role:
+        name: solr
+      tags: solr
     - import_role:
         name: finding_aid_discovery
       tags: finding_aid_discovery

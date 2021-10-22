@@ -1,0 +1,16 @@
+---
+- name: Create custom docker image
+  docker_image:
+    build:
+      args:
+        CONFIG_LOCATION: "{{ solr.config_location }}"
+        CORE_NAME: "{{ solr.core_name }}"
+        IMAGE_NAME: "{{ solr.image.name }}"
+        IMAGE_TAG: "{{ solr.image.tag }}"
+      path: "/finding_aid_discovery/ansible/roles/solr/files/src"
+      pull: yes
+    force_tag: yes
+    force_source: yes
+    name: "{{ solr.image.name ~ ':' ~ solr.image.tag }}"
+    source: build
+    state: present

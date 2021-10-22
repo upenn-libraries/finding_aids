@@ -8,4 +8,4 @@ development
 ansible_user=vagrant
 
 [docker_swarm_manager]
-swarm-01 swarm_labels='["finding_aid_discovery", "nginx", "postgres", "traefik"]'
+swarm-01 swarm_labels='["finding_aid_discovery", "nginx", "postgres", "solr", "traefik"]'
