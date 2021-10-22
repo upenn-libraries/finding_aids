@@ -5,6 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.2'
 
+gem 'blacklight', '~> 7'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'honeybadger'
 gem 'jbuilder', '~> 2.7'
@@ -28,3 +29,11 @@ group :development do
   gem 'spring'
   gem 'web-console', '>= 4.1.0'
 end
+
+group :development, :test do
+  gem 'solr_wrapper', '>= 0.3'
+end
+gem 'rsolr', '>= 1.0', '< 3'
+gem 'bootstrap', '~> 4.0'
+gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
+gem 'jquery-rails'
