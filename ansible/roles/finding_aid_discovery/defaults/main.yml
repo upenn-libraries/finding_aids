@@ -2,8 +2,8 @@
 finding_aid_discovery:
   image:
     name: "finding_aid_discovery"
-    tag: "latest"
     registry: "gitlab.library.upenn.edu/pacscl/finding-aid-discovery/finding-aid-discovery"
+    tag: "latest"
   port: 4567
   replicas: 1
   url: "finding-aid-discovery-dev.library.upenn.edu"
