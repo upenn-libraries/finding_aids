@@ -15,11 +15,16 @@ if [ "$1" = "bin/rails" ]; then
         # since we are running a dev env we remove node_modules and install our dependencies
         su - app -c $(rm -rf node_modules && yarn install --no-bin-links)
 
-        # remove puma server.pid
-        rm -f ${PROJECT_ROOT}/tmp/pids/server.pid
-
         chown -R app:app .
     fi
+
+    # remove puma server.pid
+    if [ -f ${PROJECT_ROOT}/tmp/pids/server.pid ]; then
+        rm -f ${PROJECT_ROOT}/tmp/pids/server.pid
+    fi
+
+    # run db migrations
+    bundle exec rake db:migrate
 
     # run the application as the app user
     exec su-exec app "$@"
