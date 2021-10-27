@@ -5,5 +5,8 @@ services:
     environment:
       APP_UID: ${UID:-1000}
       APP_GID: ${GID:-1000}
+    healthcheck:
+      retries: 20
+      start_period: 5m
     volumes:
       - /finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/:/home/app
