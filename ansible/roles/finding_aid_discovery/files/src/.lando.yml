@@ -1,0 +1,16 @@
+name: finding-aid-discovery
+services:
+  postgres:
+    type: postgres:13
+    portforward: 5433
+    app_mount: false
+    scanner: false
+  solr:
+    type: solr:8.6
+    portforward: true
+    core: pacscl-fa-dev
+    config:
+      dir: ../../../solr/files/src/conf/
+proxy:
+  solr:
+    - fa-disco.solr.lndo.site:8983
