@@ -8,6 +8,10 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+
+  # Disable Rails' HostAuthorization middleware by clearing out
+  # allowed host values - do not use other environments
+  # Alternatively, allow 'www.example.com' here
   config.hosts.clear
 
   config.cache_classes = false
