@@ -16,8 +16,9 @@ services:
     # Mount application source code to support file uploading
     # (otherwise Chrome won't be able to find files).
     # NOTE: Make sure you use absolute paths in `#attach_file`.
-    volumes:
-      - /finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/tmp/uploads:/app:cached
+    # NOTE: This app is unlikely to have file uploads, so don't mount
+#    volumes:
+#      - /finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/tmp/uploads:/app:cached
     environment:
       # By default, it uses 3000, which is typically used by Rails.
       PORT: 3333
