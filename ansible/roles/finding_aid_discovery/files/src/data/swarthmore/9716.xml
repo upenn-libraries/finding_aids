@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd">
+  <eadheader countryencoding="iso3166-1" dateencoding="iso8601" langencoding="iso639-2b" repositoryencoding="iso15511">
+
+    <eadid countrycode="US" mainagencycode="US-PSH"></eadid>
+
+    <filedesc>
+      <titlestmt>
+        <titleproper type="filing">Births, death, marriage records within area of Philadelphia Yearly Meeting</titleproper>
+        <titleproper>Compiled birth, death, marriage records within the area of Philadelphia Yearly Meeting
+          <num>SFHL.SC.289</num>
+        </titleproper>
+        <author>Susanna Morkawa</author>
+      </titlestmt>
+      <publicationstmt>
+        <publisher>Friends Historical Library of Swarthmore College</publisher>
+        <p id="logostmt">
+          <extref xlink:actuate="onLoad" xlink:href="https://swarthmore.edu/sites/default/files/assets/images/friends-historical-library/swarthmore-logo-small.png" xlink:show="embed" xlink:type="simple"/>
+        </p>
+        <p>
+          <date>August 2018</date>
+        </p>
+        <address>
+          <addressline>500 College Avenue</addressline>
+          <addressline>Swarthmore, Pennsylvania 19081</addressline>
+          <addressline>friends@swarthmore.edu</addressline>
+          <addressline>URL: <extptr xlink:href="http://www.swarthmore.edu/friends" xlink:show="new" xlink:title="http://www.swarthmore.edu/friends" xlink:type="simple"/></addressline>
+        </address>
+      </publicationstmt>
+    </filedesc>
+
+    <profiledesc>
+      <creation>This finding aid was produced using ArchivesSpace on <date>2021-05-14 14:14:35 -0400</date>.</creation>
+      <descrules>Describing Archives: A Content Standard</descrules>
+    </profiledesc>
+
+  </eadheader>
+
+  <archdesc level="collection">
+
+    <did>
+      <repository>
+        <corpname>Friends Historical Library of Swarthmore College</corpname>
+      </repository>
+      <unittitle>Compiled birth, death, marriage records within the area of Philadelphia Yearly Meeting</unittitle>
+      <unitid>SFHL.SC.289</unitid>
+      <physdesc altrender="whole">
+        <extent altrender="materialtype spaceoccupied">.02 Linear Feet</extent>
+        <extent altrender="carrier">5 folders</extent>
+        <physfacet>5 notebooks and loose clippings</physfacet>
+      </physdesc>
+      <unitdate normal="1826/1937" type="inclusive">1826-1937</unitdate>
+      <abstract id="aspace_124f4bdd06e723fa2f9c33a84c5aceb4">This small collection is composed of notebooks containing announcements and records of births, death, marriage of individuals living within the area of Philadelphia Yearly Meeting, many living in Bucks County, Pennsylvania.  Not all were members of the Society of Friends, and the sources are not included.</abstract>
+      <langmaterial>
+        <language langcode="eng">English</language>
+        .
+      </langmaterial>
+    </did>
+
+    <scopecontent id="aspace_828306303778cbaf22a5ce5f19e778cd">
+      <head>Scope and Contents</head>
+      <p>This small collection contains notebooks containing handwritten copies of the announcement and records of births, death, marriage of individuals living within the area of Philadelphia Yearly Meeting.  Many are inviduals living in Bucks County, Pennsylvania.  Not all were members of the Society of Friends.</p>
+    </scopecontent>
+
+    <arrangement id="aspace_b7946c6186425f02f3db82608525f699">
+      <head>Arrangement</head>
+      <p>Largely recorded in chronological order.</p>
+    </arrangement>
+
+    <acqinfo id="aspace_1f3dab1572a9824cb36d25860dfd0523">
+      <head>Immediate Source of Acquisition</head>
+      <p>Gift of Elisabeth Horne, 1965.</p>
+    </acqinfo>
+
+    <processinfo id="aspace_d7ac569c75b908e1e5b1206611051241">
+      <head>Processing Information</head>
+      <p>Transferred from Meeting Papers, Miscellaneous Manuscripts, when that artificial collections was reviewed in 2018.</p>
+    </processinfo>
+
+    <accessrestrict id="aspace_8afb344b7f33f71a30925896ccfad06b">
+      <head>Conditions Governing Access</head>
+      <p>Collection is open for research.</p>
+    </accessrestrict>
+
+    <userestrict id="aspace_6b2040a552faa2ab10199b3835ff204f">
+      <head>Conditions Governing Use</head>
+      <p>Friends Historical Library believes all of the items in this collection to be in the Public Domain in the United States, and is not aware of any restrictions on their use. However, the user is responsible for making a final determination of copyright status before reproducing. See <a href="http://rightsstatements.org/vocab/NoC-US/1.0/">http://rightsstatements.org/vocab/NoC-US/1.0/</a>.</p>
+    </userestrict>
+
+    <prefercite id="aspace_b826d81944dbabf7700044d80d39f80e">
+      <head>Preferred Citation</head>
+      <p>[Indicate the cited item or series here], Compiled birth, death, marriage records within the area of Philadelphia Yearly Meeting, SC 289, Friends Historical Library of Swarthmore College.</p>
+    </prefercite>
+
+    <dsc>
+      <c id="aspace_1d51e5c43d2adf49886798d66fbea326" level="file">
+        <did>
+          <unittitle>Marriages, deaths within area of Philadelphia Yearly Meeting, 1826-1910</unittitle>
+        </did>
+      </c>
+      <c id="aspace_3193131d694074948b49eaef3ba4351f" level="file">
+        <did>
+          <unittitle>Deaths within area of Philadelphia Yearly Meeting, 1884-1901</unittitle>
+        </did>
+      </c>
+      <c id="aspace_a7c3331888e2a684f74db770a0e09632" level="file">
+        <did>
+          <unittitle>Marriages within area of Philadelphia Yearly Meeting, 1884-1896</unittitle>
+        </did>
+      </c>
+      <c id="aspace_f1df68d71f5f89a88b9942fb5590d43d" level="file">
+        <did>
+          <unittitle>Marriages, etc., within area of Philadelphia Yearly Meeting, 1896-1924</unittitle>
+        </did>
+      </c>
+      <c id="aspace_b11010c0884f9435a72df5ef4cf2662b" level="file">
+        <did>
+          <unittitle>Deaths within area of Philadelphia Yearly Meeting, 1901-1937</unittitle>
+        </did>
+      </c>
+    </dsc>
+
+  </archdesc>
+</ead>

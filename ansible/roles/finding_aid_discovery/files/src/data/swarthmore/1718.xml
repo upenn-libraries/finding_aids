@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd"><eadheader countryencoding="iso3166-1" dateencoding="iso8601" langencoding="iso639-2b" repositoryencoding="iso15511"><eadid countrycode="US" mainagencycode="US-PSH">4001abfr</eadid><filedesc><titlestmt><titleproper>An Inventory of the Abington Friends School (Abington, Pa.) Account book, 1828-1842 <num>SFHL.RG4.001</num></titleproper><author>FHL staff</author><sponsor>Encoding made possible by a grant by the Gladys Kriebel Delmas Foundation to the Philadelphia Consortium of Special Collections Libraries</sponsor></titlestmt><publicationstmt><publisher>Friends Historical Library of Swarthmore College</publisher><p id="logostmt"><extref xlink:actuate="onLoad" xlink:href="https://swarthmore.edu/sites/default/files/assets/images/friends-historical-library/swarthmore-logo-small.png" xlink:show="embed" xlink:type="simple"/></p><p><date>1959</date></p><address><addressline>500 College Avenue</addressline><addressline>Swarthmore, Pennsylvania 19081</addressline><addressline>friends@swarthmore.edu</addressline><addressline>URL: <extptr xlink:href="http://www.swarthmore.edu/friends" xlink:show="new" xlink:title="http://www.swarthmore.edu/friends" xlink:type="simple"/></addressline></address></publicationstmt></filedesc><profiledesc><creation>This finding aid was produced using ArchivesSpace on <date>2020-08-31 15:52:00 -0400</date>.</creation><descrules>Describing Archives: A Content Standard</descrules></profiledesc></eadheader><archdesc level="collection">
+  <did>
+    <repository>
+      <corpname>Friends Historical Library of Swarthmore College</corpname>
+    </repository>
+    <unittitle>Abington Friends School (Abington, Pa.) Account book</unittitle>
+    <origination label="Creator">
+      <corpname authfilenumber="https://lccn.loc.gov/n90658815" rules="rda" source="lcnaf">Abington Friends School (Abington, Pa.)</corpname>
+    </origination>
+    <unitid>SFHL.RG4.001</unitid>
+    <physdesc altrender="whole">
+      <extent altrender="materialtype spaceoccupied">0.21 Linear Feet</extent>
+      <extent altrender="carrier">1/2 box</extent>
+    </physdesc>
+    <unitdate normal="1828/1842" type="inclusive">1828-1842</unitdate>
+    <physloc id="aspace_4b87329f3244ce99eba39f53068a03b9">For current information on the location of materials, please consult the Library's online catalog.</physloc>
+    <abstract id="aspace_890368f87e4a998ff65bee8fbba7f997">Abington Friends School was established by Abington Monthly Meeting in the latter part of the eighteenth century as a day school. The account book covers the period 1828-1842. Pupil's names are given with the status of their payments, etc.</abstract>
+    <langmaterial>
+      <language langcode="eng">English</language>
+      .    </langmaterial>
+  </did>
+  <bioghist id="aspace_437b36fc38c2768cef454663adad983c">
+    <head>Biographical / Historical</head>
+    <p>Abington Friends School was established by Abington Monthly Meeting in the latter part of the eighteenth century as a day school. In 1886 a new building was erected, and a boarding department was added. The School was established â€œfor the purpose of furnishing a thorough and guarded education at a moderate profit.â€? It is under the care of a committee appointed by Abington Monthly Meeting.</p><p> Early school masters at Abington Friends School include George Boone (uncle of Daniel) in 1718, and Alexander Seaton in 1731. George Boone made transcripts of early minutes of Abington Meeting and was Clerk of the Meeting from 1716 to 1720. Alexander Seaton continued transcribing minutes and was a teacher by profession.</p>  </bioghist>
+  <scopecontent id="aspace_2c19292735ff23c4eaed4bbe8bd108d9">
+    <head>Scope and Contents</head>
+    <p>Contains one volume Account Book of Abington Friends School, 1828-1842. Pupil's names are given with the status of their payments, etc.</p>  </scopecontent>
+  <relatedmaterial id="aspace_9333ba64bfee0920f1f242a68b48b138">
+    <head>Related Materials</head>
+    <p>RG 2 Abington Monthly Meeting of the Religious Society of Friends</p>  </relatedmaterial>
+  <acqinfo id="aspace_f08ce04c4b40bdff8be900809cb17506">
+    <head>Immediate Source of Acquisition</head>
+    <p>Donor: Mrs. Herbert K. Taylor</p><p> Date: 1959</p>  </acqinfo>
+  <accessrestrict id="aspace_12b9ea61a055ad286166ee7e0d69c0b1">
+    <head>Conditions Governing Access</head>
+    <p>Collection is open for research.</p>  </accessrestrict>
+  <userestrict id="aspace_483020e95267dd7ebe8dc6f5b3e08767">
+    <head>Conditions Governing Use</head>
+    <p>Friends Historical Library believes all of the items in this collection to be in the Public Domain in the United States, and is not aware of any restrictions on their use. However, the user is responsible for making a final determination of copyright status before reproducing. See <a href="http://rightsstatements.org/vocab/NoC-US/1.0/">http://rightsstatements.org/vocab/NoC-US/1.0/</a>.</p>  </userestrict>
+  <prefercite id="aspace_d6d19b769ffca5d269b1913845886e93">
+    <head>Preferred Citation</head>
+    <p>[Indicate the cited item or series here], Abington Friends School Account Book, RG 4/001, Friends Historical Library of Swarthmore College</p>  </prefercite>
+  <controlaccess>
+    <subject source="lcsh">Quakers -- Pennsylvania -- Abington</subject>
+    <subject source="lcsh">Schools -- Pennsylvania -- Abington</subject>
+    <subject source="Library of Congress Subject Headings">Society of Friends -- Pennsylvania -- Abington</subject>
+    <subject source="Library of Congress Subject Headings">Society of Friends -- Education</subject>
+    <genreform authfilenumber="http://vocab.getty.edu/aat/300027483" source="aat">Account books</genreform>
+    <corpname authfilenumber="http://id.loc.gov/authorities/names/no93009736" rules="rda" source="lcnaf">Abington Monthly Meeting of Friends (Hicksite : 1827-1955) -- Finance</corpname>
+  </controlaccess>
+  <dsc><c id="aspace_73538aa4cca97798bf764697a341cfa5" level="item"><did><unittitle>Account Book</unittitle><unitdate type="inclusive">1843-1874</unitdate><physdesc><physfacet id="aspace_8cb2a8a2c4c706ace62d4224fdf47d1c">1 folder</physfacet></physdesc><physdesc><physfacet id="aspace_e476f28d8641a075f2b1a2a42999d123">1 vol.</physfacet></physdesc><container id="aspace_ba8dd3dd2c47634b4ea3dd201c5f7124" label="Mixed Materials" type="box">1</container></did><scopecontent id="aspace_ba7a0898b2cbf418cc53197620454cb1"><head>Scope and Contents</head><p>Pupil's names are given with the status of their payments, etc.</p></scopecontent></c></dsc>
+</archdesc>
+</ead>
