@@ -16,6 +16,11 @@
     <field name="lng" type="tdouble" stored="true" indexed="true" multiValued="false"/>
     <!-- NOTE:  not all possible Solr field types are represented in the dynamic fields -->
 
+    <!-- legacy DLA PACSCL fields
+         these should probably be obviated with novel indexing strategies, and removed -->
+    <field name="xml" type="string" stored="true" indexed="false" multiValued="false" />
+    <dynamicField name="*_field" type="text" stored="true" indexed="true" multiValued="true" />
+
     <!-- text (_t...) -->
 
     <dynamicField name="*_ti" type="text" stored="false" indexed="true" multiValued="false"/>
