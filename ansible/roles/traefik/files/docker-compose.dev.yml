@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  traefik:
+    command:
+      - "--accesslog=true"
+      - "--api.dashboard=${TRAEFIK_DASHBOARD_ENABLE}"
+      - "--entrypoints.metrics.address=:8082"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.solr.address=:${SOLR_ADMIN_PORT}"
+      - "--entryPoints.web.forwardedHeaders.trustedIPs=127.0.0.1/32,192.168.0.0/16,172.16.0.0/12,10.0.0.0/8"
+      - "--entrypoints.traefik.address=:${TRAEFIK_DASHBOARD_PORT}"
+      - "--log.level=${TRAEFIK_LOG_LEVEL}"
+      - "--metrics.prometheus=true"
+      - "--metrics.prometheus.entrypoint=metrics"
+      - "--providers.docker=true"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik"
+      - "--providers.docker.swarmMode=true"
+      - "--providers.docker.swarmModeRefreshSeconds=15"
+      - "--providers.docker.watch=true"
+    ports:
+      - "${SOLR_ADMIN_PORT}:${SOLR_ADMIN_PORT}"
