@@ -4,11 +4,6 @@
     path: "{{ project_root ~ '/traefik' }}"
     state: directory
 
-- name: Copy docker-compose.yml file
-  copy:
-    src: "docker-compose.yml"
-    dest: "{{ project_root ~ '/traefik/docker-compose.yml' }}"
-
 - name: Create traefik users file
   htpasswd:
     path: "{{ project_root ~ '/users' }}"
@@ -37,7 +32,45 @@
     state: absent
   no_log: true
 
-- name: Deploy traefik
+# Execute development steps
+- name: Copy base and dev docker-compose files
+  copy:
+    src: "../files/{{ item }}"
+    dest: "{{ project_root ~ '/traefik/' }}"
+  when: is_development | default (false) == true
+  loop:
+    - "docker-compose.yml"
+    - "docker-compose.dev.yml"
+  tags: dev_environment
+
+- name: Deploy development traefik
+  docker_stack:
+    name: "fad"
+    compose:
+      - "{{ project_root ~ '/traefik/docker-compose.yml' }}"
+      - "{{ project_root ~ '/traefik/docker-compose.dev.yml' }}"
+    state: present
+  changed_when: false
+  environment:
+    SOLR_ADMIN_PORT: "{{ solr.admin_port }}"
+    TRAEFIK_DASHBOARD_ENABLE: "{{ traefik.dashboard.enable }}"
+    TRAEFIK_DASHBOARD_PORT: "{{ traefik.dashboard.port }}"
+    TRAEFIK_IMAGE_NAME: "{{ traefik.image.name }}"
+    TRAEFIK_IMAGE_TAG: "{{ traefik.image.tag }}"
+    TRAEFIK_MIDDLEWARES_USERS_NAME: "{{ 'traefik_middlewares_users_v' ~ traefik.middlewares_auth.version }}"
+    TRAEFIK_LOG_LEVEL: "{{ traefik.log_level }}"
+    TRAEFIK_URL: "{{ traefik.url }}"
+  when: is_development | default (false) == true
+  tags: dev_environment
+
+# # Execute production steps
+- name: Copy docker-compose file
+  copy:
+    src: "../files/docker-compose.yml"
+    dest: "{{ project_root ~ '/traefik/' }}"
+  when: not is_development | default (false) == true
+
+- name: Deploy production traefik
   docker_stack:
     name: "fad"
     compose:
@@ -52,3 +85,4 @@
     TRAEFIK_MIDDLEWARES_USERS_NAME: "{{ 'traefik_middlewares_users_v' ~ traefik.middlewares_auth.version }}"
     TRAEFIK_LOG_LEVEL: "{{ traefik.log_level }}"
     TRAEFIK_URL: "{{ traefik.url }}"
+  when: not is_development | default (false) == true

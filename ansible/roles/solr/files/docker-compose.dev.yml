@@ -2,6 +2,20 @@ version: "3.8"
 
 services:
   solr:
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.solr.entrypoints=solr"
+        - "traefik.http.routers.solr.rule=Host(`${URL}`)"
+        - "traefik.http.routers.solr.service=solr"
+        - "traefik.http.routers.solr.tls=true"
+        - "traefik.http.services.solr.loadbalancer.server.port=${SOLR_ADMIN_PORT}"
+    networks:
+      - traefik
     volumes:
       - /finding_aid_discovery/ansible/roles/solr/files/src/conf:${SOLR_CONFIG_LOCATION}/conf
       - /finding_aid_discovery/ansible/roles/solr/files/src/scripts:/docker-entrypoint-initdb.d
+
+networks:
+  traefik:
+    external: true

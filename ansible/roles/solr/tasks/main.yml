@@ -64,11 +64,13 @@
     state: present
   changed_when: false
   environment:
+    SOLR_ADMIN_PORT: "{{ solr.admin_port }}"
     SOLR_CONFIG_LOCATION: "{{ solr.config_location }}"
     SOLR_CORE_NAME: "{{ solr.core_name }}"
     SOLR_IMAGE_NAME: "{{ solr.image.name }}"
     SOLR_IMAGE_TAG: "{{ solr.image.tag }}"
     REPLICAS: "{{ solr.replicas }}"
+    URL: "{{ url }}"
   no_log: true
   when: is_development | default (false) == true
   tags: dev_environment
