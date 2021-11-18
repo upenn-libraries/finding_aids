@@ -7,6 +7,7 @@
   - [Destroying](#destroying)
   - [SSH](#ssh)
   - [Traefik](#traefik)
+  - [Solr Admin](#solr-admin)
 
 ## Development
 
@@ -49,7 +50,7 @@ vagrant destroy -f
 You may ssh into the Vagrant VM by running:
 
 ```
-ssh -i ~/.vagrant.d/insecure_private_key vagrant@finding-aid-discovery-manager
+vagrant ssh
 ```
 
 #### Traefik
@@ -66,3 +67,8 @@ In order to run the test suite (currently):
   docker exec -it fad_finding_aid_discovery.1.{whatever} sh
 ```
 3. Run `rspec` command: `RAILS_ENV=test bundle exec rspec`
+
+#### Solr Admin
+
+To access the Solr admin when running a development environment navigate to:
+[https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/](https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/)
