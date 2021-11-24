@@ -64,6 +64,7 @@
     state: present
   changed_when: false
   environment:
+    CHROME_PORT: "{{ chrome.port }}"
     DATABASE_NAME: "{{ postgres.database }}"
     DATABASE_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
     DATABASE_USER: "{{ postgres.user }}"
