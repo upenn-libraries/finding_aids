@@ -16,126 +16,133 @@ include:
   - template: "Workflows/MergeRequest-Pipelines.gitlab-ci.yml"
 
 stages:
-  - build:base
-  - push_tmp:base
-  - build:dev
-  - push_tmp:dev
-  - test:dev
-  - build:prod
-  - push_tmp:prod
-  - sast:prod
-  - remove_tmp:dev
-  - remove_tmp:prod
-  - remove_tmp:base
-  - push:base
-  - push:dev
-  - push:prod
-  - remove:base
-  - remove:dev
-  - remove:prod
+  - build_and_push:tmp_base_image
+  - build_and_push:tmp_dev_image
+  - test
+  - build_and_push:tmp_prod_image
+  - sast
+  - remove:tmp_images_from_registry
+  - push:final_images
+  - remove:tmp_images_from_host
 
-# -- Start - Build and push base image
-build_base_image:
-  stage: build:base
+# -- Start - build and push base image
+build_base_app_image:
+  stage: build_and_push:tmp_base_image
   extends:
     - .build_docker_image
   variables:
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "base"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
   tags:
     - build
 
-push_tmp_base_image_to_registry:
-  stage: push_tmp:base
+push_tmp_base_app_image_to_registry:
+  stage: build_and_push:tmp_base_image
   extends:
     - .push_docker_image
   needs:
-    - build_base_image
+    - build_base_app_image
   variables:
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
+    DOCKER_IMAGE_NAME: "app"
     DOCKER_TARGET: "base"
     IMAGE_TAGS: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
   tags:
     - build
-# -- End - Build and push base image
+# -- End - build and push base image
 
-# -- Start - build, push temp dev image, and test dev image
-build_dev_image:
-  stage: build:dev
+# -- Start - build, push temp dev image
+build_dev_app_image:
+  stage: build_and_push:tmp_dev_image
   extends:
     - .build_docker_image
   variables:
     BASE_IMAGE_CACHE_TAG: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-base
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
     DOCKER_BUILD_ARGS: "--build-arg RAILS_ENV=development"
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "development"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
   needs:
-    - push_tmp_base_image_to_registry
+    - push_tmp_base_app_image_to_registry
   tags:
     - build
 
-push_tmp_dev_image_to_registry:
-  stage: push_tmp:dev
+push_tmp_dev_app_image_to_registry:
+  stage: build_and_push:tmp_dev_image
   extends:
     - .push_docker_image
   needs:
-    - build_dev_image
+    - build_dev_app_image
   variables:
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
+    DOCKER_IMAGE_NAME: "app"
     DOCKER_TARGET: "development"
     IMAGE_TAGS: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
   tags:
     - build
+# -- End - build, push temp dev image
 
-# rspec_test:
-#   stage: test:dev
-#   image: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
-#   extends:
-#     - .rspec
-#   script:
-#     - rspec -I ansible/roles/finding_aid_discovery/files/src/ ansible/roles/finding_aid_discovery/files/src/spec/
-#   needs:
-#     - push_tmp_dev_image_to_registry
-#   allow_failure: true
-#   rules:
-#     - if: $DISABLE_RSPEC_TEST == "true"
-#       when: never
-#     - exists:
-#         - ansible/roles/finding_aid_discovery/files/src/spec/**.rb
-#   tags:
-#     - build
-# -- End - build, push temp dev image, and test dev image
+# -- Start - test dev image
+rspec_app_test:
+  stage: test
+  image: ${CI_REGISTRY_IMAGE}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
+  needs:
+    - push_tmp_dev_app_image_to_registry
+  extends:
+    - .rspec
+  script:
+    - rspec -I ansible/roles/finding_aid_discovery/files/src/ ansible/roles/finding_aid_discovery/files/src/spec/
+  allow_failure: true
+  rules:
+    - if: $DISABLE_RSPEC_TEST == "true"
+      when: never
+    - exists:
+        - ansible/roles/finding_aid_discovery/files/src/spec/**.rb
+        - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
+  tags:
+    - build
+# -- End - test dev image
 
-# -- Start - build, push temp prod image, and test prod image
-build_prod_image:
-  stage: build:prod
+# -- Start - build and push temp prod image
+build_prod_app_image:
+  stage: build_and_push:tmp_prod_image
   extends:
     - .build_docker_image
   variables:
     BASE_IMAGE_CACHE_TAG: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-base
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
     DOCKER_BUILD_ARGS: "--build-arg RAILS_ENV=production"
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "production"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
-  # needs:
-  #   - rspec_test
+  needs:
+    - rspec_app_test
   tags:
     - build
 
-push_tmp_prod_image_to_registry:
-  stage: push_tmp:prod
+push_tmp_prod_app_image_to_registry:
+  stage: build_and_push:tmp_prod_image
   extends:
     - .push_docker_image
   needs:
-    - build_prod_image
+    - build_prod_app_image
   variables:
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
+    DOCKER_IMAGE_NAME: "app"
     DOCKER_TARGET: "production"
+    DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
     IMAGE_TAGS: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
   tags:
     - build
+# -- End - build and push temp prod image
 
-trivy_container_scanning:
-  stage: sast:prod
+# -- Start - SAST images
+# Test application image
+trivy_app_container_scanning:
+  stage: sast
   extends:
     - .trivy_container_scanning
   before_script:
@@ -144,91 +151,97 @@ trivy_container_scanning:
   after_script:
     - docker logout ${CI_REGISTRY}
   needs:
-    - push_tmp_prod_image_to_registry
+    - push_tmp_prod_app_image_to_registry
   variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
+    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
   tags:
     - build
   allow_failure: true
-# -- End - build, push temp prod image, and test prod image
+# -- End - SAST images
 
 # -- Start - Remove temp images from registry
-remove_tmp_dev_image_from_registry:
-  stage: remove_tmp:dev
+remove_tmp_dev_app_image_from_registry:
+  stage: remove:tmp_images_from_registry
   extends:
     - .remove_docker_image_from_registry
   variables:
-    IMAGE_TAG: ${CI_PROJECT_PATH}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
+    IMAGE_TAG: ${CI_PROJECT_PATH}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
   rules:
     - when: always
-  # needs:
-  #   - rspec_test
+  needs:
+    - rspec_app_test
   tags:
     - build
   allow_failure: true
 
-remove_tmp_prod_image_from_registry:
-  stage: remove_tmp:prod
+remove_tmp_prod_app_image_from_registry:
+  stage: remove:tmp_images_from_registry
   extends:
     - .remove_docker_image_from_registry
   variables:
-    IMAGE_TAG: ${CI_PROJECT_PATH}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
+    IMAGE_TAG: ${CI_PROJECT_PATH}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
   rules:
     - when: always
   needs:
-    - trivy_container_scanning
+    - trivy_app_container_scanning
   tags:
     - build
   allow_failure: true
 
-remove_tmp_base_image_from_registry:
-  stage: remove_tmp:base
+remove_tmp_base_app_image_from_registry:
+  stage: remove:tmp_images_from_registry
   extends:
     - .remove_docker_image_from_registry
   variables:
-    IMAGE_TAG: ${CI_PROJECT_PATH}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-base
+    IMAGE_TAG: ${CI_PROJECT_PATH}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-base
   rules:
     - when: always
   needs:
-    - build_dev_image
-    - build_prod_image
+    - build_dev_app_image
+    - build_prod_app_image
   tags:
     - build
   allow_failure: true
 # -- End - Remove temp images from registry
 
 # -- Start - push final images to registry
-push_base_image_to_registry:
-  stage: push:base
+push_base_app_image_to_registry:
+  stage: push:final_images
   extends:
     - .push_docker_image
   needs:
-    - remove_tmp_base_image_from_registry
+    - remove_tmp_base_app_image_from_registry
   variables:
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
+    DOCKER_IMAGE_NAME: "app"
     DOCKER_TARGET: "base"
   tags:
     - build
 
-push_dev_image_to_registry:
-  stage: push:dev
+push_dev_app_image_to_registry:
+  stage: push:final_images
   extends:
     - .push_docker_image
   needs:
-    - remove_tmp_dev_image_from_registry
-    # - rspec_test
+    - remove_tmp_dev_app_image_from_registry
+    - rspec_app_test
   variables:
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
+    DOCKER_IMAGE_NAME: "app"
     DOCKER_TARGET: "development"
   tags:
     - build
 
-push_prod_image_to_registry:
-  stage: push:prod
+push_prod_app_image_to_registry:
+  stage: push:final_images
   extends:
     - .push_docker_image
   needs:
-    - remove_tmp_prod_image_from_registry
-    - trivy_container_scanning
+    - remove_tmp_prod_app_image_from_registry
+    - trivy_app_container_scanning
   variables:
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
+    DOCKER_IMAGE_NAME: "app"
     DOCKER_TARGET: "production"
     TAG_IMAGE_WITH_TARGET: "false"
   tags:
@@ -236,40 +249,66 @@ push_prod_image_to_registry:
 # -- End - push final images to registry
 
 # -- Start - remove images passed through pipeline
-remove_base_image:
-  stage: remove:base
+remove_tmp_base_app_image_from_host:
+  stage: remove:tmp_images_from_host
   extends:
     - .remove_docker_image
   needs:
-    - push_base_image_to_registry
+    - push_base_app_image_to_registry
   variables:
-    IMAGE_TAGS: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-base
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-base
   rules:
     - when: always
   tags:
     - build
 
-remove_dev_image:
-  stage: remove:dev
+remove_tmp_app_dev_image_from_host:
+  stage: remove:tmp_images_from_host
   extends:
     - .remove_docker_image
   needs:
-    - push_dev_image_to_registry
+    - push_dev_app_image_to_registry
   variables:
-    IMAGE_TAGS: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
   rules:
     - when: always
   tags:
     - build
 
-remove_prod_image:
-  stage: remove:prod
+remove_tmp_registry_app_dev_image_from_host:
+  stage: remove:tmp_images_from_host
   extends:
     - .remove_docker_image
   needs:
-    - push_prod_image_to_registry
+    - rspec_app_test
   variables:
-    IMAGE_TAGS: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
+    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
+  rules:
+    - when: always
+  tags:
+    - build
+
+remove_tmp_registry_app_prod_image_from_host:
+  stage: remove:tmp_images_from_host
+  extends:
+    - .remove_docker_image
+  needs:
+    - trivy_app_container_scanning
+  variables:
+    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
+  rules:
+    - when: always
+  tags:
+    - build
+
+remove_tmp_app_prod_image_from_host:
+  stage: remove:tmp_images_from_host
+  extends:
+    - .remove_docker_image
+  needs:
+    - push_prod_app_image_to_registry
+  variables:
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
   rules:
     - when: always
   tags:

@@ -112,7 +112,6 @@ ENV RAILS_ENV=${RAILS_ENV}
 
 # Set Rails env
 ENV BUNDLE_APP_CONFIG="${PROJECT_ROOT}/.bundle"
-ENV EXECJS_RUNTIME=Disabled
 ENV GEM_HOME="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/"
 ENV GEM_PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/"
 ENV NLS_LANG=$LANG
@@ -135,7 +134,7 @@ RUN apk add --no-cache \
         yarn && \
     chmod +x /usr/local/bin/docker-entrypoint.sh && \
     addgroup -S app && adduser -S app -G app -h ${PROJECT_ROOT} -s /bin/ash && \
-    rails assets:precompile && \
+    SECRET_KEY_BASE=x rails assets:precompile && \
     find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
     find bin -type f -exec chmod 744 {} + && \
