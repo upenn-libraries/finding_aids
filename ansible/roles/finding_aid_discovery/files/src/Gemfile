@@ -31,6 +31,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'factory_bot_rails'
   gem 'solr_wrapper', '>= 0.3'
 end
 gem 'rsolr', '>= 1.0', '< 3'
