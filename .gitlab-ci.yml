@@ -133,7 +133,6 @@ push_tmp_solr_image_to_registry:
     - build
 # -- End - build and push temp solr image
 
-
 # -- Start - build and push temp prod image
 build_prod_app_image:
   stage: build_and_push:tmp_prod_image
