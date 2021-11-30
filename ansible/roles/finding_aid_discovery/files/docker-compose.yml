@@ -9,6 +9,9 @@ services:
         constraints:
           - "node.labels.finding_aid_discovery == true"
       replicas: ${REPLICAS}
+      update_config:
+        order: "start-first"
+        parallelism: 1
     environment:
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_PASSWORD: /run/secrets/database_password

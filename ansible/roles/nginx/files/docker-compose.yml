@@ -17,6 +17,9 @@ services:
         constraints:
           - "node.labels.nginx == true"
       replicas: ${REPLICAS}
+      update_config:
+        order: "start-first"
+        parallelism: 1
     healthcheck:
       test:
         [

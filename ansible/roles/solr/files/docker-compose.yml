@@ -7,6 +7,9 @@ services:
       placement:
         constraints:
           - "node.labels.solr == true"
+      update_config:
+        order: "start-first"
+        parallelism: 1
       replicas: ${REPLICAS}
     environment:
       CONFIG_LOCATION: ${SOLR_CONFIG_LOCATION}
