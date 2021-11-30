@@ -9,6 +9,7 @@ class Endpoint < ApplicationRecord
   validates :url, presence: true
 
   # maybe?
+  scope :index_type, -> { where('harvest_config @> ?', { type: 'index' }.to_json ) }
   scope :last_failed, -> { where('last_harvest_results @> ?', { status: FAILURE_STATUS }.to_json) }
 
   # @return [String]
