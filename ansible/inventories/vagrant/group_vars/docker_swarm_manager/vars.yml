@@ -1,6 +1,5 @@
 ---
 is_development: true
-build_docker_images: true
 
 project_root: "/opt/devops"
 proxy:
