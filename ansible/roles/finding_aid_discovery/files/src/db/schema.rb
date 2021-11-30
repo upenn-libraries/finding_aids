@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_22_144731) do
+ActiveRecord::Schema.define(version: 2021_11_29_145755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,16 @@ ActiveRecord::Schema.define(version: 2021_10_22_144731) do
     t.datetime "updated_at", null: false
     t.index ["document_id"], name: "index_bookmarks_on_document_id"
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
+  create_table "endpoints", force: :cascade do |t|
+    t.string "slug"
+    t.string "public_contacts", array: true
+    t.string "tech_contacts", array: true
+    t.jsonb "harvest_config"
+    t.jsonb "last_harvest_results"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "searches", id: :serial, force: :cascade do |t|
