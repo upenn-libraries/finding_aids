@@ -43,6 +43,10 @@
     - import_role:
         name: nginx
       tags: nginx
+    - import_role:
+        name: chrome
+      tags: chrome
+      when: is_development | default (false) == true
     - name: Recursively remove project directory
       file:
         path: "{{ project_root }}"

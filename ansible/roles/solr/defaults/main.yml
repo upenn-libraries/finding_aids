@@ -1,5 +1,6 @@
 ---
 solr:
+  admin_port: "8983"
   config_location: "/finding_aid_discovery_configs"
   core_name: "finding-aid-discovery-core"
   image:

@@ -7,6 +7,7 @@
   - [Destroying](#destroying)
   - [SSH](#ssh)
   - [Traefik](#traefik)
+  - [Solr Admin](#solr-admin)
 
 ## Development
 
@@ -49,9 +50,25 @@ vagrant destroy -f
 You may ssh into the Vagrant VM by running:
 
 ```
-ssh -i ~/.vagrant.d/insecure_private_key vagrant@finding-aid-discovery-manager
+vagrant ssh
 ```
 
 #### Traefik
 
 When running the development environment you can access the traefik web ui by navigating to: [https://finding-aid-discovery-dev.library.upenn.edu:8080/#](https://finding-aid-discovery-dev.library.upenn.edu:8080/#). The username and password are located in [ansible/inventories/vagrant/group_vars/docker_swarm_manager/traefik.yml](ansible/inventories/vagrant/group_vars/docker_swarm_manager/traefik.yml)
+
+#### Running Spec Suite
+
+In order to run the test suite (currently):
+
+1. Enter the Vagrant VM with `vagrant ssh`
+2. Start a shell in the `finding_aid_discovery` container: 
+```
+  docker exec -it fad_finding_aid_discovery.1.{whatever} sh
+```
+3. Run `rspec` command: `RAILS_ENV=test bundle exec rspec`
+
+#### Solr Admin
+
+To access the Solr admin when running a development environment navigate to:
+[https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/](https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/)
