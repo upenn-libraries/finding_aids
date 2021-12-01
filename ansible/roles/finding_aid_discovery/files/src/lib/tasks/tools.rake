@@ -11,7 +11,7 @@ namespace :tools do
   task sync_index_endpoints: :environment do
     # Read CSV data
     index_endpoint_csv = File.join Rails.root, 'data', 'index_endpoints.csv'
-    index_endpoint_data = CSV.parse(File.read(index_endpoint_csv), headers: true)
+    index_endpoint_data = CSV.parse(File.read(index_endpoint_csv), headers: true, strip: true)
 
     # Get current inventory for diffing later
     current_index_endpoint_slugs = Endpoint.index_type.pluck(:slug)
@@ -20,19 +20,23 @@ namespace :tools do
 
     # Get or build objects
     endpoints = index_endpoint_data&.map do |endpoint_info|
-      slug = endpoint_info['slug']&.strip
+      slug = endpoint_info['slug']
       if Endpoint.index_type.exists? slug: slug
         puts "Endpoint exists for #{slug}, will update."
-        Endpoint.find_by slug: slug
+        endpoint = Endpoint.find_by slug: slug
+        endpoint.public_contacts = Array.wrap(endpoint_info['public_contact'])
+        endpoint.tech_contacts = Array.wrap(endpoint_info['tech_contact'])
+        endpoint.harvest_config = { type: 'index', url: endpoint_info['url'] }
+        endpoint
       else
         puts "Will create new endpoint #{slug}."
-        Endpoint.new({
-                        slug: slug,
-                        public_contacts: Array.wrap(endpoint_info['public_contact']&.strip),
-                        tech_contacts: Array.wrap(endpoint_info['tech_contact']&.strip),
-                        harvest_config: { type: 'index',
-                                          url: endpoint_info['url']&.strip }
-                      })
+        Endpoint.new(
+   { slug: slug,
+             public_contacts: Array.wrap(endpoint_info['public_contact']),
+             tech_contacts: Array.wrap(endpoint_info['tech_contact']),
+             harvest_config: { type: 'index',
+                               url: endpoint_info['url'] } }
+         )
       end
     end
 
