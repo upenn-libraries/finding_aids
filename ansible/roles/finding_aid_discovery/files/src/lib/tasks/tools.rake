@@ -16,7 +16,7 @@ namespace :tools do
     # Get current inventory for diffing later
     current_index_endpoint_slugs = Endpoint.index_type.pluck(:slug)
     puts "Current index endpoint slugs: #{current_index_endpoint_slugs.join(' | ')}"
-    puts "Index type Endpoints currently configured: #{current_index_endpoint_slugs.size}"
+    puts "Index type endpoints currently configured: #{current_index_endpoint_slugs.size}"
 
     # Get or build objects
     endpoints = index_endpoint_data&.map do |endpoint_info|
@@ -32,11 +32,11 @@ namespace :tools do
         puts "Will create new endpoint #{slug}."
         Endpoint.new(
    { slug: slug,
-             public_contacts: Array.wrap(endpoint_info['public_contact']),
-             tech_contacts: Array.wrap(endpoint_info['tech_contact']),
-             harvest_config: { type: 'index',
-                               url: endpoint_info['url'] } }
-         )
+              public_contacts: Array.wrap(endpoint_info['public_contact']),
+              tech_contacts: Array.wrap(endpoint_info['tech_contact']),
+              harvest_config: { type: 'index',
+                                url: endpoint_info['url'] } }
+        )
       end
     end
 
@@ -57,7 +57,7 @@ namespace :tools do
       diff.each do |endpoint_slug_to_remove|
         rip_endpoint = Endpoint.find_by slug: endpoint_slug_to_remove
         rip_endpoint.destroy
-        puts "#{rip_endpoint} removed. You might want to remove its records!"
+        puts "#{endpoint_slug_to_remove} removed. You might want to remove its records!"
       end
     end
   rescue CSV::MalformedCSVError => e
