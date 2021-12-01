@@ -36,4 +36,18 @@ class Endpoint < ApplicationRecord
   def last_harvest_failed?
     last_harvest_status == FAILURE_STATUS
   end
+
+  # @return [Class<HtmlReader>]
+  def reader
+    case type
+    when 'index'
+      HtmlReader
+    else
+      raise ArgumentError
+    end
+  end
+  
+  def indexer
+    StandardEadIndexer # could return different class here
+  end
 end

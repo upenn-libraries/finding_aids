@@ -16,6 +16,6 @@ class HtmlReader # URL extractor?
     doc.xpath("//a/@href")
       .map(&:value)
       .select {  |val| val.ends_with? '.xml' }
-      .map { |u| "#{url}#{u}" }
+      .map { |u| "#{url}#{u}" } # TODO: we don't always need to prefix like this...
   end
 end

@@ -1,5 +1,6 @@
 class PartnerHarvestJob < ApplicationJob
-  def perform(partner)
-    Harvester.run(partenr)
+  def perform(endpoint)
+    HarvestingService.new(endpoint)
+                     .process
   end
 end
