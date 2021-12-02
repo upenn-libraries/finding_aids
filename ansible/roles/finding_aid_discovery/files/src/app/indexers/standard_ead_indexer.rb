@@ -2,12 +2,14 @@ class StandardEadIndexer
   def initialize(filename, endpoint)
     @filename = filename
     @endpoint = endpoint
+    # TODO: consider
+    # @document = Nokogiri::XML.parse URI.open filename
   end
 
   # internal ID - used with delete logic at least
   # @return [String]
   def id
-    "#{@endpoint.slug}_#{@filename}"
+    "#{@endpoint.slug}_#{@filename.gsub(@endpoint.slug, '')}"
   end
 
   # Not always present...
@@ -93,6 +95,7 @@ class StandardEadIndexer
     # usage: { solr_field_name: value, ... }
     {
       id: id,
+      endpoint_ts: @endpoint.slug,
       xml_ts: xml(document),
       ead_id_tsi: ead_id(document),
       unit_id_tsi: unit_id(document),
@@ -101,7 +104,7 @@ class StandardEadIndexer
       extent_tsm: extent(document),
       inclusive_date_ts: inclusive_date(document),
       abstract_scope_contents_tsi: abstract_scope_contents(document),
-      repositories_tsim: repositories(document),
+      repositories_tsim: repositories(document)
     }
   end
 end

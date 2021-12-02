@@ -19,7 +19,7 @@ class HarvestingService
       files.each do |file|
         xml_content = URI.open file
         xml_doc = Nokogiri::XML.parse xml_content
-        document = indexer.new(file, @endpoint).process(xml_doc).to_json
+        document = indexer.new(file, @endpoint).process(xml_doc)
         documents << document
         sleep TIME_UNIT_IN_SECONDS
       # rescue HarvestingException, ParsingException => e
@@ -32,14 +32,20 @@ class HarvestingService
     end
 
     # TODO: Solr Writer service - POST batches of records and commit
-    # SolrWriter.index documents # too late to add to outcomes?
+
+    begin
+      SolrService.new.add_many documents # too late to add to outcomes?
+    rescue StandardError => e
+      pp e
+      # TODO: top level outcome error
+    end
 
     # debug
-    pp documents
-    pp outcomes
+    # pp documents
+    # pp outcomes
 
     @endpoint.update({ last_harvest_results: { date: DateTime.now.to_s,
-                                              files: outcomes } }) # etc...
+                                               files: outcomes } }) # etc...
 
     send_notifications
   end
