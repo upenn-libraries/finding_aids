@@ -12,31 +12,34 @@ class HarvestingService
   def process
     indexer = @endpoint.indexer
 
-    json_documents = []
+    documents = []
     outcomes = []
 
     @xml_files.each_slice(FILES_PER_TIME_UNIT) do |files|
       files.each do |file|
         xml_content = URI.open file
         xml_doc = Nokogiri::XML.parse xml_content
-        json_documents << indexer.process(xml_doc).to_json
+        document = indexer.new(file, @endpoint).process(xml_doc).to_json
+        documents << document
         sleep TIME_UNIT_IN_SECONDS
-      rescue HarvestingException, ParsingException => e
-        outcomes << { link: link, errors: [e.message] }
+      # rescue HarvestingException, ParsingException => e
+      rescue StandardError => e
+        outcomes << { link: file, errors: [e.message] }
       else
-        outcomes << { id: document.id, status: :ok, link: link}
+        outcomes << { id: document['id'], status: :ok, link: file }
       end
 
     end
 
     # TODO: Solr Writer service - POST batches of records and commit
-    # SolrWriter.index json_documents # too late to add to outcomes?
+    # SolrWriter.index documents # too late to add to outcomes?
 
     # debug
-    pp json_documents
+    pp documents
     pp outcomes
 
-    @endpoint.update({ last_harvest_status: { date: '', files: outcomes } }) # etc...
+    @endpoint.update({ last_harvest_results: { date: DateTime.now.to_s,
+                                              files: outcomes } }) # etc...
 
     send_notifications
   end

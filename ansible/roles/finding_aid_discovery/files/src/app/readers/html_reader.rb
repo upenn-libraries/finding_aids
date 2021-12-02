@@ -13,9 +13,15 @@ class HtmlReader # URL extractor?
     doc = Nokogiri::HTML.parse(URI.open(url))
 
     # extract list of xml urls
-    doc.xpath("//a/@href")
-      .map(&:value)
-      .select {  |val| val.ends_with? '.xml' }
-      .map { |u| "#{url}#{u}" } # TODO: we don't always need to prefix like this...
+    doc.xpath('//a/@href')
+       .map(&:value)
+       .select { |val| val.ends_with? '.xml' }
+       .map do |u|
+      if url[0..3] == 'http'
+        u
+      else
+        "#{url}#{u}"
+      end
+    end
   end
 end
