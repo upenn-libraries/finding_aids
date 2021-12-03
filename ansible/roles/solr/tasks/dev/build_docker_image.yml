@@ -5,8 +5,6 @@
       args:
         CONFIG_LOCATION: "{{ solr.config_location }}"
         CORE_NAME: "{{ solr.core_name }}"
-        IMAGE_NAME: "{{ solr.image.name }}"
-        IMAGE_TAG: "{{ solr.image.tag }}"
       path: "/finding_aid_discovery/ansible/roles/solr/files/src"
       pull: yes
     force_tag: yes

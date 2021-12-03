@@ -1,9 +1,10 @@
 ---
 finding_aid_discovery:
+  build_docker_image: false
   image:
     name: "finding_aid_discovery"
-    registry: "gitlab.library.upenn.edu/pacscl/finding-aid-discovery"
-    tag: "latest"
+    registry: "gitlab.library.upenn.edu/pacscl/finding-aid-discovery/app"
+    tag: "main-development"
   port: 4567
   replicas: 1
   url: "finding-aid-discovery-dev.library.upenn.edu"
