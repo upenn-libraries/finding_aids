@@ -1,8 +1,9 @@
 class StandardEadIndexer
+
   def initialize(filename, endpoint)
     @filename = filename
     @endpoint = endpoint
-    @document = Nokogiri::XML.parse URI.open filename
+    @document = Nokogiri::XML.parse URI.parse(filename).open
   end
 
   # internal ID - used with delete logic at least

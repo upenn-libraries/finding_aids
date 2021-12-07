@@ -23,8 +23,8 @@ FactoryBot.define do
         date: 'some date',
         errors: [],
         files: [
-          { filename: '', status: :ok, id: 'test-ok-id', errors: [] },
-          { filename: '', status: :failed, id: 'test-failed-id', errors: ['Problem downloading XML file'] }
+          { filename: '', id: 'test-ok-id', status: :ok },
+          { filename: '', status: :failed, errors: ['Problem downloading XML file'] }
         ]
       } }
     end
@@ -34,7 +34,7 @@ FactoryBot.define do
         date: 'some date',
         errors: [],
         files: [
-          { filename: '', status: :ok, id: 'test-ok-id', errors: [] },
+          { filename: '', status: :ok, id: 'test-ok-id' },
         ]
       } }
     end
