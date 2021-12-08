@@ -8,7 +8,7 @@ describe HarvestingService do
         stub_request(:get, endpoint.url).to_return(status: [404, 'Not Found'])
       end
       it 'saves error information to Endpoint' do
-        described_class.new endpoint
+        described_class.new(endpoint).harvest
         expect(endpoint.last_harvest_results['errors'].first).to include '404 Not Found'
       end
     end
@@ -17,7 +17,7 @@ describe HarvestingService do
         stub_request(:get, endpoint.url).to_return(status: [500, 'Internal Server Error'])
       end
       it 'saves error information to Endpoint' do
-        described_class.new endpoint
+        described_class.new(endpoint).harvest
         expect(endpoint.last_harvest_results['errors'].first).to include '500 Internal Server Error'
       end
     end
@@ -25,17 +25,18 @@ describe HarvestingService do
       context 'error handling' do
         context 'HTTP error from indexer' do
           let(:url) { 'https://www.test.com/not_here.xml' }
-          let(:indexer) { endpoint.indexer(url, endpoint) }
+          let(:xml_file) { EndpointXmlFile.new url }
           before do
-            allow_any_instance_of(HtmlReader).to receive(:extract).and_return [url]
+            allow_any_instance_of(IndexExtractor).to receive(:each).and_yield xml_file
+            stub_request(:get, endpoint.url).to_return(status: [200])
             stub_request(:get, url).to_return(status: [404, 'Not Found'])
           end
           it 'saves file error information to endpoint' do
-            described_class.new(endpoint).process
+            described_class.new(endpoint).harvest
             file_error_hash = endpoint.last_harvest_results['files'].first
             expect(file_error_hash.keys).to include 'filename', 'status', 'errors'
             expect(file_error_hash['status']).to eq 'failed'
-            expect(file_error_hash['errors']).to include ['404 Not Found']
+            expect(file_error_hash['errors'].first).to include '404 Not Found'
           end
         end
       end

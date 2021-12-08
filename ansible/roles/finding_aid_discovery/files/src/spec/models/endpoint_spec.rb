@@ -20,7 +20,7 @@ describe Endpoint do
       }
       it 'has validation errors for url and type' do
         bad_type_config_endpoint.valid?
-        expect(bad_type_config_endpoint.errors.keys).to include :url, :type
+        expect(bad_type_config_endpoint.errors.attribute_names).to include :url, :type
         expect(bad_type_config_endpoint.errors.where(:type).first.type).to eq :inclusion
       end
     end
