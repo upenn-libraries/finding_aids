@@ -17,14 +17,14 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def ead_id(doc)
-    doc.at_css('eadheader eadid').text
+    doc.at_css('eadheader eadid').try :text
   end
 
   # https://www.loc.gov/ead/tglib/elements/unitid.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def unit_id(doc)
-    doc.at_css('archdesc did unitid').text
+    doc.at_css('archdesc did unitid').try :text
   end
 
   # @return [Array]
@@ -36,7 +36,7 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def title(doc)
-    doc.at_css('eadheader titlestmt titleproper').text # this can/is/will be multivalued, sometimes with a 'filing' attr
+    doc.at_css('eadheader titlestmt titleproper').try :text # this can/is/will be multivalued, sometimes with a 'filing' attr
     # if raw.index("\n")
     #   raw[..(raw.index("\n") - 2)] # strip at newline, often theres a <num /> element present...
     # else
@@ -48,21 +48,21 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def extent(doc)
-    doc.css('archdesc did physdesc extent').map(&:text)
+    doc.css('archdesc did physdesc extent').map { |t| t.try :text }
   end
 
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def inclusive_date(doc)
-    doc.at_css('archdesc did unitdate').text
+    doc.at_css('archdesc did unitdate').try :text
   end
 
   # https://www.loc.gov/ead/tglib/elements/abstract.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def abstract_scope_contents(doc)
-    doc.at_css('archdesc did abstract').text
+    doc.at_css('archdesc did abstract').try :text
   end
 
   def date_added(doc)
@@ -78,7 +78,7 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   def repositories(doc)
     doc.css('archdesc did repository').map do |node|
-      node.text.strip
+      node.text.try(:strip)
     end
   end
 
@@ -86,7 +86,7 @@ class EadParser
   # @return [Hash]
   # @param [EndpointXmlFile] xml_file
   def parse(xml_file)
-    xml = xml_file.read
+    xml = validate_encoding xml_file.read
     doc = Nokogiri::XML.parse xml
     {
       id: id(xml_file.url),
@@ -101,5 +101,14 @@ class EadParser
       abstract_scope_contents_tsi: abstract_scope_contents(doc),
       repositories_tsim: repositories(doc)
     }
+  end
+
+  # @param [String] text
+  def validate_encoding(text)
+    unless text.encoding == Encoding::UTF_8
+      return text.encode('utf-8', invalid: :replace, undef: :replace, replace: '_')
+    end
+
+    text
   end
 end

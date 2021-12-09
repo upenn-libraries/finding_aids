@@ -10,6 +10,10 @@ class IndexExtractor
     @files.each(&block)
   end
 
+  def size
+    @files.length
+  end
+
   private
 
   # @param [String] url
@@ -22,13 +26,12 @@ class IndexExtractor
               .map(&:value)
               .select { |val| val.ends_with? '.xml' }
               .map do |u|
-      if url[0..3] == 'http'
+      if u[0..3] == 'http'
         u
       else
         "#{url}#{u}"
       end
     end
-
     urls.map do |xml_url|
       EndpointXmlFile.new xml_url
     end

@@ -1,6 +1,6 @@
 class HarvestingService
   FILES_PER_TIME_UNIT = 6
-  TIME_UNIT_IN_SECONDS = 30
+  TIME_UNIT_IN_SECONDS = 15
 
   # @param [Endpoint] endpoint
   def initialize(endpoint)
@@ -11,16 +11,22 @@ class HarvestingService
 
   def harvest
     endpoint_files = @endpoint.extractor
+    puts "Parsing #{endpoint_files.size} files from #{@endpoint.slug} @ #{@endpoint.url}"
     endpoint_files.each_slice(FILES_PER_TIME_UNIT) do |files|
       files.each do |file|
+        retries = 0
         document = parse file
         @documents << document
-        sleep TIME_UNIT_IN_SECONDS
       rescue OpenURI::HTTPError => e
         error_from(file, e)
+      rescue SocketError
+        retries += 1
+        sleep TIME_UNIT_IN_SECONDS
+        retry unless retries > 3
       else
         document_added(file, document)
       end
+      sleep TIME_UNIT_IN_SECONDS
     end
     index_documents
     # TODO: process_deletes
@@ -59,15 +65,20 @@ class HarvestingService
   def error_from(file, exception)
     @results[:files] << { filename: file.url, status: :failed,
                           errors: ["Problem downloading file: #{exception.message}"] }
+    puts "Problem parsing #{file.url}: #{exception.message}"
   end
 
   def document_added(file, document)
     @results[:files] << { filename: file.url, status: :ok, id: document[:id] }
+    puts "Parsed #{file.url} OK"
   end
 
   # @param [String, Array] errors
   def fatal_error(errors)
+    errors = Array.wrap(errors)
+    puts "Fatal error during harvesting: #{errors.join(', ')}"
     @endpoint.last_harvest_results = { date: DateTime.now,
-                                       errors: Array.wrap(errors) }
+                                       files: [],
+                                       errors: errors }
   end
 end
