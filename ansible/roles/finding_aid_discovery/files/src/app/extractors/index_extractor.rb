@@ -1,19 +1,13 @@
 class IndexExtractor
-  include Enumerable
-
-  attr_accessor :files
+  attr_reader :endpoint, :files
 
   # @param [Endpoint] endpoint
   def initialize(endpoint)
-    @files = extract_xml_urls_from endpoint.url
+    @endpoint = endpoint
   end
 
-  def each(&block)
-    @files.each(&block)
-  end
-
-  def size
-    @files.length
+  def files
+    @files ||= extract_xml_urls(endpoint.url)
   end
 
   class XMLFile
@@ -26,30 +20,44 @@ class IndexExtractor
 
     # @return [String]
     def read
-      URI.parse(@url).read
+      validate_encoding(fetch_xml)
+    end
+
+    private
+
+    # Retrieve XML and retry if necessary.
+    #
+    # @return [String] xml string
+    def fetch_xml
+      Retryable.retryable(tries: 3, sleep: 6, on: OpenURI::HTTPError) do
+        URI.open(url).read
+      end
+    end
+
+    # Convert string encoding to UTF-8 if encoded differently.
+    #
+    # @param [String] text
+    def validate_encoding(text)
+      return text if text.encoding == Encoding::UTF_8
+      text.encode('utf-8', invalid: :replace, undef: :replace, replace: '_')
     end
   end
 
   private
 
+  # Extract all xml urls present at the URL given.
+  #
   # @param [String] url
-  # @return [Array[<EndpointXmlFile>]]
-  def extract_xml_urls_from(url)
+  # @return [Array[<XMLFile>]]
+  def extract_xml_urls(url)
     doc = Nokogiri::HTML.parse(URI.parse(url).open)
 
-    # extract list of xml urls
+    # Extract list of XML URLs
     urls = doc.xpath('//a/@href')
               .map(&:value)
               .select { |val| val.ends_with? '.xml' }
-              .map do |u|
-      if u[0..3] == 'http'
-        u
-      else
-        "#{url}#{u}"
-      end
-    end
-    urls.map do |xml_url|
-      XMLFile.new xml_url
-    end
+              .map { |u| (u[0..3] == 'http') ? u : "#{url}#{u}"  }
+
+    urls.map { |xml_url| XMLFile.new(xml_url) }
   end
 end

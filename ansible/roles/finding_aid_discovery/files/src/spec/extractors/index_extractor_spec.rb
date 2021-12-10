@@ -5,27 +5,29 @@ describe IndexExtractor do
   let(:html) { file_fixture('xml_listing.html').read }
   let(:extractor) { described_class.new(endpoint) }
 
-  context 'enumerability' do
+  context '#files' do
+    subject(:files) { extractor.files }
+
     before do
       stub_request(:get, endpoint.url).to_return(body: html)
     end
 
     it 'responds to enumerable methods' do
-      expect(extractor).to respond_to :each, :each_slice, :map, :first
+      expect(files).to respond_to :each, :each_slice, :map, :first
     end
 
     it 'yields an XMLFile' do
-      expect(extractor.first).to be_an_instance_of XMLFile
-    end
-  end
-
-  context 'error handling (or not)' do
-    before do
-      stub_request(:get, endpoint.url).to_return(status: ['404', 'Not Found'])
+      expect(files.first).to be_an_instance_of IndexExtractor::XMLFile
     end
 
-    it 'raises an OpenURI::HTTPError' do
-      expect { extractor }.to raise_error OpenURI::HTTPError
+    context 'when URL raises a 404' do
+      before do
+        stub_request(:get, endpoint.url).to_return(status: ['404', 'Not Found'])
+      end
+
+      it 'raises an OpenURI::HTTPError' do
+        expect { files }.to raise_error OpenURI::HTTPError
+      end
     end
   end
 end

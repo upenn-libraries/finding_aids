@@ -1,5 +1,4 @@
 class EadParser
-
   # @param [Endpoint] endpoint
   def initialize(endpoint)
     @endpoint = endpoint
@@ -83,13 +82,13 @@ class EadParser
   end
 
   # usage: { solr_field_name: value, ... }
+  # @param [String] url url of xml file
+  # @param [String] xml contents of xml file
   # @return [Hash]
-  # @param [EndpointXmlFile] xml_file
-  def parse(url, file)
-    xml = validate_encoding xml_file.read
+  def parse(url, xml)
     doc = Nokogiri::XML.parse xml
     {
-      id: id(xml_file.url),
+      id: id(url),
       endpoint_ts: @endpoint.slug,
       xml_ts: xml,
       ead_id_tsi: ead_id(doc),
@@ -101,14 +100,5 @@ class EadParser
       abstract_scope_contents_tsi: abstract_scope_contents(doc),
       repositories_tsim: repositories(doc)
     }
-  end
-
-  # @param [String] text
-  def validate_encoding(text)
-    unless text.encoding == Encoding::UTF_8
-      return text.encode('utf-8', invalid: :replace, undef: :replace, replace: '_')
-    end
-
-    text
   end
 end
