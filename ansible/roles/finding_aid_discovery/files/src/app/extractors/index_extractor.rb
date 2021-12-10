@@ -1,6 +1,8 @@
 class IndexExtractor
   include Enumerable
 
+  attr_accessor :files
+
   # @param [Endpoint] endpoint
   def initialize(endpoint)
     @files = extract_xml_urls_from endpoint.url

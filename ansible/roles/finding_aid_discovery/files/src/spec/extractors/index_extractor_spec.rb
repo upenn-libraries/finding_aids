@@ -14,8 +14,8 @@ describe IndexExtractor do
       expect(extractor).to respond_to :each, :each_slice, :map, :first
     end
 
-    it 'yields an EndpointXmlFile' do
-      expect(extractor.first).to be_an_instance_of EndpointXmlFile
+    it 'yields an XMLFile' do
+      expect(extractor.first).to be_an_instance_of XMLFile
     end
   end
 
