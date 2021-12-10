@@ -10,9 +10,8 @@ class HarvestingService
   end
 
   def harvest
-    endpoint_files = @endpoint.extractor
     puts "Parsing #{endpoint_files.size} files from #{@endpoint.slug} @ #{@endpoint.url}"
-    endpoint_files.each_slice(FILES_PER_TIME_UNIT) do |files|
+    @endpoint.extractor.each_slice(FILES_PER_TIME_UNIT) do |files|
       files.each do |file|
         retries = 0
         document = parse file

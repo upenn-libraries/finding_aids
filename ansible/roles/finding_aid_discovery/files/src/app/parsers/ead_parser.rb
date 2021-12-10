@@ -85,7 +85,7 @@ class EadParser
   # usage: { solr_field_name: value, ... }
   # @return [Hash]
   # @param [EndpointXmlFile] xml_file
-  def parse(xml_file)
+  def parse(url, file)
     xml = validate_encoding xml_file.read
     doc = Nokogiri::XML.parse xml
     {

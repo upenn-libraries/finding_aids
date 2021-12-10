@@ -16,6 +16,20 @@ class IndexExtractor
     @files.length
   end
 
+  class XMLFile
+    attr_reader :url
+
+    # @param [String] url
+    def initialize(url)
+      @url = url
+    end
+
+    # @return [String]
+    def read
+      URI.parse(@url).read
+    end
+  end
+
   private
 
   # @param [String] url
@@ -35,7 +49,7 @@ class IndexExtractor
       end
     end
     urls.map do |xml_url|
-      EndpointXmlFile.new xml_url
+      XMLFile.new xml_url
     end
   end
 end
