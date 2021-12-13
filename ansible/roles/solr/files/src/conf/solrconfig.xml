@@ -22,6 +22,16 @@
 
   <dataDir>${solr.data.dir:}</dataDir>
 
+  <!-- configure autoCommit behaviors -->
+  <autoCommit>
+    <maxTime>${solr.autoCommit.maxTime:120000}</maxTime>
+    <openSearcher>false</openSearcher>
+  </autoCommit>
+
+  <autoSoftCommit>
+    <maxTime>${solr.autoSoftCommit.maxTime:30000}</maxTime>
+  </autoSoftCommit>
+
   <requestHandler name="search" class="solr.SearchHandler" default="true">
     <!-- default values for query parameters can be specified, these
          will be overridden by parameters in the request
