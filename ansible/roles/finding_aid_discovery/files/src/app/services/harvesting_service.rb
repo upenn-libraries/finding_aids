@@ -1,8 +1,7 @@
 # Hardworking class to do the actual Endpoint extraction and file download, parsing and indexing
 # Usage: HarvestingService.new(endpoint).harvest
 class HarvestingService
-  FILES_PER_TIME_UNIT = 6
-  TIME_UNIT_IN_SECONDS = 15
+  CRAWL_DELAY = 1
 
   # @param [Endpoint] endpoint
   def initialize(endpoint)
@@ -14,17 +13,15 @@ class HarvestingService
   def harvest
     xml_files = @endpoint.extractor.files
     Rails.logger.info "Parsing #{xml_files.size} files from #{@endpoint.slug} @ #{@endpoint.url}"
-
-    xml_files.each_slice(FILES_PER_TIME_UNIT) do |files|
-      files.each do |file|
-        document = parse(file.url, file.read)
-        @documents << document
-      rescue StandardError => e
-        error_from(file, e)
-      else
-        document_added(file, document)
-      end
-      sleep TIME_UNIT_IN_SECONDS
+    xml_files.each do |file|
+      document = parse(file.url, file.read)
+      @documents << document
+    rescue StandardError => e
+      error_from(file, e)
+    else
+      document_added(file, document)
+    ensure
+      sleep CRAWL_DELAY
     end
 
     index_documents
