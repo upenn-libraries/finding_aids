@@ -7,7 +7,7 @@ class Endpoint < ApplicationRecord
   validates :url, presence: true
 
   # maybe?
-  scope :index_type, -> { where('harvest_config @> ?', { type: 'index' }.to_json ) }
+  scope :index_type, -> { where('harvest_config @> ?', { type: 'index' }.to_json) }
 
   # @return [String]
   def url
@@ -39,14 +39,18 @@ class Endpoint < ApplicationRecord
     @extractor ||= extractor_class.new(self)
   end
 
+  # Return Class for extracting XML File URLs from a source
   def extractor_class
     "#{type.titlecase}Extractor".constantize
   end
 
+  # @return [Object]
   def parser
     @parser ||= parser_class.new(self)
   end
 
+  # Return Class for parsing xml_urls for this Endpoint, using
+  # 'parser' value in harvest_config, if present
   def parser_class
     if harvest_config.dig('parser', nil).present?
       "#{harvest_config['parser']}Parser".constantize

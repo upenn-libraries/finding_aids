@@ -3,7 +3,7 @@ require 'rails_helper'
 describe HarvestingService do
   let(:endpoint) { FactoryBot.create :endpoint, :index_harvest }
   context 'error handling' do
-    context 'HTTP 404 error from extractor' do
+    context 'for an HTTP 404 error from extractor' do
       before do
         stub_request(:get, endpoint.url).to_return(status: [404, 'Not Found'])
       end
@@ -14,7 +14,7 @@ describe HarvestingService do
       end
     end
 
-    context 'HTTP 500 error from extractor' do
+    context 'for an HTTP 500 error from extractor' do
       before do
         stub_request(:get, endpoint.url).to_return(status: [500, 'Internal Server Error'])
       end
@@ -27,7 +27,7 @@ describe HarvestingService do
 
     context '#process' do
       context 'error handling' do
-        context 'HTTP error from indexer' do
+        context 'for an HTTP error from indexer' do
           let(:url) { 'https://www.test.com/not_here.xml' }
           let(:xml_file) { IndexExtractor::XMLFile.new(url) }
 

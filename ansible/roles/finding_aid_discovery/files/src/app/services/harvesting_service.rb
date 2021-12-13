@@ -1,3 +1,5 @@
+# Hardworking class to do the actual Endpoint extraction and file download, parsing and indexing
+# Usage: HarvestingService.new(endpoint).harvest
 class HarvestingService
   FILES_PER_TIME_UNIT = 6
   TIME_UNIT_IN_SECONDS = 15
@@ -5,13 +7,13 @@ class HarvestingService
   # @param [Endpoint] endpoint
   def initialize(endpoint)
     @endpoint = endpoint
-    @results = { errors: [], files: [] } # FIXME: It seems like there isn't any data being added to @results[:errors]
+    @file_results = []
     @documents = []
   end
 
   def harvest
     xml_files = @endpoint.extractor.files
-    puts "Parsing #{xml_files.size} files from #{@endpoint.slug} @ #{@endpoint.url}"
+    Rails.logger.info "Parsing #{xml_files.size} files from #{@endpoint.slug} @ #{@endpoint.url}"
 
     xml_files.each_slice(FILES_PER_TIME_UNIT) do |files|
       files.each do |file|
@@ -33,8 +35,10 @@ class HarvestingService
     fatal_error "Problem extracting URLs from Endpoint URL: #{e.message}"
   end
 
-  def parse(url, xml)
-    @endpoint.parser.parse url, xml
+  # @param [String] url
+  # @param [String] xml_content
+  def parse(url, xml_content)
+    @endpoint.parser.parse url, xml_content
   end
 
   def index_documents
@@ -44,29 +48,29 @@ class HarvestingService
   end
 
   def save_outcomes
-    if @results[:errors].any?
-      fatal_error @results[:errors]
-    else
-      @endpoint.last_harvest_results = { date: DateTime.now,
-                                         files: @results[:files] }
-    end
+    @endpoint.last_harvest_results = { date: DateTime.now,
+                                       files: @file_results }
     @endpoint.save
   end
 
   def send_notifications
-    # TODO: send mail to endpoint.tech_contacts
+    # TODO: send mail to @endpoint.tech_contacts
   end
 
   private
 
+  # @param [IndexExtractor::XMLFile] file
+  # @param [Exception] exception
   def error_from(file, exception)
-    @results[:files] << { filename: file.url, status: :failed,
-                          errors: ["Problem downloading file: #{exception.message}"] }
+    @file_results << { filename: file.url, status: :failed,
+                       errors: ["Problem downloading file: #{exception.message}"] }
     Rails.logger.error "Problem parsing #{file.url}: #{exception.message}"
   end
 
+  # @param [IndexExtractor::XMLFile] file
+  # @param [Hash] document
   def document_added(file, document)
-    @results[:files] << { filename: file.url, status: :ok, id: document[:id] }
+    @file_results << { filename: file.url, status: :ok, id: document[:id] }
     Rails.logger.info "Parsed #{file.url} OK"
   end
 

@@ -1,3 +1,6 @@
+# Parser for an Endpoint
+# Takes a URL for an XML file and maps it to a Hash for indexing to Solr
+# e.g., EadParser.new(endpoint_1).process(url_1)
 class EadParser
   # @param [Endpoint] endpoint
   def initialize(endpoint)

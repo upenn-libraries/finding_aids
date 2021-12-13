@@ -7,6 +7,21 @@ namespace :tools do
     puts status.join
   end
 
+  desc 'Harvest all Endpoints'
+  task harvest_all: :environment do
+    puts "Harvesting from #{Endpoint.all.count} endpoints"
+    Endpoint.all.each do |ep|
+      if ep.url.include? '127.0.0.1'
+        # skip localhost endpoints
+        puts "Skipping #{ep.slug} because it's @ #{ep.url}"
+      end
+
+      puts "Harvesting #{ep.slug}"
+      HarvestingService.new(ep).harvest
+    end
+    puts 'All done!'
+  end
+
   desc 'Sync index type endpoints'
   task sync_index_endpoints: :environment do
     # Read CSV data
