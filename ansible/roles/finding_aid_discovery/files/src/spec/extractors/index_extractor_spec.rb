@@ -16,6 +16,10 @@ describe IndexExtractor do
       expect(files).to respond_to :each, :each_slice, :map, :first
     end
 
+    it 'returns accurate count from test file' do
+      expect(files.count).to eq 5
+    end
+
     it 'yields an XMLFile' do
       expect(files.first).to be_an_instance_of IndexExtractor::XMLFile
     end
