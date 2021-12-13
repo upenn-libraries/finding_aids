@@ -94,7 +94,7 @@ rspec_app_test:
   extends:
     - .rspec
   script:
-    - rspec spec
+    - rspec -I ansible/roles/finding_aid_discovery/files/src/ ansible/roles/finding_aid_discovery/files/src/spec/
   allow_failure: true
   variables:
     RAILS_ENV: "test"
