@@ -14,6 +14,15 @@
     <updateLog>
       <str name="dir">${solr.core0.data.dir:}</str>
     </updateLog>
+    <!-- configure autoCommit behaviors -->
+    <autoCommit>
+      <maxTime>${solr.autoCommit.maxTime:120000}</maxTime>
+      <openSearcher>false</openSearcher>
+    </autoCommit>
+
+    <autoSoftCommit>
+      <maxTime>${solr.autoSoftCommit.maxTime:30000}</maxTime>
+    </autoSoftCommit>
   </updateHandler>
 
   <!-- solr lib dirs -->
@@ -21,16 +30,6 @@
   <lib dir="${solr.install.dir:../../../..}/contrib/analysis-extras/lucene-libs" />
 
   <dataDir>${solr.data.dir:}</dataDir>
-
-  <!-- configure autoCommit behaviors -->
-  <autoCommit>
-    <maxTime>${solr.autoCommit.maxTime:120000}</maxTime>
-    <openSearcher>false</openSearcher>
-  </autoCommit>
-
-  <autoSoftCommit>
-    <maxTime>${solr.autoSoftCommit.maxTime:30000}</maxTime>
-  </autoSoftCommit>
 
   <requestHandler name="search" class="solr.SearchHandler" default="true">
     <!-- default values for query parameters can be specified, these
