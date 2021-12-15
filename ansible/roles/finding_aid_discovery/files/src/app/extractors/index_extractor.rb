@@ -72,7 +72,8 @@ class IndexExtractor
     if uri.is_a? URI::HTTP
       uri
     else
-      URI.join(@endpoint.url, val)
+      normalized_endpoint_url = @endpoint.url.ends_with?('/') ? @endpoint.url : "#{@endpoint.url}/"
+      URI.join(normalized_endpoint_url, val)
     end
   end
 end
