@@ -12,13 +12,30 @@ FactoryBot.define do
 
     trait :failed_harvest do
       last_harvest_results { {
-        status: Endpoint::FAILURE_STATUS
+        date: 'some date',
+        errors: ['Problem extracting xml ead links from endpoint'],
+        files: []
+      } }
+    end
+
+    trait :harvest_with_file_problem do
+      last_harvest_results { {
+        date: 'some date',
+        errors: [],
+        files: [
+          { filename: '', id: 'test-ok-id', status: :ok },
+          { filename: '', status: :failed, errors: ['Problem downloading XML file'] }
+        ]
       } }
     end
 
     trait :successful_harvest do
       last_harvest_results { {
-        status: Endpoint::SUCCESS_STATUS
+        date: 'some date',
+        errors: [],
+        files: [
+          { filename: '', status: :ok, id: 'test-ok-id' },
+        ]
       } }
     end
   end

@@ -7,14 +7,19 @@ ruby '3.0.2'
 
 gem 'blacklight', '~> 7'
 gem 'bootsnap', '>= 1.4.4', require: false
+gem 'bootstrap', '~> 4.0'
 gem 'honeybadger'
 gem 'jbuilder', '~> 2.7'
+gem 'jquery-rails'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
+gem 'retryable'
+gem 'rsolr', '>= 1.0', '< 3'
 gem 'rubocop', require: false
 gem 'sass-rails', '>= 6'
 gem 'turbolinks', '~> 5'
+gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'webpacker', '~> 5.0'
 
@@ -35,10 +40,6 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'solr_wrapper', '>= 0.3'
 end
-gem 'rsolr', '>= 1.0', '< 3'
-gem 'bootstrap', '~> 4.0'
-gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
-gem 'jquery-rails'
 
 group :test do
   gem 'capybara'

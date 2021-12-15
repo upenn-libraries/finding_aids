@@ -97,6 +97,8 @@ rspec_app_test:
   script:
     - rspec -I ansible/roles/finding_aid_discovery/files/src/ ansible/roles/finding_aid_discovery/files/src/spec/
   allow_failure: true
+  variables:
+    RAILS_ENV: "test"
   rules:
     - if: $DISABLE_RSPEC_TEST == "true"
       when: never

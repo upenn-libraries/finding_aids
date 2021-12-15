@@ -1,16 +1,13 @@
 # Represent a partner's endpoint from which we will harvest records
 class Endpoint < ApplicationRecord
   TYPES = %w[index]
-  FAILURE_STATUS = 'failed'
-  SUCCESS_STATUS = 'success'
 
   validates :slug, presence: true, uniqueness: true
   validates :type, presence: true, inclusion: TYPES
   validates :url, presence: true
 
   # maybe?
-  scope :index_type, -> { where('harvest_config @> ?', { type: 'index' }.to_json ) }
-  scope :last_failed, -> { where('last_harvest_results @> ?', { status: FAILURE_STATUS }.to_json) }
+  scope :index_type, -> { where('harvest_config @> ?', { type: 'index' }.to_json) }
 
   # @return [String]
   def url
@@ -22,18 +19,43 @@ class Endpoint < ApplicationRecord
     harvest_config.dig 'type'
   end
 
-  # @return [String]
-  def last_harvest_status
-    last_harvest_results.dig 'status'
+  # @return [Array]
+  def last_harvest_errors
+    last_harvest_results.dig 'errors'
   end
 
   # @return [TrueClass, FalseClass]
   def last_harvest_successful?
-    last_harvest_status == SUCCESS_STATUS
+    last_harvest_errors.empty?
   end
 
   # @return [TrueClass, FalseClass]
   def last_harvest_failed?
-    last_harvest_status == FAILURE_STATUS
+    last_harvest_errors.any?
+  end
+
+  # @return [Object]
+  def extractor
+    @extractor ||= extractor_class.new(self)
+  end
+
+  # Return Class for extracting XML File URLs from a source
+  def extractor_class
+    "#{type.titlecase}Extractor".constantize
+  end
+
+  # @return [Object]
+  def parser
+    @parser ||= parser_class.new(self)
+  end
+
+  # Return Class for parsing xml_urls for this Endpoint, using
+  # 'parser' value in harvest_config, if present
+  def parser_class
+    if harvest_config.dig('parser', nil).present?
+      "#{harvest_config['parser']}Parser".constantize
+    else
+      EadParser
+    end
   end
 end
