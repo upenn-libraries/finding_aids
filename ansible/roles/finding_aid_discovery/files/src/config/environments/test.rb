@@ -12,7 +12,7 @@ Rails.application.configure do
   # Disable Rails' HostAuthorization middleware by clearing out
   # allowed host values - do not use other environments
   # Alternatively, allow 'www.example.com' here
-  config.hosts.clear
+  # config.hosts.clear
 
   config.cache_classes = false
   config.action_view.cache_template_loading = true
