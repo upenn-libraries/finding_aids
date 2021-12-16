@@ -11,27 +11,32 @@ class Endpoint < ApplicationRecord
 
   # @return [String]
   def url
-    harvest_config.dig 'url'
+    harvest_config['url']
   end
 
   # @return [String]
   def type
-    harvest_config.dig 'type'
+    harvest_config['type']
+  end
+
+  # @return [Array]
+  def last_harvest_date
+    last_harvest_results['date']
   end
 
   # @return [Array]
   def last_harvest_errors
-    last_harvest_results.dig 'errors'
+    last_harvest_results['errors']
   end
 
   # @return [TrueClass, FalseClass]
   def last_harvest_successful?
-    last_harvest_errors.empty?
+    last_harvest_errors&.empty?
   end
 
   # @return [TrueClass, FalseClass]
   def last_harvest_failed?
-    last_harvest_errors.any?
+    last_harvest_errors&.any?
   end
 
   # @return [Object]

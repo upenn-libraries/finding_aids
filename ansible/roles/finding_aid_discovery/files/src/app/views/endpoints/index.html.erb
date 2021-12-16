@@ -1,0 +1,35 @@
+<div class="container">
+  <h1>
+    PACSCL Harvesting Status
+  </h1>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Last Harvest</th>
+      <th scope="col">Records Harvested</th>
+      <th scope="col">Errors</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @endpoints.each do |ep| %>
+      <tr class="<%= ep.last_harvest_failed? ? 'table-danger' : '' %>">
+        <th scope="row">
+          <%= link_to ep.slug, ep.url %>
+        </th>
+        <td>
+          <%= time_since_last_harvest ep.last_harvest_date %>
+        </td>
+        <td>
+          <%# TODO: link to faceted results set? %>
+          <%= ep.last_harvest_results['files']&.length %>
+        </td>
+        <td>
+          <%# TODO: how to show per-file problems? %>
+          <%= ep.last_harvest_errors.try :join, ', ' %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
