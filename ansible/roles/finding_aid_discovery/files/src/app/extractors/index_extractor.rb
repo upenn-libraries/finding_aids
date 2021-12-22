@@ -22,19 +22,10 @@ class IndexExtractor
 
     # @return [String]
     def read
-      validate_encoding(fetch_xml)
+      validate_encoding(DownloadService.fetch(url))
     end
 
     private
-
-    # Retrieve XML and retry if necessary.
-    #
-    # @return [String] xml string
-    def fetch_xml
-      Retryable.retryable(tries: 3, sleep: 6, on: OpenURI::HTTPError) do
-        DownloadAgent.read(url)
-      end
-    end
 
     # Convert string encoding to UTF-8 if encoded differently.
     #
@@ -56,7 +47,7 @@ class IndexExtractor
     # what if this redirects? we should log a message or raise an alert if this redirs and we join with the
     # original URL in #note_to_url the new derived URLs might not redirect to the XML files as expected
     # TODO: raise HB notice on redirect? auto-update Endpoint.url? save redirected URL for use in #node_to_uri?
-    doc = Nokogiri::HTML.parse(DownloadAgent.read url)
+    doc = Nokogiri::HTML.parse(DownloadService.fetch(url))
 
     # Extract list of XML URLs
     doc.xpath('//a/@href')
