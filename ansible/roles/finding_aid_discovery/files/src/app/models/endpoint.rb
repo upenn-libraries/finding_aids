@@ -39,6 +39,12 @@ class Endpoint < ApplicationRecord
     end
   end
 
+  def last_harvest_success_files
+    @last_harvest_success_files ||= last_harvest_files.select do |file|
+      file['status'] == 'ok'
+    end
+  end
+
   # @return [TrueClass, FalseClass]
   def last_harvest_successful?
     last_harvest_errors&.empty?

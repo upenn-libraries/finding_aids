@@ -61,12 +61,22 @@
     Some problems harvesting individual files
   </div>
   <dl>
-    File Status
+    Problem Files
   </dl>
   <dd>
     <ol>
-      <% @endpoint.last_harvest_files.each do |file| %>
+      <% @endpoint.last_harvest_error_files.each do |file| %>
       <li><%= "#{file['filename']}: #{file['errors'].join(', ')}" %></li>
+      <% end %>
+    </ol>
+  </dd>
+  <dl>
+    Successful Files
+  </dl>
+  <dd>
+    <ol>
+      <% @endpoint.last_harvest_success_files.each do |file| %>
+      <li><%= link_to file['filename'] %></li>
       <% end %>
     </ol>
   </dd>
@@ -80,7 +90,7 @@
   <dd>
     <ol>
       <% @endpoint.last_harvest_files.each do |file| %>
-        <li><%= link_to file['filename'] %></li>
+      <li><%= link_to file['filename'] %></li>
       <% end %>
     </ol>
   </dd>
