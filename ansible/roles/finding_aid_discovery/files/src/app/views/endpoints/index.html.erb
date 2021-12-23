@@ -29,7 +29,7 @@
           <% if ep.last_harvest_failed? %>
             <%= ep.last_harvest_errors.try :join, ', ' %>
           <% else %>
-            <%= "" %>
+            <%= link_to "#{ep.last_harvest_success_files.count} file issues", endpoint_path(ep.slug.downcase) %>
           <% end %>
         </td>
       </tr>
