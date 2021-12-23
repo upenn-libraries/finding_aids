@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   end
 
   scope :admin do
-    resources :endpoints, only: [:index]
+    resources :endpoints, only: %i[index show]
   end
 
   root to: 'catalog#index'

@@ -15,7 +15,7 @@
     <% @endpoints.each do |ep| %>
       <tr class="<%= ep.last_harvest_failed? ? 'table-danger' : '' %>">
         <th scope="row">
-          <%= link_to ep.slug, ep.url %>
+          <%= link_to ep.slug, endpoint_path(ep.slug.downcase) %>
         </th>
         <td>
           <%= time_since_last_harvest ep.last_harvest_date %>
@@ -26,7 +26,11 @@
         </td>
         <td>
           <%# TODO: how to show per-file problems? %>
-          <%= ep.last_harvest_errors.try :join, ', ' %>
+          <% if ep.last_harvest_failed? %>
+            <%= ep.last_harvest_errors.try :join, ', ' %>
+          <% else %>
+            <%= "" %>
+          <% end %>
         </td>
       </tr>
     <% end %>
