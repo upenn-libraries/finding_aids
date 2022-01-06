@@ -25,7 +25,7 @@ class HarvestingService
       sleep CRAWL_DELAY
     end
 
-    # process_deletes(harvested_doc_ids: @documents.collect { |doc| doc[:id] })
+    process_deletes(harvested_doc_ids: @documents.collect { |doc| doc[:id] })
     index_documents
     save_outcomes
     send_notifications
