@@ -24,32 +24,52 @@ class Endpoint < ApplicationRecord
     last_harvest_results['date']
   end
 
+  # Return errors that occurred when attempting to load and parse the Endpoint's URL
   # @return [Array]
   def last_harvest_errors
     last_harvest_results['errors']
   end
 
+  # Return file information for those files referenced, downloaded and parsed from the Endpoint's URL
+  # @return [Array]
   def last_harvest_files
     last_harvest_results['files']
   end
 
-  def last_harvest_error_files
-    @last_harvest_error_files ||= last_harvest_files.select do |file|
-      file['status'] == 'failed'
-    end
+  # Return Array of file info for files unable to be harvested
+  # @return [Array]
+  def last_harvest_problem_files
+    @last_harvest_problem_files ||= Array.wrap(
+      last_harvest_files&.select do |file|
+        file['status'] == 'failed'
+      end
+    )
   end
 
+  # Return Array of file info for files able to be harvested
+  # @return [Array]
   def last_harvest_success_files
-    @last_harvest_success_files ||= last_harvest_files.select do |file|
-      file['status'] == 'ok'
-    end
+    @last_harvest_success_files ||= Array.wrap(
+      last_harvest_files&.select do |file|
+        file['status'] == 'ok'
+      end
+    )
   end
 
+  # Return boolean for the success of the last harvest - success being defined
+  # by the absence of any errors in parsing the endpoint URL
   # @return [TrueClass, FalseClass]
   def last_harvest_successful?
     last_harvest_errors&.empty?
   end
 
+  # Did the last harvest run into any issues parsing any individual files?
+  # @return [TrueClass, FalseClass]
+  def last_harvest_warnings?
+    last_harvest_problem_files.any?
+  end
+
+  # Did the last harvest fail? If so, an error will be present in the top-level of the results hash
   # @return [TrueClass, FalseClass]
   def last_harvest_failed?
     last_harvest_errors&.any?

@@ -56,7 +56,7 @@
       </ul>
     </dd>
   </dl>
-  <% elsif @endpoint.last_harvest_error_files.any? %>
+  <% elsif @endpoint.last_harvest_warnings? %>
   <div class="alert alert-warning">
     Some problems harvesting individual files
   </div>
@@ -65,7 +65,7 @@
   </dl>
   <dd>
     <ol>
-      <% @endpoint.last_harvest_error_files.each do |file| %>
+      <% @endpoint.last_harvest_problem_files.each do |file| %>
       <li><%= "#{file['filename']}: #{file['errors'].join(', ')}" %></li>
       <% end %>
     </ol>
