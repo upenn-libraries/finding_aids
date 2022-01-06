@@ -2,6 +2,20 @@ require 'rails_helper'
 
 describe HarvestingService do
   let(:endpoint) { FactoryBot.create :endpoint, :index_harvest }
+  context '#process_deletes' do
+    let(:solr_service) do
+      instance_double 'SolrService'
+    end
+    let(:harvesting_service) { described_class.new(endpoint, solr_service) }
+    before do
+      allow(solr_service).to receive(:find_ids_by_endpoint).with(endpoint).and_return([1, 3])
+      allow(solr_service).to receive(:delete_by_ids)
+    end
+    it 'sends correct ids for records to delete to the solr service' do
+      expect(solr_service).to receive(:delete_by_ids).with([3])
+      harvesting_service.process_deletes(harvested_doc_ids: [1, 2])
+    end
+  end
   context 'error handling' do
     context 'for an HTTP 404 error from extractor' do
       before do

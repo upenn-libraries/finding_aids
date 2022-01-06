@@ -4,10 +4,11 @@ class HarvestingService
   CRAWL_DELAY = 1
 
   # @param [Endpoint] endpoint
-  def initialize(endpoint)
+  def initialize(endpoint, solr_service = SolrService.new)
     @endpoint = endpoint
     @file_results = []
     @documents = []
+    @solr = solr_service
   end
 
   def harvest
@@ -24,8 +25,8 @@ class HarvestingService
       sleep CRAWL_DELAY
     end
 
+    # process_deletes(harvested_doc_ids: @documents.collect { |doc| doc[:id] })
     index_documents
-    # TODO: process_deletes
     save_outcomes
     send_notifications
   rescue OpenURI::HTTPError => e
@@ -36,6 +37,14 @@ class HarvestingService
   # @param [String] xml_content
   def parse(url, xml_content)
     @endpoint.parser.parse url, xml_content
+  end
+
+  # @param [Array] harvested_doc_ids
+  def process_deletes(harvested_doc_ids:)
+    existing_record_ids = @solr.find_ids_by_endpoint(@endpoint)
+    removed_ids = existing_record_ids - harvested_doc_ids
+    Rails.logger.info "Deleting records for #{@endpoint.slug} not present in latest harvest: #{removed_ids.join(', ')}"
+    @solr.delete_by_ids removed_ids
   end
 
   def index_documents

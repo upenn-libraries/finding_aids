@@ -92,7 +92,7 @@ class EadParser
     doc = Nokogiri::XML.parse xml
     {
       id: id(url),
-      endpoint_ts: @endpoint.slug,
+      endpoint_tsi: @endpoint.slug,
       xml_ts: xml,
       ead_id_tsi: ead_id(doc),
       unit_id_tsi: unit_id(doc),

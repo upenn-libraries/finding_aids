@@ -1,7 +1,7 @@
 class SolrService
   attr_reader :solr
 
-  ENDPOINT_SLUG_FIELD = 'endpoint_ts'
+  ENDPOINT_SLUG_FIELD = 'endpoint_tsi'
 
   def initialize
     @solr = RSolr.connect url: ENV['SOLR_URL']
@@ -27,7 +27,10 @@ class SolrService
   end
 
   # @param [Endpoint] endpoint
+  # @return [Array<String>]
   def find_ids_by_endpoint(endpoint)
-    solr.get 'select', params: { fq: "#{ENDPOINT_SLUG_FIELD}:#{endpoint.slug}" }
+    # TODO: is fl working here?
+    resp = solr.get 'select', params: { fq: "#{ENDPOINT_SLUG_FIELD}:#{endpoint.slug}", fl: 'id' }
+    resp.dig('response', 'docs')&.collect { |d| d['id'] }
   end
 end
