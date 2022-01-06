@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
 
   mount Blacklight::Engine => '/'
-  root to: "catalog#index"
   concern :searchable, Blacklight::Routes::Searchable.new
 
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
@@ -20,5 +19,10 @@ Rails.application.routes.draw do
       delete 'clear'
     end
   end
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  scope :admin do
+    resources :endpoints, only: %i[index show]
+  end
+
+  root to: 'catalog#index'
 end
