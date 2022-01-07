@@ -1,7 +1,7 @@
 GIT
   remote: https://gitlab.library.upenn.edu/cgalarza/upennlib-rubocop
-  revision: 01242c0757d75dd48424b8e700b4193ee7d17460
-  branch: main
+  revision: 9f5d6156cf2a652d10324b22218b28a1cd22eb0d
+  tag: v1.0.0
   specs:
     upennlib-rubocop (1.0.0)
       rubocop (~> 1.24)
@@ -361,7 +361,6 @@ DEPENDENCIES
   retryable
   rsolr (>= 1.0, < 3)
   rspec-rails (~> 5.0.0)
-  rubocop
   sass-rails (>= 6)
   spring
   turbolinks (~> 5)
