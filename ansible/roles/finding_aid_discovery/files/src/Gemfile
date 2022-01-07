@@ -17,6 +17,8 @@ gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
 gem 'retryable'
 gem 'rsolr', '>= 1.0', '< 3'
 gem 'rubocop', require: false
+gem 'upennlib-rubocop', git: 'https://gitlab.library.upenn.edu/cgalarza/upennlib-rubocop', branch: :main, require: false
+
 gem 'sass-rails', '>= 6'
 gem 'turbolinks', '~> 5'
 gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
