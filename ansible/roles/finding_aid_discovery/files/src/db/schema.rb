@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_29_145755) do
+ActiveRecord::Schema.define(version: 2021_12_16_210700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(version: 2021_11_29_145755) do
     t.string "slug"
     t.string "public_contacts", array: true
     t.string "tech_contacts", array: true
-    t.jsonb "harvest_config", default: "{}", null: false
-    t.jsonb "last_harvest_results", default: "{}"
+    t.jsonb "harvest_config", default: {}, null: false
+    t.jsonb "last_harvest_results", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
