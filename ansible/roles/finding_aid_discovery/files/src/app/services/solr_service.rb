@@ -29,7 +29,6 @@ class SolrService
   # @param [Endpoint] endpoint
   # @return [Array<String>]
   def find_ids_by_endpoint(endpoint)
-    # TODO: is fl working here?
     resp = solr.get 'select', params: { fq: "#{ENDPOINT_SLUG_FIELD}:#{endpoint.slug}", fl: 'id' }
     resp.dig('response', 'docs')&.collect { |d| d['id'] }
   end

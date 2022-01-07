@@ -38,5 +38,17 @@ FactoryBot.define do
         ]
       } }
     end
+
+    trait :harvest_with_deletions do
+      last_harvest_results { {
+        date: 'some date',
+        errors: [],
+        files: [
+          { filename: '', id: 'test-ok-id', status: :ok },
+          { id: 'removed-record-1', status: :removed },
+          { id: 'removed-record-2', status: :removed }
+        ]
+      } }
+    end
   end
 end
