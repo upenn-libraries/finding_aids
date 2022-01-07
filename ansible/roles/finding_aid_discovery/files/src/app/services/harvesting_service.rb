@@ -43,7 +43,6 @@ class HarvestingService
   def process_removals(harvested_doc_ids:)
     existing_record_ids = @solr.find_ids_by_endpoint(@endpoint)
     removed_ids = existing_record_ids - harvested_doc_ids
-    Rails.logger.info "Deleting records for #{@endpoint.slug} not present in latest harvest: #{removed_ids.join(', ')}"
     @solr.delete_by_ids removed_ids
     log_documents_removed(removed_ids)
   end
@@ -83,6 +82,7 @@ class HarvestingService
 
   # @param [Array<String>] ids
   def log_documents_removed(ids)
+    Rails.logger.info "Deleting records for #{@endpoint.slug} not present in latest harvest: #{ids.join(', ')}"
     ids.each do |id|
       @file_results << { id: id, status: :removed }
     end
