@@ -33,6 +33,7 @@ COPY Gemfile* ./
 # Install build packages
 RUN apk add --no-cache --virtual build-dependencies \
         build-base \
+        git  \
         postgresql-dev && \
     bundle config path ${PROJECT_ROOT}/${BUNDLE_HOME} && \
     set -eux; \
