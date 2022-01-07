@@ -26,6 +26,9 @@ class SolrService
     solr.delete_by_query '*:*'
   end
 
+  # NOTE: autocommit behavior should be relied upon for development/production
+  #       solr behavior. this commit method should only be used with tests, to
+  #       avoid waiting for solr's autocommit
   def commit
     solr.commit
   end

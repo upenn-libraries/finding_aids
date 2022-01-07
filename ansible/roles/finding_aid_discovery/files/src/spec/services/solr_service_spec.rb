@@ -21,8 +21,8 @@ describe SolrService do
     end
     it "finds only the ID for an specified endpoint's records" do
       ids = solr.find_ids_by_endpoint endpoint
-      expect(ids).to include *endpoint_sample_documents.collect { |d| d[:id] }
-      expect(ids).not_to include *sample_documents('dont-return-these').collect { |d| d[:id] }
+      expect(ids).to include(*endpoint_sample_documents.collect { |d| d[:id] })
+      expect(ids).not_to include(*sample_documents('dont-return-these').collect { |d| d[:id] })
     end
   end
 end
