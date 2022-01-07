@@ -53,7 +53,9 @@ describe 'Endpoint dashboard' do
       before { visit endpoint_path(endpoint_removals.slug) }
       it 'lists removed ids' do
         endpoint_removals.last_harvest_removed_ids.each do |removed_id|
-          expect(page).to have_text removed_id
+          within '#removed-records-list' do
+            expect(page).to have_text removed_id
+          end
         end
       end
     end

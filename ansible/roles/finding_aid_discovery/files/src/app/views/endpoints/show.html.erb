@@ -97,7 +97,7 @@
     <% if @endpoint.last_harvest_removals? %>
     <dl>Removed Records</dl>
     <dd>
-      <ol>
+      <ol id="removed-records-list">
         <% @endpoint.last_harvest_removed_ids.each do |removed_id| %>
         <li><%= removed_id %></li>
         <% end %>
