@@ -26,6 +26,10 @@ class SolrService
     solr.delete_by_query '*:*'
   end
 
+  def commit
+    solr.commit
+  end
+
   # @param [Endpoint] endpoint
   # @return [Array<String>]
   def find_ids_by_endpoint(endpoint)
