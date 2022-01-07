@@ -54,7 +54,7 @@ class HarvestingService
   end
 
   def save_outcomes
-    @endpoint.last_harvest_results = { date: DateTime.now,
+    @endpoint.last_harvest_results = { date: DateTime.current,
                                        files: @file_results }
     @endpoint.save
   end
@@ -92,7 +92,7 @@ class HarvestingService
   def fatal_error(errors)
     errors = Array.wrap(errors)
     Rails.logger.error "Fatal error during harvesting: #{errors.join(', ')}"
-    @endpoint.last_harvest_results = { date: DateTime.now,
+    @endpoint.last_harvest_results = { date: DateTime.current,
                                        files: [],
                                        errors: errors }
   end
