@@ -3,13 +3,16 @@ require 'rails_helper'
 describe SolrService do
   let(:solr) { SolrService.new }
 
-  def sample_documents(endpoint_slug)
-    [{ id: Faker::File.unique.file_name, endpoint_tsi: endpoint_slug },
-     { id: Faker::File.unique.file_name, endpoint_tsi: endpoint_slug }]
+  def sample_documents(endpoint_slug, count = 2)
+    (1..count).map do |_i|
+      { id: Faker::File.unique.file_name,
+        "#{SolrService::ENDPOINT_SLUG_FIELD}": endpoint_slug }
+    end
   end
 
   before do
     solr.delete_all
+    solr.commit
   end
   describe '#find_ids_by_endpoint' do
     let(:endpoint) { FactoryBot.build(:endpoint, :index_harvest) }
@@ -24,5 +27,9 @@ describe SolrService do
       expect(ids).to include(*endpoint_sample_documents.collect { |d| d[:id] })
       expect(ids).not_to include(*sample_documents('dont-return-these').collect { |d| d[:id] })
     end
+  end
+  after do
+    solr.delete_all
+    solr.commit
   end
 end
