@@ -15,14 +15,17 @@
     <% @endpoints.each do |ep| %>
       <tr class="<%= ep.last_harvest_failed? ? 'table-danger' : '' %>">
         <th scope="row">
-          <%= link_to ep.slug, endpoint_path(ep.slug.downcase) %>
+          <%= link_to ep.slug, endpoint_path(ep.slug) %>
         </th>
         <td>
           <%= time_since_last_harvest ep.last_harvest_date %>
         </td>
         <td>
           <%# TODO: link to faceted results set? %>
-          <%= ep.last_harvest_results['files']&.length %>
+          <%= ep.last_harvest_success_files&.length %>
+          <% if ep.last_harvest_removals? %>
+            <%= "(removed #{pluralize(ep.last_harvest_removed_ids&.count, 'record')})" %>
+          <% end %>
         </td>
         <td>
           <% if ep.last_harvest_failed? %>

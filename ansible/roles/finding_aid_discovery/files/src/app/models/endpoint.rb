@@ -56,6 +56,16 @@ class Endpoint < ApplicationRecord
     )
   end
 
+  # Return Array of ids for records removed in the last harvest
+  # @return [Array]
+  def last_harvest_removed_ids
+    @last_harvest_removed_ids = Array.wrap(
+      last_harvest_files&.select do |file|
+        file['status'] == 'removed'
+      end
+    )
+  end
+
   # Return boolean for the success of the last harvest - success being defined
   # by the absence of any errors in parsing the endpoint URL
   # @return [TrueClass, FalseClass]
@@ -73,6 +83,12 @@ class Endpoint < ApplicationRecord
   # @return [TrueClass, FalseClass]
   def last_harvest_failed?
     last_harvest_errors&.any?
+  end
+
+  # Did the last harvest include any record removals?
+  # @return [TrueClass, FalseClass]
+  def last_harvest_removals?
+    last_harvest_removed_ids&.any?
   end
 
   # @return [Object]

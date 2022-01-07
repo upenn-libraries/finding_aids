@@ -85,7 +85,7 @@
     All files harvested successfully
   </div>
   <dl>
-    File Status
+    Files
   </dl>
   <dd>
     <ol>
@@ -94,5 +94,15 @@
       <% end %>
     </ol>
   </dd>
+    <% if @endpoint.last_harvest_removals? %>
+    <dl>Removed Records</dl>
+    <dd>
+      <ol>
+        <% @endpoint.last_harvest_removed_ids.each do |removed_id| %>
+        <li><%= removed_id %></li>
+        <% end %>
+      </ol>
+    </dd>
+    <% end %>
   <% end %>
 </div>

@@ -11,9 +11,9 @@ describe HarvestingService do
       allow(solr_service).to receive(:find_ids_by_endpoint).with(endpoint).and_return([1, 3])
       allow(solr_service).to receive(:delete_by_ids)
     end
-    it 'sends correct ids for records to delete to the solr service' do
+    it 'sends correct ids for records to remove to the solr service' do
       expect(solr_service).to receive(:delete_by_ids).with([3])
-      harvesting_service.process_deletes(harvested_doc_ids: [1, 2])
+      harvesting_service.process_removals(harvested_doc_ids: [1, 2])
     end
   end
   context 'error handling' do

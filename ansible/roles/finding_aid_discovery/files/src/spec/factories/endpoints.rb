@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :endpoint do
-    slug { 'test' }
+    slug { Faker::Internet.unique.slug }
     public_contacts { ['public@test.org'] }
     tech_contacts { ['tech@test.org'] }
 
@@ -12,7 +12,7 @@ FactoryBot.define do
 
     trait :failed_harvest do
       last_harvest_results { {
-        date: 'some date',
+        date: DateTime.now,
         errors: ['Problem extracting xml ead links from endpoint'],
         files: []
       } }
@@ -20,7 +20,7 @@ FactoryBot.define do
 
     trait :harvest_with_file_problem do
       last_harvest_results { {
-        date: 'some date',
+        date: DateTime.now,
         errors: [],
         files: [
           { filename: '', id: 'test-ok-id', status: :ok },
@@ -31,7 +31,7 @@ FactoryBot.define do
 
     trait :successful_harvest do
       last_harvest_results { {
-        date: 'some date',
+        date: DateTime.now,
         errors: [],
         files: [
           { filename: '', status: :ok, id: 'test-ok-id' },
@@ -39,9 +39,9 @@ FactoryBot.define do
       } }
     end
 
-    trait :harvest_with_deletions do
+    trait :harvest_with_removals do
       last_harvest_results { {
-        date: 'some date',
+        date: DateTime.now,
         errors: [],
         files: [
           { filename: '', id: 'test-ok-id', status: :ok },
