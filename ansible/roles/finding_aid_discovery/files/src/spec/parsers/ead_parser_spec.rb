@@ -16,8 +16,8 @@ describe EadParser do
           expect(hash).to be_a_kind_of Hash
         end
 
-        it 'has expected value for id' do
-          expect(hash[:id]).to eq 'test_ead1'
+        it 'has expected value for the id suffix' do
+          expect(hash[:id]).to end_with '_ead1'
         end
 
         it 'has expected value for title_tsim' do

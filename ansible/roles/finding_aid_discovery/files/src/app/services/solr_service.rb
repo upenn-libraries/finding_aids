@@ -1,7 +1,7 @@
 class SolrService
   attr_reader :solr
 
-  ENDPOINT_SLUG_FIELD = 'endpoint_ts'
+  ENDPOINT_SLUG_FIELD = 'endpoint_tsi'
 
   def initialize
     @solr = RSolr.connect url: ENV['SOLR_URL']
@@ -26,8 +26,17 @@ class SolrService
     solr.delete_by_query '*:*'
   end
 
+  # NOTE: autocommit behavior should be relied upon for development/production
+  #       solr behavior. this commit method should only be used with tests, to
+  #       avoid waiting for solr's autocommit
+  def commit
+    solr.commit
+  end
+
   # @param [Endpoint] endpoint
+  # @return [Array<String>]
   def find_ids_by_endpoint(endpoint)
-    solr.get 'select', params: { fq: "#{ENDPOINT_SLUG_FIELD}:#{endpoint.slug}" }
+    resp = solr.get 'select', params: { fq: "#{ENDPOINT_SLUG_FIELD}:#{endpoint.slug}", fl: 'id' }
+    resp.dig('response', 'docs')&.collect { |d| d['id'] }
   end
 end
