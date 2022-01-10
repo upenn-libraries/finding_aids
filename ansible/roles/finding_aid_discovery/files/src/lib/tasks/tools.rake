@@ -7,19 +7,26 @@ namespace :tools do
     puts status.join
   end
 
-  desc 'Harvest all Endpoints'
-  task harvest_all: :environment do
-    puts "Harvesting from #{Endpoint.all.count} endpoints"
-    Endpoint.all.each do |ep|
+  desc 'Harvest selected endpoints'
+  task harvest_from: :environment do
+    abort(Rainbow('Incorrect arguments. Pass endpoints=first,second,third').red) if ENV['endpoints'].blank?
+
+    slugs = ENV['endpoints'].split(',')
+    endpoints = Endpoint.where(slug: slugs)
+
+    puts Rainbow("Harvesting from #{endpoints.count} endpoints").green
+
+    endpoints.each do |ep|
       if ep.url.include? '127.0.0.1'
         # skip localhost endpoints
-        puts "Skipping #{ep.slug} because it's @ #{ep.url}"
+        puts Rainbow("Skipping #{ep.slug} because it's @ #{ep.url}").yellow
+        next
       end
 
       puts "Harvesting #{ep.slug}"
       HarvestingService.new(ep).harvest
     end
-    puts 'All done!'
+    puts Rainbow('All done!').green
   end
 
   desc 'Sync index type endpoints'
