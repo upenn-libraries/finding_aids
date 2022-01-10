@@ -14,10 +14,18 @@
 bundle exec rake tools:index_sample_data
 ```
 
-### Actual harvesting endpoints
+### Harvesting sample endpoints
 
-Endpoint information is stored as CSV in `data/index_endpoints.csv`.
+Endpoint information is stored as CSV in `data/index_endpoints.csv`. To harvest some of the endpoints in a local development environment:
+
+1. Enter the Vagrant VM with `vagrant ssh`
+2. Start a shell in the `finding_aid_discovery` container:
+```
+  docker exec -it fad_finding_aid_discovery.1.{whatever} sh
+```
+3. Run rake tasks:
 
 ```bash
 bundle exec rake tools:sync_index_endpoints
+bundle exec take tools:harvest_from endpoints=ISM,WFIS,ANSP,LCP,CCHS,PCA
 ```
