@@ -7,3 +7,6 @@ ansible/collections
 # Ignore everything in the vagrant dir except the Vagrantfile
 vagrant/*
 !vagrant/Vagrantfile
+
+# Dont track IDE project settings
+.idea
