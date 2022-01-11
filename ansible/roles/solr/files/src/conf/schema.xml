@@ -201,7 +201,6 @@
     <!-- you must define copyField source and dest fields explicity or schemaBrowser doesn't work -->
     <field name="all_text_timv" type="text" stored="false" indexed="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true"/>
 
-
   </fields>
 
 
@@ -214,20 +213,6 @@
   <copyField source="*_tesim" dest="all_text_timv" maxChars="3000"/>
   <copyField source="*_ssim" dest="all_text_timv" maxChars="3000"/>
   <copyField source="*_si" dest="all_text_timv" maxChars="3000"/>
-
-  <copyField source="*_tsim" dest="suggest"/>
-  <copyField source="*_tesim" dest="suggest"/>
-  <copyField source="*_ssim" dest="suggest"/>
-  <copyField source="*_si" dest="suggest"/>
-
-  <copyField source="*_tsim" dest="spell"/>
-  <copyField source="*_tesim" dest="spell"/>
-  <copyField source="*_ssim" dest="spell"/>
-  <copyField source="*_si" dest="spell"/>
-
-  <copyField source="author_tsim" dest="author_spell"/>
-  <copyField source="subject_ssim" dest="subject_spell"/>
-  <copyField source="title_tsim" dest="title_spell"/>
 
   <types>
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
