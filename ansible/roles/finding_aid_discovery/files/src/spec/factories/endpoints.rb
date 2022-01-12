@@ -18,7 +18,7 @@ FactoryBot.define do
       } }
     end
 
-    trait :harvest_with_file_problem do
+    trait :partial_harvest do # problems with individual EADs
       last_harvest_results { {
         date: DateTime.current,
         errors: [],
@@ -29,7 +29,7 @@ FactoryBot.define do
       } }
     end
 
-    trait :successful_harvest do
+    trait :complete_harvest do
       last_harvest_results { {
         date: DateTime.current,
         errors: [],

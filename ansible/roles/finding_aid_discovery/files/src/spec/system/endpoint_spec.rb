@@ -2,13 +2,13 @@ require 'system_helper'
 
 describe 'Endpoint dashboard' do
   let!(:endpoint_success) do
-    FactoryBot.create(:endpoint, :index_harvest, :successful_harvest)
+    FactoryBot.create(:endpoint, :index_harvest, :complete_harvest)
   end
   let!(:endpoint_failed) do
     FactoryBot.create(:endpoint, :index_harvest, :failed_harvest)
   end
   let!(:endpoint_problem) do
-    FactoryBot.create(:endpoint, :index_harvest, :harvest_with_file_problem)
+    FactoryBot.create(:endpoint, :index_harvest, :partial_harvest)
   end
   let!(:endpoint_removals) do
     FactoryBot.create(:endpoint, :index_harvest, :harvest_with_removals)
