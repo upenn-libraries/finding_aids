@@ -78,6 +78,10 @@ class CatalogController < ApplicationController
 
     config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint')
     config.add_facet_field 'repositories_ssim', label: I18n.t('fields.repository')
+    config.add_facet_field 'people_ssim', label: I18n.t('fields.people')
+    config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.corpnames')
+    config.add_facet_field 'subjects_ssim', label: I18n.t('fields.subjects')
+    config.add_facet_field 'places_ssim', label: I18n.t('fields.places')
 
     config.add_facet_fields_to_solr_request!
 
@@ -92,6 +96,10 @@ class CatalogController < ApplicationController
     config.add_show_field 'repositories_ssim', label: I18n.t('fields.repository')
     config.add_show_field 'extent_ssim', label: I18n.t('fields.extent')
     config.add_show_field 'inclusive_date_ss', label: I18n.t('fields.date')
+    config.add_show_field 'people_ssim', label: I18n.t('fields.people')
+    config.add_show_field 'corpnames_ssim', label: I18n.t('fields.corpnames')
+    config.add_show_field 'subjects_ssim', label: I18n.t('fields.subjects')
+    config.add_show_field 'places_ssim', label: I18n.t('fields.places')
     config.add_show_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents')
     config.add_show_field 'xml_ss', label: I18n.t('fields.raw_xml')
 

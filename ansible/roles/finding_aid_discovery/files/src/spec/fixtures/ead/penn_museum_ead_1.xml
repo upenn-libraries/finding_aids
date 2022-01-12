@@ -1,0 +1,1659 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ead xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd" xmlns:ns2="http://www.w3.org/1999/xlink" xmlns="urn:isbn:1-931666-22-9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <eadheader findaidstatus="Under_revision" repositoryencoding="iso15511" countryencoding="iso3166-1" dateencoding="iso8601" langencoding="iso639-2b">
+    <eadid></eadid>
+    <filedesc>
+      <titlestmt>
+        <titleproper>Guide to the Works Progress Administration records
+          <num>PU-Mu. 0040</num>
+        </titleproper>
+        <author>Finding aid prepared by M. Malta</author>
+      </titlestmt>
+      <publicationstmt>
+        <publisher>University of Pennsylvania: Penn Museum Archives</publisher>
+        <address>
+          <addressline>3260 South Street</addressline>
+          <addressline>Philadelphia, Pennsylvania, 19104-6324</addressline>
+          <addressline>215-898-8304</addressline>
+          <addressline>archives@pennmuseum.org</addressline>
+        </address>
+        <date>6/11/14</date>
+      </publicationstmt>
+    </filedesc>
+    <profiledesc>
+      <creation>This finding aid was produced using the Archivists' Toolkit
+        <date>2017-03-03T12:00-0500</date>
+      </creation>
+      <descrules>Describing Archives: A Content Standard</descrules>
+    </profiledesc>
+    <revisiondesc>
+      <change>
+        <date>7/7/2014</date>
+        <item></item>
+      </change>
+    </revisiondesc>
+  </eadheader>
+  <archdesc level="collection">
+    <did>
+      <unittitle>Works Progress Administration Records</unittitle>
+      <unitid>PU-Mu. 0040</unitid>
+      <repository>
+        <corpname>University of Pennsylvania: Penn Museum Archives</corpname>
+      </repository>
+      <langmaterial>
+        <language langcode="eng"/>
+      </langmaterial>
+      <physdesc>
+        <extent>2.5 Linear feet</extent>
+      </physdesc>
+      <unitdate normal="1935/1943" type="inclusive">1935-1943</unitdate>
+      <abstract id="ref179" label="Abstract">During the Great Depression President Franklin D. Roosevelt developed New Deal programs to return the country to work through relief projects. The most popular of these was the Works Progress Administration because it provided work for so many Americans. Large numbers were put to work building bridges, roads, public buildings, public parks and airports with nominal salaries subsidized by the federal government. In addition, tens of thousands of artists were funded to create murals and sculpture for public buildings, write plays and music and perform their work for an arts-hungry public. Between 1935 and 1942, the University Museum co-sponsored(with institutions such as the Fairmount Park Commission and the Pennsylvania Commission for the Fine Arts) at least eight Works Progress Administration projects as part of the State-wide Museum Assistance Program. Employee salaries for the WPA/University Museum projects were paid by the WPA; equipment, space, supplies, technical aid, and specimens were provided by the University Museum.</abstract>
+      <origination label="creator">
+        <persname rules="dacs" source="naf" role="Creator (cre)">Butler, Mary, 1903-1970</persname>
+      </origination>
+      <origination label="creator">
+        <persname rules="dacs" source="local" role="Creator (cre)">Fewkes, Vladimir</persname>
+      </origination>
+    </did>
+    <scopecontent id="ref177">
+      <head>Scope and Contents note</head>
+      <p>Between 1935 and 1942, the University Museum co-sponsored (with institutions such as the Fairmount Park Commission and the Pennsylvania Commission for the Fine Arts) at least eight Works Progress Administration projects as part of the State-wide Museum Assistance Program. Employee salaries for the WPA/University Museum projects were paid by the WPA; equipment, space, supplies, technical aid, and specimens were provided by the University Museum.</p>
+      <p>WPA-funded work at the University Museum consisted of a number of different units of operation. Because so many of the records now available are incomplete, there may have been additional projects. Accurately representing the work that took place under the auspices of any one project is also difficult due to spotty records. As funding for one project was exhausted, another project occasionally took over as replacement, complete with ensuing changes of project name and number, regardless of similarity of purpose.</p>
+      <p>The Ceramic Technology Research Project was designed in 1935 by Mary Butler and rewritten as the proposal for the first WPA/University Museum project (number 2232). Projects 2232, 14753, and 19421 were referred to alternately as ceramics laboratories and ceramics research laboratories, and conducted similiar research. The projects conducted ceramics technology research using chemical, petrographic, and optical methods to analyze artifacts, and also conducted experimental investigations of the composition of the various clays, pigments, tempers, shrinkage properties, and of the effects of temperature and other factors important in ceramics technology. The conservation and restoration of metal, stone, ivory, and bone objects was also carried out at various points by one or another of these projects. Objects from a number of sites were analyzed, including material from Kara Tepe, Tepe Gawra, and Tell Billa in Mesopotamia; Beth Shan in Palestine; Tepe Hissar in Persia; Homolka and Starcevo in Eastern Europe; Catawba in North America; and Piedras Negras, Chipal, and Kixpec in Mesoamerica. Facilities consisted of the Ceramics Technology Laboratory housed in the University Museum, the Chemical Laboratory housed in the University of Pennsylvania Medical School, and the Spectrography Department in the Physics building.</p>
+      <p>In 1979, some bibliographic material was discovered in the basement of Harrison Auditorium, but was destroyed due to its deteriorated condition. The remaining bibliographic entries have also not been kept, owing to their uselessness. Materials and records loaned to Dr. Fred Matson of Pennsylvania State University in 1949 were returned to the University Museum in 1993.</p>
+      <p>Other projects, including the Maps-Murals project (number 26506) and Museum Extension Project 26638 are documented so sparsely, that a discussion of the details of their operations is not possible. However, the Photographic Archives has a few extant images of murals being created for project 26506.</p>
+      <p>The records of the WPA/University Museum projects, as preserved in the Museum Archives, consist of personal and administrative correspondence; project proposals and outlines; project progress reports; financial status reports; personnel and payroll information; and data accumulated through the analyses undertaken by the projects. The bulk of records such as invoices, work schedules, requisitions, and packing slips have not been kept, though samples were retained. WPA forms like these, required for every activity undertaken by any project, did not contribute to the elucidation of these projects’ inner workings, though their sheer volume was notable.</p>
+      <p>Research in the WPA files may be difficult for the simple reason that despite the innumerable forms required by the agency, project numbers and names were often confused. Indeed, research goals overlapped and projects sometimes replaced one another with a change in number while retaining name. Materials and funding were also apparently shared occasionally by projects operating simultaneously.</p>
+      <p></p>
+    </scopecontent>
+    <bioghist id="ref176">
+      <head>Biographical/Historical note</head>
+      <p>During the Great Depression President Franklin D. Roosevelt developed New Deal programs to return the country to work through relief projects. The most popular of these was the Works Progress Administration because it provided work for so many Americans. Large numbers were put to work building bridges, roads, public buildings, public parks and airports with nominal salaries subsidized by the federal government. In addition, tens of thousands of artists were funded to create murals and sculpture for public buildings, write plays and music and perform their work for an arts-hungry public.</p>
+      <p>Between 1935 and 1942, the University Museum co-sponsored(with institutions such as the Fairmount Park Commission and the Pennsylvania Commission for the Fine Arts) at least eight Works Progress Administration projects as part of the State-wide Museum Assistance Program. Employee salaries for the WPA/University Museum projects were paid by the WPA; equipment, space, supplies, technical aid, and specimens were provided by the University Museum.</p>
+      <p>Projects 18369, 22831, and 23676 were each to some extent involved in amassing a bibliography of ceramics technology. In 1940, with the onset of project 23676, referred to as either the Archaeological Research Laboratory or the Archaeological Technology Laboratory, the scope of the larger bibliographic endeavor was changed to include articles of more general archaeological interest, particularly for the Eastern United States.</p>
+      <p>The total number of people employed by the WPA/University Museum projects fluctuated widely. Dr. Leonard Reisch directed the ceramics projects from their inception in 1935 through 1937, when he was succeeded by Donald Horton. Horton then served as director from January 1937 to September of 1939. Joseph Berman directed the projects from late 1939 through 1941. Dr. Vladimir J. Fewkes served as director of the bibliographic projects from their inception in 1937 to his death in November of 1941. He also briefly served as temporary head of the ceramics research projects in 1939.</p>
+    </bioghist>
+    <controlaccess>
+      <corpname rules="dacs" source="naf" role="Correspondent (crp)">Fairmount Park Commission (Philadelphia, Pa.).</corpname>
+      <persname rules="dacs" source="naf">Jayne, Horace Howard Furness, 1898-1975</persname>
+      <persname rules="dacs" source="naf">Johnson, Eldridge Reeves, b. 1867-d. 1945</persname>
+      <corpname rules="dacs" source="naf" role="Creator (cre)">University of Pennsylvania. Museum of Archaeology and Anthropology.</corpname>
+      <persname rules="dacs" source="naf">Vaillant, George C., b.1901-d.1945</persname>
+      <geogname source="lcsh">Alaska</geogname>
+      <geogname source="lcsh">Guatemala</geogname>
+      <geogname source="lcsh">Marsa Matruh (Egypt)</geogname>
+      <subject source="lcsh">Physical anthropology</subject>
+      <geogname source="lcsh">Piedras Negras site (Guatemala)</geogname>
+      <subject source="lcsh">WPA Statewide Museum Service</subject>
+    </controlaccess>
+    <dsc>
+      <c id="ref1" level="series">
+        <did>
+          <unittitle>Alphabetical Correspondence</unittitle>
+          <langmaterial>
+            <language langcode="eng"/>
+          </langmaterial>
+          <unitdate normal="1930/1943" type="inclusive">1930-1943</unitdate>
+        </did>
+        <c id="ref2" level="file">
+          <did>
+            <unittitle>B general 1930</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref3" level="file">
+          <did>
+            <unittitle>Barnes, G.W. 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref4" level="file">
+          <did>
+            <unittitle>Berman, Joseph 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref5" level="file">
+          <did>
+            <unittitle>C general 1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref6" level="file">
+          <did>
+            <unittitle>Clark, F.W. 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref7" level="file">
+          <did>
+            <unittitle>Cotton, Harold 1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref8" level="file">
+          <did>
+            <unittitle>Conference on Ceramic Technology in Archaeology</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref9" level="file">
+          <did>
+            <unittitle>G-H general 1937-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref10" level="file">
+          <did>
+            <unittitle>J general 1936</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref11" level="file">
+          <did>
+            <unittitle>Jayne, Horace 1938-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref12" level="file">
+          <did>
+            <unittitle>Johnson, E.R. Fenimore 1936-1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref13" level="file">
+          <did>
+            <unittitle>K general 1937-1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref14" level="file">
+          <did>
+            <unittitle>M general 1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref15" level="file">
+          <did>
+            <unittitle>Maps/Murals Project</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref16" level="file">
+          <did>
+            <unittitle>Petrullo, Vincenzo</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref17" level="file">
+          <did>
+            <unittitle>R general 1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref18" level="file">
+          <did>
+            <unittitle>S general 1938-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref19" level="file">
+          <did>
+            <unittitle>Schaeffer, Claude 1941</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref20" level="file">
+          <did>
+            <unittitle>Vaillant, George 1942</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref21" level="file">
+          <did>
+            <unittitle>W general 1937-1943</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+      </c>
+      <c id="ref23" level="series">
+        <did>
+          <unittitle>Administrative Correspondence</unittitle>
+          <langmaterial>
+            <language langcode="eng"/>
+          </langmaterial>
+          <unitdate normal="1936/1943" type="inclusive">1936-1943</unitdate>
+        </did>
+        <c id="ref24" level="file">
+          <did>
+            <unittitle>Sample forms and instructions 1936-1942</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref25" level="file">
+          <did>
+            <unittitle>Proposal and implementation for "project 2232" 1935</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref26" level="file">
+          <did>
+            <unittitle>Proposal to continue "project 2232" as "project 14753" 1937</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">1</container>
+          </did>
+        </c>
+        <c id="ref27" level="file">
+          <did>
+            <unittitle>Proposal for"project 18369" 1937-1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref28" level="file">
+          <did>
+            <unittitle>Proposal for "project 19421" 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref29" level="file">
+          <did>
+            <unittitle>Proposal for "project 22831" (?) 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref30" level="file">
+          <did>
+            <unittitle>Proposal for "project 23676" (?) 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref31" level="file">
+          <did>
+            <unittitle>Proposal-Letters in support of "project 23676" 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref32" level="file">
+          <did>
+            <unittitle>Proposal for "project 26638" (?) 1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref33" level="file">
+          <did>
+            <unittitle>Proposal for "project 28331"(?) 1941</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref34" level="file">
+          <did>
+            <unittitle>Functional organizational charts for "projects 23676,26638 and 28331"</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref35" level="file">
+          <did>
+            <unittitle>Personnel of "project 2232" 1936-1937</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref36" level="file">
+          <did>
+            <unittitle>Personnel of "project 18369" 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref37" level="file">
+          <did>
+            <unittitle>Monthly administration personnel on "project 19421" 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref38" level="file">
+          <did>
+            <unittitle>Personnel of "project 22831" 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref39" level="file">
+          <did>
+            <unittitle>Supervisory personnel reports for "project 22831" 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref40" level="file">
+          <did>
+            <unittitle>Form 2264: Project payroll report for "project 14753" 1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref41" level="file">
+          <did>
+            <unittitle>Form 2264: Project payroll report for "project 19421" 1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref42" level="file">
+          <did>
+            <unittitle>Form 401: Notification of field transfer; Form 411: Field transfer 1938-1941</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref43" level="file">
+          <did>
+            <unittitle>Form 404A: Request for reclassification and attached form 251: Personnel, "project 19421" 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref44" level="file">
+          <did>
+            <unittitle>Form LR-1: Notice of Complaint; Form 418 Notice of Warning or Suspension 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref45" level="file">
+          <did>
+            <unittitle>Form 4326: Application for Allowable Time 1939-1941</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref46" level="file">
+          <did>
+            <unittitle>Form 419: Request for Termination of Employees for various projects 1939-1942</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref47" level="file">
+          <did>
+            <unittitle>Petty Cash Disbursements: Donald Horton 1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref48" level="file">
+          <did>
+            <unittitle>Weekly Reports for "project 14753" 1937-1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref50" level="file">
+          <did>
+            <unittitle>Weekly Reports for "project 19421" 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref51" level="file">
+          <did>
+            <unittitle>Weekly Reports for "project 22831" 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref52" level="file">
+          <did>
+            <unittitle>Weekly Reports for "project 22676" 1939-1941</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref49" level="file">
+          <did>
+            <unittitle>Weekly Reports for "project 18369" 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">2</container>
+          </did>
+        </c>
+        <c id="ref53" level="file">
+          <did>
+            <unittitle>Weekly Reports for "project 26638" 1940-1941</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref54" level="file">
+          <did>
+            <unittitle>Weekly Narrative Reports for "project 28331" 1940-1941 (1 of 3)</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref55" level="file">
+          <did>
+            <unittitle>Weekly Narrative Reports for "project 28331" 1940-1941 (2 of 3)</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref56" level="file">
+          <did>
+            <unittitle>Weekly Narrative Reports for "project 28331" 1940-1941 (3 of 3)</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref57" level="file">
+          <did>
+            <unittitle>Semi-monthly personnel reports, various projects 1939-1942</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref58" level="file">
+          <did>
+            <unittitle>Monthly progress reports for "project 14753" 1935-1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref59" level="file">
+          <did>
+            <unittitle>Monthly progress reports for "project 18369" 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref60" level="file">
+          <did>
+            <unittitle>Quarterly reports for "project 18369" 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref61" level="file">
+          <did>
+            <unittitle>Quarterly progress reports and achievement reports for "project 19421" 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref62" level="file">
+          <did>
+            <unittitle>Quarterly progress reports and final report for "project 22831" 1938-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref63" level="file">
+          <did>
+            <unittitle>Quarterly progress reports and final report for "project 23676" 1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref64" level="file">
+          <did>
+            <unittitle>Progress reports for "project 2232/19421" 1936-1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref65" level="file">
+          <did>
+            <unittitle>Percentage of physical completion for "project 22831" 1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref66" level="file">
+          <did>
+            <unittitle>Form 100: Physical Progress Reports for "project 23676" 1940-1941</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref67" level="file">
+          <did>
+            <unittitle>Form 100: Physical Progress Reports for "projects 22831 and 18369" 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref68" level="file">
+          <did>
+            <unittitle>Form 100: Physical Progress Reports for "project 19421" 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+      </c>
+      <c id="ref69" level="series">
+        <did>
+          <unittitle>Artifact Analysis</unittitle>
+          <langmaterial>
+            <language langcode="eng"/>
+          </langmaterial>
+          <unitdate normal="1936/1940" type="inclusive">1936-1940</unitdate>
+        </did>
+        <c id="ref70" level="file">
+          <did>
+            <unittitle>Analysis Methodology</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref71" level="file">
+          <did>
+            <unittitle>Explanations of various forms</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref72" level="file">
+          <did>
+            <unittitle>Form 01: Laboratory Guide Sheet</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref73" level="file">
+          <did>
+            <unittitle>Form 02: Shop Record: Thin Sections (1 of 2)</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref74" level="file">
+          <did>
+            <unittitle>Form 02: Shop Record: Thin Sections (2 of 2)</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref75" level="file">
+          <did>
+            <unittitle>Form 03: Shop Record: Refired Sherds</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref76" level="file">
+          <did>
+            <unittitle>Form 08: Inventory Sheet</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">3</container>
+          </did>
+        </c>
+        <c id="ref77" level="file">
+          <did>
+            <unittitle>Inventory of Thin Sections</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref78" level="file">
+          <did>
+            <unittitle>Asia Minor-Tarsus 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref79" level="file">
+          <did>
+            <unittitle>Brazil-Marajo Island-Amazonas-Lago Grande-Santarem 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref80" level="file">
+          <did>
+            <unittitle>Canada-Ontario and Nova Scotia 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref81" level="file">
+          <did>
+            <unittitle>Central Europe</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref82" level="file">
+          <did>
+            <unittitle>Chinese sherds 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref83" level="file">
+          <did>
+            <unittitle>Colombia-Santa Maria-Firing tests 1937</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref84" level="file">
+          <did>
+            <unittitle>Colombia-Santa Maria-Mineralogy of sections 1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref85" level="file">
+          <did>
+            <unittitle>Colombia-Santa Maria-Checklists 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref86" level="file">
+          <did>
+            <unittitle>Colombia-Santa Maria-Classification</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref87" level="file">
+          <did>
+            <unittitle>Colombia-Santa Maria-Trial groupings on the basis of composition</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref88" level="file">
+          <did>
+            <unittitle>Colombia-Santa Maria-Reports</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref89" level="file">
+          <did>
+            <unittitle>Colombia-Santa Maria-color, hardness and surface character</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref90" level="file">
+          <did>
+            <unittitle>Colombia-Santa Maria-color, Rosiwal analysis</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref91" level="file">
+          <did>
+            <unittitle>Colombia-Santa Maria-Particle size analysis</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref92" level="file">
+          <did>
+            <unittitle>Colombia/Venezuela-Goajiro 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref93" level="file">
+          <did>
+            <unittitle>Cyprus 1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref94" level="file">
+          <did>
+            <unittitle>France-Lake Bourget 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref95" level="file">
+          <did>
+            <unittitle>France-Neolithic sherds 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+            <unitdate normal="1939/1940" type="inclusive">1939-1940</unitdate>
+          </did>
+        </c>
+        <c id="ref96" level="file">
+          <did>
+            <unittitle>France-Tarrin-Neolithic and Eneolithic sherds from Tarrin near Orpierre-Hautes Alps, France 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref97" level="file">
+          <did>
+            <unittitle>Guatemala-Piedras Negras No. 1, Various analyses 1936-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref98" level="file">
+          <did>
+            <unittitle>Guatemala-Piedras Negras Primarily lists of their sections 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref99" level="file">
+          <did>
+            <unittitle>Guatemala-Piedras-Various analyses 1936-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">4</container>
+          </did>
+        </c>
+        <c id="ref100" level="file">
+          <did>
+            <unittitle>Guatemala-Piedras Negra-Rosiwal and size analyses 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref101" level="file">
+          <did>
+            <unittitle>Guatemala-Piedras Negra-Technological analysis</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref102" level="file">
+          <did>
+            <unittitle>Guatemala-Maya Highlands 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref103" level="file">
+          <did>
+            <unittitle>Ireland-Antrim-White Park Boy-Neolithic sherds 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref104" level="file">
+          <did>
+            <unittitle>Italy-Lake Varesse 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref105" level="file">
+          <did>
+            <unittitle>Mediterranean-Greece (Minyan/Aegean area)-Terra Sigillata 1937-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref106" level="file">
+          <did>
+            <unittitle>Mesopotamia-Tell Billa 1937-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref107" level="file">
+          <did>
+            <unittitle>Mesopotamia-Tepe Gawra 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref108" level="file">
+          <did>
+            <unittitle>Mesopotamia-Tepe Halaf 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref109" level="file">
+          <did>
+            <unittitle>Mexico-Durango-Chemical analysis 1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref110" level="file">
+          <did>
+            <unittitle>Mexico-Durango-Data 1937-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref111" level="file">
+          <did>
+            <unittitle>Mexico-Sinaloa 1938-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref112" level="file">
+          <did>
+            <unittitle>Mexico-Yucatan 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref113" level="file">
+          <did>
+            <unittitle>Palestine-Tell Beit Mirsin 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref114" level="file">
+          <did>
+            <unittitle>Persia-Lake sherds 1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref115" level="file">
+          <did>
+            <unittitle>Persia-Tepe Hissar-(Various analyses) 1936-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref116" level="file">
+          <did>
+            <unittitle>Persia-Tepe Hissar-Misc.</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">5</container>
+          </did>
+        </c>
+        <c id="ref117" level="file">
+          <did>
+            <unittitle>Persia-Tepe Hissar</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref118" level="file">
+          <did>
+            <unittitle>Persia-Tepe Hissar-Analysis of beads and metal objects 1936-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref119" level="file">
+          <did>
+            <unittitle>United States-Alaska-Yukon and Point Barrow-Geographical material and technological studies 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref120" level="file">
+          <did>
+            <unittitle>United States-Alaska-Yukon and Point Barrow-Color, hardness and thickness</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref121" level="file">
+          <did>
+            <unittitle>United States-Alaska-Yukon and Point Barrow-Rosiwal analysis</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref122" level="file">
+          <did>
+            <unittitle>United States-Alaska-Yukon and Point Barrow-Particle size analysis</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref123" level="file">
+          <did>
+            <unittitle>United States-Alaska-Yukon and Point Barrow-Lists and guide sheets</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref124" level="file">
+          <did>
+            <unittitle>United States-Alaska-Yukon and Point Barrow-Microscopic data</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref125" level="file">
+          <did>
+            <unittitle>United States-Alaska-Yukon and Point Barrow-Sampling record and maps</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref126" level="file">
+          <did>
+            <unittitle>United States-Alaska-Yukon and Point Barrow-Tabulations</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref127" level="file">
+          <did>
+            <unittitle>United States-Arizona-Little Colorado-San Juan Area-Kayenta District 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref128" level="file">
+          <did>
+            <unittitle>United States-Colorado-Prehistoric Colorado or Northeast Arizona-San Juan Cultural Area-Little Colorado Cultural Area-for shop lists see Utah</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref129" level="file">
+          <did>
+            <unittitle>United States-Connecticut-South Windsor-for shop records and lists see Florida 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref130" level="file">
+          <did>
+            <unittitle>United States-Delaware-Slaughter Creek and Rehoboth 1936-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref131" level="file">
+          <did>
+            <unittitle>United States-Florida-Reports, correspondences, reference 1936</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref132" level="file">
+          <did>
+            <unittitle>United States-Florida-Tarpon Springs-Technical analysis 1936-1941</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref133" level="file">
+          <did>
+            <unittitle>United States-Florida-Matanza Inlet-Alapa River-Rose Bay-Gordon River-Key Marco-Florida Sherds-for various other data see Tarpon Springs 1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref134" level="file">
+          <did>
+            <unittitle>United States-Florida-Tarpon Springs 1938-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref135" level="file">
+          <did>
+            <unittitle>United States-Florida-Old Enterprise-Buffalo Bluff-Lake Jessup-for various other data see Tarpon Springs 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref136" level="file">
+          <did>
+            <unittitle>United States-Georgia-Ocmulgee 1938-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref137" level="file">
+          <did>
+            <unittitle>United States-Georgia-Saint Simon's Island-for lists and laboratory sheets see Evelyn Plantation 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">6</container>
+          </did>
+        </c>
+        <c id="ref138" level="file">
+          <did>
+            <unittitle>United States-Georgia-Evelyn Plantation 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref139" level="file">
+          <did>
+            <unittitle>United States-Georgia-Irene Mound 1938</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref140" level="file">
+          <did>
+            <unittitle>United States-Georgia-Form 01: Laboratory Guide sheet</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref141" level="file">
+          <did>
+            <unittitle>United States-Georgia-Form 06: Particle Size Analysis</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref142" level="file">
+          <did>
+            <unittitle>United States-Long Island 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref143" level="file">
+          <did>
+            <unittitle>United States-Louisiana-Houma 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref144" level="file">
+          <did>
+            <unittitle>United States-Maryland-Sharpeston-Magothy River-Conestoga-Pope's Creek-For list see PA 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref145" level="file">
+          <did>
+            <unittitle>United States-Michigan-Younge Site 1939-1940 -Checkup inventory performed 1971</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref146" level="file">
+          <did>
+            <unittitle>United States-Mississippi-Mound Area 1938-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref147" level="file">
+          <did>
+            <unittitle>United States-New Mexico-For shop records see Utah 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref148" level="file">
+          <did>
+            <unittitle>United States-New York 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref149" level="file">
+          <did>
+            <unittitle>United States-North Carolina-Cherokee 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref150" level="file">
+          <did>
+            <unittitle>United States-Pennsylvania-Towanda-Peck Site-Pittsburgh-Lock Haven 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref151" level="file">
+          <did>
+            <unittitle>United States-Pennsylvania-Philadelphia Academy Sections from Gap Nickel Mine area 1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref152" level="file">
+          <did>
+            <unittitle>United States-Modern Zuni (?) Pueblo 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref153" level="file">
+          <did>
+            <unittitle>United States-South Carolina-Charleston-Port Royal Island-Catawba 1938-1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref154" level="file">
+          <did>
+            <unittitle>United States-Utah-Navajo Mountains-Mesa Surface 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref155" level="file">
+          <did>
+            <unittitle>United States-Virginia-Chickohominy River 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref156" level="file">
+          <did>
+            <unittitle>Venezuela-State of Apure-Delta of Apure River-Arauquin 1939</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref157" level="file">
+          <did>
+            <unittitle>West Indies-First and second groups 1939-1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref158" level="file">
+          <did>
+            <unittitle>Miscellaneous Samples (1 of 3)</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref159" level="file">
+          <did>
+            <unittitle>Miscellaneous Samples (2 of 3)</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref160" level="file">
+          <did>
+            <unittitle>Miscellaneous Samples (3 of 3)</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref161" level="file">
+          <did>
+            <unittitle>Spectrographic Analysis (1 of 2)</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref162" level="file">
+          <did>
+            <unittitle>Spectrographic Analysis (2 of 2)</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">7</container>
+          </did>
+        </c>
+        <c id="ref163" level="file">
+          <did>
+            <unittitle>Chemical Analysis #1</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+        <c id="ref164" level="file">
+          <did>
+            <unittitle>Chemical Analysis #2</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+        <c id="ref165" level="file">
+          <did>
+            <unittitle>Chemical Analysis #3</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+        <c id="ref166" level="file">
+          <did>
+            <unittitle>Chemical Analysis #4</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+        <c id="ref167" level="file">
+          <did>
+            <unittitle>Chemical Analysis #5</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+        <c id="ref168" level="file">
+          <did>
+            <unittitle>Chemical Analysis #6</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+        <c id="ref169" level="file">
+          <did>
+            <unittitle>Research Reports (1 of 2)</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+        <c id="ref170" level="file">
+          <did>
+            <unittitle>Research Reports (2 of 2)</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+        <c id="ref171" level="file">
+          <did>
+            <unittitle>Record of Scientific Supplies</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+        <c id="ref172" level="file">
+          <did>
+            <unittitle>Miscellaneous Notes</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+        <c id="ref173" level="file">
+          <did>
+            <unittitle>Miscellaneous Inventories 1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+        <c id="ref174" level="file">
+          <did>
+            <unittitle>Miscellaneous sections/sherds missing 1940</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+        <c id="ref175" level="file">
+          <did>
+            <unittitle>Photos of miscellaneous specimens/thin sections 1936</unittitle>
+            <langmaterial>
+              <language langcode="eng"/>
+            </langmaterial>
+            <container type="Box">8</container>
+          </did>
+        </c>
+      </c>
+    </dsc>
+  </archdesc>
+</ead>

@@ -34,16 +34,11 @@ class EadParser
     @endpoint.public_contacts
   end
 
-  # https://www.loc.gov/ead/tglib/elements/titleproper.html
+  # https://www.loc.gov/ead/tglib/elements/unittitle.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def title(doc)
-    doc.at_css('eadheader titlestmt titleproper').try :text # this can/is/will be multivalued, sometimes with a 'filing' attr
-    # if raw.index("\n")
-    #   raw[..(raw.index("\n") - 2)] # strip at newline, often theres a <num /> element present...
-    # else
-    #   raw
-    # end
+    doc.at_css('archdesc did unittitle').try :text # this can/is/will be multivalued, sometimes with a 'filing' attr
   end
 
   # https://www.loc.gov/ead/tglib/elements/extent.html
@@ -84,12 +79,41 @@ class EadParser
     end
   end
 
+  def creator(doc)
+    doc.xpath('.//archdesc/did/origination[@label="creator"]').map do |node|
+      node.text.try(:strip)
+    end
+  end
+
+  def people(doc)
+    doc.xpath('.//controlaccess/persname').map do |node|
+      node.text.try(:strip)
+    end
+  end
+
+  def corp_names(doc)
+    doc.xpath('.//controlaccess/corpname').map do |node|
+      node.text.try(:strip)
+    end
+  end
+  def subjects(doc)
+    doc.xpath('.//controlaccess/subject').map do |node|
+      node.text.try(:strip)
+    end
+  end
+  def places(doc)
+    doc.xpath('.//controlaccess/geogname').map do |node|
+      node.text.try(:strip)
+    end
+  end
+
   # usage: { solr_field_name: value, ... }
   # @param [String] url url of xml file
   # @param [String] xml contents of xml file
   # @return [Hash]
   def parse(url, xml)
     doc = Nokogiri::XML.parse xml
+    doc.remove_namespaces!
     {
       id: id(url),
       endpoint_ssi: @endpoint.slug,
@@ -101,7 +125,12 @@ class EadParser
       extent_ssim: extent(doc),
       inclusive_date_ss: inclusive_date(doc),
       abstract_scope_contents_tsi: abstract_scope_contents(doc),
-      repositories_ssim: repositories(doc)
+      repositories_ssim: repositories(doc),
+      creator_ssim: creator(doc),
+      people_ssim: people(doc),
+      places_ssim: places(doc),
+      corpnames_ssim: corp_names(doc),
+      subjects_ssim: subjects(doc)
     }
   end
 end
