@@ -28,10 +28,10 @@ class HarvestingService
     process_removals(harvested_doc_ids: @documents.collect { |doc| doc[:id] })
     index_documents
     save_outcomes
+    send_notifications
   rescue OpenURI::HTTPError => e
     fatal_error "Problem extracting URLs from Endpoint URL: #{e.message}"
-  ensure
-    send_notifications # Always send notifications.
+    send_notifications
   end
 
   # @param [String] url
