@@ -89,7 +89,7 @@ describe Endpoint do
       end
 
       it 'list files that were removed' do
-        expect(endpoint.last_harvest.removed_ids).to match_array [{ 'id' => 'removed-record-1', 'status' => 'removed' }, { 'id' => 'removed-record-2', 'status' => 'removed' }]
+        expect(endpoint.last_harvest.removed_files).to match_array [{ 'id' => 'removed-record-1', 'status' => 'removed' }, { 'id' => 'removed-record-2', 'status' => 'removed' }]
       end
     end
   end

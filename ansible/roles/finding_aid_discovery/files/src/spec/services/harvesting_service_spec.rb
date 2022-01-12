@@ -24,7 +24,7 @@ describe HarvestingService do
 
       it 'saves error information to Endpoint' do
         described_class.new(endpoint).harvest
-        expect(endpoint.last_harvest_results['errors'].first).to include '404 Not Found'
+        expect(endpoint.last_harvest.errors.first).to include '404 Not Found'
       end
     end
 
@@ -35,7 +35,7 @@ describe HarvestingService do
 
       it 'saves error information to Endpoint' do
         described_class.new(endpoint).harvest
-        expect(endpoint.last_harvest_results['errors'].first).to include '500 Internal Server Error'
+        expect(endpoint.last_harvest.errors.first).to include '500 Internal Server Error'
       end
     end
 
@@ -53,7 +53,7 @@ describe HarvestingService do
 
           it 'saves file error information to endpoint' do
             described_class.new(endpoint).harvest
-            file_error_hash = endpoint.last_harvest_results['files'].first
+            file_error_hash = endpoint.last_harvest.files.first
             expect(file_error_hash.keys).to include 'filename', 'status', 'errors'
             expect(file_error_hash['status']).to eq 'failed'
             expect(file_error_hash['errors'].first).to include '404 Not Found'
