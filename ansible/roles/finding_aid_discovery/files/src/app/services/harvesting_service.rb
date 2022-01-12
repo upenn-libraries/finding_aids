@@ -28,9 +28,10 @@ class HarvestingService
     process_removals(harvested_doc_ids: @documents.collect { |doc| doc[:id] })
     index_documents
     save_outcomes
-    send_notifications
   rescue OpenURI::HTTPError => e
     fatal_error "Problem extracting URLs from Endpoint URL: #{e.message}"
+  ensure
+    send_notifications # Always send notifications.
   end
 
   # @param [String] url
@@ -60,7 +61,10 @@ class HarvestingService
   end
 
   def send_notifications
-    # TODO: send mail to @endpoint.tech_contacts
+   HarvestNotificationMailer.with(endpoint: @endpoint)
+                            .send("#{@endpoint.last_harvest.status}_harvest_notification")
+                            .deliver_now
+
   end
 
   private

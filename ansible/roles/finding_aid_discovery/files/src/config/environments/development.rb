@@ -33,8 +33,14 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # Tell Action Mailer not to deliver emails to the real world.
+  # The :file delivery method saves the emails in tmp/mails
+  config.action_mailer.delivery_method = :file
+
+  # Set hostname for urls generated within emails
+  config.action_mailer.default_url_options = { host: 'finding-aid-discovery-dev.library.upenn.edu' }
+
+  # config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.perform_caching = false
 
