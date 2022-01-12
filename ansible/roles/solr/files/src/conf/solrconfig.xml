@@ -54,13 +54,13 @@
           id
           title_tsim
           abstract_scope_contents_tsi
-          repositories_tsim
+          repositories_ssim
         </str>
         <str name="pf">
           id
           title_tsim
           abstract_scope_contents_tsi
-          repositories_tsim
+          repositories_ssim
         </str>
 
        <str name="title_qf">

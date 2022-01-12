@@ -92,16 +92,16 @@ class EadParser
     doc = Nokogiri::XML.parse xml
     {
       id: id(url),
-      endpoint_tsi: @endpoint.slug, # TODO: string?
-      xml_ts: xml,
-      ead_id_tsi: ead_id(doc), # TODO: string?
-      unit_id_tsi: unit_id(doc), # TODO: string?
-      contact_emails_tsm: contact_emails, # TODO: string?
+      endpoint_ssi: @endpoint.slug,
+      xml_ss: xml,
+      ead_id_ssi: ead_id(doc),
+      unit_id_ssi: unit_id(doc),
+      contact_emails_ssm: contact_emails,
       title_tsim: title(doc),
-      extent_tsm: extent(doc),
-      inclusive_date_ts: inclusive_date(doc), # TODO: string?
+      extent_ssim: extent(doc),
+      inclusive_date_ss: inclusive_date(doc),
       abstract_scope_contents_tsi: abstract_scope_contents(doc),
-      repositories_tsim: repositories(doc) # TODO: should be _ssim, text is inappropriate here ()tokenization)
+      repositories_ssim: repositories(doc)
     }
   end
 end
