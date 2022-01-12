@@ -2,13 +2,13 @@ require 'system_helper'
 
 describe 'Endpoint dashboard' do
   let!(:endpoint_success) do
-    FactoryBot.create(:endpoint, :index_harvest, :successful_harvest)
+    FactoryBot.create(:endpoint, :index_harvest, :complete_harvest)
   end
   let!(:endpoint_failed) do
     FactoryBot.create(:endpoint, :index_harvest, :failed_harvest)
   end
   let!(:endpoint_problem) do
-    FactoryBot.create(:endpoint, :index_harvest, :harvest_with_file_problem)
+    FactoryBot.create(:endpoint, :index_harvest, :partial_harvest)
   end
   let!(:endpoint_removals) do
     FactoryBot.create(:endpoint, :index_harvest, :harvest_with_removals)
@@ -39,12 +39,12 @@ describe 'Endpoint dashboard' do
     end
     it 'shows error message text for problem harvest' do
       within ".table-row-#{endpoint_failed.slug}" do
-        expect(page).to have_text endpoint_failed.last_harvest_errors.first
+        expect(page).to have_text endpoint_failed.last_harvest.errors.first
       end
     end
     it 'shows a count of removed records' do
       within ".table-row-#{endpoint_removals.slug}" do
-        expect(page).to have_text "removed #{endpoint_removals.last_harvest_removed_ids.count} record"
+        expect(page).to have_text "removed #{endpoint_removals.last_harvest.removed_files.count} record"
       end
     end
   end
@@ -52,9 +52,9 @@ describe 'Endpoint dashboard' do
     context 'removals' do
       before { visit endpoint_path(endpoint_removals.slug) }
       it 'lists removed ids' do
-        endpoint_removals.last_harvest_removed_ids.each do |removed_id|
+        endpoint_removals.last_harvest.removed_files.each do |removed_file|
           within '#removed-records-list' do
-            expect(page).to have_text removed_id
+            expect(page).to have_text removed_file[:id]
           end
         end
       end

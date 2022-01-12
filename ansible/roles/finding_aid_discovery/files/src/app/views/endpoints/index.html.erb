@@ -13,25 +13,25 @@
     </thead>
     <tbody>
     <% @endpoints.each do |ep| %>
-      <tr class="<%= ep.last_harvest_failed? ? 'table-danger' : '' %> <%= "table-row-#{ep.slug}"  %>">
+      <tr class="<%= ep.last_harvest.failed? ? 'table-danger' : '' %> <%= "table-row-#{ep.slug}"  %>">
         <th scope="row">
           <%= link_to ep.slug, endpoint_path(ep.slug) %>
         </th>
         <td>
-          <%= time_since_last_harvest ep.last_harvest_date %>
+          <%= time_since_last_harvest ep.last_harvest.date %>
         </td>
         <td>
           <%# TODO: link to faceted results set? %>
-          <%= ep.last_harvest_success_files&.length %>
-          <% if ep.last_harvest_removals? %>
-            <%= "(removed #{pluralize(ep.last_harvest_removed_ids&.count, 'record')})" %>
+          <%= ep.last_harvest.success_files&.length %>
+          <% if ep.last_harvest.removals? %>
+            <%= "(removed #{pluralize(ep.last_harvest.removed_files&.count, 'record')})" %>
           <% end %>
         </td>
         <td>
-          <% if ep.last_harvest_failed? %>
-            <%= ep.last_harvest_errors.try :join, ', ' %>
-          <% elsif ep.last_harvest_problem_files.any? %>
-            <%= link_to "#{ep.last_harvest_problem_files.count} file issues", endpoint_path(ep.slug.downcase) %>
+          <% if ep.last_harvest.failed? %>
+            <%= ep.last_harvest.errors.try :join, ', ' %>
+          <% elsif ep.last_harvest.problem_files.any? %>
+            <%= link_to "#{ep.last_harvest.problem_files.count} file issues", endpoint_path(ep.slug.downcase) %>
           <% end %>
         </td>
       </tr>
