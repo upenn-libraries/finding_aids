@@ -1,0 +1,7 @@
+<h1>Last Harvest Successfully Completed</h1>
+
+<strong>Endpoint Slug:</strong> <%= @endpoint.slug %>
+<strong>Endpoint URL:</strong> <%= @endpoint.url %>
+<strong>Harvest Date:</strong> <%= @endpoint.last_harvest.date %>
+
+For more information visit the endpoint's <%= link_to 'status page', endpoint_url(@endpoint.slug) %>.

@@ -54,7 +54,7 @@ describe 'Endpoint dashboard' do
       it 'lists removed ids' do
         endpoint_removals.last_harvest.removed_files.each do |removed_file|
           within '#removed-records-list' do
-            expect(page).to have_text removed_file[:id]
+            expect(page).to have_text removed_file['id']
           end
         end
       end

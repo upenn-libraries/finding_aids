@@ -31,6 +31,7 @@ class HarvestingService
     send_notifications
   rescue OpenURI::HTTPError => e
     fatal_error "Problem extracting URLs from Endpoint URL: #{e.message}"
+    send_notifications
   end
 
   # @param [String] url
@@ -60,7 +61,10 @@ class HarvestingService
   end
 
   def send_notifications
-    # TODO: send mail to @endpoint.tech_contacts
+   HarvestNotificationMailer.with(endpoint: @endpoint)
+                            .send("#{@endpoint.last_harvest.status}_harvest_notification")
+                            .deliver_now # TODO: Should swap this to deliver_later when we get our job queues configured.
+
   end
 
   private
