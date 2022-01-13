@@ -33,7 +33,7 @@ describe HarvestingService do
 
       it 'sends failure notification to tech contacts' do
         expect(ActionMailer::Base.deliveries.count).to be 1
-        expect(ActionMailer::Base.deliveries.last.to).to match_array('tech@test.org')
+        expect(ActionMailer::Base.deliveries.last.to).to match_array(endpoint.tech_contacts)
         expect(ActionMailer::Base.deliveries.last.subject).to eq "Harvest of #{endpoint.slug} failed"
         expect(ActionMailer::Base.deliveries.last.body.to_s).to match('404 Not Found')
       end
@@ -62,7 +62,7 @@ describe HarvestingService do
       end
 
       it 'saves file error information to endpoint' do
-        file_error_hash = endpoint.last_harvest_results['files'].first
+        file_error_hash = endpoint.last_harvest.files.first
         expect(file_error_hash.keys).to include 'filename', 'status', 'errors'
         expect(file_error_hash['status']).to eq 'failed'
         expect(file_error_hash['errors'].first).to include '404 Not Found'
@@ -70,7 +70,7 @@ describe HarvestingService do
 
       it 'sends partial harvest notification to tech contacts' do
         expect(ActionMailer::Base.deliveries.count).to be 1
-        expect(ActionMailer::Base.deliveries.last.to).to match_array('tech@test.org')
+        expect(ActionMailer::Base.deliveries.last.to).to match_array(endpoint.tech_contacts)
         expect(ActionMailer::Base.deliveries.last.subject).to eq "Harvest of #{endpoint.slug} partially completed"
         expect(ActionMailer::Base.deliveries.last.body.to_s).to match('Last Harvest Partially Completed')
         expect(ActionMailer::Base.deliveries.last.body.to_s).to match('404 Not Found')
