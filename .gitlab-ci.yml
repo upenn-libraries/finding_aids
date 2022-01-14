@@ -8,7 +8,9 @@ include:
       - ".remove_docker_image_from_registry.yml"
   - project: "devops/gitlab/ci-templates/ruby"
     ref: "sans-dind"
-    file: ".rspec.yml"
+    file: 
+      - ".rspec.yml"
+      - ".rubocop.yml"
   - project: "devops/gitlab/ci-templates/sast"
     ref: "master"
     file:
@@ -105,6 +107,22 @@ rspec_app_test:
     - exists:
         - ansible/roles/finding_aid_discovery/files/src/spec/**.rb
         - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
+  tags:
+    - build
+
+rubocop_app:
+  stage: test
+    image: ${CI_REGISTRY_IMAGE}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
+  needs:
+    - push_tmp_dev_app_image_to_registry
+  extends:
+    - .rubocop
+  allow_failures: true
+  rules:
+    - if: $DISABLE_RUBOCOP == "true"
+      when: never
+    - exists:
+        - ansible/roles/finding_aid_discovery/files/src/.rubocop.yml
   tags:
     - build
 # -- End - test dev image
