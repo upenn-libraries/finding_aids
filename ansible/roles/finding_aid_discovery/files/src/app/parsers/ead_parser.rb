@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Parser for an Endpoint
 # Takes a URL for an XML file and maps it to a Hash for indexing to Solr
 # e.g., EadParser.new(endpoint_1).process(url_1)
@@ -67,13 +69,9 @@ class EadParser
     doc.at_css('archdesc did abstract').try :text
   end
 
-  def date_added(doc)
+  def date_added(doc); end
 
-  end
-
-  def preferred_citation(doc)
-
-  end
+  def preferred_citation(doc); end
 
   # https://www.loc.gov/ead/tglib/elements/repository.html
   # @return [Array]

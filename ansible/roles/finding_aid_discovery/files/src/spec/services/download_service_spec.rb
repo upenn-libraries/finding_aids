@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe DownloadService do
-  context '.fetch' do
+  describe '.fetch' do
     let(:url) { 'https://www.example.com' }
 
     it 'sets appropriate headers' do

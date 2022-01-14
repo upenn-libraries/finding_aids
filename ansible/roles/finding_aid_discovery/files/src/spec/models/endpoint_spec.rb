@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Endpoint do
   context 'basic attributes' do
-    let(:index_endpoint) do
-      FactoryBot.build(:endpoint, :index_harvest)
-    end
+    let(:index_endpoint) { build(:endpoint, :index_harvest) }
+
     it 'has no validation errors' do
       expect(index_endpoint.valid?).to be true
     end
+
     it 'has functioning JSON accessor methods' do
       expect(index_endpoint.url).to eq 'https://www.test.com/pacscl'
       expect(index_endpoint.type).to eq 'index'
@@ -16,9 +18,10 @@ describe Endpoint do
 
   context 'validations' do
     context 'harvest configuration' do
-      let(:bad_type_config_endpoint) {
-        FactoryBot.build(:endpoint, harvest_config: { url: '', type: 'gopher' })
-      }
+      let(:bad_type_config_endpoint) do
+        build(:endpoint, harvest_config: { url: '', type: 'gopher' })
+      end
+
       it 'has validation errors for url and type' do
         bad_type_config_endpoint.valid?
         expect(bad_type_config_endpoint.errors.attribute_names).to include :url, :type
@@ -27,10 +30,10 @@ describe Endpoint do
     end
   end
 
-  context '#harvest_results' do
+  describe '#harvest_results' do
     context 'when harvest has never been run' do
       let(:endpoint) do
-        FactoryBot.build(:endpoint, :index_harvest)
+        build(:endpoint, :index_harvest)
       end
 
       it 'return status as nil' do
@@ -40,7 +43,7 @@ describe Endpoint do
 
     context 'when harvest complete' do
       let(:endpoint) do
-        FactoryBot.build(:endpoint, :index_harvest, :complete_harvest)
+        build(:endpoint, :index_harvest, :complete_harvest)
       end
 
       it 'returned status is "completed"' do
@@ -51,7 +54,7 @@ describe Endpoint do
 
     context 'when harvest failed' do
       let(:endpoint) do
-        FactoryBot.build(:endpoint, :index_harvest, :failed_harvest)
+        build(:endpoint, :index_harvest, :failed_harvest)
       end
 
       it 'returned status is failed' do
@@ -66,7 +69,7 @@ describe Endpoint do
 
     context 'when harvest partially complete' do
       let(:endpoint) do
-        FactoryBot.build(:endpoint, :index_harvest, :partial_harvest)
+        build(:endpoint, :index_harvest, :partial_harvest)
       end
 
       it 'returned status is partial' do
@@ -75,13 +78,17 @@ describe Endpoint do
       end
 
       it 'lists expected problem files' do
-        expect(endpoint.last_harvest.problem_files).to match_array [{ 'filename' => '', 'status' => 'failed', 'errors' => ['Problem downloading XML file'] }]
+        expect(
+          endpoint.last_harvest.problem_files
+        ).to match_array([
+                           { 'filename' => '', 'status' => 'failed', 'errors' => ['Problem downloading XML file'] }
+                         ])
       end
     end
 
     context 'when files were removed during harvest' do
       let(:endpoint) do
-        FactoryBot.build(:endpoint, :index_harvest, :harvest_with_removals)
+        build(:endpoint, :index_harvest, :harvest_with_removals)
       end
 
       it 'removals returns true' do
@@ -89,7 +96,12 @@ describe Endpoint do
       end
 
       it 'list files that were removed' do
-        expect(endpoint.last_harvest.removed_files).to match_array [{ 'id' => 'removed-record-1', 'status' => 'removed' }, { 'id' => 'removed-record-2', 'status' => 'removed' }]
+        expect(
+          endpoint.last_harvest.removed_files
+        ).to match_array([
+                           { 'id' => 'removed-record-1', 'status' => 'removed' },
+                           { 'id' => 'removed-record-2', 'status' => 'removed' }
+                         ])
       end
     end
   end

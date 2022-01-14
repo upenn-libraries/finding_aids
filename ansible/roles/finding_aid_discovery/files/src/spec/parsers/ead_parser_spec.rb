@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe EadParser do
-  let(:endpoint) { FactoryBot.build :endpoint, :index_harvest }
+  let(:endpoint) { build :endpoint, :index_harvest }
   let(:url) { "#{endpoint.url}ead/ead1.xml" }
   let(:xml) { file_fixture('ead/ead1.xml') }
 

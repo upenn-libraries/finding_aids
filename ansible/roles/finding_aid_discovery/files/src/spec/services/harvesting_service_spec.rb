@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe HarvestingService do
-  let(:endpoint) { FactoryBot.create :endpoint, :index_harvest }
+  let(:endpoint) { create :endpoint, :index_harvest }
 
   describe '#process_deletes' do
     let(:solr_service) do
