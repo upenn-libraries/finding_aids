@@ -94,6 +94,8 @@ rspec_app_test:
     - push_tmp_dev_app_image_to_registry
   extends:
     - .rspec
+  before_script:
+    - cd ansible/roles/finding_aid_discovery/files/src/
   # script:
   #   - rspec -I ansible/roles/finding_aid_discovery/files/src/ ansible/roles/finding_aid_discovery/files/src/spec/
   allow_failure: true
