@@ -118,6 +118,8 @@ rubocop_app:
   extends:
     - .rubocop
   allow_failure: true
+  before_script:
+    - cd ansible/roles/finding_aid_discovery/files/src/
   rules:
     - if: $DISABLE_RUBOCOP == "true"
       when: never
