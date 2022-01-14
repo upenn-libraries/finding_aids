@@ -94,17 +94,17 @@ rspec_app_test:
     - push_tmp_dev_app_image_to_registry
   extends:
     - .rspec
-  script:
-    - rspec -I ansible/roles/finding_aid_discovery/files/src/ ansible/roles/finding_aid_discovery/files/src/spec/
+  # script:
+  #   - rspec -I ansible/roles/finding_aid_discovery/files/src/ ansible/roles/finding_aid_discovery/files/src/spec/
   allow_failure: true
   variables:
     RAILS_ENV: "test"
-  rules:
-    - if: $DISABLE_RSPEC_TEST == "true"
-      when: never
-    - exists:
-        - ansible/roles/finding_aid_discovery/files/src/spec/**.rb
-        - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
+  # rules:
+  #   - if: $DISABLE_RSPEC_TEST == "true"
+  #     when: never
+  #   - exists:
+  #       - ansible/roles/finding_aid_discovery/files/src/spec/**.rb
+  #       - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
   tags:
     - build
 # -- End - test dev image
