@@ -99,12 +99,12 @@ rspec_app_test:
   allow_failure: true
   variables:
     RAILS_ENV: "test"
-  # rules:
-  #   - if: $DISABLE_RSPEC_TEST == "true"
-  #     when: never
-  #   - exists:
-  #       - ansible/roles/finding_aid_discovery/files/src/spec/**.rb
-  #       - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
+  rules:
+    - if: $DISABLE_RSPEC_TEST == "true"
+      when: never
+    - exists:
+        - ansible/roles/finding_aid_discovery/files/src/spec/**.rb
+        - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
   tags:
     - build
 # -- End - test dev image
