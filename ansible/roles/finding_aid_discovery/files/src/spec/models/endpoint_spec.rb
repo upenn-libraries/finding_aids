@@ -16,17 +16,42 @@ describe Endpoint do
     end
   end
 
-  context 'validations' do
-    context 'harvest configuration' do
-      let(:bad_type_config_endpoint) do
-        build(:endpoint, harvest_config: { url: '', type: 'gopher' })
-      end
+  describe '#slug' do
+    let(:endpoint) { build(:endpoint) }
 
-      it 'has validation errors for url and type' do
-        bad_type_config_endpoint.valid?
-        expect(bad_type_config_endpoint.errors.attribute_names).to include :url, :type
-        expect(bad_type_config_endpoint.errors.where(:type).first.type).to eq :inclusion
-      end
+    it 'must be present' do
+      endpoint.slug = nil
+      expect(endpoint.valid?).to be false
+      expect(endpoint.errors[:slug]).to include('can\'t be blank')
+    end
+
+    it 'must be unique' do
+      new_endpoint = create(:endpoint, :index_harvest)
+      endpoint.slug = new_endpoint.slug
+      expect(endpoint.valid?).to be false
+      expect(endpoint.errors[:slug]).to include('has already been taken')
+    end
+
+    it 'must only contain lowercase letters and underscores' do
+      endpoint.slug = 'PLAC_DF'
+      expect(endpoint.valid?).to be false
+      expect(endpoint.errors[:slug]).to include('is invalid')
+    end
+  end
+
+  describe '#harvest_config' do
+    let(:endpoint) { build(:endpoint) }
+
+    it 'must include url' do
+      endpoint.harvest_config = { url: '', type: 'index' }
+      expect(endpoint.valid?).to be false
+      expect(endpoint.errors[:url]).to include('can\'t be blank')
+    end
+
+    it 'must include valid type' do
+      endpoint.harvest_config = { url: 'https://example.com', type: 'gopher' }
+      expect(endpoint.valid?).to be false
+      expect(endpoint.errors[:type]).to include 'is not included in the list'
     end
   end
 
