@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Extracts URLs for XML files from an Endpoint's defined URL
 # Usage: IndexExtractor.new(endpoint).files
 class IndexExtractor

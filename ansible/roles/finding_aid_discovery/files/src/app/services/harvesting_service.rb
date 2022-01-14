@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Hardworking class to do the actual Endpoint extraction and file download, parsing and indexing
 # Usage: HarvestingService.new(endpoint).harvest
 class HarvestingService
@@ -25,7 +27,7 @@ class HarvestingService
       sleep CRAWL_DELAY
     end
 
-    process_removals(harvested_doc_ids: @documents.collect { |doc| doc[:id] })
+    process_removals(harvested_doc_ids: @documents.pluck(:id))
     index_documents
     save_outcomes
     send_notifications
@@ -61,10 +63,9 @@ class HarvestingService
   end
 
   def send_notifications
-   HarvestNotificationMailer.with(endpoint: @endpoint)
-                            .send("#{@endpoint.last_harvest.status}_harvest_notification")
-                            .deliver_now # TODO: Should swap this to deliver_later when we get our job queues configured.
-
+    HarvestNotificationMailer.with(endpoint: @endpoint)
+                             .send("#{@endpoint.last_harvest.status}_harvest_notification")
+                             .deliver_now # TODO: Should swap this to deliver_later when we get our job queues configured.
   end
 
   private

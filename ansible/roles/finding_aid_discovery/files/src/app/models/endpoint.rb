@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # Represent a partner's endpoint from which we will harvest records
 class Endpoint < ApplicationRecord
-  TYPES = %w[index]
+  TYPES = %w[index].freeze
 
   validates :slug, presence: true, uniqueness: true
   validates :type, presence: true, inclusion: TYPES
