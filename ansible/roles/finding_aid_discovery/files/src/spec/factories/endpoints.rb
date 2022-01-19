@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :endpoint do
-    slug { Faker::Internet.unique.slug }
+    slug { Faker::Internet.unique.slug(glue: '_') }
     public_contacts { ['public@test.org'] }
     tech_contacts { ['tech@test.org'] }
 
