@@ -77,6 +77,7 @@ COPY --from=base ${PROJECT_ROOT} ${PROJECT_ROOT}
 RUN apk add --no-cache \
         build-base \
         curl \
+        git \
         nodejs \
         postgresql-dev \
         shadow \
