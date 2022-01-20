@@ -3,17 +3,15 @@
 require 'rails_helper'
 
 describe Endpoint do
-  context 'basic attributes' do
-    let(:index_endpoint) { build(:endpoint, :index_harvest) }
+  let(:index_endpoint) { build(:endpoint, :index_harvest) }
 
-    it 'has no validation errors' do
-      expect(index_endpoint.valid?).to be true
-    end
+  it 'has no validation errors' do
+    expect(index_endpoint.valid?).to be true
+  end
 
-    it 'has functioning JSON accessor methods' do
-      expect(index_endpoint.url).to eq 'https://www.test.com/pacscl'
-      expect(index_endpoint.type).to eq 'index'
-    end
+  it 'has functioning JSON accessor methods' do
+    expect(index_endpoint.url).to eq 'https://www.test.com/pacscl'
+    expect(index_endpoint.type).to eq 'index'
   end
 
   describe '#slug' do
@@ -115,18 +113,19 @@ describe Endpoint do
       let(:endpoint) do
         build(:endpoint, :index_harvest, :harvest_with_removals)
       end
+      let(:removed_files) do
+        [
+          { 'id' => 'removed-record-1', 'status' => 'removed' },
+          { 'id' => 'removed-record-2', 'status' => 'removed' }
+        ]
+      end
 
       it 'removals returns true' do
         expect(endpoint.last_harvest.removals?).to be true
       end
 
       it 'list files that were removed' do
-        expect(
-          endpoint.last_harvest.removed_files
-        ).to match_array([
-                           { 'id' => 'removed-record-1', 'status' => 'removed' },
-                           { 'id' => 'removed-record-2', 'status' => 'removed' }
-                         ])
+        expect(endpoint.last_harvest.removed_files).to match_array(removed_files)
       end
     end
   end

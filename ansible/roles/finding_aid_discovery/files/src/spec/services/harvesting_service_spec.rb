@@ -55,6 +55,13 @@ describe HarvestingService do
     context 'when EAD cannot not be retrieved because of a HTTP error' do
       let(:url) { 'https://www.test.com/not_here.xml' }
       let(:xml_file) { IndexExtractor::XMLFile.new(url) }
+      let(:expected_file_error_hash) do
+        [{
+          'filename' => url,
+          'status' => 'failed',
+          'errors' => ['Problem downloading file: 404 Not Found']
+        }]
+      end
 
       before do
         allow_any_instance_of(IndexExtractor).to receive(:files).and_return([xml_file])
@@ -64,10 +71,7 @@ describe HarvestingService do
       end
 
       it 'saves file error information to endpoint' do
-        file_error_hash = endpoint.last_harvest.files.first
-        expect(file_error_hash.keys).to include 'filename', 'status', 'errors'
-        expect(file_error_hash['status']).to eq 'failed'
-        expect(file_error_hash['errors'].first).to include '404 Not Found'
+        expect(endpoint.last_harvest.files).to match(expected_file_error_hash)
       end
 
       it 'sends partial harvest notification to tech contacts' do
