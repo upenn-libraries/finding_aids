@@ -19,14 +19,14 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def ead_id(doc)
-    doc.at_css('eadheader eadid').try :text
+    doc.at_xpath('.//eadheader/eadid').try :text
   end
 
   # https://www.loc.gov/ead/tglib/elements/unitid.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def unit_id(doc)
-    doc.at_css('archdesc did unitid').try :text
+    doc.at_xpath('.//archdesc/did/unitid').try :text
   end
 
   # @return [Array]
@@ -38,28 +38,28 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def title(doc)
-    doc.at_css('archdesc did unittitle').try :text # this can/is/will be multivalued, sometimes with a 'filing' attr
+    doc.at_xpath('.//archdesc/did/unittitle').try :text # this can/is/will be multivalued, sometimes with a 'filing' attr
   end
 
   # https://www.loc.gov/ead/tglib/elements/extent.html
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def extent(doc)
-    doc.css('archdesc did physdesc extent').map { |t| t.try :text }
+    doc.xpath('.//archdesc/did/physdesc/extent').map { |t| t.try :text }
   end
 
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def inclusive_date(doc)
-    doc.at_css('archdesc did unitdate').try :text
+    doc.at_xpath('.//archdesc/did/unitdate').try :text
   end
 
   # https://www.loc.gov/ead/tglib/elements/abstract.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def abstract_scope_contents(doc)
-    doc.at_css('archdesc did abstract').try :text
+    doc.at_xpath('.//archdesc/did/abstract').try :text
   end
 
   def date_added(doc)
@@ -74,7 +74,7 @@ class EadParser
   # @return [Array]
   # @param [Nokogiri::XML::Document] doc
   def repositories(doc)
-    doc.css('archdesc did repository').map do |node|
+    doc.xpath('.//archdesc/did/repository').map do |node|
       node.text.try(:strip)
     end
   end
@@ -96,11 +96,13 @@ class EadParser
       node.text.try(:strip)
     end
   end
+
   def subjects(doc)
     doc.xpath('.//controlaccess/subject').map do |node|
       node.text.try(:strip)
     end
   end
+
   def places(doc)
     doc.xpath('.//controlaccess/geogname').map do |node|
       node.text.try(:strip)
