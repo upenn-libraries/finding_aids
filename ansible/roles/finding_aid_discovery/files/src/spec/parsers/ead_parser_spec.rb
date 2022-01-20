@@ -5,7 +5,7 @@ require 'rails_helper'
 describe EadParser do
   let(:endpoint) { build :endpoint, :index_harvest }
   let(:parser) { described_class.new endpoint }
- 
+
   describe '#parse' do
     let(:hash) { parser.parse(url, xml) }
 
@@ -22,7 +22,9 @@ describe EadParser do
       end
 
       it 'has expected value for title_tsim' do
-        expect(hash[:title_tsim]).to eq 'Compiled birth, death, marriage records within the area of Philadelphia Yearly Meeting'
+        expect(
+          hash[:title_tsim]
+        ).to eq 'Compiled birth, death, marriage records within the area of Philadelphia Yearly Meeting'
       end
     end
 
@@ -39,8 +41,7 @@ describe EadParser do
       end
 
       it 'has the right creator' do
-        expect(hash[:creator_ssim]).to eq ['Butler, Mary, 1903-1970',
-                                           'Fewkes, Vladimir']
+        expect(hash[:creator_ssim]).to eq(['Butler, Mary, 1903-1970', 'Fewkes, Vladimir'])
       end
 
       it 'has the right unit id' do
@@ -60,35 +61,31 @@ describe EadParser do
       end
 
       it 'has the right people' do
-        expect(hash[:people_ssim]).to eq [
+        expect(hash[:people_ssim]).to eq([
                                            'Jayne, Horace Howard Furness, 1898-1975',
                                            'Johnson, Eldridge Reeves, b. 1867-d. 1945',
                                            'Vaillant, George C., b.1901-d.1945'
-                                         ]
+                                         ])
       end
 
       it 'has the right subjects' do
-        expect(hash[:subjects_ssim]).to eq [
+        expect(hash[:subjects_ssim]).to eq([
                                              'Physical anthropology',
                                              'WPA Statewide Museum Service'
-                                           ]
+                                           ])
       end
-      
+
       it 'has the right places' do
-        expect(hash[:places_ssim]).to eq [
-                                           'Alaska',
-                                           'Guatemala',
-                                           'Marsa Matruh (Egypt)',
-                                           'Piedras Negras site (Guatemala)'
-                                         ]
+        expect(
+          hash[:places_ssim]
+        ).to eq(['Alaska', 'Guatemala', 'Marsa Matruh (Egypt)', 'Piedras Negras site (Guatemala)'])
       end
-      
+
       it 'has the right corpnames' do
-        expect(hash[:corpnames_ssim]).to eq [
+        expect(hash[:corpnames_ssim]).to eq([
                                               'Fairmount Park Commission (Philadelphia, Pa.).',
                                               'University of Pennsylvania. Museum of Archaeology and Anthropology.'
-                                            ]
-
+                                            ])
       end
     end
   end
