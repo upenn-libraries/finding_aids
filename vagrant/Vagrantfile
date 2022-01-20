@@ -3,7 +3,7 @@
 
 # Arrange nodes in reverse order so the manager is the last vm to be provisioned
 cluster = {
-  "finding-aid-discovery-manager" => { :ip => "10.10.2.206", :cpus => 1, :mem => 2048, :port => 2020 }
+  "finding-aid-discovery-manager" => { :ip => "10.10.2.206", :cpus => 2, :mem => 4096, :port => 2020 }
 }
 
 # Function to get ansible vault password
