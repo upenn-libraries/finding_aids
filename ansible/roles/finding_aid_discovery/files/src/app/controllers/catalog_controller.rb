@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Blacklight controller configuring search and record pages.
 class CatalogController < ApplicationController
   include Blacklight::Catalog
 
@@ -73,8 +74,10 @@ class CatalogController < ApplicationController
     # facet bar
     #
     # set :index_range to true if you want the facet pagination view to have facet prefix-based navigation
-    #  (useful when user clicks "more" on a large facet and wants to navigate alphabetically across a large set of results)
-    # :index_range can be an array or range of prefixes that will be used to create the navigation (note: It is case sensitive when searching values)
+    #  (useful when user clicks "more" on a large facet and wants to navigate alphabetically
+    #   across a large set of results)
+    # :index_range can be an array or range of prefixes that will be used to create the navigation
+    #              (note: It is case sensitive when searching values)
 
     config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint')
     config.add_facet_field 'repositories_ssim', label: I18n.t('fields.repository')
