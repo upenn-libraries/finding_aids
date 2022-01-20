@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe IndexExtractor do
-  let(:endpoint) { FactoryBot.build :endpoint, :index_harvest }
+  let(:endpoint) { build :endpoint, :index_harvest }
   let(:html) { file_fixture('xml_listing.html').read }
   let(:extractor) { described_class.new(endpoint) }
 
-  context '#files' do
+  describe '#files' do
     subject(:files) { extractor.files }
 
     before do
@@ -26,11 +28,11 @@ describe IndexExtractor do
 
     it 'returns XMLFile objects with correct urls' do
       expect(files.map(&:url)).to match_array([
-                                    'https://www.geocities.com/OM_D767.xml',
-                                    'https://www.test.com/pacscl/OM_E467_S53.xml?query=pram',
-                                    'https://www.test.com/pacscl/OM_LMOR.xml',
-                                    'https://www.test.com/pacscl/OM_PN2277.xml?query=param#anchor',
-                                    'https://www.test.com/pacscl/PS2043__A44.xml'
+                                                'https://www.geocities.com/OM_D767.xml',
+                                                'https://www.test.com/pacscl/OM_E467_S53.xml?query=pram',
+                                                'https://www.test.com/pacscl/OM_LMOR.xml',
+                                                'https://www.test.com/pacscl/OM_PN2277.xml?query=param#anchor',
+                                                'https://www.test.com/pacscl/PS2043__A44.xml'
                                               ])
     end
 

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 
 # downloads files, setting appropriate headers and retrying as needed
 class DownloadService
-  HEADERS = { 'User-Agent' => 'PACSCL Discovery harvester' }
+  HEADERS = { 'User-Agent' => 'PACSCL Discovery harvester' }.freeze
 
   # @param [String] url
   def self.fetch(url)

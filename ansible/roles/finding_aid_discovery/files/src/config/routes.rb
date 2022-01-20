@@ -1,5 +1,6 @@
-Rails.application.routes.draw do
+# frozen_string_literal: true
 
+Rails.application.routes.draw do
   mount Blacklight::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new
 

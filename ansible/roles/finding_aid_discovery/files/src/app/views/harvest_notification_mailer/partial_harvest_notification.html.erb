@@ -1,0 +1,16 @@
+<h1>Last Harvest Partially Completed</h1>
+
+<strong>Endpoint Slug:</strong> <%= @endpoint.slug %>
+<strong>Endpoint URL:</strong> <%= @endpoint.url %>
+<strong>Harvest Date:</strong> <%= @endpoint.last_harvest.date %>
+
+The following files could not be harvested:
+<ul>
+  <% @endpoint.last_harvest.problem_files.each do |file| %>
+    <li>
+      <%= file['filename'] %>: <%= file['errors'].join(', ') %>
+    </li>
+  <% end %>
+</ul>
+
+For more information visit the endpoint's <%= link_to 'status page', endpoint_url(@endpoint.slug) %>.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 namespace :tools do
@@ -32,7 +34,7 @@ namespace :tools do
   desc 'Sync index type endpoints'
   task sync_index_endpoints: :environment do
     # Read CSV data
-    index_endpoint_csv = File.join Rails.root, 'data', 'index_endpoints.csv'
+    index_endpoint_csv = Rails.root.join('data/index_endpoints.csv')
     index_endpoint_data = CSV.parse(File.read(index_endpoint_csv), headers: true, strip: true)
 
     # Get current inventory for diffing later
@@ -53,11 +55,12 @@ namespace :tools do
       else
         puts "Will create new endpoint #{slug}."
         Endpoint.new(
-   { slug: slug,
-              public_contacts: Array.wrap(endpoint_info['public_contact']),
-              tech_contacts: Array.wrap(endpoint_info['tech_contact']),
-              harvest_config: { type: 'index',
-                                url: endpoint_info['url'] } }
+          {
+            slug: slug,
+            public_contacts: Array.wrap(endpoint_info['public_contact']),
+            tech_contacts: Array.wrap(endpoint_info['tech_contact']),
+            harvest_config: { type: 'index', url: endpoint_info['url'] }
+          }
         )
       end
     end

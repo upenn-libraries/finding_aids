@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Hardworking class to do the actual Endpoint extraction and file download, parsing and indexing
 # Usage: HarvestingService.new(endpoint).harvest
 class HarvestingService
@@ -25,12 +27,13 @@ class HarvestingService
       sleep CRAWL_DELAY
     end
 
-    process_removals(harvested_doc_ids: @documents.collect { |doc| doc[:id] })
+    process_removals(harvested_doc_ids: @documents.pluck(:id))
     index_documents
     save_outcomes
     send_notifications
   rescue OpenURI::HTTPError => e
     fatal_error "Problem extracting URLs from Endpoint URL: #{e.message}"
+    send_notifications
   end
 
   # @param [String] url
@@ -60,7 +63,9 @@ class HarvestingService
   end
 
   def send_notifications
-    # TODO: send mail to @endpoint.tech_contacts
+    HarvestNotificationMailer.with(endpoint: @endpoint)
+                             .send("#{@endpoint.last_harvest.status}_harvest_notification")
+                             .deliver_now # TODO: Should swap this to deliver_later when we get our job queues configured.
   end
 
   private

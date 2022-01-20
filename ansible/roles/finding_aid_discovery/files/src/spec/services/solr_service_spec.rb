@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe SolrService do
-  let(:solr) { SolrService.new }
+  let(:solr) { described_class.new }
 
   def sample_documents(endpoint_slug, count = 2)
     (1..count).map do |_i|
@@ -14,22 +16,26 @@ describe SolrService do
     solr.delete_all
     solr.commit
   end
+
+  after do
+    solr.delete_all
+    solr.commit
+  end
+
   describe '#find_ids_by_endpoint' do
-    let(:endpoint) { FactoryBot.build(:endpoint, :index_harvest) }
+    let(:endpoint) { build(:endpoint, :index_harvest) }
     let(:endpoint_sample_documents) { sample_documents(endpoint.slug) }
+
     before do
       solr.add_many documents: endpoint_sample_documents
       solr.add_many documents: sample_documents('dont-return-these')
       solr.commit
     end
+
     it "finds only the ID for an specified endpoint's records" do
       ids = solr.find_ids_by_endpoint endpoint
-      expect(ids).to include(*endpoint_sample_documents.collect { |d| d[:id] })
-      expect(ids).not_to include(*sample_documents('dont-return-these').collect { |d| d[:id] })
+      expect(ids).to include(*endpoint_sample_documents.pluck(:id))
+      expect(ids).not_to include(*sample_documents('dont-return-these').pluck(:id))
     end
-  end
-  after do
-    solr.delete_all
-    solr.commit
   end
 end

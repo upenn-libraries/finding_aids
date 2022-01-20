@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # Represent a partner's endpoint from which we will harvest records
 class Endpoint < ApplicationRecord
-  TYPES = %w[index]
+  TYPES = %w[index].freeze
 
-  validates :slug, presence: true, uniqueness: true
+  validates :slug, presence: true, uniqueness: true, format: { with: /\A[a-z_]+\z/ }
   validates :type, presence: true, inclusion: TYPES
   validates :url, presence: true
 
@@ -23,6 +25,7 @@ class Endpoint < ApplicationRecord
     @last_harvest ||= LastHarvest.new(last_harvest_results)
   end
 
+  # Wrapper for last_harvest_results providing accessor and helper methods.
   class LastHarvest
     PARTIAL  = 'partial'
     COMPLETE = 'complete'

@@ -1,4 +1,6 @@
-require "active_support/core_ext/integer/time"
+# frozen_string_literal: true
+
+require 'active_support/core_ext/integer/time'
 
 # The test environment is used exclusively to run your application's
 # test suite. You never need to work with it otherwise. Remember that
@@ -7,7 +9,6 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
 
   # Disable Rails' HostAuthorization middleware by clearing out
   # allowed host values - do not use other environments
@@ -48,6 +49,9 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+
+  # Set hostname for urls generated within emails
+  config.action_mailer.default_url_options = { host: 'example.com' }
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr

@@ -1,4 +1,6 @@
-require "active_support/core_ext/integer/time"
+# frozen_string_literal: true
+
+require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -16,7 +18,7 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp', 'caching-dev.txt').exist?
+  if Rails.root.join('tmp/caching-dev.txt').exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
@@ -33,8 +35,14 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # Tell Action Mailer not to deliver emails to the real world.
+  # The :file delivery method saves the emails in tmp/mails
+  config.action_mailer.delivery_method = :file
+
+  # Set hostname for urls generated within emails
+  config.action_mailer.default_url_options = { host: 'finding-aid-discovery-dev.library.upenn.edu' }
+
+  # config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.perform_caching = false
 
