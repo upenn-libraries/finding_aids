@@ -2,42 +2,41 @@
 
 Are there potentially more copy fields in the solr configuration?
 
-| Old Solr Field Name           | New Solr Field Name | Mapping Rule | Facet? | Searchable? | Displayed In | Note |
-|-------------------------------| ----- |-------------|--------|-------------| ----- |------|
-| id                            | | |        |             | Index, Show | |
-| format                        | | "ead"       |        |             |      | Probably not needed anymore? |
-| xml                           | | | | | | | 
-| email_field                   | | | | | | | 
-| link_url_field                | | | | | | | 
-| repository_url_field          | | | | | | | 
-| creator_field                 | | | | | | | 
-| title_field                   | | | | | | | 
-| unitid_field                  | | | | | | | 
-| prettyunitid_field            | | | | | | | 
-| extent_field                  | | | | | | | 
-| inclusive_date_field          | | | | | | | 
-| bulk_date_field               | | | | | | | 
-| abstract_scope_contents_field | | | | | | | 
-| date_added_field              | | | | | | | 
-| preferred_citation_field      | | | | | | | 
-| repository1_field             | | | | | | | 
-| repository2_field             | | | | | | | 
-| repository3_field             | | | | | | | 
-| top_repository_facet          | | | | | | | 
-| repository_facet              | | | | | | | 
-| date_facet                    | | | | | | | 
-| bulk_date_facet               | | | | | | | 
-| language_facet                | | | | | | | 
-| name_facet                    | | | | | | | 
-| subject_person_facet          | | | | | | | 
-| subject_corporate_name_facet  | | | | | | | 
-| creator_facet                 | | | | | | | 
-| donor_facet                   | | | | | | | 
-| subject_place_facet           | | | | | | | 
-| subject_topic_facet           | | | | | | | 
-| genre_form_facet              | | | | | | | 
-| header_bucket_search          | | | | | | | 
-| summary_bucket_search         | | | | | | | 
-| content_bucket_search         | | | | | | | 
-| union_bucket_search           | | | | | | | 
-
+| Old Solr Field Name           | New Solr Field Name         | Mapping Rule                                                 | Facet? | Searchable? | Displayed In            | Note                                                                                    |
+|-------------------------------|-----------------------------|--------------------------------------------------------------|--------|-------------|-------------------------|-----------------------------------------------------------------------------------------|
+| id                            | id                          | join endpoint slug and XML file basename with _              | no     | yes         | show?                   | confirm we are generating unique, URL-safe values                                       |
+| format                        |                             | "ead"                                                        | no     | no          |                         | Probably not needed anymore?                                                            |
+| xml                           | xml_ss                      | raw XML                                                      | no     | no          |                         | any escaping needed? this will eb parsed for collection-level info display on show page | 
+| email_field                   | contact_email_ssm           | all `public_contacts` emails from Endpoint                   | no     | no          |                         |                                                                                         | 
+| link_url_field                |                             |                                                              |        |             |                         | link to EAD itself?                                                                     | 
+| repository_url_field          |                             |                                                              |        |             |                         | link to Repository webpage?                                                             | 
+| creator_field                 | creator_ssim                | all values @ `.//archdesc/did/origination[@label="creator"]` | yes?   | yes         | index, show             |                                                                                         | 
+| title_field                   | title_tsim                  | single value @ `.//archdesc/did/unittitle`                   | no?    | yes         | index, show             | should the parsing be/handle multivalued titles?                                        | 
+| unitid_field                  | unit_id_ssi                 | single value @ `.//archdesc/did/unitid`                      | no     | yes?        |                         | how is this related to the `id` field?                                                  | 
+| prettyunitid_field            |                             |                                                              |        |             |                         | ???                                                                                     | 
+| extent_field                  | extent_ssim                 | all values @ `.//archdesc/did/physdesc/extent`               | no     | yes?        | index, show             |                                                                                         | 
+| inclusive_date_field          | inclusive_date_ss           | single value @ `.//archdesc/did/unitdate`                    |        |             |                         |                                                                                         | 
+| bulk_date_field               |                             |                                                              |        |             | index, show             | i think this is the "raw" date info from the EAD                                        | 
+| abstract_scope_contents_field | abstract_scope_contents_tsi | single value @ `.//archdesc/did/abstract`                    | no     | yes         | index (truncated), show | this field often contains HTML markup and a lot of text                                 | 
+| date_added_field              |                             |                                                              |        |             |                         | is this updated on every re-ingest? seems useless if it is                              | 
+| preferred_citation_field      |                             |                                                              |        |             |                         |                                                                                         | 
+| repository1_field             |                             |                                                              |        |             |                         | why?                                                                                    | 
+| repository2_field             |                             |                                                              |        |             |                         | why?                                                                                    | 
+| repository3_field             |                             |                                                              |        |             |                         | why?                                                                                    | 
+| top_repository_facet          |                             |                                                              |        |             |                         | why?                                                                                    | 
+| repository_facet              | repositories_ssim           | all values @ `.//archdesc/did/repository`                    | yes    | yes         | index, show             |                                                                                         | 
+| date_facet                    |                             |                                                              |        |             |                         |                                                                                         | 
+| bulk_date_facet               |                             |                                                              |        |             |                         |                                                                                         | 
+| language_facet                |                             |                                                              |        |             |                         |                                                                                         | 
+| name_facet                    | people_ssim ?               | all values @ `.//controlaccess/persname`                     | yes    | yes         |                         | what is the distinction between source for `name_facet` and `subject_person_facet`?     | 
+| subject_person_facet          | people_ssim ?               | all values @ `.//controlaccess/persname`                     | yes    | yes         |                         |                                                                                         | 
+| subject_corporate_name_facet  | corpnames_ssim              | all values @ `.//controlaccess/corpname`                     | yes    | yes         |                         |                                                                                         | 
+| creator_facet                 |                             |                                                              |        |             |                         |                                                                                         | 
+| donor_facet                   |                             |                                                              |        |             |                         |                                                                                         | 
+| subject_place_facet           | places_ssim                 | all values @ `.//controlaccess/geogname`                     | yes    | yes         |                         |                                                                                         | 
+| subject_topic_facet           | subjects_ssim ?             | all values @ `.//controlaccess/subject`                      | yes    | yes         |                         |                                                                                         | 
+| genre_form_facet              |                             |                                                              |        |             |                         |                                                                                         | 
+| header_bucket_search          |                             |                                                              |        | yes         |                         | probably aggregates all text from EAD header fields                                     | 
+| summary_bucket_search         |                             |                                                              |        | yes         |                         |                                                                                         | 
+| content_bucket_search         |                             |                                                              |        | yes         |                         |                                                                                         | 
+| union_bucket_search           |                             |                                                              |        | yes         |                         | probably aggregates all text from fields intended to be searched over                   | 
