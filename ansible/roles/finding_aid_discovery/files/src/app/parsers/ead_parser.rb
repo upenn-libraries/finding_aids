@@ -28,7 +28,7 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def unit_id(doc)
-    doc.at_xpath('.//archdesc/did/unitid').try :text
+    doc.at_xpath("/ead/archdesc/did/unitid[not(@audience='internal')]").try :text
   end
 
   # @return [Array]
@@ -40,45 +40,77 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def title(doc)
-    doc.at_xpath('.//archdesc/did/unittitle').try :text # this can/is/will be multivalued, sometimes with a 'filing' attr
+    doc.at_xpath('/ead/archdesc/did/unittitle').try :text
   end
 
   # https://www.loc.gov/ead/tglib/elements/extent.html
   # @param [Nokogiri::XML::Document] doc
-  # @return [Array]
+  # @return [String]
   def extent(doc)
-    doc.xpath('.//archdesc/did/physdesc/extent').map { |t| t.try :text }
+    raw_1 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[1]').try :text
+    raw_2 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[2]').try :text
+    raw_1.gsub!('.0', '')
+    return raw_1 if raw_2.blank?
+
+    "#{raw_1} (#{raw_2})"
   end
 
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def inclusive_date(doc)
-    doc.at_xpath('.//archdesc/did/unitdate').try :text
+    raw = doc.at_xpath("/ead/archdesc/did/unitdate[@type='inclusive']").try :text
+    return raw unless raw.blank?
+
+    doc.at_xpath("/ead/archdesc/did/unitdate[not(@type='bulk')]").try :text
   end
 
   # https://www.loc.gov/ead/tglib/elements/abstract.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def abstract_scope_contents(doc)
-    doc.at_xpath('.//archdesc/did/abstract').try :text
+    raw = doc.at_xpath('.//archdesc/did/abstract').try :text
+    raw || '' # TODO: confirm legacy indexing explicitly stored empty string here if text is not present
   end
 
-  def date_added(doc); end
-
-  def preferred_citation(doc); end
-
-  # https://www.loc.gov/ead/tglib/elements/repository.html
-  # @return [Array]
   # @param [Nokogiri::XML::Document] doc
-  def repositories(doc)
-    doc.xpath('.//archdesc/did/repository').map do |node|
-      node.text.try(:strip)
+  # @return [String]
+  def date_added(doc)
+    doc.at_xpath('/ead/eadheader/profiledesc/creation/date')
+       .try(:text)
+      &.gsub(/T.*/, '')
+  end
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [String]
+  def preferred_citation(doc)
+    doc.at_xpath('/ead/archdesc/prefercite/p').try :text
+  end
+
+
+  # Return an Array of the repository name split on any ':' present
+  # https://www.loc.gov/ead/tglib/elements/repository.html
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def split_repositories(doc)
+    @split_repositories ||= repository(doc).split(':').map(&:strip)
+  end
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def repository(doc)
+    @repository ||= if doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).present?
+      doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text)
+    else
+      doc.at_xpath('/ead/archdesc/did/repository').try(:text)
     end
   end
 
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
   def creator(doc)
-    doc.xpath('.//archdesc/did/origination[@label="creator"]').map do |node|
+    # TODO: this should look for (persname|corpname|famname)
+    doc.xpath("/ead/archdesc/did/origination[@label='creator']/persname").map do |node|
       node.text.try(:strip)
     end
   end
@@ -122,10 +154,10 @@ class EadParser
       unit_id_ssi: unit_id(doc),
       contact_emails_ssm: contact_emails,
       title_tsim: title(doc),
-      extent_ssim: extent(doc),
+      extent_ssi: extent(doc),
       inclusive_date_ss: inclusive_date(doc),
       abstract_scope_contents_tsi: abstract_scope_contents(doc),
-      repositories_ssim: repositories(doc),
+      repositories_ssim: split_repositories(doc),
       creator_ssim: creator(doc),
       people_ssim: people(doc),
       places_ssim: places(doc),

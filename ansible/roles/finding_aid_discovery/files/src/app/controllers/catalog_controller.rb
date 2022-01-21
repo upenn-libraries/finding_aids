@@ -90,14 +90,14 @@ class CatalogController < ApplicationController
 
     config.add_index_field 'title_tsim', label: I18n.t('fields.title')
     config.add_index_field 'repositories_ssim', label: I18n.t('fields.repository')
-    config.add_index_field 'extent_ssim', label: I18n.t('fields.extent')
+    config.add_index_field 'extent_ssi', label: I18n.t('fields.extent')
     config.add_index_field 'inclusive_date_ss', label: I18n.t('fields.date')
 
     config.add_show_field 'ead_id_ssi', label: I18n.t('fields.internal_id')
     config.add_show_field 'unit_id_ssi', label: I18n.t('fields.ead_id')
     config.add_show_field 'title_tsim', label: I18n.t('fields.title')
     config.add_show_field 'repositories_ssim', label: I18n.t('fields.repository')
-    config.add_show_field 'extent_ssim', label: I18n.t('fields.extent')
+    config.add_show_field 'extent_ssi', label: I18n.t('fields.extent')
     config.add_show_field 'inclusive_date_ss', label: I18n.t('fields.date')
     config.add_show_field 'people_ssim', label: I18n.t('fields.people')
     config.add_show_field 'corpnames_ssim', label: I18n.t('fields.corpnames')

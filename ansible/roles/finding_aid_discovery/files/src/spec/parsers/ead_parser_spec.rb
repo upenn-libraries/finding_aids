@@ -49,7 +49,7 @@ describe EadParser do
       end
 
       it 'has the right extent' do
-        expect(hash[:extent_ssim]).to eq ['2.5 Linear feet']
+        expect(hash[:extent_ssi]).to eq '2.5 Linear feet'
       end
 
       it 'has the right inclusive date' do
