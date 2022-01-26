@@ -55,6 +55,10 @@
         <persname rules="dacs" source="local" role="Creator (cre)">Fewkes, Vladimir</persname>
       </origination>
     </did>
+    <prefercite>
+      <head>Preferred Citation</head>
+      <p>[Indicate the cited item or series here], WPA Information, AB 123, Penn Museum.</p>
+    </prefercite>
     <scopecontent id="ref177">
       <head>Scope and Contents note</head>
       <p>Between 1935 and 1942, the University Museum co-sponsored (with institutions such as the Fairmount Park Commission and the Pennsylvania Commission for the Fine Arts) at least eight Works Progress Administration projects as part of the State-wide Museum Assistance Program. Employee salaries for the WPA/University Museum projects were paid by the WPA; equipment, space, supplies, technical aid, and specimens were provided by the University Museum.</p>
@@ -78,6 +82,7 @@
       <persname rules="dacs" source="naf">Jayne, Horace Howard Furness, 1898-1975</persname>
       <persname rules="dacs" source="naf">Johnson, Eldridge Reeves, b. 1867-d. 1945</persname>
       <corpname rules="dacs" source="naf" role="Creator (cre)">University of Pennsylvania. Museum of Archaeology and Anthropology.</corpname>
+      <persname rules="dacs" source="naf" role="Donor (dnr)">Sir Michael Kanning IV, Duke of Snapfinger</persname>
       <persname rules="dacs" source="naf">Vaillant, George C., b.1901-d.1945</persname>
       <geogname source="lcsh">Alaska</geogname>
       <geogname source="lcsh">Guatemala</geogname>

@@ -36,12 +36,12 @@ describe EadParser do
         expect(hash[:title_tsim]).to eq 'Works Progress Administration Records'
       end
 
-      it 'has the right email' do
+      it 'has the right email(s)' do
         expect(hash[:contact_emails_ssm]).to eq endpoint.public_contacts
       end
 
-      it 'has the right creator' do
-        expect(hash[:creator_ssim]).to eq(['Butler, Mary, 1903-1970', 'Fewkes, Vladimir'])
+      it 'has the right creator(s)' do
+        expect(hash[:creators_ssim]).to eq(['Butler, Mary, 1903-1970', 'Fewkes, Vladimir'])
       end
 
       it 'has the right unit id' do
@@ -62,10 +62,11 @@ describe EadParser do
 
       it 'has the right people' do
         expect(hash[:people_ssim]).to eq([
-                                           'Jayne, Horace Howard Furness, 1898-1975',
-                                           'Johnson, Eldridge Reeves, b. 1867-d. 1945',
-                                           'Vaillant, George C., b.1901-d.1945'
-                                         ])
+         'Jayne, Horace Howard Furness, 1898-1975',
+         'Johnson, Eldridge Reeves, b. 1867-d. 1945',
+         'Sir Michael Kanning IV, Duke of Snapfinger',
+         'Vaillant, George C., b.1901-d.1945'
+        ])
       end
 
       it 'has the right subjects' do
@@ -83,9 +84,57 @@ describe EadParser do
 
       it 'has the right corpnames' do
         expect(hash[:corpnames_ssim]).to eq([
-                                              'Fairmount Park Commission (Philadelphia, Pa.).',
-                                              'University of Pennsylvania. Museum of Archaeology and Anthropology.'
-                                            ])
+          'Fairmount Park Commission (Philadelphia, Pa.).',
+          'University of Pennsylvania. Museum of Archaeology and Anthropology.'
+        ])
+      end
+
+      it 'has the right language(s)' do
+        expect(hash[:languages_ssim]).to eq(['English'])
+      end
+
+      it 'has the right full repository name' do
+        expect(hash[:repository_ssi]).to eq 'University of Pennsylvania: Penn Museum Archives'
+      end
+
+      it 'has the right repository name component 1' do
+        expect(hash[:repository_name_component_1_ssi]).to eq 'University of Pennsylvania'
+      end
+
+      it 'has the right repository name component 2' do
+        expect(hash[:repository_name_component_2_ssi]).to eq 'Penn Museum Archives'
+      end
+
+      it 'has the right repository name component 3' do
+        expect(hash[:repository_name_component_3_ssi]).to be_nil
+      end
+
+      it 'has the right preferred citation' do
+        expect(hash[:preferred_citation_ss]).to eq(
+          '[Indicate the cited item or series here], WPA Information, AB 123, Penn Museum.'
+        )
+      end
+
+      it 'has the right date added' do
+        expect(hash[:date_added_ssi]).to eq '2017-03-03'
+      end
+
+      it 'has the right donor(s)' do
+        expect(hash[:donors_ssim]).to eq ['Sir Michael Kanning IV, Duke of Snapfinger']
+      end
+
+      it 'has the right name(s)' do
+        expect(hash[:names_ssim]).to eq [
+          'Butler, Mary, 1903-1970',
+          'Fewkes, Vladimir',
+          'Fairmount Park Commission (Philadelphia, Pa.).',
+          'Jayne, Horace Howard Furness, 1898-1975',
+          'Johnson, Eldridge Reeves, b. 1867-d. 1945',
+          'University of Pennsylvania. Museum of Archaeology and Anthropology.',
+          'Sir Michael Kanning IV, Duke of Snapfinger',
+          'Vaillant, George C., b.1901-d.1945'
+          ]
+
       end
     end
   end

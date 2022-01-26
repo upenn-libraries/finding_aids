@@ -87,7 +87,6 @@ class EadParser
     doc.at_xpath('/ead/archdesc/prefercite/p').try :text
   end
 
-
   # Return an Array of the repository name split on any ':' present
   # https://www.loc.gov/ead/tglib/elements/repository.html
   # @param [Nokogiri::XML::Document] doc
@@ -108,33 +107,68 @@ class EadParser
 
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
-  def creator(doc)
-    # TODO: this should look for (persname|corpname|famname)
-    doc.xpath("/ead/archdesc/did/origination[@label='creator']/persname").map do |node|
+  def creators(doc)
+    doc.xpath("/ead/archdesc/did/origination[@label='creator']/persname |
+               /ead/archdesc/did/origination[@label='creator']/corpname |
+               /ead/archdesc/did/origination[@label='creator']/famname").map do |node|
       node.text.try(:strip)
     end
   end
 
+  # TODO: what distinguishes this from other fields, functionally?
+  def names(doc)
+    doc.xpath(".//controlaccess/persname | .//controlaccess/famname |
+               .//controlaccess/corpname | //origination[@label='creator']").map do |node|
+      node.text.try(:strip)
+    end
+  end
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
   def people(doc)
-    doc.xpath('.//controlaccess/persname').map do |node|
+    doc.xpath('.//controlaccess/persname | .//controlaccess/famname').map do |node|
       node.text.try(:strip)
     end
   end
 
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
   def corp_names(doc)
     doc.xpath('.//controlaccess/corpname').map do |node|
       node.text.try(:strip)
     end
   end
 
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
   def subjects(doc)
     doc.xpath('.//controlaccess/subject').map do |node|
       node.text.try(:strip)
     end
   end
 
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
   def places(doc)
     doc.xpath('.//controlaccess/geogname').map do |node|
+      node.text.try(:strip)
+    end
+  end
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def languages(doc)
+    doc.xpath('/ead/archdesc/did/langmaterial/language/@langcode').map do |node|
+      code = node.text.try(:strip)
+      iso_entry = ISO_639.find_by_code code
+      iso_entry.english_name || code
+    end
+  end
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def donor(doc)
+    doc.xpath(".//controlaccess/persname[@role='Donor (dnr)']").map do |node|
       node.text.try(:strip)
     end
   end
@@ -156,13 +190,22 @@ class EadParser
       title_tsim: title(doc),
       extent_ssi: extent(doc),
       inclusive_date_ss: inclusive_date(doc),
+      # date_ss: TODO,
+      date_added_ssi: date_added(doc),
+      languages_ssim: languages(doc),
       abstract_scope_contents_tsi: abstract_scope_contents(doc),
-      repositories_ssim: split_repositories(doc),
-      creator_ssim: creator(doc),
+      preferred_citation_ss: preferred_citation(doc),
+      repository_ssi: repository(doc),
+      creators_ssim: creators(doc),
       people_ssim: people(doc),
       places_ssim: places(doc),
       corpnames_ssim: corp_names(doc),
-      subjects_ssim: subjects(doc)
+      subjects_ssim: subjects(doc),
+      repository_name_component_1_ssi: split_repositories(doc)[0],
+      repository_name_component_2_ssi: split_repositories(doc)[1],
+      repository_name_component_3_ssi: split_repositories(doc)[2],
+      donors_ssim: donor(doc),
+      names_ssim: names(doc)
     }
   end
 end
