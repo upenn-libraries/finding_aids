@@ -53,12 +53,12 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def extent(doc)
-    raw_1 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[1]').try :text
-    raw_2 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[2]').try :text
-    raw_1.gsub!('.0', '')
-    return raw_1.downcase if raw_2.blank?
+    raw1 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[1]').try :text
+    raw2 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[2]').try :text
+    raw1.gsub!('.0', '')
+    return raw1.downcase if raw2.blank?
 
-    "#{raw_1} (#{raw_2})".downcase
+    "#{raw1} (#{raw2})".downcase
   end
 
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
@@ -66,7 +66,7 @@ class EadParser
   # @return [String]
   def inclusive_date(doc)
     raw = doc.at_xpath("/ead/archdesc/did/unitdate[@type='inclusive']").try :text
-    return raw unless raw.blank?
+    return raw unless raw.present?
 
     doc.at_xpath("/ead/archdesc/did/unitdate[not(@type='bulk')]").try(:text).try(:strip)
   end
@@ -113,11 +113,12 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def repository(doc)
-    @repository ||= if doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).present?
-      doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).try(:strip)
-    else
-      doc.at_xpath('/ead/archdesc/did/repository').try(:text).try(:strip)
-    end
+    @repository ||=
+      if doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).present?
+        doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).try(:strip)
+      else
+        doc.at_xpath('/ead/archdesc/did/repository').try(:text).try(:strip)
+      end
   end
 
   # https://www.loc.gov/ead/tglib/elements/origination.html

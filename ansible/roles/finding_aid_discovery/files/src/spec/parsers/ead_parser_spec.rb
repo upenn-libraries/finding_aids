@@ -45,10 +45,12 @@ describe EadParser do
       end
 
       it 'has the right creator(s)' do
-        expect(hash[:creators_ssim]).to eq([
-          'Butler, Mary, 1903-1970 (Creator)',
-          'Fewkes, Vladimir (Creator)'
-        ])
+        expect(hash[:creators_ssim]).to eq(
+          [
+            'Butler, Mary, 1903-1970 (Creator)',
+            'Fewkes, Vladimir (Creator)'
+          ]
+        )
       end
 
       it 'has the right unit id' do
@@ -74,32 +76,36 @@ describe EadParser do
       end
 
       it 'has the right people' do
-        expect(hash[:people_ssim]).to eq([
-         'Jayne, Horace Howard Furness, 1898-1975',
-         'Johnson, Eldridge Reeves, b. 1867-d. 1945',
-         'Sir Michael Kanning IV, Duke of Snapfinger',
-         'Vaillant, George C., b.1901-d.1945'
-        ])
+        expect(hash[:people_ssim]).to eq(
+          [
+            'Jayne, Horace Howard Furness, 1898-1975', 'Johnson, Eldridge Reeves, b. 1867-d. 1945',
+            'Sir Michael Kanning IV, Duke of Snapfinger', 'Vaillant, George C., b.1901-d.1945'
+          ]
+        )
       end
 
       it 'has the right subjects' do
-        expect(hash[:subjects_ssim]).to eq([
-         'Physical anthropology',
-         'WPA Statewide Museum Service'
-        ])
+        expect(hash[:subjects_ssim]).to eq(
+          [
+            'Physical anthropology',
+            'WPA Statewide Museum Service'
+          ]
+        )
       end
 
       it 'has the right places' do
-        expect(hash[:places_ssim]).to eq([
-          'Alaska', 'Guatemala', 'Marsa Matruh (Egypt)', 'Piedras Negras site (Guatemala)']
+        expect(hash[:places_ssim]).to eq(
+          ['Alaska', 'Guatemala', 'Marsa Matruh (Egypt)', 'Piedras Negras site (Guatemala)']
         )
       end
 
       it 'has the right corpnames' do
-        expect(hash[:corpnames_ssim]).to eq([
-          'Fairmount Park Commission (Philadelphia, Pa.).',
-          'University of Pennsylvania. Museum of Archaeology and Anthropology.'
-        ])
+        expect(hash[:corpnames_ssim]).to eq(
+          [
+            'Fairmount Park Commission (Philadelphia, Pa.).',
+            'University of Pennsylvania. Museum of Archaeology and Anthropology.'
+          ]
+        )
       end
 
       it 'has the right language(s)' do
@@ -136,10 +142,6 @@ describe EadParser do
         expect(hash[:bulk_date_ss]).to eq '1940'
       end
 
-      it 'has the right bulk date' do
-        expect(hash[:bulk_date_ss]).to eq '1940'
-      end
-
       it 'has the right donor(s)' do
         expect(hash[:donors_ssim]).to eq ['Sir Michael Kanning IV, Duke of Snapfinger']
       end
@@ -149,16 +151,17 @@ describe EadParser do
       end
 
       it 'has the right name(s)' do
-        expect(hash[:names_ssim]).to eq([
-          'Butler, Mary, 1903-1970',
-          'Fewkes, Vladimir',
-          'Fairmount Park Commission (Philadelphia, Pa.).',
-          'Jayne, Horace Howard Furness, 1898-1975',
-          'Johnson, Eldridge Reeves, b. 1867-d. 1945',
-          'University of Pennsylvania. Museum of Archaeology and Anthropology.',
-          'Sir Michael Kanning IV, Duke of Snapfinger',
-          'Vaillant, George C., b.1901-d.1945'
-        ])
+        expect(hash[:names_ssim]).to eq(
+          [
+            'Butler, Mary, 1903-1970', 'Fewkes, Vladimir',
+            'Fairmount Park Commission (Philadelphia, Pa.).',
+            'Jayne, Horace Howard Furness, 1898-1975',
+            'Johnson, Eldridge Reeves, b. 1867-d. 1945',
+            'University of Pennsylvania. Museum of Archaeology and Anthropology.',
+            'Sir Michael Kanning IV, Duke of Snapfinger',
+            'Vaillant, George C., b.1901-d.1945'
+          ]
+        )
       end
     end
   end
