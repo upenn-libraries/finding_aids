@@ -1,6 +1,7 @@
 # frozen_string_literal: true
-class CatalogController < ApplicationController
 
+# Blacklight controller configuring search and record pages.
+class CatalogController < ApplicationController
   include Blacklight::Catalog
 
   configure_blacklight do |config|
@@ -22,16 +23,16 @@ class CatalogController < ApplicationController
     }
 
     # solr path which will be added to solr base url before the other solr params.
-    #config.solr_path = 'select'
-    #config.document_solr_path = 'get'
+    # config.solr_path = 'select'
+    # config.document_solr_path = 'get'
 
     # items to show per page, each number in the array represent another option to choose from.
-    config.per_page = [10,20,50,100]
+    config.per_page = [10, 20, 50, 100]
 
     # solr field configuration for search results/index views
     config.index.title_field = :title_tsim
-    #config.index.display_type_field = 'format'
-    #config.index.thumbnail_field = 'thumbnail_path_ss'
+    # config.index.display_type_field = 'format'
+    # config.index.thumbnail_field = 'thumbnail_path_ss'
 
     config.add_results_document_tool(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
 
@@ -49,8 +50,8 @@ class CatalogController < ApplicationController
 
     # solr field configuration for document/show views
     config.show.title_field = :title_tsim
-    #config.show.display_type_field = 'format'
-    #config.show.thumbnail_field = 'thumbnail_path_ss'
+    # config.show.display_type_field = 'format'
+    # config.show.thumbnail_field = 'thumbnail_path_ss'
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -73,8 +74,10 @@ class CatalogController < ApplicationController
     # facet bar
     #
     # set :index_range to true if you want the facet pagination view to have facet prefix-based navigation
-    #  (useful when user clicks "more" on a large facet and wants to navigate alphabetically across a large set of results)
-    # :index_range can be an array or range of prefixes that will be used to create the navigation (note: It is case sensitive when searching values)
+    #  (useful when user clicks "more" on a large facet and wants to navigate alphabetically
+    #   across a large set of results)
+    # :index_range can be an array or range of prefixes that will be used to create the navigation
+    #              (note: It is case sensitive when searching values)
 
     config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint')
     config.add_facet_field 'repositories_ssim', label: I18n.t('fields.repository')

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # First, load Cuprite Capybara integration
-require "capybara/cuprite"
+require 'capybara/cuprite'
 
 # Parse URL
 # NOTE: REMOTE_CHROME_HOST should be added to Webmock/VCR allowlist if you use any of those.
@@ -34,11 +36,11 @@ Capybara.register_driver(:cuprite) do |app|
     **{
       window_size: [1200, 800],
       # See additional options for Dockerized environment in the respective section of this article
-      browser_options: remote_chrome ? { "no-sandbox" => nil } : {},
+      browser_options: remote_chrome ? { 'no-sandbox' => nil } : {},
       # Increase Chrome startup wait time (required for stable CI builds)
       process_timeout: 10,
       # Enable debugging capabilities
-      inspector: true,
+      inspector: true
     }.merge(remote_options)
   )
 end

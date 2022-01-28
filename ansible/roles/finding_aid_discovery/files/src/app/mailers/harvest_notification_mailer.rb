@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HarvestNotificationMailer < ApplicationMailer
   before_action { @endpoint = params[:endpoint] }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Actions for showing status information about Endpoints
 class EndpointsController < ApplicationController
   layout 'application'

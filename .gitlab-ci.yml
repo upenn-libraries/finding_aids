@@ -8,7 +8,9 @@ include:
       - ".remove_docker_image_from_registry.yml"
   - project: "devops/gitlab/ci-templates/ruby"
     ref: "sans-dind"
-    file: ".rspec.yml"
+    file: 
+      - ".rspec.yml"
+      - ".rubocop.yml"
   - project: "devops/gitlab/ci-templates/sast"
     ref: "master"
     file:
@@ -85,6 +87,46 @@ push_tmp_dev_app_image_to_registry:
   tags:
     - build
 # -- End - build, push temp dev image
+
+# -- Start - test dev image
+rspec_app_test:
+  stage: test
+  image: ${CI_REGISTRY_IMAGE}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
+  needs:
+    - push_tmp_dev_app_image_to_registry
+  extends:
+    - .rspec
+  script:
+    - rspec -I ansible/roles/finding_aid_discovery/files/src/ ansible/roles/finding_aid_discovery/files/src/spec/
+  allow_failure: true
+  variables:
+    RAILS_ENV: "test"
+  rules:
+    - if: $DISABLE_RSPEC_TEST == "true"
+      when: never
+    - exists:
+        - ansible/roles/finding_aid_discovery/files/src/spec/**.rb
+        - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
+  tags:
+    - build
+
+rubocop_app_test:
+  stage: test
+  image: ${CI_REGISTRY_IMAGE}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
+  needs:
+    - push_tmp_dev_app_image_to_registry
+  extends:
+    - .rubocop
+  before_script:
+    - cd ansible/roles/finding_aid_discovery/files/src/
+  rules:
+    - if: $DISABLE_RUBOCOP == "true"
+      when: never
+    - exists:
+        - ansible/roles/finding_aid_discovery/files/src/.rubocop.yml
+  tags:
+    - build
+# -- End - test dev image
 
 # -- Start - build and push temp solr image
 build_solr_image:
@@ -177,6 +219,7 @@ build_prod_app_image:
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
   needs:
     - rspec_app_test
+    - rubocop_app_test
   tags:
     - build
 
@@ -245,6 +288,7 @@ remove_tmp_dev_app_image_from_registry:
     - when: always
   needs:
     - rspec_app_test
+    - rubocop_app_test
   tags:
     - build
   allow_failure: true
@@ -315,6 +359,7 @@ push_dev_app_image_to_registry:
   needs:
     - remove_tmp_dev_app_image_from_registry
     - rspec_app_test
+    - rubocop_app_test
   variables:
     CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
     DOCKER_IMAGE_NAME: "app"
@@ -384,6 +429,7 @@ remove_tmp_registry_app_dev_image_from_host:
     - .remove_docker_image
   needs:
     - rspec_app_test
+    - rubocop_app_test
   variables:
     CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
   rules:
