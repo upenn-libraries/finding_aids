@@ -298,7 +298,6 @@ remove_tmp_solr_image_from_registry:
     - build
   allow_failure: true
 
-
 remove_tmp_base_app_image_from_registry:
   stage: remove:tmp_images_from_registry
   extends:
