@@ -31,6 +31,12 @@ class EadParser
     doc.at_xpath("/ead/archdesc/did/unitid[not(@audience='internal')]").try :text
   end
 
+  # @param [Nokogiri::XML::Document] doc
+  # @return [String]
+  def pretty_unit_id(doc)
+    unit_id(doc).gsub(/^[^.]*\./, '').strip
+  end
+
   # @return [Array]
   def contact_emails
     @endpoint.public_contacts
@@ -50,9 +56,9 @@ class EadParser
     raw_1 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[1]').try :text
     raw_2 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[2]').try :text
     raw_1.gsub!('.0', '')
-    return raw_1 if raw_2.blank?
+    return raw_1.downcase if raw_2.blank?
 
-    "#{raw_1} (#{raw_2})"
+    "#{raw_1} (#{raw_2})".downcase
   end
 
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
@@ -62,15 +68,23 @@ class EadParser
     raw = doc.at_xpath("/ead/archdesc/did/unitdate[@type='inclusive']").try :text
     return raw unless raw.blank?
 
-    doc.at_xpath("/ead/archdesc/did/unitdate[not(@type='bulk')]").try :text
+    doc.at_xpath("/ead/archdesc/did/unitdate[not(@type='bulk')]").try(:text).try(:strip)
+  end
+
+  # https://www.loc.gov/ead/tglib/elements/unitdate.html
+  # @param [Nokogiri::XML::Document] doc
+  # @return [String]
+  def bulk_date(doc)
+    raw = doc.at_xpath("/ead/archdesc/did/unitdate[@type='bulk']").try :text
+    raw&.gsub(/^\s*Bulk/, '').try :strip
   end
 
   # https://www.loc.gov/ead/tglib/elements/abstract.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def abstract_scope_contents(doc)
-    raw = doc.at_xpath('.//archdesc/did/abstract').try :text
-    raw || '' # TODO: confirm legacy indexing explicitly stored empty string here if text is not present
+    raw = doc.at_xpath('.//archdesc/did/abstract').try(:text).try(:strip)
+    raw || ''
   end
 
   # @param [Nokogiri::XML::Document] doc
@@ -81,10 +95,11 @@ class EadParser
       &.gsub(/T.*/, '')
   end
 
+  # https://www.loc.gov/ead/tglib/elements/prefercite.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def preferred_citation(doc)
-    doc.at_xpath('/ead/archdesc/prefercite/p').try :text
+    doc.at_xpath('/ead/archdesc/prefercite/p').try(:text).try(:strip)
   end
 
   # Return an Array of the repository name split on any ':' present
@@ -99,23 +114,30 @@ class EadParser
   # @return [Array]
   def repository(doc)
     @repository ||= if doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).present?
-      doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text)
+      doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).try(:strip)
     else
-      doc.at_xpath('/ead/archdesc/did/repository').try(:text)
+      doc.at_xpath('/ead/archdesc/did/repository').try(:text).try(:strip)
     end
   end
 
+  # https://www.loc.gov/ead/tglib/elements/origination.html
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def creators(doc)
     doc.xpath("/ead/archdesc/did/origination[@label='creator']/persname |
                /ead/archdesc/did/origination[@label='creator']/corpname |
                /ead/archdesc/did/origination[@label='creator']/famname").map do |node|
-      node.text.try(:strip)
+      raw = node.text.try(:strip)
+      raw_role = node.at_xpath('./@role').try(:text).try(:strip)
+      return raw unless raw_role
+
+      role = raw_role.gsub(/\(.*$/, '').strip
+      "#{raw} (#{role})"
     end
   end
 
-  # TODO: what distinguishes this from other fields, functionally?
+  # TODO: determine what distinguishes this from the people/corp_names fields, functionally
+  #       and if this is still warranted
   def names(doc)
     doc.xpath(".//controlaccess/persname | .//controlaccess/famname |
                .//controlaccess/corpname | //origination[@label='creator']").map do |node|
@@ -143,7 +165,7 @@ class EadParser
   # @return [Array]
   def subjects(doc)
     doc.xpath('.//controlaccess/subject').map do |node|
-      node.text.try(:strip)
+      node.text.strip.gsub(/\s*\.\s*$/, '')
     end
   end
 
@@ -155,6 +177,7 @@ class EadParser
     end
   end
 
+  # https://www.loc.gov/ead/tglib/elements/language.html
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def languages(doc)
@@ -173,6 +196,21 @@ class EadParser
     end
   end
 
+  # https://www.loc.gov/ead/tglib/elements/genreform.html
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def genre_form(doc)
+    doc.xpath('.//controlaccess/genreform').map do |node|
+      node.text.try(:strip)
+    end
+  end
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [String]
+  def link_url(doc)
+    doc.at_xpath('/ead/eadheader/eadid/@url').try(:text).try(:strip)
+  end
+
   # usage: { solr_field_name: value, ... }
   # @param [String] url url of xml file
   # @param [String] xml contents of xml file
@@ -184,14 +222,17 @@ class EadParser
       id: id(url),
       endpoint_ssi: @endpoint.slug,
       xml_ss: xml,
+      link_url_ss: link_url(doc),
       ead_id_ssi: ead_id(doc),
       unit_id_ssi: unit_id(doc),
+      pretty_unit_id_ss: pretty_unit_id(doc),
       contact_emails_ssm: contact_emails,
-      title_tsim: title(doc),
+      title_tsi: title(doc),
       extent_ssi: extent(doc),
       inclusive_date_ss: inclusive_date(doc),
-      # date_ss: TODO,
-      date_added_ssi: date_added(doc),
+      # date_ss: TODO: determine if bucketing of dates is desired,
+      date_added_ss: date_added(doc),
+      bulk_date_ss: bulk_date(doc),
       languages_ssim: languages(doc),
       abstract_scope_contents_tsi: abstract_scope_contents(doc),
       preferred_citation_ss: preferred_citation(doc),
@@ -205,6 +246,7 @@ class EadParser
       repository_name_component_2_ssi: split_repositories(doc)[1],
       repository_name_component_3_ssi: split_repositories(doc)[2],
       donors_ssim: donor(doc),
+      genre_form_ssim: genre_form(doc),
       names_ssim: names(doc)
     }
   end

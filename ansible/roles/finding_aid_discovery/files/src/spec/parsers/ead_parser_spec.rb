@@ -22,9 +22,9 @@ describe EadParser do
       end
 
       it 'has expected value for title_tsim' do
-        expect(
-          hash[:title_tsim]
-        ).to eq 'Compiled birth, death, marriage records within the area of Philadelphia Yearly Meeting'
+        expect(hash[:title_tsi]).to eq(
+          'Compiled birth, death, marriage records within the area of Philadelphia Yearly Meeting'
+        )
       end
     end
 
@@ -33,7 +33,11 @@ describe EadParser do
       let(:xml) { file_fixture('ead/penn_museum_ead_1.xml') }
 
       it 'has the right title' do
-        expect(hash[:title_tsim]).to eq 'Works Progress Administration Records'
+        expect(hash[:title_tsi]).to eq 'Works Progress Administration Records'
+      end
+
+      it 'has the link url' do
+        expect(hash[:link_url_ss]).to eq 'https://www.test.com'
       end
 
       it 'has the right email(s)' do
@@ -41,15 +45,22 @@ describe EadParser do
       end
 
       it 'has the right creator(s)' do
-        expect(hash[:creators_ssim]).to eq(['Butler, Mary, 1903-1970', 'Fewkes, Vladimir'])
+        expect(hash[:creators_ssim]).to eq([
+          'Butler, Mary, 1903-1970 (Creator)',
+          'Fewkes, Vladimir (Creator)'
+        ])
       end
 
       it 'has the right unit id' do
         expect(hash[:unit_id_ssi]).to eq 'PU-Mu. 0040'
       end
 
+      it 'has the right pretty unit id' do
+        expect(hash[:pretty_unit_id_ss]).to eq '0040'
+      end
+
       it 'has the right extent' do
-        expect(hash[:extent_ssi]).to eq '2.5 Linear feet'
+        expect(hash[:extent_ssi]).to eq '2.5 linear feet'
       end
 
       it 'has the right inclusive date' do
@@ -57,7 +68,9 @@ describe EadParser do
       end
 
       it 'has the right abstract-scope-contents' do
-        expect(hash[:abstract_scope_contents_tsi]).to start_with 'During the Great Depression'
+        expect(hash[:abstract_scope_contents_tsi]).to start_with(
+          'During the Great Depression'
+        )
       end
 
       it 'has the right people' do
@@ -71,15 +84,15 @@ describe EadParser do
 
       it 'has the right subjects' do
         expect(hash[:subjects_ssim]).to eq([
-                                             'Physical anthropology',
-                                             'WPA Statewide Museum Service'
-                                           ])
+         'Physical anthropology',
+         'WPA Statewide Museum Service'
+        ])
       end
 
       it 'has the right places' do
-        expect(
-          hash[:places_ssim]
-        ).to eq(['Alaska', 'Guatemala', 'Marsa Matruh (Egypt)', 'Piedras Negras site (Guatemala)'])
+        expect(hash[:places_ssim]).to eq([
+          'Alaska', 'Guatemala', 'Marsa Matruh (Egypt)', 'Piedras Negras site (Guatemala)']
+        )
       end
 
       it 'has the right corpnames' do
@@ -116,15 +129,27 @@ describe EadParser do
       end
 
       it 'has the right date added' do
-        expect(hash[:date_added_ssi]).to eq '2017-03-03'
+        expect(hash[:date_added_ss]).to eq '2017-03-03'
+      end
+
+      it 'has the right bulk date' do
+        expect(hash[:bulk_date_ss]).to eq '1940'
+      end
+
+      it 'has the right bulk date' do
+        expect(hash[:bulk_date_ss]).to eq '1940'
       end
 
       it 'has the right donor(s)' do
         expect(hash[:donors_ssim]).to eq ['Sir Michael Kanning IV, Duke of Snapfinger']
       end
 
+      it 'has the right genre/form(s)' do
+        expect(hash[:genre_form_ssim]).to eq ['Photographs']
+      end
+
       it 'has the right name(s)' do
-        expect(hash[:names_ssim]).to eq [
+        expect(hash[:names_ssim]).to eq([
           'Butler, Mary, 1903-1970',
           'Fewkes, Vladimir',
           'Fairmount Park Commission (Philadelphia, Pa.).',
@@ -133,8 +158,7 @@ describe EadParser do
           'University of Pennsylvania. Museum of Archaeology and Anthropology.',
           'Sir Michael Kanning IV, Duke of Snapfinger',
           'Vaillant, George C., b.1901-d.1945'
-          ]
-
+        ])
       end
     end
   end
