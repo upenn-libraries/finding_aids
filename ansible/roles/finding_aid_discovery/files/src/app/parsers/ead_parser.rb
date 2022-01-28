@@ -66,7 +66,7 @@ class EadParser
   # @return [String]
   def inclusive_date(doc)
     raw = doc.at_xpath("/ead/archdesc/did/unitdate[@type='inclusive']").try :text
-    return raw unless raw.present?
+    return raw if raw.blank?
 
     doc.at_xpath("/ead/archdesc/did/unitdate[not(@type='bulk')]").try(:text).try(:strip)
   end
