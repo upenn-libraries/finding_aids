@@ -147,7 +147,6 @@ rspec_app_test:
   needs:
     - push_tmp_dev_app_image_to_registry
     - push_tmp_solr_image_to_registry
-  allow_failure: true
   artifacts:
     paths:
       - ansible/roles/finding_aid_discovery/files/src/tmp/screenshots
