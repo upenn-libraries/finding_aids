@@ -88,46 +88,6 @@ push_tmp_dev_app_image_to_registry:
     - build
 # -- End - build, push temp dev image
 
-# -- Start - test dev image
-rspec_app_test:
-  stage: test
-  image: ${CI_REGISTRY_IMAGE}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
-  needs:
-    - push_tmp_dev_app_image_to_registry
-  extends:
-    - .rspec
-  script:
-    - rspec -I ansible/roles/finding_aid_discovery/files/src/ ansible/roles/finding_aid_discovery/files/src/spec/
-  allow_failure: true
-  variables:
-    RAILS_ENV: "test"
-  rules:
-    - if: $DISABLE_RSPEC_TEST == "true"
-      when: never
-    - exists:
-        - ansible/roles/finding_aid_discovery/files/src/spec/**.rb
-        - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
-  tags:
-    - build
-
-rubocop_app_test:
-  stage: test
-  image: ${CI_REGISTRY_IMAGE}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
-  needs:
-    - push_tmp_dev_app_image_to_registry
-  extends:
-    - .rubocop
-  before_script:
-    - cd ansible/roles/finding_aid_discovery/files/src/
-  rules:
-    - if: $DISABLE_RUBOCOP == "true"
-      when: never
-    - exists:
-        - ansible/roles/finding_aid_discovery/files/src/.rubocop.yml
-  tags:
-    - build
-# -- End - test dev image
-
 # -- Start - build and push temp solr image
 build_solr_image:
   stage: build_and_push:tmp_solr_image
@@ -201,6 +161,23 @@ rspec_app_test:
     - exists:
         - ansible/roles/finding_aid_discovery/files/src/spec/**.rb
         - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
+  tags:
+    - build
+
+rubocop_app_test:
+  stage: test
+  image: ${CI_REGISTRY_IMAGE}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
+  needs:
+    - push_tmp_dev_app_image_to_registry
+  extends:
+    - .rubocop
+  before_script:
+    - cd ansible/roles/finding_aid_discovery/files/src/
+  rules:
+    - if: $DISABLE_RUBOCOP == "true"
+      when: never
+    - exists:
+        - ansible/roles/finding_aid_discovery/files/src/.rubocop.yml
   tags:
     - build
 # -- End - test dev image
