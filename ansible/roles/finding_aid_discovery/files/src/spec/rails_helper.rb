@@ -13,7 +13,7 @@ require 'webmock/rspec'
 
 WebMock.disable_net_connect!(
   allow_localhost: true,
-  allow: [/solr:8983/, /chrome:3333/]
+  allow: [/solr:8983/, /chrome:3333/, /chrome:3000/]
 )
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

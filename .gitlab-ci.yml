@@ -20,8 +20,8 @@ include:
 stages:
   - build_and_push:tmp_base_image
   - build_and_push:tmp_dev_image
-  - test
   - build_and_push:tmp_solr_image
+  - test
   - build_and_push:tmp_prod_image
   - sast
   - remove:tmp_images_from_registry
@@ -88,19 +88,72 @@ push_tmp_dev_app_image_to_registry:
     - build
 # -- End - build, push temp dev image
 
+# -- Start - build and push temp solr image
+build_solr_image:
+  stage: build_and_push:tmp_solr_image
+  extends:
+    - .build_docker_image
+  variables:
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
+    DOCKER_BUILD_CONTEXT: "ansible/roles/solr/files/src/"
+    DOCKERFILE_PATH: "ansible/roles/solr/files/src/"
+  tags:
+    - build
+
+push_tmp_solr_image_to_registry:
+  stage: build_and_push:tmp_solr_image
+  extends:
+    - .push_docker_image
+  needs:
+    - build_solr_image
+  variables:
+    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
+    DOCKER_IMAGE_NAME: "solr"
+    IMAGE_TAGS: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
+  tags:
+    - build
+# -- End - build and push temp solr image
+
 # -- Start - test dev image
 rspec_app_test:
   stage: test
   image: ${CI_REGISTRY_IMAGE}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
-  needs:
-    - push_tmp_dev_app_image_to_registry
+  services:
+    - name: browserless/chrome:1.50-chrome-stable
+      alias: chrome
+    - postgres:14
+    - name: ${CI_REGISTRY_IMAGE}/solr:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
+      alias: solr
   extends:
     - .rspec
-  script:
-    - rspec -I ansible/roles/finding_aid_discovery/files/src/ ansible/roles/finding_aid_discovery/files/src/spec/
-  allow_failure: true
   variables:
+    CHROME_URL: "http://chrome:3000"
+    CONFIG_LOCATION: "/finding_aid_discovery_configs"
+    CORE_NAME: "finding-aid-discovery-core"
+    DATABASE_NAME: "finding_aid_discovery"
+    DATABASE_PASSWORD: "rspec_test"
+    DATABASE_USER: "rspec_test"
+    FF_NETWORK_PER_BUILD: "true"
+    POSTGRES_DB: "finding_aid_discovery"
+    POSTGRES_PASSWORD: "rspec_test"
+    POSTGRES_USER: "rspec_test"
     RAILS_ENV: "test"
+    SOLR_URL: "http://solr:8983/solr/finding-aid-discovery-core"
+  script:
+    - cd ${CI_PROJECT_DIR}/ansible/roles/finding_aid_discovery/files/src/
+    - bundle add rspec_junit_formatter
+    - bundle exec rake db:migrate
+    - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
+  needs:
+    - push_tmp_dev_app_image_to_registry
+    - push_tmp_solr_image_to_registry
+  artifacts:
+    paths:
+      - ansible/roles/finding_aid_discovery/files/src/tmp/screenshots
+      - ansible/roles/finding_aid_discovery/files/src/rspec.xml
+    expire_in: 1 week
+    reports:
+      junit: ansible/roles/finding_aid_discovery/files/src/rspec.xml
   rules:
     - if: $DISABLE_RSPEC_TEST == "true"
       when: never
@@ -127,32 +180,6 @@ rubocop_app_test:
   tags:
     - build
 # -- End - test dev image
-
-# -- Start - build and push temp solr image
-build_solr_image:
-  stage: build_and_push:tmp_solr_image
-  extends:
-    - .build_docker_image
-  variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
-    DOCKER_BUILD_CONTEXT: "ansible/roles/solr/files/src/"
-    DOCKERFILE_PATH: "ansible/roles/solr/files/src/"
-  tags:
-    - build
-
-push_tmp_solr_image_to_registry:
-  stage: build_and_push:tmp_solr_image
-  extends:
-    - .push_docker_image
-  needs:
-    - build_solr_image
-  variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
-    DOCKER_IMAGE_NAME: "solr"
-    IMAGE_TAGS: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
-  tags:
-    - build
-# -- End - build and push temp solr image
 
 # -- Start - build and push temp prod image
 build_prod_app_image:
@@ -218,7 +245,7 @@ trivy_solr_container_scanning:
   after_script:
     - docker logout ${CI_REGISTRY}
   needs:
-    - push_tmp_solr_image_to_registry
+    - rspec_app_test
   variables:
     CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/solr:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
   tags:
@@ -269,7 +296,6 @@ remove_tmp_solr_image_from_registry:
   tags:
     - build
   allow_failure: true
-
 
 remove_tmp_base_app_image_from_registry:
   stage: remove:tmp_images_from_registry
