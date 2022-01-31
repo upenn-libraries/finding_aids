@@ -155,6 +155,7 @@ GEM
     honeybadger (4.9.0)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
+    iso-639 (0.3.5)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
     jquery-rails (4.4.0)
@@ -354,6 +355,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   honeybadger
+  iso-639
   jbuilder (~> 2.7)
   jquery-rails
   listen (~> 3.3)

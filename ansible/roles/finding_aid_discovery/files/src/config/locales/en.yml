@@ -9,3 +9,7 @@ en:
     ead_id: 'EAD ID'
     abstract_scope_contents: ' Abstract/Scope/Contents'
     raw_xml: 'Raw XML'
+    corpnames: 'Corp? Name'
+    subjects: 'Subject'
+    places: 'Place'
+    people: 'People'

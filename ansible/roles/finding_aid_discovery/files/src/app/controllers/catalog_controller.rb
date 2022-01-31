@@ -30,7 +30,7 @@ class CatalogController < ApplicationController
     config.per_page = [10, 20, 50, 100]
 
     # solr field configuration for search results/index views
-    config.index.title_field = :title_tsim
+    config.index.title_field = :title_tsi
     # config.index.display_type_field = 'format'
     # config.index.thumbnail_field = 'thumbnail_path_ss'
 
@@ -49,7 +49,7 @@ class CatalogController < ApplicationController
     config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
 
     # solr field configuration for document/show views
-    config.show.title_field = :title_tsim
+    config.show.title_field = :title_tsi
     # config.show.display_type_field = 'format'
     # config.show.thumbnail_field = 'thumbnail_path_ss'
 
@@ -80,21 +80,29 @@ class CatalogController < ApplicationController
     #              (note: It is case sensitive when searching values)
 
     config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint')
-    config.add_facet_field 'repositories_ssim', label: I18n.t('fields.repository')
+    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository')
+    config.add_facet_field 'people_ssim', label: I18n.t('fields.people')
+    config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.corpnames')
+    config.add_facet_field 'subjects_ssim', label: I18n.t('fields.subjects')
+    config.add_facet_field 'places_ssim', label: I18n.t('fields.places')
 
     config.add_facet_fields_to_solr_request!
 
-    config.add_index_field 'title_tsim', label: I18n.t('fields.title')
-    config.add_index_field 'repositories_ssim', label: I18n.t('fields.repository')
-    config.add_index_field 'extent_ssim', label: I18n.t('fields.extent')
+    config.add_index_field 'title_tsi', label: I18n.t('fields.title')
+    config.add_index_field 'repository_ssi', label: I18n.t('fields.repository')
+    config.add_index_field 'extent_ssi', label: I18n.t('fields.extent')
     config.add_index_field 'inclusive_date_ss', label: I18n.t('fields.date')
 
     config.add_show_field 'ead_id_ssi', label: I18n.t('fields.internal_id')
     config.add_show_field 'unit_id_ssi', label: I18n.t('fields.ead_id')
-    config.add_show_field 'title_tsim', label: I18n.t('fields.title')
-    config.add_show_field 'repositories_ssim', label: I18n.t('fields.repository')
-    config.add_show_field 'extent_ssim', label: I18n.t('fields.extent')
+    config.add_show_field 'title_tsi', label: I18n.t('fields.title')
+    config.add_show_field 'repository_ssim', label: I18n.t('fields.repository')
+    config.add_show_field 'extent_ssi', label: I18n.t('fields.extent')
     config.add_show_field 'inclusive_date_ss', label: I18n.t('fields.date')
+    config.add_show_field 'people_ssim', label: I18n.t('fields.people')
+    config.add_show_field 'corpnames_ssim', label: I18n.t('fields.corpnames')
+    config.add_show_field 'subjects_ssim', label: I18n.t('fields.subjects')
+    config.add_show_field 'places_ssim', label: I18n.t('fields.places')
     config.add_show_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents')
     config.add_show_field 'xml_ss', label: I18n.t('fields.raw_xml')
 
