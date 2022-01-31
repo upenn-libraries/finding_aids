@@ -1,0 +1,13 @@
+<%#
+  Overriding Blacklight v7.19.2 template in order to remove sidebar. Removing all document actions
+  in blacklight configuration did not remove the sidebar on the show page. Removing the sidebar
+  sections and changing the classes for the main content section of the show results page.
+%>
+
+<% content_for(:content) do %>
+  <section class="col-lg-12 show-document">
+    <%= yield %>
+  </section>
+<% end %>
+
+<%= render template: "layouts/blacklight/base" %>

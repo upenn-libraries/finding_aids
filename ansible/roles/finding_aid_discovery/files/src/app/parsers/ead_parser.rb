@@ -224,6 +224,7 @@ class EadParser
       endpoint_ssi: @endpoint.slug,
       xml_ss: xml,
       link_url_ss: link_url(doc),
+      url_ss: url, # For debugging purposes
       ead_id_ssi: ead_id(doc),
       unit_id_ssi: unit_id(doc),
       pretty_unit_id_ss: pretty_unit_id(doc),

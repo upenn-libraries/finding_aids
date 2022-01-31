@@ -40,11 +40,6 @@ class CatalogController < ApplicationController
     config.add_results_collection_tool(:per_page_widget)
     config.add_results_collection_tool(:view_type_group)
 
-    config.add_show_tools_partial(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
-    config.add_show_tools_partial(:email, callback: :email_action, validator: :validate_email_params)
-    config.add_show_tools_partial(:sms, if: :render_sms_action?, callback: :sms_action, validator: :validate_sms_params)
-    config.add_show_tools_partial(:citation)
-
     config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
     config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
 
@@ -52,6 +47,7 @@ class CatalogController < ApplicationController
     config.show.title_field = :title_tsi
     # config.show.display_type_field = 'format'
     # config.show.thumbnail_field = 'thumbnail_path_ss'
+    config.show.partials << :show_collection_inventory
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -102,6 +98,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'pretty_unit_id_ssi', label: I18n.t('fields.pretty_unit_id')
     config.add_show_field 'title_tsi', label: I18n.t('fields.title')
     config.add_show_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
+    config.add_show_field 'url_ss', label: 'Original URL'
     config.add_show_field 'extent_ssi', label: I18n.t('fields.extent')
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
     config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation')
@@ -117,7 +114,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'donors_ssim', label: I18n.t('fields.donors'), link_to_facet: true
     config.add_show_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), link_to_facet: true
     config.add_show_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents')
-    config.add_show_field 'xml_ss', label: I18n.t('fields.raw_xml')
+    # config.add_show_field 'xml_ss', label: I18n.t('fields.raw_xml')
 
     config.add_search_field 'all_fields', label: 'All Fields'
 
