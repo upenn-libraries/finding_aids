@@ -1,0 +1,35 @@
+<% collections.each do |collection| %>
+  <div class="card my-2">
+    <div class="card-body">
+      <%# Reducing heading size lower in the hierarchy. %>
+      <div class="card-title">
+        <div class="row">
+          <div class="col-sm-9 col-lg-10"><%= content_tag "h#{[level + 3, 6].min}", collection[:title] %></div>
+
+          <div class="col-sm-3 col-lg-2">
+            <% collection[:containers].each do |container| %>
+              <span class="badge badge-secondary"><%= "#{container[:type]} #{container[:text]}" %></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <%# collection[:containers].each do |container| %>
+<!--        <span class="card-text"><%#= "#{container[:type]} #{container[:text]}" %></span>-->
+      <%# end %>
+
+      <% if collection[:descriptive_data] %>
+        <% collection[:descriptive_data].each do |description| %>
+          <div><strong><%= description[:header] %></strong></div>
+          <% description[:text].each do |t| %>
+            <p><%= t %></p>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% unless collection[:subcollections].empty? %>
+        <%= render "show_collections", collections: collection[:subcollections], level: level + 1 %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
