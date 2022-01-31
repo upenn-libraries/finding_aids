@@ -83,7 +83,7 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def abstract_scope_contents(doc)
-    raw = doc.at_xpath('.//archdesc/did/abstract').try(:text).try(:strip)
+    raw = doc.at_xpath('/ead/archdesc/did/abstract').try(:text).try(:strip)
     raw || ''
   end
 
