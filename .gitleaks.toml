@@ -175,5 +175,6 @@ title = "gitlab gitleaks config"
 
     ]
     files = [
-        '''(.*?)(bin|csv|doc|gif|jpg|md|pdf)$'''
+        '''(.*?)(bin|csv|doc|gif|jpg|md|pdf)$''',
+        '''.gitlab-ci.yml'''
     ]
