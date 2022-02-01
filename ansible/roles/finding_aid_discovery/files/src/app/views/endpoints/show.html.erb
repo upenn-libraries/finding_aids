@@ -3,14 +3,11 @@
   <h2><%= @endpoint.slug %></h2>
 
   <dl>
-    <dt>Slug</dt>
-    <dd><%= @endpoint.slug %></dd>
-
     <dt>Public Contacts</dt>
     <dd>
       <ul>
       <% @endpoint.public_contacts.each do |contact| %>
-        <li><%= contact %></li>
+        <li><%= mail_to contact %></li>
       <% end %>
       </ul>
     </dd>
@@ -19,12 +16,11 @@
     <dd>
       <ul>
       <% @endpoint.tech_contacts.each do |contact| %>
-        <li><%= contact %></li>
+        <li><%= mail_to contact %></li>
       <% end %>
       </ul>
     </dd>
   </dl>
-
 
   <h3>
     Harvesting Information
@@ -35,12 +31,17 @@
     <dd><%= @endpoint.type %></dd>
 
     <dt>Endpoint URL</dt>
-    <dd><%= link_to @endpoint.url %></dd>
+    <dd><%= link_to @endpoint.url, @endpoint.url %></dd>
   </dl>
 
   <h4>
     Status
   </h4>
+
+  <dl>
+    <dt>Last Harvest Attempt</dt>
+    <dd><%= time_since_last_harvest @endpoint.last_harvest.date %></dd>
+  </dl>
 
   <% if @endpoint.last_harvest.failed? %>
   <div class="alert alert-danger">
@@ -61,7 +62,7 @@
     Some problems harvesting individual files
   </div>
   <dl>
-    Problem Files
+    Problem Files (<%= @endpoint.last_harvest.problem_files.count %>)
   </dl>
   <dd>
     <ol>
@@ -71,12 +72,12 @@
     </ol>
   </dd>
   <dl>
-    Successful Files
+    Successful Files (<%= @endpoint.last_harvest.success_files.count %>)
   </dl>
   <dd>
     <ol>
       <% @endpoint.last_harvest.success_files.each do |file| %>
-      <li><%= link_to file['filename'] %></li>
+      <li><%= link_to file['filename'], file['filename'] %></li>
       <% end %>
     </ol>
   </dd>
@@ -85,12 +86,12 @@
     All files harvested successfully
   </div>
   <dl>
-    Files
+    Files (<%= @endpoint.last_harvest.files.count %>)
   </dl>
   <dd>
     <ol>
       <% @endpoint.last_harvest.files.each do |file| %>
-      <li><%= link_to file['filename'] %></li>
+      <li><%= link_to file['filename'], file['filename'] %></li>
       <% end %>
     </ol>
   </dd>
