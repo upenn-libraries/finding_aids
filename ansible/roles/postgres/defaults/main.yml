@@ -1,6 +1,10 @@
 ---
 postgres:
   database: "finding_aid_discovery"
+  dev_env:
+    log_connections: "on"
+    log_disconnections: "on"
+    log_statement: "all"
   image:
     name: "postgres"
     tag: "14"
