@@ -1,4 +1,1 @@
-<h3>Collection Inventory</h3>
-
-<%= render "show_collections", collections: document.collection_inventory, level: 1 %>
-
+<%= render(CollectionsInventoryComponent.new(xml: document.fetch(:xml_ss))) %>
