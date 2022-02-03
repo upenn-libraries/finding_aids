@@ -15,7 +15,7 @@ class ScopeAndContentComponent < ViewComponent::Base
   def call
     render(CollapsableSectionComponent.new(id: 'scope-content')) do |c|
       c.title { 'Scope and Contents' }
-      c.body { render(EadMarkupToHtmlComponent.new(node: node, remove_head: true)) }
+      c.body { render(EadMarkupTranslationComponent.new(node: node, remove_head: true)) }
     end
   end
 end

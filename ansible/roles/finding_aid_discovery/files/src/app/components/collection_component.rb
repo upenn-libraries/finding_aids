@@ -7,7 +7,7 @@ class CollectionComponent < ViewComponent::Base
   end
 
   def title
-    title = render(EadMarkupToHtmlComponent.new(node: node.at_xpath('did/unittitle'))) || '(No Title)'
+    title = render(EadMarkupTranslationComponent.new(node: node.at_xpath('did/unittitle'))) || '(No Title)'
 
     if (origination = node.at_xpath('did/origination').try(:text))
       title = "#{origination}. #{title}"

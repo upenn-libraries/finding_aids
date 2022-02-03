@@ -1,5 +1,5 @@
 # Converts EAD markup to valid HTML markup
-class EadMarkupToHtmlComponent < ViewComponent::Base
+class EadMarkupTranslationComponent < ViewComponent::Base
   attr_reader :node, :remove_head
 
   def initialize(node:, remove_head: false)

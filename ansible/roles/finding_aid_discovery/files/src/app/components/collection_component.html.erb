@@ -16,7 +16,7 @@
     </div>
 
     <% descriptive_data.each do |description| %>
-      <%= render EadMarkupToHtmlComponent.new(node: description) %>
+      <%= render EadMarkupTranslationComponent.new(node: description) %>
     <% end %>
 
     <%= render CollectionsComponent.new(node: node, level: level + 1) %>

@@ -15,7 +15,7 @@ class BiographyHistoryComponent < ViewComponent::Base
   def call
     render(CollapsableSectionComponent.new(id: 'biography-history')) do |c|
       c.title { 'Biography/History' }
-      c.body { render(EadMarkupToHtmlComponent.new(node: node, remove_head: true)) }
+      c.body { render(EadMarkupTranslationComponent.new(node: node, remove_head: true)) }
     end
   end
 end
