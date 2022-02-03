@@ -19,6 +19,6 @@
       <%= render EadMarkupToHtmlComponent.new(node: description) %>
     <% end %>
 
-    <%= render(CollectionsComponent.new(node: node, level: level + 1)) %>
+    <%= render CollectionsComponent.new(node: node, level: level + 1) %>
   </div>
 </div>

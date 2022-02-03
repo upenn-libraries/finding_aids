@@ -41,17 +41,4 @@ class CollectionComponent < ViewComponent::Base
   def descriptive_data
     node.xpath('arrangement | scopecontent | odd | relatedmaterial')
   end
-
-  # Convert EAD Markup to html
-  # def convert_to_html(n)
-  #   # apply transformations from ead syntax to html syntax
-  #   n.xpath('//head').each do |h| #not needed for title conversion
-  #     h.name = 'strong'
-  #     h.wrap('<div></div>')
-  #   end
-  #   n.xpath('//emph').each { |e| e.name = 'em'}
-  #   n.xpath('//lb').each   { |l| l.name = 'br'}
-  #
-  #   n.to_html
-  # end
 end

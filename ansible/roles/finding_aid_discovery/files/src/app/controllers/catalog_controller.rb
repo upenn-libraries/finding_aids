@@ -47,7 +47,7 @@ class CatalogController < ApplicationController
     config.show.title_field = :title_tsi
     # config.show.display_type_field = 'format'
     # config.show.thumbnail_field = 'thumbnail_path_ss'
-    config.show.partials << :show_collection_inventory
+    config.show.partials << :show_additional_information
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display

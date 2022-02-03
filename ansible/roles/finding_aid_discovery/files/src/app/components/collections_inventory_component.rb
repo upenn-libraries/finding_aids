@@ -5,6 +5,9 @@ class CollectionsInventoryComponent < ViewComponent::Base
   end
 
   def call
-    content_tag(:h4, 'Collection Inventory') + render(CollectionsComponent.new(node: @xml.at_xpath('/ead/archdesc/dsc'), level: 1))
+    render(CollapsableSectionComponent.new(id: 'collections-inventory')) do |c|
+      c.title { 'Collection Inventory' }
+      c.body { render(CollectionsComponent.new(node: @xml.at_xpath('/ead/archdesc/dsc'), level: 1)) }
+    end
   end
 end

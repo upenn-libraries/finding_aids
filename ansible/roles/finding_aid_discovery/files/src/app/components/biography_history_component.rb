@@ -1,11 +1,11 @@
-class ScopeAndContentComponent < ViewComponent::Base
+class BiographyHistoryComponent < ViewComponent::Base
   attr_reader :node
 
   def initialize(xml:)
     @xml = Nokogiri::XML.parse(xml)
     @xml.remove_namespaces!
 
-    @node = @xml.at_xpath('/ead/archdesc/scopecontent')
+    @node = @xml.at_xpath('/ead/archdesc/bioghist')
   end
 
   def render?
@@ -13,8 +13,8 @@ class ScopeAndContentComponent < ViewComponent::Base
   end
 
   def call
-    render(CollapsableSectionComponent.new(id: 'scope-content')) do |c|
-      c.title { 'Scope and Contents' }
+    render(CollapsableSectionComponent.new(id: 'biography-history')) do |c|
+      c.title { 'Biography/History' }
       c.body { render(EadMarkupToHtmlComponent.new(node: node, remove_head: true)) }
     end
   end
