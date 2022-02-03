@@ -153,7 +153,7 @@ GEM
       activesupport (>= 5.0)
     hashdiff (1.0.1)
     honeybadger (4.9.0)
-    i18n (1.8.11)
+    i18n (1.9.1)
       concurrent-ruby (~> 1.0)
     iso-639 (0.3.5)
     jbuilder (2.11.2)
@@ -318,7 +318,7 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
-    view_component (2.40.0)
+    view_component (2.48.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     web-console (4.1.0)
@@ -340,7 +340,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.5.3)
+    zeitwerk (2.5.4)
 
 PLATFORMS
   x86_64-linux
