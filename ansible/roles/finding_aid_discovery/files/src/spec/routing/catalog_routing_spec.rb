@@ -15,7 +15,6 @@ RSpec.describe 'catalog' do
 
   describe 'track' do
     it 'routes to catalog_controller#track with an id that includes a period' do
-      id_with_period = 'ead.from.org'
       expect(post: "/catalog/#{ead_id_with_period}/track").to route_to(
         controller: 'catalog', action: 'track',
         id: ead_id_with_period
