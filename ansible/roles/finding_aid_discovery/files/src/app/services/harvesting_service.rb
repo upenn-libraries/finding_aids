@@ -3,8 +3,6 @@
 # Hardworking class to do the actual Endpoint extraction and file download, parsing and indexing
 # Usage: HarvestingService.new(endpoint).harvest
 class HarvestingService
-  include ActiveSupport::Benchmarkable
-
   CRAWL_DELAY = 1
 
   # @param [Endpoint] endpoint
