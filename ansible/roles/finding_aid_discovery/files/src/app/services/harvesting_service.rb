@@ -20,7 +20,7 @@ class HarvestingService
       document = parse(file.url, file.read)
       @documents << document
       # TODO: this query is unnecessary and should be removed when the DB connection issue can be resolved.
-      Endpoint.exists?(@endpoint.id) if ENV.fetch('SKIP_FRIVOLOUS_HARVEST_QUERY', false) && (i % 30).zero?
+      Endpoint.exists?(@endpoint.id) if !ENV.fetch('SKIP_FRIVOLOUS_HARVEST_QUERY', nil) && (i % 30).zero?
     rescue StandardError => e
       log_error_from(file, e)
     else
