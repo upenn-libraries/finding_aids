@@ -14,7 +14,11 @@ namespace :tools do
     abort(Rainbow('Incorrect arguments. Pass endpoints=first,second,third').red) if ENV['endpoints'].blank?
 
     slugs = ENV['endpoints'].split(',')
-    endpoints = Endpoint.where(slug: slugs)
+    endpoints = if slugs.size == 1 && slugs.first.eql?('all')
+                  Endpoint.all
+                else
+                  Endpoint.where(slug: slugs)
+                end
 
     puts Rainbow("Harvesting from #{endpoints.count} endpoints").green
 

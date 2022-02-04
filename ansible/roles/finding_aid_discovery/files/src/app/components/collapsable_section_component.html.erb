@@ -1,0 +1,18 @@
+<h4>
+  <%= title %>
+  <button
+    class="btn btn-light btn-sm collapsable-toggle"
+    type="button"
+    data-toggle="collapse"
+    data-target="#<%= @collapsable_id %>"
+    aria-expanded="true"
+    aria-controls="<%= @collapsable_id %>"
+  >
+    <strong>-</strong>
+  </button>
+</h4>
+
+
+<div class="collapse show" id="<%= @collapsable_id %>">
+  <%= body %>
+</div>
