@@ -1,10 +1,13 @@
-# Converts EAD markup to valid HTML markup
+# frozen_string_literal: true
+
+# Converts EAD markup to valid HTML markup.
 class EadMarkupTranslationComponent < ViewComponent::Base
-  attr_reader :node, :remove_head
+  attr_reader :node
 
   def initialize(node:, remove_head: false)
+    node.at_xpath('head').remove if remove_head
+
     @node = node
-    @remove_head = remove_head
   end
 
   def call
@@ -13,16 +16,12 @@ class EadMarkupTranslationComponent < ViewComponent::Base
 
   # Apply transformations from ead syntax to html syntax
   def convert_to_html
-    if remove_head
-      node.at_xpath('head').remove
-    else
-      node.xpath('//head').each do |h|
-        h.name = 'strong'
-        h.wrap('<div></div>')
-      end
+    node.xpath('//head').each do |h|
+      h.name = 'strong'
+      h.wrap('<div></div>')
     end
 
-    node.xpath('//lb').each   { |l| l.name = 'br' }
+    node.xpath('//lb').each { |l| l.name = 'br' }
     node.xpath('//blockquote').each { |b| b.set_attribute('class', 'blockquote mx-5') }
 
     node.xpath('//emph | //title').each do |e|

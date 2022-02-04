@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Rending Biography/History Component
 class BiographyHistoryComponent < ViewComponent::Base
   attr_reader :node
 

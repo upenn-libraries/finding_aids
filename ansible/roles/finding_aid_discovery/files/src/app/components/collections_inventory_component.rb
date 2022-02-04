@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Renders display information for Collection Inventory
 class CollectionsInventoryComponent < ViewComponent::Base
   def initialize(xml:)
     @xml = Nokogiri::XML.parse(xml)

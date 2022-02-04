@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Renders display information for all Collections
 class CollectionsComponent < ViewComponent::Base
   def initialize(node:, level:)
     @level = level
@@ -5,6 +8,6 @@ class CollectionsComponent < ViewComponent::Base
   end
 
   def call
-    safe_join @collections.map { |c| render(CollectionComponent.new(node: c, level: @level)) }
+    safe_join(@collections.map { |c| render(CollectionComponent.new(node: c, level: @level)) })
   end
 end

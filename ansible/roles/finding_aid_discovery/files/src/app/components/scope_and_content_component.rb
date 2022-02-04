@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Renders Scope and Content component
 class ScopeAndContentComponent < ViewComponent::Base
   attr_reader :node
 
