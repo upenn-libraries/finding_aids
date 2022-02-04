@@ -16,9 +16,11 @@ class HarvestingService
   def harvest
     xml_files = @endpoint.extractor.files
     Rails.logger.info "Parsing #{xml_files.size} files from #{@endpoint.slug} @ #{@endpoint.url}"
-    xml_files.each do |file|
+    xml_files.each_with_index do |file, i|
       document = parse(file.url, file.read)
       @documents << document
+      # TODO: this query is unnecessary and should be removed when the DB connection issue can be resolved.
+      Endpoint.exists?(@endpoint.id) if !ENV.fetch('SKIP_FRIVOLOUS_HARVEST_QUERY', nil) && (i % 30).zero?
     rescue StandardError => e
       log_error_from(file, e)
     else
@@ -26,7 +28,6 @@ class HarvestingService
     ensure
       sleep CRAWL_DELAY
     end
-
     process_removals(harvested_doc_ids: @documents.pluck(:id))
     index_documents
     save_outcomes
