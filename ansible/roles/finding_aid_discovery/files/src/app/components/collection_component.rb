@@ -17,7 +17,7 @@ class CollectionComponent < ViewComponent::Base
     title.concat '.' unless title.ends_with?('.') # always add a period
     title.concat extent
 
-    title.blank? ? '(No Title)' : title
+    title.presence || '(No Title)'
   end
 
   def containers
