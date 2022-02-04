@@ -30,8 +30,7 @@ class CollectionComponent < ViewComponent::Base
 
   def extent
     extent = node.at_xpath('did/physdesc/extent').try(:text)
-    extent = " #{extent.gsub(/(\d+)\.0/, '\1')}." if extent
-    extent
+    extent ? " #{extent.gsub(/(\d+)\.0/, '\1')}." : ''
   end
 
   def title
