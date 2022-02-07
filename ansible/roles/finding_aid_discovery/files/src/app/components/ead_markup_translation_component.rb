@@ -4,8 +4,10 @@
 class EadMarkupTranslationComponent < ViewComponent::Base
   attr_reader :node
 
+  # @param [Nokogiri::XML::Element] node
+  # @param [TrueClass, FalseClass] remove_head
   def initialize(node:, remove_head: false)
-    node.at_xpath('head').remove if remove_head
+    node.at_xpath('head')&.remove if remove_head
 
     @node = node
   end

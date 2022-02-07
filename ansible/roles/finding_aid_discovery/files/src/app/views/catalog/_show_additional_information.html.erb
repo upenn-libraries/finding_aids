@@ -1,5 +1,5 @@
-<%= render(BiographyHistoryComponent.new(xml: document.fetch(:xml_ss))) %>
+<%= render(BiographyHistoryComponent.new(node: document.parsed_ead.biog_hist)) %>
 
-<%= render(ScopeAndContentComponent.new(xml: document.fetch(:xml_ss))) %>
+<%= render(ScopeAndContentComponent.new(node: document.parsed_ead.scope_content)) %>
 
-<%= render(CollectionsInventoryComponent.new(xml: document.fetch(:xml_ss))) %>
+<%= render(CollectionsInventoryComponent.new(node: document.parsed_ead.dsc)) %>

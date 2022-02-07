@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SolrDocument
+  XML_FIELD_NAME = :xml_ss
+
   include Blacklight::Solr::Document
 
   # self.unique_key = 'id'
@@ -17,4 +19,32 @@ class SolrDocument
   # and Blacklight::Document::SemanticFields#to_semantic_values
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
+
+  # @return [SolrDocument::ParsedEad]
+  def parsed_ead
+    @parsed_ead ||= ParsedEad.new(fetch(XML_FIELD_NAME))
+  end
+
+  class ParsedEad
+    # @param [String] xml
+    def initialize(xml)
+      @nodes = Nokogiri::XML.parse(xml)
+      @nodes.remove_namespaces!
+    end
+
+    # @return [Nokogiri::XML::Element]
+    def biog_hist
+      @biog_hist ||= @nodes.at_xpath('/ead/archdesc/bioghist')
+    end
+
+    # @return [Nokogiri::XML::Element]
+    def scope_content
+      @scope_content ||= @nodes.at_xpath('/ead/archdesc/scopecontent')
+    end
+
+    # @return [Nokogiri::XML::Element]
+    def dsc
+      @dsc ||= @nodes.at_xpath('/ead/archdesc/dsc')
+    end
+  end
 end

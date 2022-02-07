@@ -2,15 +2,17 @@
 
 # Renders display information for Collection Inventory
 class CollectionsInventoryComponent < ViewComponent::Base
-  def initialize(xml:)
-    @xml = Nokogiri::XML.parse(xml)
-    @xml.remove_namespaces!
+  attr_accessor :node
+
+  # @param [Nokogiri::XML::Element] node
+  def initialize(node:)
+    @node = node
   end
 
   def call
     render(CollapsableSectionComponent.new(id: 'collections-inventory')) do |c|
       c.title { 'Collection Inventory' }
-      c.body { render(CollectionsComponent.new(node: @xml.at_xpath('/ead/archdesc/dsc'), level: 1)) }
+      c.body { render(CollectionsComponent.new(node: node, level: 1)) }
     end
   end
 end

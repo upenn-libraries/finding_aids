@@ -4,11 +4,9 @@
 class BiographyHistoryComponent < ViewComponent::Base
   attr_reader :node
 
-  def initialize(xml:)
-    @xml = Nokogiri::XML.parse(xml)
-    @xml.remove_namespaces!
-
-    @node = @xml.at_xpath('/ead/archdesc/bioghist')
+  # @param [Nokogiri::XML::Element] node
+  def initialize(node:)
+    @node = node
   end
 
   def render?
