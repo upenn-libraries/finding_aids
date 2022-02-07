@@ -75,16 +75,16 @@ class CatalogController < ApplicationController
     # :index_range can be an array or range of prefixes that will be used to create the navigation
     #              (note: It is case sensitive when searching values)
 
-    config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint')
-    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository')
-    config.add_facet_field 'subjects_ssim', label: I18n.t('fields.subjects')
-    config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.corpnames')
-    config.add_facet_field 'people_ssim', label: I18n.t('fields.people')
-    config.add_facet_field 'places_ssim', label: I18n.t('fields.places')
-    config.add_facet_field 'genre_form_ssim', label: I18n.t('fields.genre_form')
-    config.add_facet_field 'creator_ssim', label: I18n.t('fields.creators')
-    config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors')
-    config.add_facet_field 'languages_ssim', label: I18n.t('fields.language')
+    config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint'), limit: true
+    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true
+    config.add_facet_field 'subjects_ssim', label: I18n.t('fields.subjects'), limit: true
+    config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.corpnames'), limit: true
+    config.add_facet_field 'people_ssim', label: I18n.t('fields.people'), limit: true
+    config.add_facet_field 'places_ssim', label: I18n.t('fields.places'), limit: true
+    config.add_facet_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), limit: true
+    config.add_facet_field 'creator_ssim', label: I18n.t('fields.creators'), limit: true
+    config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors'), limit: true
+    config.add_facet_field 'languages_ssim', label: I18n.t('fields.language'), limit: true
 
     config.add_facet_fields_to_solr_request!
 
