@@ -9,12 +9,35 @@ class CollectionComponent < ViewComponent::Base
     @level = level
   end
 
-  def origination
-    node.at_xpath('did/origination').try(:text)
+  def title
+    title = render EadMarkupTranslationComponent.new(node: node.at_xpath('did/unittitle'))
+
+    title = [unitid, origination, title].delete_if(&:blank?).join('. ')
+    title = [title, date].delete_if(&:blank?).join(', ')
+    title.concat '.' unless title.ends_with?('.') # always add a period
+    title.concat extent
+
+    title.presence || '(No Title)'
   end
+
+  def containers
+    node.xpath('did/container').map do |container|
+      { type: container.attr(:type).titlecase, text: container.try(:text) }
+    end
+  end
+
+  def descriptive_data
+    node.xpath('arrangement | scopecontent | odd | relatedmaterial')
+  end
+
+  private
 
   def unitid
     node.at_xpath('did/unitid[not(@audience=\'internal\')]').try(:text)
+  end
+
+  def origination
+    node.at_xpath('did/origination').try(:text)
   end
 
   def date
@@ -31,25 +54,5 @@ class CollectionComponent < ViewComponent::Base
   def extent
     extent = node.at_xpath('did/physdesc/extent').try(:text)
     extent ? " #{extent.gsub(/(\d+)\.0/, '\1')}." : ''
-  end
-
-  def title
-    title = render(EadMarkupTranslationComponent.new(node: node.at_xpath('did/unittitle'))) || '(No Title)'
-
-    title = [unitid, origination, title].compact.join('.')
-    title.concat ", #{date}" if date
-    title.concat '.' unless title.ends_with?('.') # always add a period
-    title.concat extent
-    title
-  end
-
-  def containers
-    node.xpath('did/container').map do |container|
-      { type: container.attr(:type).titlecase, text: container.try(:text) }
-    end
-  end
-
-  def descriptive_data
-    node.xpath('arrangement | scopecontent | odd | relatedmaterial')
   end
 end
