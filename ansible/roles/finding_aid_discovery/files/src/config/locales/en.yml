@@ -19,3 +19,8 @@ en:
     donors: 'Donor'
     genre_form: 'Form'
     citation: 'Preferred Citation'
+  sections:
+    collection_inventory: 'Collection Inventory'
+    biog_hist: 'Biography/History'
+    arrangement: 'Arrangement'
+    scope_content: 'Scope and Content'

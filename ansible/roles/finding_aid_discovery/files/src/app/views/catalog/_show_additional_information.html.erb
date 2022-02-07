@@ -1,5 +1,5 @@
-<%= render(BiographyHistoryComponent.new(node: document.parsed_ead.biog_hist)) %>
-
-<%= render(ScopeAndContentComponent.new(node: document.parsed_ead.scope_content)) %>
+<% %w[biog_hist scope_content arrangement].each do |section| %>
+  <%= render AdditionalInformationComponent.new title: t(section, scope: :sections), node: document.parsed_ead.try(section) %>
+<% end %>
 
 <%= render(CollectionsInventoryComponent.new(node: document.parsed_ead.dsc)) %>

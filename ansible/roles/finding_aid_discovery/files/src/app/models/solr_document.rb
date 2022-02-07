@@ -46,5 +46,10 @@ class SolrDocument
     def dsc
       @dsc ||= @nodes.at_xpath('/ead/archdesc/dsc')
     end
+
+    # @return [Nokogiri::XML::Element]
+    def arrangement
+      @dsc ||= @nodes.at_xpath('/ead/archdesc/arrangement')
+    end
   end
 end
