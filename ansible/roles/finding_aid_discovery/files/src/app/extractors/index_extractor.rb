@@ -29,13 +29,20 @@ class IndexExtractor
 
     private
 
-    # Convert string encoding to UTF-8 if encoded differently.
+    # Convert string encoding to UTF-8, if encoded differently.
     #
     # @param [String] text
     def validate_encoding(text)
       return text if text.encoding == Encoding::UTF_8
 
-      text.encode('utf-8', invalid: :replace, undef: :replace, replace: '_')
+      # Try to convert to UTF-8 encoding, if that doesn't work its possible
+      # that its because the string is already in UTF-8 and the encoding
+      # was set incorrectly on the object therefore we force the encoding.
+      begin
+        text.encode(Encoding::UTF_8)
+      rescue Encoding::InvalidByteSequenceError
+        text.force_encoding(Encoding::UTF_8)
+      end
     end
   end
 
