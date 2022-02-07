@@ -4,7 +4,7 @@
 class BiographyHistoryComponent < ViewComponent::Base
   attr_reader :node
 
-  # @param [Object] node
+  # @param [Nokogiri::XML::Element] node
   def initialize(node:)
     @node = node
   end

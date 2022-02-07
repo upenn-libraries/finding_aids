@@ -32,14 +32,17 @@ class SolrDocument
       @nodes.remove_namespaces!
     end
 
+    # @return [Nokogiri::XML::Element]
     def biog_hist
       @biog_hist ||= @nodes.at_xpath('/ead/archdesc/bioghist')
     end
 
+    # @return [Nokogiri::XML::Element]
     def scope_content
       @scope_content ||= @nodes.at_xpath('/ead/archdesc/scopecontent')
     end
 
+    # @return [Nokogiri::XML::Element]
     def dsc
       @dsc ||= @nodes.at_xpath('/ead/archdesc/dsc')
     end

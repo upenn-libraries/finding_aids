@@ -4,6 +4,7 @@
 class CollectionsInventoryComponent < ViewComponent::Base
   attr_accessor :node
 
+  # @param [Nokogiri::XML::Element] node
   def initialize(node:)
     @node = node
   end

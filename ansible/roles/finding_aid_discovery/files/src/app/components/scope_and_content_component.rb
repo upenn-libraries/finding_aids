@@ -4,6 +4,7 @@
 class ScopeAndContentComponent < ViewComponent::Base
   attr_reader :node
 
+  # @param [Nokogiri::XML::Element] node
   def initialize(node:)
     @node = node
   end
