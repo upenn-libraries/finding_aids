@@ -15,11 +15,11 @@ describe SolrDocument do
     let(:parsed_ead) { doc.parsed_ead }
 
     it 'returns bioghist node' do
-      expect(parsed_ead.biog_hist).to be_an_instance_of Nokogiri::XML::Element
+      expect(parsed_ead.bioghist).to be_an_instance_of Nokogiri::XML::Element
     end
 
     it 'returns scope_content node' do
-      expect(parsed_ead.scope_content).to be_an_instance_of Nokogiri::XML::Element
+      expect(parsed_ead.scopecontent).to be_an_instance_of Nokogiri::XML::Element
     end
 
     it 'returns dsc node' do

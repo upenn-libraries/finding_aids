@@ -26,6 +26,10 @@ class SolrDocument
   end
 
   class ParsedEad
+    SECTIONS = %w[bioghist scopecontent arrangement relatedmaterials bibliography odd accruals accessrestrict
+                  userestrict custodhist altformavail originalsloc fileplan acqinfo otherfindaid phystech
+                  processinfo relatedmaterial separatedmaterial appraisal].freeze
+
     # @param [String] xml
     def initialize(xml)
       @nodes = Nokogiri::XML.parse(xml)
@@ -33,23 +37,27 @@ class SolrDocument
     end
 
     # @return [Nokogiri::XML::Element]
-    def biog_hist
-      @biog_hist ||= @nodes.at_xpath('/ead/archdesc/bioghist')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def scope_content
-      @scope_content ||= @nodes.at_xpath('/ead/archdesc/scopecontent')
-    end
-
-    # @return [Nokogiri::XML::Element]
     def dsc
       @dsc ||= @nodes.at_xpath('/ead/archdesc/dsc')
     end
 
-    # @return [Nokogiri::XML::Element]
-    def arrangement
-      @dsc ||= @nodes.at_xpath('/ead/archdesc/arrangement')
+    # @param [String, Symbol] name
+    def respond_to_missing?(name, _)
+      name.to_s.in? SECTIONS
+    end
+
+    # @param [Symbol] symbol
+    def method_missing(symbol, *_args)
+      memoize_section_text "@#{symbol}" do
+        @nodes.at_xpath("/ead/archdesc/#{symbol}")
+      end
+    end
+
+    # @param [String] name
+    def memoize_section_text(name)
+      return instance_variable_get(name) if instance_variable_defined?(name)
+
+      instance_variable_set name, yield
     end
   end
 end
