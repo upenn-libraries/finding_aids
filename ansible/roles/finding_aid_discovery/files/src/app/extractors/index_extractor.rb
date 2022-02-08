@@ -40,7 +40,7 @@ class IndexExtractor
       # was set incorrectly on the object therefore we force the encoding.
       begin
         text.encode(Encoding::UTF_8)
-      rescue Encoding::InvalidByteSequenceError
+      rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
         text.force_encoding(Encoding::UTF_8)
       end
     end
