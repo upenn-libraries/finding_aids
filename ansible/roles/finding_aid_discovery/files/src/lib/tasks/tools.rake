@@ -23,14 +23,27 @@ namespace :tools do
     puts Rainbow("Harvesting from #{endpoints.count} endpoints").green
 
     endpoints.each do |ep|
+      print "Harvesting #{ep.slug} ... "
+
+      # Skip localhost endpoints
       if ep.url.include? '127.0.0.1'
-        # skip localhost endpoints
-        puts Rainbow("Skipping #{ep.slug} because it's @ #{ep.url}").yellow
+        puts Rainbow("Skipping because it's @ #{ep.url}").cyan
         next
       end
 
-      puts "Harvesting #{ep.slug}"
-      HarvestingService.new(ep).harvest
+      begin
+        HarvestingService.new(ep).harvest
+        ep.reload
+        status_color = {
+          Endpoint::LastHarvest::PARTIAL  => :yellow,
+          Endpoint::LastHarvest::COMPLETE => :green,
+          Endpoint::LastHarvest::FAILED   => :red
+        }[ep.last_harvest.status]
+        puts Rainbow(ep.last_harvest.status.titlecase).color(status_color)
+      rescue => e
+        puts Rainbow("Error\n    #{e.message}").red
+        puts "    " + e.backtrace.join("\n    ")
+      end
     end
     puts Rainbow('All done!').green
   end
