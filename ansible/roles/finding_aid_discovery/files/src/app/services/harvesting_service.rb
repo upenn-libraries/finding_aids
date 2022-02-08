@@ -32,7 +32,7 @@ class HarvestingService
     index_documents
     save_outcomes
     send_notifications
-  rescue OpenURI::HTTPError => e
+  rescue StandardError => e
     fatal_error "Problem extracting URLs from Endpoint URL: #{e.message}"
     send_notifications
   end
@@ -101,5 +101,6 @@ class HarvestingService
     @endpoint.last_harvest_results = { date: DateTime.current,
                                        files: [],
                                        errors: errors }
+    @endpoint.save
   end
 end
