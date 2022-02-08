@@ -35,14 +35,14 @@ namespace :tools do
         HarvestingService.new(ep).harvest
         ep.reload
         status_color = {
-          Endpoint::LastHarvest::PARTIAL  => :yellow,
+          Endpoint::LastHarvest::PARTIAL => :yellow,
           Endpoint::LastHarvest::COMPLETE => :green,
-          Endpoint::LastHarvest::FAILED   => :red
+          Endpoint::LastHarvest::FAILED => :red
         }[ep.last_harvest.status]
         puts Rainbow(ep.last_harvest.status.titlecase).color(status_color)
-      rescue => e
+      rescue StandardError => e
         puts Rainbow("Error\n    #{e.message}").red
-        puts "    " + e.backtrace.join("\n    ")
+        puts "    #{e.backtrace.join("\n    ")}"
       end
     end
     puts Rainbow('All done!').green
