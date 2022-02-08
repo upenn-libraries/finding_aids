@@ -183,9 +183,9 @@ class EadParser
   # @return [Array]
   def languages(doc)
     doc.xpath('/ead/archdesc/did/langmaterial/language/@langcode').map do |node|
-      code = node.text.try(:strip)
+      code = node.text.try(:strip).try(:downcase)
       iso_entry = ISO_639.find_by_code code
-      iso_entry.english_name || code
+      iso_entry&.english_name || code
     end
   end
 
