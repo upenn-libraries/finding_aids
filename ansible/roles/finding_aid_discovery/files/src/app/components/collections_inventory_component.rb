@@ -10,8 +10,8 @@ class CollectionsInventoryComponent < ViewComponent::Base
   end
 
   def call
-    render(CollapsableSectionComponent.new(id: 'collections-inventory')) do |c|
-      c.title { 'Collection Inventory' }
+    render(CollapsableSectionComponent.new(id: t('sections.collection_inventory').parameterize)) do |c|
+      c.title { t('sections.collection_inventory') }
       c.body { render(CollectionsComponent.new(node: node, level: 1)) }
     end
   end

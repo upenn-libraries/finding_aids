@@ -26,6 +26,10 @@ class SolrDocument
   end
 
   class ParsedEad
+    SECTIONS = %w[bioghist scopecontent arrangement relatedmaterials bibliography odd accruals accessrestrict
+                  userestrict custodhist altformavail originalsloc fileplan acqinfo otherfindaid phystech
+                  processinfo relatedmaterial separatedmaterial appraisal].freeze
+
     # @param [String] xml
     def initialize(xml)
       @nodes = Nokogiri::XML.parse(xml)
@@ -33,18 +37,20 @@ class SolrDocument
     end
 
     # @return [Nokogiri::XML::Element]
-    def biog_hist
-      @biog_hist ||= @nodes.at_xpath('/ead/archdesc/bioghist')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def scope_content
-      @scope_content ||= @nodes.at_xpath('/ead/archdesc/scopecontent')
-    end
-
-    # @return [Nokogiri::XML::Element]
     def dsc
-      @dsc ||= @nodes.at_xpath('/ead/archdesc/dsc')
+      @nodes.at_xpath('/ead/archdesc/dsc')
+    end
+
+    # @param [String, Symbol] name
+    def respond_to_missing?(name, _include_private = false)
+      name.to_s.in? SECTIONS
+    end
+
+    # @param [Symbol] symbol
+    def method_missing(symbol, *_args)
+      raise NoMethodError unless respond_to_missing? symbol
+
+      @nodes.at_xpath("/ead/archdesc/#{symbol}")
     end
   end
 end

@@ -10,10 +10,10 @@ class CollectionComponent < ViewComponent::Base
   end
 
   def title
-    title = render EadMarkupTranslationComponent.new(node: node.at_xpath('did/unittitle'))
+    title = render EadMarkupTranslationComponent.new(node: unittitle_node)
 
-    title = [unitid, origination, title].delete_if(&:blank?).join('. ')
-    title = [title, date].delete_if(&:blank?).join(', ')
+    title = [unitid, origination, title].compact_blank.join('. ')
+    title = [title, date].compact_blank.join(', ')
     title.concat '.' unless title.ends_with?('.') # always add a period
     title.concat extent
 
@@ -36,6 +36,10 @@ class CollectionComponent < ViewComponent::Base
     node.at_xpath('did/unitid[not(@audience=\'internal\')]').try(:text)
   end
 
+  def unittitle_node
+    node.at_xpath('did/unittitle')
+  end
+
   def origination
     node.at_xpath('did/origination').try(:text)
   end
@@ -48,7 +52,7 @@ class CollectionComponent < ViewComponent::Base
 
     bulk_date = "(#{bulk_date})" if bulk_date
 
-    [non_bulk_date, bulk_date].compact.join(' ')
+    [non_bulk_date, bulk_date].compact_blank.join(' ')
   end
 
   def extent
