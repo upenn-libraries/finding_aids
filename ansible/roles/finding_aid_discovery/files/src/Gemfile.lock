@@ -1,6 +1,6 @@
 GIT
   remote: https://gitlab.library.upenn.edu/cgalarza/upennlib-rubocop
-  revision: f4c17e85ae9c193d2d0d0c83d8e6464f2d8c7c3c
+  revision: 54b0eee2ecf5b729bb3d052557d366c465684a71
   branch: main
   specs:
     upennlib-rubocop (1.0.0)
@@ -263,7 +263,7 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.3)
-    rubocop (1.25.0)
+    rubocop (1.25.1)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -283,7 +283,7 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
-    rubocop-rspec (2.7.0)
+    rubocop-rspec (2.8.0)
       rubocop (~> 1.19)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
