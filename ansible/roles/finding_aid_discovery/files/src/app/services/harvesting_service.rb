@@ -3,7 +3,7 @@
 # Hardworking class to do the actual Endpoint extraction and file download, parsing and indexing
 # Usage: HarvestingService.new(endpoint).harvest
 class HarvestingService
-  CRAWL_DELAY = 1
+  CRAWL_DELAY = 0.2
 
   # @param [Endpoint] endpoint
   def initialize(endpoint, solr_service = SolrService.new)
@@ -20,7 +20,7 @@ class HarvestingService
       document = parse(file.url, file.read)
       @documents << document
       # TODO: this query is unnecessary and should be removed when the DB connection issue can be resolved.
-      Endpoint.exists?(@endpoint.id) if !ENV.fetch('SKIP_FRIVOLOUS_HARVEST_QUERY', nil) && (i % 30).zero?
+      Endpoint.exists?(@endpoint.id) if !ENV.fetch('SKIP_FRIVOLOUS_HARVEST_QUERY', nil) && (i % 60).zero?
     rescue StandardError => e
       log_error_from(file, e)
     else
@@ -32,7 +32,7 @@ class HarvestingService
     index_documents
     save_outcomes
     send_notifications
-  rescue OpenURI::HTTPError => e
+  rescue StandardError => e
     fatal_error "Problem extracting URLs from Endpoint URL: #{e.message}"
     send_notifications
   end
@@ -101,5 +101,6 @@ class HarvestingService
     @endpoint.last_harvest_results = { date: DateTime.current,
                                        files: [],
                                        errors: errors }
+    @endpoint.save
   end
 end

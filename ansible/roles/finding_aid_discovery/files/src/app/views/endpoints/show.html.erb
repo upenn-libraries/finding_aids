@@ -51,7 +51,7 @@
     <dt>Messages</dt>
     <dd>
       <ul>
-      <%= @endpoint.last_harvest.errors.each do |error| %>
+      <% @endpoint.last_harvest.errors.each do |error| %>
         <li><%= error %></li>
       <% end %>
       </ul>
