@@ -42,22 +42,15 @@ class SolrDocument
     end
 
     # @param [String, Symbol] name
-    def respond_to_missing?(name, _)
+    def respond_to_missing?(name, _include_private = false)
       name.to_s.in? SECTIONS
     end
 
     # @param [Symbol] symbol
     def method_missing(symbol, *_args)
-      memoize_section_text "@#{symbol}" do
-        @nodes.at_xpath("/ead/archdesc/#{symbol}")
-      end
-    end
+      raise NoMethodError unless respond_to_missing? symbol
 
-    # @param [String] name
-    def memoize_section_text(name)
-      return instance_variable_get(name) if instance_variable_defined?(name)
-
-      instance_variable_set name, yield
+      @nodes.at_xpath("/ead/archdesc/#{symbol}")
     end
   end
 end
