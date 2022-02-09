@@ -22,15 +22,15 @@ class EadMarkupTranslationComponent < ViewComponent::Base
 
   # Apply transformations from ead syntax to html syntax
   def convert_to_html
-    node.xpath('//head').each do |h|
+    node.xpath('./head').each do |h|
       h.name = 'strong'
       h.wrap('<div></div>')
     end
 
-    node.xpath('//lb').each { |l| l.name = 'br' }
-    node.xpath('//blockquote').each { |b| b.set_attribute('class', 'blockquote mx-5') }
+    node.xpath('./lb').each { |l| l.name = 'br' }
+    node.xpath('./blockquote').each { |b| b.set_attribute('class', 'blockquote mx-5') }
 
-    node.xpath('//emph | //title').each do |e|
+    node.xpath('./emph | ./title').each do |e|
       case e.attr('render')
       when 'underline'
         e.name = 'span'
