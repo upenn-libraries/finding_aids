@@ -1,0 +1,15 @@
+// adapted from Blacklight's _bootstrap_overrides.scss .facet_field_heading
+.collapsable-toggle {
+  &::after {
+    content: "❯";
+    float: right;
+    transform: rotate(270deg);
+    transition: transform 0.2s ease;
+  }
+
+  &.collapsed {
+    &::after {
+      transform: rotate(90deg);
+    }
+  }
+}
