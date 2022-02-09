@@ -60,12 +60,13 @@ class IndexExtractor
 
     # Extract list of XML URLs
     doc.xpath('//a/@href')
-       .map { |node| node_to_uri node }
+       .filter_map { |node| node_to_uri node }
        .select { |uri| uri.path.ends_with? '.xml' }
        .map { |uri| XMLFile.new uri.to_s }
   end
 
   # @param [Nokogiri::XML::Attr] href_link
+  # @return [NilClass, URI::HTTP, URI::Generic]
   def node_to_uri(href_link)
     val = href_link.value
     uri = URI.parse val
@@ -75,5 +76,7 @@ class IndexExtractor
       normalized_endpoint_url = @endpoint.url.ends_with?('/') ? @endpoint.url : "#{@endpoint.url}/"
       URI.join(normalized_endpoint_url, val)
     end
+  rescue URI::InvalidURIError => _e # if its a malformed URL, ignore
+    nil
   end
 end
