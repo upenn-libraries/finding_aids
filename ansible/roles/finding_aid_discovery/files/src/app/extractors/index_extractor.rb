@@ -61,7 +61,7 @@ class IndexExtractor
     # Extract list of XML URLs
     doc.xpath('//a/@href')
        .filter_map { |node| node_to_uri node }
-       .select { |uri| uri.path.ends_with? '.xml' }
+       .select { |uri| uri.path&.ends_with? '.xml' }
        .map { |uri| XMLFile.new uri.to_s }
   end
 
