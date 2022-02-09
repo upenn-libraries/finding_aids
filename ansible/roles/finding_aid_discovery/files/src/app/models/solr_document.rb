@@ -38,7 +38,7 @@ class SolrDocument
 
     # @return [Nokogiri::XML::Element]
     def dsc
-      @dsc ||= @nodes.at_xpath('/ead/archdesc/dsc')
+      @nodes.at_xpath('/ead/archdesc/dsc')
     end
 
     # @param [String, Symbol] name
