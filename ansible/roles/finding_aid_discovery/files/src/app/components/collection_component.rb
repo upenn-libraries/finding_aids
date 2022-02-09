@@ -10,7 +10,7 @@ class CollectionComponent < ViewComponent::Base
   end
 
   def title
-    title = render EadMarkupTranslationComponent.new(node: node.at_xpath('did/unittitle'))
+    title = render EadMarkupTranslationComponent.new(node: node&.at_xpath('did/unittitle'))
 
     title = [unitid, origination, title].delete_if(&:blank?).join('. ')
     title = [title, date].delete_if(&:blank?).join(', ')

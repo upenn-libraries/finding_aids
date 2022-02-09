@@ -12,6 +12,10 @@ class EadMarkupTranslationComponent < ViewComponent::Base
     @node = node
   end
 
+  def render?
+    node.present?
+  end
+
   def call
     sanitize convert_to_html
   end
