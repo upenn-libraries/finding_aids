@@ -106,7 +106,7 @@ class CatalogController < ApplicationController
 
     config.add_show_field 'people_ssim', label: I18n.t('fields.people'), link_to_facet: true
     config.add_show_field 'corpnames_ssim', label: I18n.t('fields.corpnames'), link_to_facet: true
-    config.add_show_field 'creator_ssim', label: I18n.t('fields.creators'), link_to_facet: true
+    config.add_show_field 'creators_ssim', label: I18n.t('fields.creators'), link_to_facet: true
     config.add_show_field 'subjects_ssim', label: I18n.t('fields.subjects'), link_to_facet: true
     config.add_show_field 'places_ssim', label: I18n.t('fields.places'), link_to_facet: true
     config.add_show_field 'donors_ssim', label: I18n.t('fields.donors'), link_to_facet: true
