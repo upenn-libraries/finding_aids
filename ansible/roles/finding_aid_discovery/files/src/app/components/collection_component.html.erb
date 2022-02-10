@@ -19,6 +19,11 @@
       <%= render EadMarkupTranslationComponent.new(node: description) %>
     <% end %>
 
+    <% if physdesc %>
+      <% if physdesc[:label] %><strong><%= physdesc[:label] %></strong><% end %>
+      <p><%= physdesc[:text] %></p>
+    <% end %>
+
     <%= render CollectionsComponent.new(node: node, level: level + 1) %>
   </div>
 </div>

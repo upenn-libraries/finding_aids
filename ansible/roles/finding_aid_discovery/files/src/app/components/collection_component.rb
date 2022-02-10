@@ -2,6 +2,9 @@
 
 # Renders data for one collection.
 class CollectionComponent < ViewComponent::Base
+  DESCRIPTIVE_DATA_SECTIONS = %w[arrangement scopecontent odd relatedmaterial
+                                 userestrict].freeze
+
   attr_reader :node, :level
 
   def initialize(node:, level:)
@@ -27,7 +30,16 @@ class CollectionComponent < ViewComponent::Base
   end
 
   def descriptive_data
-    node.xpath('arrangement | scopecontent | odd | relatedmaterial')
+    node.xpath(DESCRIPTIVE_DATA_SECTIONS.join('|'))
+  end
+
+  # @return [Hash{Symbol->String}]
+  def physdesc
+    physdesc_node = node.at_xpath('did/physdesc')
+    return nil unless physdesc_node
+
+    { text: render(EadMarkupTranslationComponent.new(node: physdesc_node)),
+      label: physdesc_node.at_xpath('@label') }
   end
 
   private
