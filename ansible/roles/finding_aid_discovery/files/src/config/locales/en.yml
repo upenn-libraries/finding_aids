@@ -12,6 +12,7 @@ en:
     corpnames: 'Organization'
     subjects: 'Subject'
     places: 'Place'
+    creators: 'Creator'
     people: 'People'
     language: 'Language'
     donors: 'Donor'
