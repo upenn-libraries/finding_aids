@@ -82,7 +82,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'people_ssim', label: I18n.t('fields.people'), limit: true
     config.add_facet_field 'places_ssim', label: I18n.t('fields.places'), limit: true
     config.add_facet_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), limit: true
-    config.add_facet_field 'creator_ssim', label: I18n.t('fields.creators'), limit: true
+    config.add_facet_field 'creators_ssim', label: I18n.t('fields.creators'), limit: true
     config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors'), limit: true
     config.add_facet_field 'languages_ssim', label: I18n.t('fields.language'), limit: true
 
@@ -93,9 +93,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'extent_ssi', label: I18n.t('fields.extent')
     config.add_index_field 'inclusive_date_ss', label: I18n.t('fields.date')
 
-    config.add_show_field 'ead_id_ssi', label: I18n.t('fields.internal_id')
-    config.add_show_field 'unit_id_ssi', label: I18n.t('fields.ead_id')
-    config.add_show_field 'pretty_unit_id_ssi', label: I18n.t('fields.pretty_unit_id')
+    config.add_show_field 'pretty_unit_id_ss', label: I18n.t('fields.pretty_unit_id')
     config.add_show_field 'title_tsi', label: I18n.t('fields.title')
     config.add_show_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
     config.add_show_field 'url_ss', label: 'Original URL'
