@@ -124,16 +124,19 @@ class EadParser
   # https://www.loc.gov/ead/tglib/elements/origination.html
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
-  def creators(doc)
+  # @param [TrueClass, FalseClass] show_role
+  def creators(doc, show_role: false)
     doc.xpath("/ead/archdesc/did/origination[@label='creator']/persname |
                /ead/archdesc/did/origination[@label='creator']/corpname |
                /ead/archdesc/did/origination[@label='creator']/famname").map do |node|
-      raw = node.text.try(:strip)
+      raw_name = node.text.try(:strip)
       raw_role = node.at_xpath('./@role').try(:text).try(:strip)
-      return raw unless raw_role
-
-      role = raw_role.gsub(/\(.*$/, '').strip
-      "#{raw} (#{role})"
+      if raw_role && show_role
+        role = raw_role.gsub(/\(.*$/, '').strip
+        "#{raw_name} (#{role})"
+      else
+        raw_name
+      end
     end
   end
 
