@@ -142,6 +142,10 @@ describe EadParser do
         expect(hash[:bulk_date_ss]).to eq '1940'
       end
 
+      it 'has the right display date' do
+        expect(hash[:display_date_ssim]).to eq ['1935-1943', 'Bulk 1940']
+      end
+
       it 'has the right donor(s)' do
         expect(hash[:donors_ssim]).to eq ['Sir Michael Kanning IV, Duke of Snapfinger']
       end
