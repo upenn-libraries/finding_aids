@@ -23,7 +23,7 @@ describe SolrDocument do
     end
 
     it 'responds to method calls for defined sections' do
-      SolrDocument::ParsedEad::SECTIONS.each do |section|
+      SolrDocument::ParsedEad::OTHER_SECTIONS.each do |section|
         expect(parsed_ead).to respond_to section
       end
     end

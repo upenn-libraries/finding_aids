@@ -26,9 +26,10 @@ class SolrDocument
   end
 
   class ParsedEad
-    SECTIONS = %w[bioghist scopecontent arrangement relatedmaterials bibliography odd accruals accessrestrict
-                  userestrict custodhist altformavail originalsloc fileplan acqinfo otherfindaid phystech
-                  processinfo relatedmaterial separatedmaterial appraisal].freeze
+    ADMIN_INFO_SECTIONS = %w[publisher author sponsor accessrestrict userestrict].freeze
+    OTHER_SECTIONS = %w[bioghist scopecontent arrangement relatedmaterials bibliography odd accruals
+                        custodhist altformavail originalsloc fileplan acqinfo otherfindaid phystech
+                        processinfo relatedmaterial separatedmaterial appraisal].freeze
 
     # @param [String] xml
     def initialize(xml)
@@ -41,9 +42,24 @@ class SolrDocument
       @nodes.at_xpath('/ead/archdesc/dsc')
     end
 
+    # @return [Nokogiri::XML::Element]
+    def sponsor
+      @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt')
+    end
+
+    # @return [Nokogiri::XML::Element]
+    def author
+      @nodes.at_xpath('/ead/eadheader/filedesc/author')
+    end
+
+    # @return [Nokogiri::XML::Element]
+    def publisher
+      @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt/publisher')
+    end
+
     # @param [String, Symbol] name
     def respond_to_missing?(name, _include_private = false)
-      name.to_s.in? SECTIONS
+      name.to_s.in? OTHER_SECTIONS
     end
 
     # @param [Symbol] symbol

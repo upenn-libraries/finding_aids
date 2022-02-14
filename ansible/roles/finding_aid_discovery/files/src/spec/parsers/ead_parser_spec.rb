@@ -46,10 +46,7 @@ describe EadParser do
 
       it 'has the right creator(s)' do
         expect(hash[:creators_ssim]).to eq(
-          [
-            'Butler, Mary, 1903-1970 (Creator)',
-            'Fewkes, Vladimir (Creator)'
-          ]
+          ['Butler, Mary, 1903-1970', 'Fewkes, Vladimir']
         )
       end
 
