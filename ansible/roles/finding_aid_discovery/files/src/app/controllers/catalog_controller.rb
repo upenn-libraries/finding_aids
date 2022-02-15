@@ -91,7 +91,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'title_tsi', label: I18n.t('fields.title')
     config.add_index_field 'repository_ssi', label: I18n.t('fields.repository')
     config.add_index_field 'extent_ssi', label: I18n.t('fields.extent')
-    config.add_index_field 'inclusive_date_ss', label: I18n.t('fields.date')
+    config.add_index_field 'display_date_ssim', label: I18n.t('fields.date')
 
     config.add_show_field 'pretty_unit_id_ss', label: I18n.t('fields.pretty_unit_id')
     config.add_show_field 'title_tsi', label: I18n.t('fields.title')
@@ -100,9 +100,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'extent_ssi', label: I18n.t('fields.extent')
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
     config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation')
-
-    config.add_show_field 'inclusive_date_ss', label: I18n.t('fields.date')
-    config.add_show_field 'bulk_date_ss', label: I18n.t('fields.bulk_date')
+    config.add_show_field 'display_date_ssim', label: I18n.t('fields.date')
 
     config.add_show_field 'people_ssim', label: I18n.t('fields.people'), link_to_facet: true
     config.add_show_field 'corpnames_ssim', label: I18n.t('fields.corpnames'), link_to_facet: true
