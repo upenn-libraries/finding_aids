@@ -63,30 +63,16 @@ class EadParser
 
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
   # @param [Nokogiri::XML::Document] doc
-  # @return [String]
-  # TODO: do we need to index the inclusive date explicitly? see display_date
-  def inclusive_date(doc)
-    raw = doc.at_xpath("/ead/archdesc/did/unitdate[@type='inclusive']").try :text
-    return raw if raw.blank?
-
-    doc.at_xpath("/ead/archdesc/did/unitdate[not(@type='bulk')]").try(:text).try(:strip)
-  end
-
-  # https://www.loc.gov/ead/tglib/elements/unitdate.html
-  # @param [Nokogiri::XML::Document] doc
-  # @return [String]
-  # TODO: do we need to index the bulk date explicitly? see display_date
-  def bulk_date(doc)
-    raw = doc.at_xpath("/ead/archdesc/did/unitdate[@type='bulk']").try :text
-    raw&.gsub(/^\s*Bulk/, '').try :strip
-  end
-
-  # https://www.loc.gov/ead/tglib/elements/unitdate.html
-  # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def display_date(doc)
     doc.xpath('/ead/archdesc/did/unitdate').map do |node|
-      node.text.try(:strip)
+      value = node.text.try(:strip)
+      if node.attr(:type).present?
+        value = value.downcase.gsub('bulk', '').strip
+        "#{value} (#{node.attr(:type)})"
+      else
+        value
+      end
     end
   end
 
@@ -246,10 +232,8 @@ class EadParser
       title_tsi: title(doc),
       extent_ssi: extent(doc),
       display_date_ssim: display_date(doc),
-      inclusive_date_ss: inclusive_date(doc),
       # date_ss: TODO: determine if bucketing of dates is desired,
       date_added_ss: date_added(doc),
-      bulk_date_ss: bulk_date(doc),
       languages_ssim: languages(doc),
       abstract_scope_contents_tsi: abstract_scope_contents(doc),
       preferred_citation_ss: preferred_citation(doc),

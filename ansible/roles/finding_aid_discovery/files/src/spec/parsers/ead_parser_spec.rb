@@ -62,10 +62,6 @@ describe EadParser do
         expect(hash[:extent_ssi]).to eq '2.5 linear feet'
       end
 
-      it 'has the right inclusive date' do
-        expect(hash[:inclusive_date_ss]).to eq '1935-1943'
-      end
-
       it 'has the right abstract-scope-contents' do
         expect(hash[:abstract_scope_contents_tsi]).to start_with(
           'During the Great Depression'
@@ -135,12 +131,8 @@ describe EadParser do
         expect(hash[:date_added_ss]).to eq '2017-03-03'
       end
 
-      it 'has the right bulk date' do
-        expect(hash[:bulk_date_ss]).to eq '1940'
-      end
-
       it 'has the right display date' do
-        expect(hash[:display_date_ssim]).to eq ['1935-1943', 'Bulk 1940']
+        expect(hash[:display_date_ssim]).to eq ['1935-1943 (inclusive)', '1940 (bulk)']
       end
 
       it 'has the right donor(s)' do
