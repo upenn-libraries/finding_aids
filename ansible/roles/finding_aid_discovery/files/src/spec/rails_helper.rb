@@ -10,8 +10,8 @@ require 'rspec/rails'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'webmock/rspec'
-require "view_component/test_helpers"
-require "capybara/rspec"
+require 'view_component/test_helpers'
+require 'capybara/rspec'
 
 WebMock.disable_net_connect!(
   allow_localhost: true,
