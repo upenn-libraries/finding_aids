@@ -93,6 +93,35 @@
       <subject source="lcsh">WPA Statewide Museum Service</subject>
       <genreform encodinganalog="655$a" source="gmgpc">Photographs</genreform>
     </controlaccess>
+    <arrangement id="aspace_4f0583450ff53de1d1e961cec680b651">
+      <head>Arrangement</head>
+      <list type="deflist">
+        <listhead>
+          <head01>Term</head01>
+          <head02>Definition</head02>
+        </listhead>
+        <head>Definition List</head>
+        <defitem>
+          <label>Label I</label>
+          <item>Some Content</item>
+        </defitem>
+        <defitem>
+          <label>Label II</label>
+          <item>Different Content</item>
+        </defitem>
+      </list>
+      <list type="unordered">
+        <item>This Item</item>
+        <item>That Item</item>
+        <item>Another Item</item>
+      </list>
+      <list type="ordered">
+        <item>First Item</item>
+        <item>Second Item</item>
+        <item>Third Item</item>
+        <item>Fourth Item</item>
+      </list>
+    </arrangement>
     <dsc>
       <c id="ref1" level="series">
         <did>

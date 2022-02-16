@@ -10,6 +10,8 @@ require 'rspec/rails'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'webmock/rspec'
+require "view_component/test_helpers"
+require "capybara/rspec"
 
 WebMock.disable_net_connect!(
   allow_localhost: true,
@@ -42,6 +44,10 @@ end
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.file_fixture_path = "#{::Rails.root}/spec/fixtures"
+
+  # Include helpers for ViewComponent specs
+  config.include ViewComponent::TestHelpers, type: :component
+  config.include Capybara::RSpecMatchers, type: :component
 
   # Including FactoryBot helper methods
   config.include FactoryBot::Syntax::Methods
