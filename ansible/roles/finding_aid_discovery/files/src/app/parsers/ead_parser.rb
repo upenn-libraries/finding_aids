@@ -68,7 +68,7 @@ class EadParser
     doc.xpath('/ead/archdesc/did/unitdate').map do |node|
       value = node.text.try(:strip)
       if node.attr(:type).present?
-        value = value.downcase.gsub('bulk', '').strip
+        value = value.downcase.gsub(/^bulk,?/, '').strip
         "#{value} (#{node.attr(:type)})"
       else
         value
