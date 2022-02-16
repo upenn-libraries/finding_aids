@@ -66,7 +66,7 @@ class SolrDocument
     def method_missing(symbol, *_args)
       raise NoMethodError unless respond_to_missing? symbol
 
-      @nodes.at_xpath("/ead/archdesc/#{symbol}")
+      @nodes.xpath("/ead/archdesc/#{symbol}")
     end
   end
 end

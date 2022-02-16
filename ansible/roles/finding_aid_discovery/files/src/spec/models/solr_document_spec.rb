@@ -30,7 +30,7 @@ describe SolrDocument do
 
     it 'returns Nokogiri nodes for sections present in the EAD archdesc' do
       %w[bioghist scopecontent].each do |section|
-        expect(parsed_ead.send(section).name).to eq section
+        expect(parsed_ead.try(section).first.name).to eq section
       end
     end
   end
