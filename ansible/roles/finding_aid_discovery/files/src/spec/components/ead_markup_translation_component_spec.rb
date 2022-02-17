@@ -3,13 +3,59 @@
 require 'rails_helper'
 
 RSpec.describe EadMarkupTranslationComponent, type: :component do
-  context 'with list nodes' do
-    let(:fragment) { Nokogiri::XML.fragment(xml) }
+  let(:fragment) { Nokogiri::XML.fragment(xml) }
 
-    before do
-      render_inline(described_class.new(node: fragment))
+  before do
+    render_inline(described_class.new(node: fragment))
+  end
+
+  context 'with formatted text' do
+    context 'with a head tag' do
+      let(:xml) do
+        <<XML
+        <parent>
+          <head>Header</head>
+          <p>Text</p>
+        </parent>
+XML
+      end
+
+      it 'converts to bolded text in a new div' do
+        expect(rendered_component).to have_xpath '//div/strong'
+      end
     end
 
+    context 'with formatting from render attribute or emph node' do
+      let(:xml) do
+        <<XML
+          <parent>
+            <title render="underline">Underlined</title>
+            <title render="super">Superscript</title>
+            <title render="sub">Subscript</title>
+            <title render="bold">Bolded</title>
+            <title render="italic">Italicized</title>
+            <emph>Italicized</emph>
+          </parent>
+XML
+      end
+
+      it 'applies underline markup and class accordingly' do
+        expect(rendered_component).to have_xpath '//span[@class="underline"]', count: 1
+      end
+
+      it 'applies sub- and super-script markup accordingly' do
+        expect(rendered_component).to have_xpath '//sup', count: 1
+        expect(rendered_component).to have_xpath '//sub', count: 1
+      end
+
+      it 'applies italic markup accordingly for bold and italicized text' do
+        expect(rendered_component).to have_xpath '//strong', count: 1
+        expect(rendered_component).to have_xpath '//em', count: 2
+      end
+    end
+  end
+
+  context 'with list nodes' do
     context 'with deflist type' do
       let(:xml) do
         <<XML
