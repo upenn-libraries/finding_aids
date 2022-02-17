@@ -70,13 +70,16 @@ XML
       end
     end
 
-    context 'with a nested list' do
+    context 'with a deflist nested in an ordered list' do
       let(:xml) do
         <<XML
           <list type="ordered">
             <item>
-              <list type="unordered">
-                <item>Nested Item</item>
+              <list type="deflist">
+                <defitem>
+                  <label>Nested Label</item>
+                  <item>Nested Item</item>
+                </defitem>
               </list>
             </item>
             <item>Second Item</item>
@@ -85,7 +88,7 @@ XML
       end
 
       it 'converts nodes to properly reflect a nested list' do
-        expect(rendered_component).to have_xpath '//ol/li[1]/ul/li', count: 1
+        expect(rendered_component).to have_xpath '//ol/li[1]/dl/dt', count: 1
         expect(rendered_component).to have_xpath '//ol/li', count: 2
       end
     end

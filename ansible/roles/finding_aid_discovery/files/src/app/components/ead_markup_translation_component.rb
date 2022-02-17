@@ -59,13 +59,13 @@ class EadMarkupTranslationComponent < ViewComponent::Base
       case list.attr('type')
       when 'deflist'
         list.name = 'dl'
-        list.at_xpath('./listhead').remove # TODO: remove listhead for now, otherwise we have to build a table?
-        list.xpath('./defitem').each do |defitem|
-          defitem.xpath('./label').each do |label|
+        list.at_xpath('.//listhead')&.remove # TODO: remove listhead for now, otherwise we have to build a table?
+        list.xpath('.//defitem').each do |defitem|
+          defitem.xpath('.//label').each do |label|
             label.name = 'dt'
             label.parent = list
           end
-          defitem.xpath('./item').each do |item|
+          defitem.xpath('.//item').each do |item|
             item.name = 'dd'
             item.parent = list
           end
