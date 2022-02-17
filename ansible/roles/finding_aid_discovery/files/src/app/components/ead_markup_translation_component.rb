@@ -27,6 +27,8 @@ class EadMarkupTranslationComponent < ViewComponent::Base
       h.wrap('<div></div>')
     end
 
+    convert_lists
+
     node.xpath('.//lb').each { |l| l.name = 'br' }
     node.xpath('.//blockquote').each { |b| b.set_attribute('class', 'blockquote mx-5') }
 
@@ -50,5 +52,34 @@ class EadMarkupTranslationComponent < ViewComponent::Base
     end
 
     node.children.to_html
+  end
+
+  def convert_lists
+    node.xpath('.//list').each do |list|
+      case list.attr('type')
+      when 'deflist'
+        list.name = 'dl'
+        list.at_xpath('.//listhead')&.remove # TODO: remove listhead for now, otherwise we have to build a table?
+        list.xpath('.//defitem').each do |defitem|
+          defitem.xpath('.//label').each do |label|
+            label.name = 'dt'
+            label.parent = list
+          end
+          defitem.xpath('.//item').each do |item|
+            item.name = 'dd'
+            item.parent = list
+          end
+          defitem.remove
+        end
+      when 'unordered'
+        list.name = 'ul'
+        list.xpath('./item').each { |i| i.name = 'li' }
+      when 'ordered'
+        list.name = 'ol'
+        list.xpath('./item').each { |i| i.name = 'li' }
+      else
+        next
+      end
+    end
   end
 end
