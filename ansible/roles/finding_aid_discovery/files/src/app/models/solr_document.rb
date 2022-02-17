@@ -44,7 +44,7 @@ class SolrDocument
 
     # @return [Nokogiri::XML::Element]
     def sponsor
-      @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt')
+      @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt/sponsor')
     end
 
     # @return [Nokogiri::XML::Element]
