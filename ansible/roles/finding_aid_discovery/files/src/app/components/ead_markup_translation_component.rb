@@ -32,24 +32,7 @@ class EadMarkupTranslationComponent < ViewComponent::Base
     node.xpath('.//lb').each { |l| l.name = 'br' }
     node.xpath('.//blockquote').each { |b| b.set_attribute('class', 'blockquote mx-5') }
 
-    node.xpath('.//emph | .//title').each do |e|
-      case e.attr('render')
-      when 'underline'
-        e.name = 'span'
-        e.set_attribute('class', 'underline')
-      when 'super'
-        e.name = 'sup'
-      when 'sub'
-        e.name = 'sub'
-      when 'bold'
-        e.name = 'strong'
-      when 'italic'
-        e.name = 'em'
-      else
-        e.name = 'em' if e.name == 'emph'
-      end
-      e.delete('render')
-    end
+    convert_formatting_markup
 
     node.children.to_html
   end
@@ -81,5 +64,55 @@ class EadMarkupTranslationComponent < ViewComponent::Base
         next
       end
     end
+  end
+
+  def convert_formatting_markup
+    node.xpath('.//emph | .//title | .//titleproper').each do |e|
+      case e.attr('render')
+      when 'underline'
+        transform node: e, name: 'span', css_class: 'underline'
+      when 'super'
+        transform node: e, name: 'sup'
+      when 'sub'
+        transform node: e, name: 'sub'
+      when 'bold'
+        transform node: e, name: 'strong'
+      when 'italic'
+        transform node: e, name: 'em'
+      when 'smcaps'
+        transform node: e, name: 'span', css_class: 'small-caps'
+      when 'doublequote'
+        transform node: e, name: 'span', content: "\"#{e.text}\""
+      when 'singlequote'
+        transform node: e, name: 'span', content: "'#{e.text}'"
+      when 'bolditalic'
+        transform node: e, name: 'em', wrap: '<strong></strong>'
+      when 'boldunderline'
+        transform node: e, name: 'string', css_class: 'underline'
+      when 'boldsmcaps'
+        transform node: e, name: 'strong', css_class: 'small-caps'
+      when 'bolddoublequote'
+        transform node: e, name: 'strong', content: "\"#{e.text}\""
+      when 'boldsinglequote'
+        transform node: e, name: 'strong', content: "'#{e.text}'"
+      else
+        transform(node: e, name: 'em') if e.name == 'emph'
+      end
+      e.delete('render')
+    end
+  end
+
+  private
+
+  # @param [Object] node
+  # @param [String, NilClass] name
+  # @param [String, NilClass] css_class
+  # @param [String, NilClass] wrap
+  # @param [String, NilClass] content
+  def transform(node:, name: nil, css_class: nil, wrap: nil, content: nil)
+    node.name = name if name
+    node.set_attribute('class', css_class) if css_class
+    node.wrap(wrap) if wrap
+    node.content = content if content
   end
 end
