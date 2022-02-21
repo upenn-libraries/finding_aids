@@ -9,3 +9,4 @@
 //= require twitter/typeahead
 //= require bootstrap
 //= require blacklight/blacklight
+//= require 'blacklight_range_limit'

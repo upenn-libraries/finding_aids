@@ -3,6 +3,7 @@
 # Blacklight controller configuring search and record pages.
 class CatalogController < ApplicationController
   include Blacklight::Catalog
+  include BlacklightRangeLimit::ControllerOverride
 
   configure_blacklight do |config|
     ## Class for sending and receiving requests from a search index
@@ -85,7 +86,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'creators_ssim', label: I18n.t('fields.creators'), limit: true
     config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors'), limit: true
     config.add_facet_field 'languages_ssim', label: I18n.t('fields.language'), limit: true
-    config.add_facet_field 'years_iim', label: 'Year', limit: true
+    config.add_facet_field 'years_iim', label: 'Year', range: true
 
     config.add_facet_fields_to_solr_request!
 
