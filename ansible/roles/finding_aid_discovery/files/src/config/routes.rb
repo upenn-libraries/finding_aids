@@ -9,7 +9,6 @@ Rails.application.routes.draw do
                      controller: 'catalog', constraints: { id: %r{[^/]+} } do
     concerns :searchable
     concerns :range_searchable
-
   end
   concern :exportable, Blacklight::Routes::Exportable.new
 
