@@ -76,6 +76,54 @@ class EadParser
     end
   end
 
+  # https://www.loc.gov/ead/tglib/elements/unitdate.html
+  # @param [Nokogiri::XML::Document] doc
+  # @param [String] url for logging
+  # @return [Array]
+  def years(doc, url)
+    years = doc.xpath('/ead/archdesc/did/unitdate')&.map do |node|
+      val = node.attr('normal') || node.text.strip
+      to_years_array val, url
+    end
+    if years
+      years.compact_blank.flatten.uniq.sort
+    else
+      []
+    end
+  end
+
+  # @param [String] val
+  # @param [String] url for logging
+  # @return [Array, nil]
+  def to_years_array(val, url = '')
+    case val
+    when %r{\d{4}/\d{4}} # contains a / seperated range
+      norm_range = val.split('/').map(&:strip)
+      (norm_range[0].to_i..norm_range[1].to_i).to_a
+    when /\d{4}-\d{4}/ # contains at least 1 well defined range
+      val.split(',').map(&:strip).map do |range|
+        years = range.scan(/\d{4}/)
+        (years[0].to_i..years[1].to_i).to_a
+      end
+    when /circa/ # contains 'circa'
+      vague_year = val.match(/\d{4}/).to_s.to_i
+      (vague_year - 5..vague_year + 5).to_a
+    when /\S* \d{4} ?- ?\S* \d{4}/ # e.g. December 1900 - March 1950
+      years = val.scan(/\d{4}/)
+      if years.length == 2
+        (years[0].to_i..years[1].to_i).to_a
+      else
+        Rails.logger.info "Bad parsing of range with text: #{val} in #{url}"
+        nil
+      end
+    when /\d{4}/
+      val.scan(/\d{4}/).map(&:to_i)
+    else
+      Rails.logger.info "Unhandled Unit Date value encountered: #{val} from #{url}"
+      nil
+    end
+  end
+
   # https://www.loc.gov/ead/tglib/elements/abstract.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
@@ -232,6 +280,7 @@ class EadParser
       title_tsi: title(doc),
       extent_ssi: extent(doc),
       display_date_ssim: display_date(doc),
+      years_iim: years(doc, url),
       # date_ss: TODO: determine if bucketing of dates is desired,
       date_added_ss: date_added(doc),
       languages_ssim: languages(doc),

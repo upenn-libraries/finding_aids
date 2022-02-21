@@ -6,6 +6,26 @@ describe EadParser do
   let(:endpoint) { build :endpoint, :index_harvest }
   let(:parser) { described_class.new endpoint }
 
+  describe '#to_years_array' do
+    let(:parser) { described_class.new(endpoint) }
+
+    it 'handles 1875/1900' do
+      expect(parser.to_years_array('1875/1900')).to eq (1875..1900).to_a
+    end
+
+    it 'handles 1875-1900' do
+      expect(parser.to_years_array('1875-1900')).to eq [(1875..1900).to_a]
+    end
+
+    it 'handles December 1900 - March 1912' do
+      expect(parser.to_years_array('December 1900 - March 1912')).to eq (1900..1912).to_a
+    end
+
+    it 'handles circa 1925' do
+      expect(parser.to_years_array('circa 1925')).to eq (1920..1930).to_a
+    end
+  end
+
   describe '#parse' do
     let(:hash) { parser.parse(url, xml) }
 
