@@ -4,7 +4,15 @@
 # Takes a URL for an XML file and maps it to a Hash for indexing to Solr
 # e.g., EadParser.new(endpoint_1).process(url_1)
 class EadParser
-  YEARS_REGEX = %r{[a-zA-Z]*\s*(?<begin>\d{4})\s*(?:(?:-|to|/)\s*[a-zA-Z]*\s*(?<end>\d{4}))?}
+  YEARS_REGEX = %r{[a-zA-Z]*\s* # match any preceding text or whitespace
+                  (?<begin>\d{4}) # capture 'begin' date if a range
+                  \s* # any additional whitespace that may be present
+                  (?: # optionally match range component
+                    (?:-|to|/) # supported range separators
+                    \s* # allow for more white space
+                    [a-zA-Z]*\s* # # any more preceding text or whitespace
+                    (?<end>\d{4}) # second capture group for 'end' date
+                  )?}x
 
   # @param [Endpoint] endpoint
   def initialize(endpoint)
