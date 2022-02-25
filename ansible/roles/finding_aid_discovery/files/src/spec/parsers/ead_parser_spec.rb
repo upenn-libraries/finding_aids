@@ -9,20 +9,33 @@ describe EadParser do
   describe '#to_years_array' do
     let(:parser) { described_class.new(endpoint) }
 
-    it 'handles 1875/1900' do
+    it 'handles @normal attribute range' do
       expect(parser.to_years_array('1875/1900')).to eq (1875..1900).to_a
     end
 
-    it 'handles 1875-1900' do
-      expect(parser.to_years_array('1875-1900')).to eq [(1875..1900).to_a]
+    it 'handles simple ranges' do
+      expect(parser.to_years_array('1875-1900')).to eq (1875..1900).to_a
+      expect(parser.to_years_array('1875 - 1900')).to eq (1875..1900).to_a
     end
 
-    it 'handles December 1900 - March 1912' do
+    it 'handles pseudo-endless range' do
+      expect(parser.to_years_array('1809-9999')).to eq (1809..Time.zone.now.year.to_i).to_a
+    end
+
+    it 'handles multiple present ranges' do
+      expect(parser.to_years_array('1875-1905, 1905-1910')).to eq (1875..1910).to_a
+    end
+
+    it 'handles ranges that might include text' do
       expect(parser.to_years_array('December 1900 - March 1912')).to eq (1900..1912).to_a
     end
 
-    it 'handles circa 1925' do
-      expect(parser.to_years_array('circa 1925')).to eq (1920..1930).to_a
+    it 'handles combined range and individual date' do
+      expect(parser.to_years_array('1832 and 1949-1962')).to eq [1832, (1949..1962).to_a].flatten
+    end
+
+    it 'handles explicitly undated' do
+      expect(parser.to_years_array('Undated.')).to eq []
     end
   end
 
