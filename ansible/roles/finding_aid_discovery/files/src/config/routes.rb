@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog',
                      controller: 'catalog', constraints: { id: %r{[^/]+} } do
     concerns :searchable
+    get 'repositories'
   end
   concern :exportable, Blacklight::Routes::Exportable.new
 

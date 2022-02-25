@@ -1,0 +1,25 @@
+<%#
+    This template was inspired by the Blacklight template at: app/views/catalog/facet.html.erb
+%>
+
+<%= render Blacklight::System::ModalComponent.new do |component| %>
+  <% component.prefix do %>
+    <div class="facet-pagination top row justify-content-end">
+      <div class="sort-options btn-group">
+        <% if @presenter.paginator.sort == 'index' -%>
+          <span class="active az btn btn-outline-secondary"><%= t('blacklight.search.facets.sort.index') %></span>
+          <%= link_to(t('blacklight.search.facets.sort.count'), url_for(params: { 'facet.sort': 'count' }), class: "sort_change numeric btn btn-outline-secondary") %>
+        <% elsif @presenter.paginator.sort == 'count' -%>
+          <%= link_to(t('blacklight.search.facets.sort.index'), url_for(params: { 'facet.sort': 'index' }), class: "sort_change az btn btn-outline-secondary") %>
+          <spann class="active numeric btn btn-outline-secondary"><%= t('blacklight.search.facets.sort.count') %></spann>
+        <% end -%>
+      </div>
+    </div>
+  <% end %>
+
+  <% component.title { 'Repositories' } %>
+
+  <div class="facet-extended-list">
+    <%= render_facet_limit(@display_facet, layout: false) %>
+  </div>
+<% end %>
