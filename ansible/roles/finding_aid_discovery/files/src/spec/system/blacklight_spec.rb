@@ -9,7 +9,7 @@ describe 'Blacklight' do
   end
 
   it 'renders repository page' do
-    visit repositories_catalog_path
-    expect(page).to have_text 'Repositories'
+    visit repositories_path
+    expect(page).to have_text I18n.t('labels.titles.repositories_list')
   end
 end

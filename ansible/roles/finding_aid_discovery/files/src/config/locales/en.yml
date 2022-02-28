@@ -1,4 +1,9 @@
 en:
+  page_titles:
+    repositories_list: 'PACSCL Repositories'
+  labels:
+    titles:
+      repositories_list: 'Repositories'
   fields:
     endpoint: 'Endpoint'
     repository: 'Repository'
