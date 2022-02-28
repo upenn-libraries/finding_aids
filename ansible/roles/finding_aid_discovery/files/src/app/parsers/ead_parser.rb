@@ -104,18 +104,17 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def split_repositories(doc)
-    @split_repositories ||= repository(doc).split(':').map(&:strip)
+    repository(doc).split(':').map(&:strip)
   end
 
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def repository(doc)
-    @repository ||=
-      if doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).present?
-        doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).try(:strip)
-      else
-        doc.at_xpath('/ead/archdesc/did/repository').try(:text).try(:strip)
-      end
+    if doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).present?
+      doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).try(:strip)
+    else
+      doc.at_xpath('/ead/archdesc/did/repository').try(:text).try(:strip)
+    end
   end
 
   # https://www.loc.gov/ead/tglib/elements/origination.html
