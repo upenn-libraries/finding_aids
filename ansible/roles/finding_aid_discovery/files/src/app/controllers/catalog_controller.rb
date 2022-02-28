@@ -34,14 +34,9 @@ class CatalogController < ApplicationController
     # config.index.display_type_field = 'format'
     # config.index.thumbnail_field = 'thumbnail_path_ss'
 
-    config.add_results_document_tool(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
-
     config.add_results_collection_tool(:sort_widget)
     config.add_results_collection_tool(:per_page_widget)
     config.add_results_collection_tool(:view_type_group)
-
-    config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
-    config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
 
     # solr field configuration for document/show views
     config.show.title_field = :title_tsi
