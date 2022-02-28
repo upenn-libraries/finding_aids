@@ -8,20 +8,9 @@ Rails.application.routes.draw do
                      controller: 'catalog', constraints: { id: %r{[^/]+} } do
     concerns :searchable
   end
-  concern :exportable, Blacklight::Routes::Exportable.new
 
   resources :solr_documents, only: [:show], path: '/catalog',
-                             controller: 'catalog', constraints: { id: %r{[^/]+} } do
-    concerns :exportable
-  end
-
-  resources :bookmarks do
-    concerns :exportable
-
-    collection do
-      delete 'clear'
-    end
-  end
+                             controller: 'catalog', constraints: { id: %r{[^/]+} }
 
   scope :admin do
     resources :endpoints, only: %i[index show]
