@@ -32,9 +32,6 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
-
   # Tell Action Mailer not to deliver emails to the real world.
   # The :file delivery method saves the emails in tmp/mails
   config.action_mailer.delivery_method = :file
