@@ -272,7 +272,6 @@ class EadParser
       extent_ssi: extent(doc),
       display_date_ssim: display_date(doc),
       years_iim: years(doc),
-      # date_ss: TODO: determine if bucketing of dates is desired,
       date_added_ss: date_added(doc),
       languages_ssim: languages(doc),
       abstract_scope_contents_tsi: abstract_scope_contents(doc),
