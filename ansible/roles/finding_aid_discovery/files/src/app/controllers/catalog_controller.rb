@@ -139,4 +139,15 @@ class CatalogController < ApplicationController
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = false
   end
+
+  def repositories
+    @facet = blacklight_config.facet_fields['repository_ssi']
+    raise ActionController::RoutingError, 'Not Found' unless @facet
+
+    @response = search_service.facet_field_response(@facet.key, { 'f.repository_ssi.facet.limit' => -1 })
+    @display_facet = @response.aggregations[@facet.field]
+
+    @presenter = @facet.presenter.new(@facet, @display_facet, view_context)
+    @pagination = @presenter.paginator
+  end
 end

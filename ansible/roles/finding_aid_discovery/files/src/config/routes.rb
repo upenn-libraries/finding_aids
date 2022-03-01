@@ -27,5 +27,6 @@ Rails.application.routes.draw do
     resources :endpoints, only: %i[index show]
   end
 
+  get 'repositories', to: 'catalog#repositories'
   root to: 'catalog#index'
 end

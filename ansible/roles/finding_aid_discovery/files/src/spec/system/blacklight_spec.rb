@@ -7,4 +7,9 @@ describe 'Blacklight' do
     visit root_path
     expect(page).to have_text 'PAARP'
   end
+
+  it 'renders repository page' do
+    visit repositories_path
+    expect(page).to have_text I18n.t('labels.titles.repositories_list')
+  end
 end
