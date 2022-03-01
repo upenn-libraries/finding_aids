@@ -4,6 +4,16 @@
 # Takes a URL for an XML file and maps it to a Hash for indexing to Solr
 # e.g., EadParser.new(endpoint_1).process(url_1)
 class EadParser
+  YEARS_REGEX = %r{[a-zA-Z]*\s* # match any preceding text or whitespace
+                  (?<begin>\d{4}) # capture 'begin' date if a range
+                  \s* # any additional whitespace that may be present
+                  (?: # optionally match range component
+                    (?:-|to|/) # supported range separators
+                    \s* # allow for more white space
+                    [a-zA-Z]*\s* # # any more preceding text or whitespace
+                    (?<end>\d{4}) # second capture group for 'end' date
+                  )?}x
+
   # @param [Endpoint] endpoint
   def initialize(endpoint)
     @endpoint = endpoint
@@ -74,6 +84,35 @@ class EadParser
         value
       end
     end
+  end
+
+  # https://www.loc.gov/ead/tglib/elements/unitdate.html
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def years(doc)
+    years = doc.xpath('/ead/archdesc/did/unitdate')&.map do |node|
+      val = node.attr('normal') || node.text.strip
+      to_years_array val
+    end
+    years || []
+  end
+
+  # extract years from val based on range and date finding regex YEARS_REGEX
+  # @param [String] val
+  # @return [Array]
+  def to_years_array(val)
+    matches = val.scan YEARS_REGEX
+    return [] if matches.empty?
+
+    matches.map do |years|
+      if years.compact.length == 1
+        years[0].to_i
+      elsif years[1] == '9999'
+        (years[0].to_i..Time.zone.now.year).to_a
+      else
+        (years[0]..years[1]).to_a.map(&:to_i)
+      end
+    end.flatten.uniq.sort
   end
 
   # https://www.loc.gov/ead/tglib/elements/abstract.html
@@ -231,7 +270,7 @@ class EadParser
       title_tsi: title(doc),
       extent_ssi: extent(doc),
       display_date_ssim: display_date(doc),
-      # date_ss: TODO: determine if bucketing of dates is desired,
+      years_iim: years(doc),
       date_added_ss: date_added(doc),
       languages_ssim: languages(doc),
       abstract_scope_contents_tsi: abstract_scope_contents(doc),
