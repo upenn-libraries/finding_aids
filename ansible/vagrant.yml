@@ -1,6 +1,6 @@
 - name: "Set up nginx reverse proxy with ssl termination to mimic a reverse-proxy/loadbalancer"
-  become: true
   hosts: docker_swarm_manager
+  become: true
   collections:
     - nginxinc.nginx_core
   pre_tasks:
