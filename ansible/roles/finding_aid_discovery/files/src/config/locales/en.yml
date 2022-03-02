@@ -23,6 +23,7 @@ en:
     donors: 'Donor'
     genre_form: 'Form'
     citation: 'Preferred Citation'
+    year: 'Year'
   sections:
     collection_inventory: 'Collection Inventory'
     scopecontent: 'Scope and Content'
@@ -48,3 +49,7 @@ en:
     sponsor: 'Sponsor'
     author: 'Finding Aid Author'
     publisher: 'Publisher'
+  sorts:
+    relevance: 'Relevance'
+    year_desc: 'Year (descending)'
+    year_asc: 'Year (ascending)'

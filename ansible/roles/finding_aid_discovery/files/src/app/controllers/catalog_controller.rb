@@ -3,6 +3,7 @@
 # Blacklight controller configuring search and record pages.
 class CatalogController < ApplicationController
   include Blacklight::Catalog
+  include BlacklightRangeLimit::ControllerOverride
 
   configure_blacklight do |config|
     ## Class for sending and receiving requests from a search index
@@ -80,6 +81,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'creators_ssim', label: I18n.t('fields.creators'), limit: true
     config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors'), limit: true
     config.add_facet_field 'languages_ssim', label: I18n.t('fields.language'), limit: true
+    config.add_facet_field 'years_iim', label: I18n.t('fields.year'), range: true
 
     config.add_facet_fields_to_solr_request!
 
@@ -127,9 +129,9 @@ class CatalogController < ApplicationController
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case). Add the sort: option to configure a
     # custom Blacklight url parameter value separate from the Solr sort fields.
-    config.add_sort_field 'relevance', sort: 'score desc', label: 'relevance'
-    # config.add_sort_field 'year-desc', sort: 'pub_date_si desc, title_si asc', label: 'year'
-    # config.add_sort_field 'title_tsi asc', label: 'title'
+    config.add_sort_field 'relevance', sort: 'score desc', label: I18n.t('sorts.relevance')
+    config.add_sort_field 'year-desc', sort: 'years_iim desc, score desc', label: I18n.t('sorts.year_desc')
+    config.add_sort_field 'year-asc', sort: 'years_iim asc, score desc', label: I18n.t('sorts.year_asc')
 
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = false
