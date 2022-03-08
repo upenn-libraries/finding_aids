@@ -10,10 +10,10 @@ cluster = {
 class Password
   def to_s
     print "HashiCorp Vault username: "
-    hv_user = Regexp.escape(STDIN.gets.chomp)
+    hv_user = STDIN.gets.chomp
 
     print "HashiCorp Vault password: "
-    hv_pass = Regexp.escape(STDIN.noecho(&:gets).chomp)
+    hv_pass = STDIN.noecho(&:gets).chomp
 
     Vault.address = "https://vault.library.upenn.edu"
     Vault.auth.ldap(hv_user, hv_pass)
