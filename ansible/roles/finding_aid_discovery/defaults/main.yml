@@ -8,3 +8,7 @@ finding_aid_discovery:
   port: 4567
   replicas: 1
   url: "finding-aid-discovery-dev.library.upenn.edu"
+  versioned_secrets:
+    honeybadger_api_key:
+      value: "123456"
+      version: 1

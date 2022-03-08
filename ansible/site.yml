@@ -1,7 +1,7 @@
 ---
 - name: "Provision Docker Swarm Cluster"
-  become: yes
   hosts: all
+  become: yes
   pre_tasks:
     - name: Install python3-pip
       package:
@@ -14,10 +14,11 @@
   roles:
     - { role: atosatto.docker-swarm }
 
-- hosts: docker_swarm_manager
+- name: "Deploy application"
+  hosts: docker_swarm_manager
   become: yes
   gather_facts: true
-  tasks:
+  pre_tasks:
     - name: Install deps
       pip:
         name:
@@ -25,6 +26,7 @@
           - passlib
           - pyyaml
       tags: deps
+  tasks:
     - import_role:
         name: traefik
       tags: traefik
@@ -47,6 +49,7 @@
         name: chrome
       tags: chrome
       when: is_development | default (false) == true
+  post_tasks:
     - name: Recursively remove project directory
       file:
         path: "{{ project_root }}"

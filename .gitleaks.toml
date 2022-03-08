@@ -150,6 +150,9 @@ title = "gitlab gitleaks config"
         files = [
             '''(?i)(Vagrantfile)'''
         ]
+        paths = [
+            '''ansible/vault_passwd-client.py'''
+        ]
         regexes = [
             '''\:\s+\"\{\{''',
             '''\/run\/secrets''',
@@ -159,6 +162,11 @@ title = "gitlab gitleaks config"
 [[rules]]
     description = "Files with possible keys and credentials"
     file = '''(?i)(id_rsa|passwd|password|id_rsa.pub|pgpass|pem|key|shadow)'''
+    [rules.allowlist]
+        description = "ignore false positive - files with possible keys and credentials"
+        paths = [
+            '''ansible/vault_passwd-client.py'''
+        ]
 
 [[rules]]
     description = "Password in URL"

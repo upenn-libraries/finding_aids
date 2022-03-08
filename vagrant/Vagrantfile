@@ -6,24 +6,24 @@ cluster = {
   "finding-aid-discovery-manager" => { :ip => "10.10.2.206", :cpus => 2, :mem => 4096, :port => 2020 }
 }
 
-# Function to get ansible vault password
+# Class to grab the ansible vault password from a hashicorp vault v2 endpoint
 class Password
   def to_s
-    begin
-      system 'stty -echo'
-      print "Ansible Vault Password: "
-      pass = URI.escape(STDIN.gets.chomp)
-    ensure
-      system 'stty echo'
-    end
+    print "HashiCorp Vault username: "
+    hv_user = Regexp.escape(STDIN.gets.chomp)
 
-    print "\n"
-    pass
+    print "HashiCorp Vault password: "
+    hv_pass = Regexp.escape(STDIN.noecho(&:gets).chomp)
+
+    Vault.address = "https://vault.library.upenn.edu"
+    Vault.auth.ldap(hv_user, hv_pass)
+    results = Vault.logical.read("finding-aid-discovery/data/ansible/vault/vagrant").data
+    results.dig(:data, :password)
   end
 end
 
 Vagrant.configure("2") do |config|
-  config.vagrant.plugins = ["vagrant-vbguest", "vagrant-hostsupdater"]
+  config.vagrant.plugins = ["vagrant-hostsupdater", "vagrant-vbguest", "vault"]
 
   # Add domains to hosts file
   config.hostsupdater.aliases = {
@@ -50,33 +50,45 @@ Vagrant.configure("2") do |config|
         vb.customize ["modifyvm", :id, "--natnet1", "10.252/16"]
       end
 
-      # If you need to expose on your local network; usually not necessary
-      # cfg.vm.provider :virtualbox do |vb, override|
-      #   override.vm.network :forwarded_port, id: "http", host: 8080, guest: 80
-      # end
+      # Run the ansible playbook after the manager vm has been provisioned
+      if hostname == "finding-aid-discovery-manager"
+        # If you need to expose on your local network; usually not necessary
+        # cfg.vm.provider :virtualbox do |vb, override|
+        #   override.vm.network :forwarded_port, id: "http", host: 8080, guest: 80
+        # end
 
-      # Add volumes for development
-      cfg.vm.synced_folder "../", "/finding_aid_discovery"
+        # Add volumes for development
+        cfg.vm.synced_folder "../", "/finding_aid_discovery"
 
-      # Get and assign vault password
-      cfg.vm.provision "shell", env: {"VAULT_PASS" => Password.new}, inline: <<-SHELL
-        echo "${VAULT_PASS}" > /tmp/vault_pass
-      SHELL
+        # Get the vault password and assign it to a tmp file
+        cfg.vm.provision "shell", env: {"VAULT_PASS" => Password.new}, inline: <<-SHELL
+          printf '%s\n' "${VAULT_PASS}" > /tmp/vault_pass
+        SHELL
 
-      cfg.vm.provision :ansible_local do |ansible|
-        ansible.config_file = "/finding_aid_discovery/ansible/ansible.vagrant.cfg"
-        ansible.extra_vars = {
-          ansible_python_interpreter: "/usr/bin/env python3"
-        }
-        ansible.install_mode = "pip3"
-        ansible.inventory_path = "/finding_aid_discovery/ansible/inventories/vagrant"
-        ansible.galaxy_role_file = "/finding_aid_discovery/ansible/roles/requirements.dev.yml"
-        ansible.galaxy_roles_path = "/finding_aid_discovery/ansible/roles"
-        ansible.galaxy_command = "ansible-galaxy install -r %{role_file} --force"
-        ansible.limit = "all"
-        ansible.playbook = "/finding_aid_discovery/ansible/vagrant.yml"
-        ansible.vault_password_file = "/tmp/vault_pass"
-        ansible.verbose = false
+        cfg.vm.provision :ansible_local do |ansible|
+          ansible.config_file = "/finding_aid_discovery/ansible/ansible.vagrant.cfg"
+          ansible.extra_vars = {
+            ansible_python_interpreter: "/usr/bin/env python3"
+          }
+          ansible.install_mode = "pip3"
+          ansible.inventory_path = "/finding_aid_discovery/ansible/inventories/vagrant"
+          ansible.galaxy_role_file = "/finding_aid_discovery/ansible/roles/requirements.dev.yml"
+          ansible.galaxy_roles_path = "/finding_aid_discovery/ansible/roles"
+          ansible.galaxy_command = "ansible-galaxy install -r %{role_file} --force"
+          ansible.limit = "all"
+          ansible.playbook = "/finding_aid_discovery/ansible/vagrant.yml"
+          ansible.vault_password_file = "/tmp/vault_pass"
+          ansible.verbose = false
+        end
+
+        cfg.trigger.after [:provision, :reload, :resume, :up] do |trigger|
+          trigger.info = "Removing vault password"
+          trigger.run_remote = { inline: <<-SHELL
+              rm -fr /tmp/vault_pass
+            SHELL
+          }
+        end
+
       end
     end
   end
