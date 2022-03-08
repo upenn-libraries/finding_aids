@@ -85,13 +85,11 @@ class CatalogController < ApplicationController
 
     config.add_facet_fields_to_solr_request!
 
-    config.add_index_field 'title_tsi', label: I18n.t('fields.title')
     config.add_index_field 'repository_ssi', label: I18n.t('fields.repository')
     config.add_index_field 'extent_ssi', label: I18n.t('fields.extent')
     config.add_index_field 'display_date_ssim', label: I18n.t('fields.date')
 
     config.add_show_field 'pretty_unit_id_ss', label: I18n.t('fields.pretty_unit_id')
-    config.add_show_field 'title_tsi', label: I18n.t('fields.title')
     config.add_show_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
     config.add_show_field 'url_ss', label: 'Original URL'
     config.add_show_field 'extent_ssi', label: I18n.t('fields.extent')
