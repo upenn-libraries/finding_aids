@@ -10,28 +10,28 @@ describe EadParser do
     let(:parser) { described_class.new(endpoint) }
 
     it 'handles @normal attribute range' do
-      expect(parser.to_years_array('1875/1900')).to eq (1875..1900).to_a
+      expect(parser.to_years_array('1875/1900')).to match_array 1875..1900
     end
 
     it 'handles simple ranges' do
-      expect(parser.to_years_array('1875-1900')).to eq (1875..1900).to_a
-      expect(parser.to_years_array('1875 - 1900')).to eq (1875..1900).to_a
+      expect(parser.to_years_array('1875-1900')).to match_array 1875..1900
+      expect(parser.to_years_array('1875 - 1900')).to match_array 1875..1900
     end
 
     it 'handles pseudo-endless range' do
-      expect(parser.to_years_array('1809-9999')).to eq (1809..Time.zone.now.year.to_i).to_a
+      expect(parser.to_years_array('1809-9999')).to match_array 1809..Time.zone.now.year.to_i
     end
 
     it 'handles multiple present ranges' do
-      expect(parser.to_years_array('1875-1905, 1905-1910')).to eq (1875..1910).to_a
+      expect(parser.to_years_array('1875-1905, 1905-1910')).to match_array 1875..1910
     end
 
     it 'handles ranges that might include text' do
-      expect(parser.to_years_array('December 1900 - March 1912')).to eq (1900..1912).to_a
+      expect(parser.to_years_array('December 1900 - March 1912')).to match_array 1900..1912
     end
 
     it 'handles combined range and individual date' do
-      expect(parser.to_years_array('1832 and 1949-1962')).to eq [1832, (1949..1962).to_a].flatten
+      expect(parser.to_years_array('1832 and 1949-1962')).to match_array [1832, (1949..1962).to_a].flatten
     end
 
     it 'handles explicitly undated' do
@@ -59,6 +59,10 @@ describe EadParser do
           'Compiled birth, death, marriage records within the area of Philadelphia Yearly Meeting'
         )
       end
+
+      it 'has expected years' do
+        expect(hash[:years_iim]).to match_array 1826..1937
+      end
     end
 
     context 'when parsing sample Penn Museum EAD' do
@@ -81,6 +85,10 @@ describe EadParser do
         expect(hash[:creators_ssim]).to eq(
           ['Butler, Mary, 1903-1970', 'Fewkes, Vladimir']
         )
+      end
+
+      it 'has expected years' do
+        expect(hash[:years_iim]).to match_array 1935..1943
       end
 
       it 'has the right unit id' do

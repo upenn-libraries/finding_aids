@@ -90,11 +90,11 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def years(doc)
-    years = doc.xpath('/ead/archdesc/did/unitdate')&.map do |node|
-      val = node.attr('normal') || node.text.strip
-      to_years_array val
+    years = doc.xpath('/ead/archdesc/did/unitdate')&.sum([]) do |node|
+      val = node.attr('normal') || node.text
+      to_years_array val&.strip
     end
-    years || []
+    (years || []).uniq.sort
   end
 
   # extract years from val based on range and date finding regex YEARS_REGEX
@@ -104,15 +104,15 @@ class EadParser
     matches = val.scan YEARS_REGEX
     return [] if matches.empty?
 
-    matches.map do |years|
+    matches.sum([]) do |years|
       if years.compact.length == 1
-        years[0].to_i
+        [years[0].to_i]
       elsif years[1] == '9999'
         (years[0].to_i..Time.zone.now.year).to_a
       else
         (years[0]..years[1]).to_a.map(&:to_i)
       end
-    end.flatten.uniq.sort
+    end.uniq
   end
 
   # https://www.loc.gov/ead/tglib/elements/abstract.html
