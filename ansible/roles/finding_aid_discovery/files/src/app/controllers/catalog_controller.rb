@@ -88,6 +88,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'repository_ssi', label: I18n.t('fields.repository')
     config.add_index_field 'extent_ssi', label: I18n.t('fields.extent')
     config.add_index_field 'display_date_ssim', label: I18n.t('fields.date')
+    config.add_index_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents'), helper_method: :truncated_abstract
 
     config.add_show_field 'pretty_unit_id_ss', label: I18n.t('fields.pretty_unit_id')
     config.add_show_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
@@ -96,7 +97,6 @@ class CatalogController < ApplicationController
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
     config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation')
     config.add_show_field 'display_date_ssim', label: I18n.t('fields.date')
-
     config.add_show_field 'people_ssim', label: I18n.t('fields.people'), link_to_facet: true
     config.add_show_field 'corpnames_ssim', label: I18n.t('fields.corpnames'), link_to_facet: true
     config.add_show_field 'creators_ssim', label: I18n.t('fields.creators'), link_to_facet: true
@@ -105,7 +105,6 @@ class CatalogController < ApplicationController
     config.add_show_field 'donors_ssim', label: I18n.t('fields.donors'), link_to_facet: true
     config.add_show_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), link_to_facet: true
     config.add_show_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents')
-    # config.add_show_field 'xml_ss', label: I18n.t('fields.raw_xml')
 
     config.add_search_field 'all_fields', label: 'All Fields'
 
