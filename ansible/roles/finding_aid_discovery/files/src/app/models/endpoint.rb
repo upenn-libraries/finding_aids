@@ -2,14 +2,14 @@
 
 # Represent a partner's endpoint from which we will harvest records
 class Endpoint < ApplicationRecord
-  TYPES = %w[index].freeze
+  TYPES = %w[index archives_space].freeze
 
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[a-z_]+\z/ }
   validates :type, presence: true, inclusion: TYPES
-  validates :url, presence: true
+  # validates :url, presence: true
 
-  # maybe?
   scope :index_type, -> { where('harvest_config @> ?', { type: 'index' }.to_json) }
+  scope :aspace_type, -> { where('harvest_config @> ?', { type: 'archives_space' }.to_json) }
 
   # @return [String]
   def url
@@ -121,12 +121,12 @@ class Endpoint < ApplicationRecord
 
   # @return [Object]
   def extractor
-    @extractor ||= extractor_class.new(self)
+    @extractor ||= extractor_class.new(endpoint: self)
   end
 
   # Return Class for extracting XML File URLs from a source
   def extractor_class
-    "#{type.titlecase}Extractor".constantize
+    "#{type.camelize}Extractor".constantize
   end
 
   # @return [Object]
