@@ -184,5 +184,6 @@ title = "gitlab gitleaks config"
     ]
     files = [
         '''(.*?)(bin|csv|doc|gif|jpg|md|pdf)$''',
-        '''.gitlab-ci.yml'''
+        '''.gitlab-ci.yml''',
+        '''ansible/roles/finding_aid_discovery/files/src/app/extractors/archives_space_extractor.rb'''
     ]
