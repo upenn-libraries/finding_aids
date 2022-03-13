@@ -6,7 +6,7 @@ class IndexExtractor
   attr_reader :endpoint
 
   # @param [Endpoint] endpoint
-  def initialize(endpoint: endpoint)
+  def initialize(endpoint:)
     @endpoint = endpoint
   end
 
