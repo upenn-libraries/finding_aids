@@ -40,12 +40,6 @@ describe Endpoint do
   describe '#harvest_config' do
     let(:endpoint) { build(:endpoint) }
 
-    it 'must include url' do
-      endpoint.harvest_config = { url: '', type: 'index' }
-      expect(endpoint.valid?).to be false
-      expect(endpoint.errors[:url]).to include('can\'t be blank')
-    end
-
     it 'must include valid type' do
       endpoint.harvest_config = { url: 'https://example.com', type: 'gopher' }
       expect(endpoint.valid?).to be false
