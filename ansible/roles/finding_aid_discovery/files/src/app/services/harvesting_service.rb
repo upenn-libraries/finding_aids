@@ -16,15 +16,15 @@ class HarvestingService
   def harvest
     xml_files = @endpoint.extractor.files
     Rails.logger.info "Parsing #{xml_files.size} files from #{@endpoint.slug} @ #{@endpoint.url}"
-    xml_files.each_with_index do |file, i|
-      document = parse(file.url, file.read)
+    xml_files.each_with_index do |ead, i|
+      document = parse(ead.id, ead.xml)
       @documents << document
       # TODO: this query is unnecessary and should be removed when the DB connection issue can be resolved.
       Endpoint.exists?(@endpoint.id) if !ENV.fetch('SKIP_FRIVOLOUS_HARVEST_QUERY', nil) && (i % 60).zero?
     rescue StandardError => e
-      log_error_from(file, e)
+      log_error_from(ead, e)
     else
-      log_document_added(file, document)
+      log_document_added(ead, document)
     ensure
       sleep CRAWL_DELAY
     end
@@ -37,10 +37,10 @@ class HarvestingService
     send_notifications
   end
 
-  # @param [String] url
+  # @param [String] file_id
   # @param [String] xml_content
-  def parse(url, xml_content)
-    @endpoint.parser.parse url, xml_content
+  def parse(file_id, xml_content)
+    @endpoint.parser.parse file_id, xml_content
   end
 
   # @param [Array] harvested_doc_ids
@@ -71,19 +71,19 @@ class HarvestingService
 
   private
 
-  # @param [IndexExtractor::XMLFile] file
+  # @param [BaseEadFile] ead
   # @param [Exception] exception
-  def log_error_from(file, exception)
-    @file_results << { filename: file.url, status: :failed,
+  def log_error_from(ead, exception)
+    @file_results << { filename: ead.id, status: :failed,
                        errors: ["Problem downloading file: #{exception.message}"] }
     Rails.logger.error "Problem parsing #{file.url}: #{exception.message}"
   end
 
-  # @param [IndexExtractor::XMLFile] file
+  # @param [BaseEadFile] ead
   # @param [Hash] document
-  def log_document_added(file, document)
-    @file_results << { filename: file.url, status: :ok, id: document[:id] }
-    Rails.logger.info "Parsed #{file.url} OK"
+  def log_document_added(ead, document)
+    @file_results << { filename: ead.id, status: :ok, id: document[:id] }
+    Rails.logger.info "Parsed #{ead.id} OK"
   end
 
   # @param [Array<String>] ids

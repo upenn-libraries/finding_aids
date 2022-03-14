@@ -1,29 +1,22 @@
 # frozen_string_literal: true
 
-# Extracts URLs for XML files from an Endpoint's defined URL
-# Usage: IndexExtractor.new(endpoint).files
-class IndexExtractor
-  attr_reader :endpoint
-
-  # @param [Endpoint] endpoint
-  def initialize(endpoint:)
-    @endpoint = endpoint
-  end
-
+# Extracts XML files linked to on any HTML page
+class IndexExtractor < BaseExtractor
+  # @return [Array<XMLFile>]
   def files
     @files ||= extract_xml_urls(endpoint.url)
   end
 
-  class XMLFile
-    attr_reader :url
+  class XMLFile < BaseEadFile
 
-    # @param [String] url
-    def initialize(url)
-      @url = url
+    # ID here is typically a URL - use just the final component
+    # @return [String]
+    def id
+      id.split('/').last.gsub('.xml', '')
     end
 
     # @return [String]
-    def read
+    def xml
       validate_encoding(DownloadService.fetch(url))
     end
 

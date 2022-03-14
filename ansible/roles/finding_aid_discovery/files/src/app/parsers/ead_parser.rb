@@ -21,9 +21,10 @@ class EadParser
 
   # internal ID - used with delete logic at least
   # @return [String]
-  # @param [String] url
-  def id(url)
-    "#{@endpoint.slug}_#{url.split('/').last.gsub('.xml', '')}"
+  # @param [String] file_id
+  def id(file_id)
+    # "#{@endpoint.slug}_#{url.split('/').last.gsub('.xml', '')}"
+    "#{@endpoint.slug}_#{file_id}"
   end
 
   # Not always present...
@@ -251,18 +252,17 @@ class EadParser
   end
 
   # usage: { solr_field_name: value, ... }
-  # @param [String] url url of xml file
+  # @param [String] file_id identifier-ish string for file
   # @param [String] xml contents of xml file
   # @return [Hash]
-  def parse(url, xml)
+  def parse(file_id, xml)
     doc = Nokogiri::XML.parse xml
     doc.remove_namespaces!
     {
-      id: id(url),
+      id: id(file_id),
       endpoint_ssi: @endpoint.slug,
       xml_ss: xml,
       link_url_ss: link_url(doc),
-      url_ss: url, # For debugging purposes
       ead_id_ssi: ead_id(doc),
       unit_id_ssi: unit_id(doc),
       pretty_unit_id_ss: pretty_unit_id(doc),

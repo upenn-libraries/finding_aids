@@ -6,9 +6,9 @@ class ArchivesSpaceExtractor
 
   # @param [Endpoint] endpoint
   # @param [ArchivesSpaceExtractor::ArchivesSpaceApi] api
-  def initialize(endpoint: nil, api: api_client)
-    @endpoint = endpoint
+  def initialize(endpoint:, api: api_client)
     @api = api
+    super
     set_repository
   end
 
@@ -19,26 +19,19 @@ class ArchivesSpaceExtractor
   end
 
   # Pretend the API is like a file
-  class ArchivesSpaceFile
+  class ArchivesSpaceFile < BaseEadFile
+    # @param [String] id
     # @param [Endpoint] endpoint
-    # @param [String] resource_id
-    # @param [ArchivesSpaceExtractor::ArchivesSpaceApi] api
-    def initialize(resource_id:, endpoint:, api:)
-      @resource_id = resource_id
-      @endpoint = endpoint
+    # @param [ArchivesSpace::Client] api
+    def initialize(id:, endpoint:, api:)
+      super(id: id, endpoint: endpoint)
       @api = api
-    end
-
-    # return something like a URL for use in the
-    # @return [String]
-    def url
-      @resource_id
     end
 
     # return XML content
     # @return [String]
-    def read
-      @api.client.get("resource_descriptions/#{@resource_id}.xml").body
+    def xml
+      @api.client.get("resource_descriptions/#{@id}.xml").body
     end
   end
 
@@ -56,7 +49,7 @@ class ArchivesSpaceExtractor
   def build_as_files
     resources = @api.client.get('resources', query: { include_unpublished: false, all_ids: true }).parsed
     resources.map do |resource_id|
-      ArchivesSpaceFile.new(resource_id: resource_id, endpoint: endpoint, api: @api)
+      ArchivesSpaceFile.new(id: resource_id, endpoint: endpoint, api: @api)
     end
   end
 
