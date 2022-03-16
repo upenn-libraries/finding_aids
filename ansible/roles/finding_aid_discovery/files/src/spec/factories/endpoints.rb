@@ -35,7 +35,7 @@ FactoryBot.define do
           errors: [],
           files: [
             { id: 'test-ok-id', status: :ok },
-            { id: '', status: :failed, errors: ['Problem downloading file'] }
+            { id: 'test-failed-id', status: :failed, errors: ['Problem downloading file'] }
           ]
         }
       end
