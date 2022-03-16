@@ -23,7 +23,6 @@ class EadParser
   # @return [String]
   # @param [String] file_id
   def id(file_id)
-    # "#{@endpoint.slug}_#{url.split('/').last.gsub('.xml', '')}"
     "#{@endpoint.slug}_#{file_id}"
   end
 

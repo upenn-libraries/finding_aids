@@ -12,6 +12,12 @@ FactoryBot.define do
       end
     end
 
+    trait :aspace_harvest do
+      harvest_config do
+        { type: 'archives_space', repository_id: '1' }
+      end
+    end
+
     trait :failed_harvest do
       last_harvest_results do
         {
@@ -28,8 +34,8 @@ FactoryBot.define do
           date: DateTime.current,
           errors: [],
           files: [
-            { filename: '', id: 'test-ok-id', status: :ok },
-            { filename: '', status: :failed, errors: ['Problem downloading XML file'] }
+            { id: 'test-ok-id', status: :ok },
+            { id: '', status: :failed, errors: ['Problem downloading file'] }
           ]
         }
       end
@@ -53,7 +59,7 @@ FactoryBot.define do
           date: DateTime.current,
           errors: [],
           files: [
-            { filename: '', id: 'test-ok-id', status: :ok },
+            { id: 'test-ok-id', status: :ok },
             { id: 'removed-record-1', status: :removed },
             { id: 'removed-record-2', status: :removed }
           ]

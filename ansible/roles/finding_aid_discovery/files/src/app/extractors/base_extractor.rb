@@ -16,4 +16,20 @@ class BaseExtractor
   def files
     raise AbstractMethodCallError, '#files method on BaseExtractor called. Implement this in your own Extractor class!'
   end
+
+  # Represent an individual EAD file - with an id and xml
+  class BaseEadSource
+    attr_accessor :id
+
+    def initialize(id:)
+      @id = id
+    end
+
+    def xml
+      raise(
+        BaseExtractor::AbstractMethodCallError,
+        '#files method on BaseExtractor::BaseEadSource called. Implement this in your own class!'
+      )
+    end
+  end
 end

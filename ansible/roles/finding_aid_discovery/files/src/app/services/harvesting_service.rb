@@ -71,19 +71,19 @@ class HarvestingService
 
   private
 
-  # @param [BaseEadFile] ead
+  # @param [BaseEadFile] ead_file
   # @param [Exception] exception
-  def log_error_from(ead, exception)
-    @file_results << { filename: ead.id, status: :failed,
+  def log_error_from(ead_file, exception)
+    @file_results << { id: ead_file.id, status: :failed,
                        errors: ["Problem downloading file: #{exception.message}"] }
-    Rails.logger.error "Problem parsing #{file.url}: #{exception.message}"
+    Rails.logger.error "Problem parsing #{ead_file.id}: #{exception.message}"
   end
 
-  # @param [BaseEadFile] ead
+  # @param [BaseEadFile] ead_file
   # @param [Hash] document
-  def log_document_added(ead, document)
-    @file_results << { filename: ead.id, status: :ok, id: document[:id] }
-    Rails.logger.info "Parsed #{ead.id} OK"
+  def log_document_added(ead_file, document)
+    @file_results << { status: :ok, id: document[:id] }
+    Rails.logger.info "Parsed #{ead_file.id} OK"
   end
 
   # @param [Array<String>] ids

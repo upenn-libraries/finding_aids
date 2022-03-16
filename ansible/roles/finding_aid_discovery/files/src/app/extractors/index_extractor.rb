@@ -7,12 +7,12 @@ class IndexExtractor < BaseExtractor
     @files ||= extract_xml_urls(endpoint.url)
   end
 
-  class XMLFile < BaseEadFile
+  class XMLFile < BaseEadSource
+    attr_accessor :url
 
-    # ID here is typically a URL - use just the final component
-    # @return [String]
-    def id
-      id.split('/').last.gsub('.xml', '')
+    def initialize(url:)
+      super id: id_from(url: url)
+      @url = url
     end
 
     # @return [String]
@@ -21,6 +21,12 @@ class IndexExtractor < BaseExtractor
     end
 
     private
+
+    # ID is just the final component without any query params
+    # @return [String]
+    def id_from(url:)
+      url.split('/').last.gsub(/\.xml.*$/, '')
+    end
 
     # Convert string encoding to UTF-8, if encoded differently.
     #
@@ -55,7 +61,7 @@ class IndexExtractor < BaseExtractor
     doc.xpath('//a/@href')
        .filter_map { |node| node_to_uri node }
        .select { |uri| uri.path&.ends_with? '.xml' }
-       .map { |uri| XMLFile.new uri.to_s }
+       .map { |uri| XMLFile.new(url: uri.to_s) }
   end
 
   # @param [Nokogiri::XML::Attr] href_link
