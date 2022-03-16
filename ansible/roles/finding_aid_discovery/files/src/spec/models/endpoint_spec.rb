@@ -98,7 +98,7 @@ describe Endpoint do
         expect(
           endpoint.last_harvest.problem_files
         ).to match_array([
-                           { 'id' => '', 'status' => 'failed', 'errors' => ['Problem downloading file'] }
+                           { 'id' => 'test-failed-id', 'status' => 'failed', 'errors' => ['Problem downloading file'] }
                          ])
       end
     end

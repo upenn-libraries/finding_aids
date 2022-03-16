@@ -108,26 +108,26 @@ namespace :tools do
     puts "Cannot read CSV file at #{index_endpoint_csv}."
   end
 
-  desc 'Sync aspace type endpoints'
-  task sync_aspace_endpoints: :environment do
+  desc 'Sync penn_aspace type endpoints'
+  task sync_penn_aspace_endpoints: :environment do
     # Read CSV data
-    aspace_endpoint_csv = Rails.root.join('data/aspace_endpoints.csv')
+    aspace_endpoint_csv = Rails.root.join('data/penn_aspace_endpoints.csv')
     aspace_endpoint_data = CSV.parse(File.read(aspace_endpoint_csv), headers: true, strip: true)
 
     # Get current inventory for diffing later
-    current_aspace_endpoint_slugs = Endpoint.aspace_type.pluck(:slug)
-    puts "Current aspace endpoint slugs: #{current_aspace_endpoint_slugs.join(' | ')}"
-    puts "ASpace type endpoints currently configured: #{current_aspace_endpoint_slugs.size}"
+    current_aspace_endpoint_slugs = Endpoint.penn_aspace_type.pluck(:slug)
+    puts "Current Penn ASpace endpoint slugs: #{current_aspace_endpoint_slugs.join(' | ')}"
+    puts "Penn ASpace type endpoints currently configured: #{current_aspace_endpoint_slugs.size}"
 
     # Get or build objects
     endpoints = aspace_endpoint_data&.map do |endpoint_info|
       slug = endpoint_info['slug']
-      if Endpoint.aspace_type.exists? slug: slug
+      if Endpoint.penn_aspace_type.exists? slug: slug
         puts "Endpoint exists for #{slug}, will update."
         endpoint = Endpoint.find_by slug: slug
         endpoint.public_contacts = Array.wrap(endpoint_info['public_contact'])
         endpoint.tech_contacts = Array.wrap(endpoint_info['tech_contact'])
-        endpoint.harvest_config = { type: 'archives_space', repository_id: endpoint_info['repository_id'] }
+        endpoint.harvest_config = { type: 'penn_archives_space', repository_id: endpoint_info['repository_id'] }
         endpoint
       else
         puts "Will create new endpoint #{slug}."
@@ -136,7 +136,7 @@ namespace :tools do
             slug: slug,
             public_contacts: Array.wrap(endpoint_info['public_contact']),
             tech_contacts: Array.wrap(endpoint_info['tech_contact']),
-            harvest_config: { type: 'archives_space', repository_id: endpoint_info['repository_id'] }
+            harvest_config: { type: 'penn_archives_space', repository_id: endpoint_info['repository_id'] }
           }
         )
       end
@@ -152,10 +152,10 @@ namespace :tools do
     end
 
     # Process removals
-    new_aspace_endpoint_slugs = Endpoint.aspace_type.pluck(:slug)
+    new_aspace_endpoint_slugs = Endpoint.penn_aspace_type.pluck(:slug)
     diff = current_aspace_endpoint_slugs - new_aspace_endpoint_slugs
     if diff.any?
-      puts "These aspace endpoints were removed and will be deleted: #{diff.join(' | ')}"
+      puts "These Penn aspace endpoints were removed and will be deleted: #{diff.join(' | ')}"
       diff.each do |endpoint_slug_to_remove|
         rip_endpoint = Endpoint.find_by slug: endpoint_slug_to_remove
         rip_endpoint.destroy

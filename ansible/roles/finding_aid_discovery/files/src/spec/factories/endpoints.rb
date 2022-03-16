@@ -12,9 +12,9 @@ FactoryBot.define do
       end
     end
 
-    trait :aspace_harvest do
+    trait :penn_aspace_harvest do
       harvest_config do
-        { type: 'archives_space', repository_id: '1' }
+        { type: 'penn_archives_space', repository_id: '1' }
       end
     end
 

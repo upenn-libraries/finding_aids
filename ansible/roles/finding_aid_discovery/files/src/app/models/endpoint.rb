@@ -2,14 +2,13 @@
 
 # Represent a partner's endpoint from which we will harvest records
 class Endpoint < ApplicationRecord
-  TYPES = %w[index archives_space].freeze
+  TYPES = %w[index penn_archives_space].freeze
 
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[a-z_]+\z/ }
   validates :type, presence: true, inclusion: TYPES
-  # validates :url, presence: true
 
   scope :index_type, -> { where('harvest_config @> ?', { type: 'index' }.to_json) }
-  scope :aspace_type, -> { where('harvest_config @> ?', { type: 'archives_space' }.to_json) }
+  scope :penn_aspace_type, -> { where('harvest_config @> ?', { type: 'penn_archives_space' }.to_json) }
 
   # @return [String]
   def url

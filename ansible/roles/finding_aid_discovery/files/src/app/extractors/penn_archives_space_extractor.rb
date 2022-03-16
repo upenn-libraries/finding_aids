@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Extract XML content from ArchivesSpace
-class ArchivesSpaceExtractor < BaseExtractor
+# Extract XML content from Penn ArchivesSpace
+class PennArchivesSpaceExtractor < BaseExtractor
   attr_reader :endpoint
 
   # @param [Endpoint] endpoint
@@ -65,8 +65,8 @@ class ArchivesSpaceExtractor < BaseExtractor
         {
           base_uri: 'https://upennsbapi.as.atlas-sys.com',
           base_repo: '',
-          username: ENV.fetch('ASPACE_API_USERNAME'),
-          password: ENV.fetch('ASPACE_API_PASSWORD'),
+          username: ENV.fetch('PENN_ASPACE_API_USERNAME'),
+          password: ENV.fetch('PENN_ASPACE_API_PASSWORD'),
           page_size: 50, throttle: 0,
           debug: false, verify_ssl: false
         }
