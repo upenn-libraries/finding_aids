@@ -54,10 +54,10 @@ describe HarvestingService do
 
     context 'when EAD cannot not be retrieved because of a HTTP error' do
       let(:url) { 'https://www.test.com/not_here.xml' }
-      let(:xml_file) { IndexExtractor::XMLFile.new(url) }
+      let(:xml_file) { IndexExtractor::XMLFile.new(url: url) }
       let(:expected_file_error_hash) do
         [{
-          'filename' => url,
+          'id' => 'not_here',
           'status' => 'failed',
           'errors' => ['Problem downloading file: 404 Not Found']
         }]

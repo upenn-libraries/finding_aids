@@ -1,6 +1,4 @@
 slug,tech_contact,url,public_contact
-upenn_rbml, hmengel@pobox.upenn.edu, http://127.0.0.1:8080/ead/manuscripts, rbml@pobox.upenn.edu
-upenn_cajs, cajs@pobox.upenn.edu, http://127.0.0.1:8080/ead/cajs, cajs@pobox.upenn.edu
 upenn_museum, archives@museum.upenn.edu, https://www.penn.museum/collections/archives/finding-aids/, archives@museum.upenn.edu
 ism, lblanchard_pacscl@yahoo.com, http://archive.pacscl.org/phillyseaport/production/, library@phillyseaport.org
 du, mgraham@drexelmed.edu, https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/drexel_university_archives/, archives@drexel.edu
@@ -22,8 +20,6 @@ pennhort, jevans@pennhort.org, https://drexel.edu/legacy-center/ead_harvest-othe
 tuscrc, msly@temple.edu, https://sftp-web.tul-infra.page/scrc_ead/Temple/, msly@temple.edu
 ude, lrjm@udel.edu, https://library.udel.edu/special/findaids/data/ead/, lrjm@udel.edu
 ul, mundyj@unionleague.org, https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/union_league/, mundyj@unionleague.org
-upenn_biddle, loneil@law.upenn.edu, https://www.law.upenn.edu/library/archives/findingaids/, loneil@law.upenn.edu
-upenn_archives, jmduffin@pobox.upenn.edu, http://127.0.0.1:8080/ead/archives, uarc@lists.upenn.edu
 upenn_bates, colliert@nursing.upenn.edu, https://sites.nursing.upenn.edu/bates-center-archive/, nhistory@nursing.upenn.edu
 philu, mgraham@drexelmed.edu, https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/philadelphia_university/, gorskis@philau.edu
 lehigh, ccc2@lehigh.edu, https://digital.lib.lehigh.edu/ATexports/files/, inspc@lehigh.edu

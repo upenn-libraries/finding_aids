@@ -40,18 +40,18 @@ describe EadParser do
   end
 
   describe '#parse' do
-    let(:hash) { parser.parse(url, xml) }
+    let(:hash) { parser.parse(file_id, xml) }
 
     context 'when parsing swarthmore ead' do
       let(:xml) { file_fixture('ead/ead1.xml') }
-      let(:url) { "#{endpoint.url}ead/ead1.xml" }
+      let(:file_id) { 'ead1' }
 
       it 'returns a hash' do
         expect(hash).to be_a_kind_of Hash
       end
 
       it 'has expected value for the id suffix' do
-        expect(hash[:id]).to end_with '_ead1'
+        expect(hash[:id]).to end_with file_id
       end
 
       it 'has expected value for title_tsim' do
@@ -66,7 +66,7 @@ describe EadParser do
     end
 
     context 'when parsing sample Penn Museum EAD' do
-      let(:url) { "#{endpoint.url}ead/penn_museum_ead_1.xml" }
+      let(:file_id) { 'penn_museum_ead_1' }
       let(:xml) { file_fixture('ead/penn_museum_ead_1.xml') }
 
       it 'has the right title' do

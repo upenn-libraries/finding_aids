@@ -5,7 +5,7 @@ require 'rails_helper'
 describe IndexExtractor do
   let(:endpoint) { build :endpoint, :index_harvest }
   let(:html) { file_fixture('xml_listing.html').read }
-  let(:extractor) { described_class.new(endpoint) }
+  let(:extractor) { described_class.new(endpoint: endpoint) }
 
   describe '#files' do
     subject(:files) { extractor.files }
@@ -26,14 +26,8 @@ describe IndexExtractor do
       expect(files.first).to be_an_instance_of IndexExtractor::XMLFile
     end
 
-    it 'returns XMLFile objects with correct urls' do
-      expect(files.map(&:url)).to match_array([
-                                                'https://www.geocities.com/OM_D767.xml',
-                                                'https://www.test.com/pacscl/OM_E467_S53.xml?query=pram',
-                                                'https://www.test.com/pacscl/OM_LMOR.xml',
-                                                'https://www.test.com/pacscl/OM_PN2277.xml?query=param#anchor',
-                                                'https://www.test.com/pacscl/PS2043__A44.xml'
-                                              ])
+    it 'returns XMLFile objects with properly derived IDs' do
+      expect(files.map(&:id)).to match_array %w[OM_D767 OM_E467_S53 OM_LMOR OM_PN2277 PS2043__A44]
     end
 
     context 'when URL raises a 404' do

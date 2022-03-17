@@ -178,11 +178,15 @@ title = "gitlab gitleaks config"
     description = "Global Allowlists"
     commits = [
         '''598a4a6a5089ad0bb446c179e8f08763694f9683''',
-	    '''9e516c631877be18fe6e4a11ccb3a67d4120ac60''',
-    	'''9bcc4da21bbe7ebebb45b5f03c5c8ae80fe07467'''
+        '''9e516c631877be18fe6e4a11ccb3a67d4120ac60''',
+        '''9bcc4da21bbe7ebebb45b5f03c5c8ae80fe07467''',
+        '''8917d27a476524eb4cbf57bffc65177c44921bfe''',
+        '''a11830256e05ccb6c7ad699337f5ea639e45a75f''',
+        '''00b812b58376f5b0dffa233a8e42f2119f2ee2a5'''
 
     ]
     files = [
         '''(.*?)(bin|csv|doc|gif|jpg|md|pdf)$''',
-        '''.gitlab-ci.yml'''
+        '''.gitlab-ci.yml''',
+        '''ansible/roles/finding_aid_discovery/files/src/app/extractors/penn_archives_space_extractor.rb'''
     ]
