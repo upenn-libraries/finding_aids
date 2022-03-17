@@ -17,6 +17,7 @@ class HarvestingService
     xml_files = @endpoint.extractor.files
     Rails.logger.info "Parsing #{xml_files.size} files from #{@endpoint.slug} @ #{@endpoint.url}"
     xml_files.each_with_index do |ead, i|
+      validate_identifier(ead)
       document = parse(ead.id, ead.xml)
       @documents << document
       # TODO: this query is unnecessary and should be removed when the DB connection issue can be resolved.
@@ -70,6 +71,13 @@ class HarvestingService
   end
 
   private
+
+  # @param [BaseExtractor::BaseEadSource] ead
+  def validate_identifier(ead)
+    return unless ead.id.in? @documents.collect(&:id)
+
+    raise StandardError, "Generated ID is not unique for #{ead.url}. Please ensure each file has a unique filename."
+  end
 
   # @param [BaseEadFile] ead_file
   # @param [Exception] exception
