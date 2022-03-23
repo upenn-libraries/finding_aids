@@ -144,7 +144,7 @@ title = "gitlab gitleaks config"
 # Generic rules
 [[rules]]
     description = "Generic credentials"
-    regex = '''(?i)[\w]*(auth|key|password|passwd|pw|salt|secret|token)[\s]*[:=>]+\s*['"]?[\S]{2,}['"]?'''
+    regex = '''(?i)[\w]*(auth|key|passwd|pw|salt|secret|token)[\s]*[:=>]+\s*['"]?[\S]{2,}['"]?'''
 
 [[rules]]
     description = "Files with possible keys and credentials"

@@ -12,3 +12,9 @@ finding_aid_discovery:
     honeybadger_api_key:
       value: "{{ finding_aid_discovery_vault.versioned_secrets.honeybadger_api_key.value }}"
       version: 1
+    penn_aspace_api_username:
+      value: "{{ finding_aid_discovery_vault.versioned_secrets.penn_aspace_api_username.value }}"
+      version: 1
+    penn_aspace_api_password:
+      value: "{{ finding_aid_discovery_vault.versioned_secrets.penn_aspace_api_password.value }}"
+      version: 1
