@@ -65,8 +65,8 @@ class PennArchivesSpaceExtractor < BaseExtractor
         {
           base_uri: 'https://upennsbapi.as.atlas-sys.com',
           base_repo: '',
-          username: ENV.fetch('PENN_ASPACE_API_USERNAME'),
-          password: ENV.fetch('PENN_ASPACE_API_PASSWORD'),
+          username: SecretsService.lookup(key: 'penn_aspace_api_username'),
+          password: SecretsService.lookup(key: 'penn_aspace_api_password'),
           page_size: 50, throttle: 0,
           debug: false, verify_ssl: false
         }
