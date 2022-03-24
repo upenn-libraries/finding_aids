@@ -23,7 +23,7 @@ services:
       interval: 30s
       retries: 3
       start_period: 30s
-      timeout: 30s
+      timeout: 3m
     logging:
       driver: json-file
       options:
@@ -31,7 +31,12 @@ services:
         max-size: "10m"
     networks:
       - solr
+    volumes:
+      - solr_data:/var/solr/data
 
 networks:
   solr:
     external: true
+
+volumes:
+  solr_data:
