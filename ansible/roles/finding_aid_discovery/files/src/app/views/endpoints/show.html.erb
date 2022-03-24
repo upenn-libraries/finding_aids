@@ -67,7 +67,7 @@
   <dd>
     <ol>
       <% @endpoint.last_harvest.problem_files.each do |file| %>
-      <li><%= "#{file['filename']}: #{file['errors'].join(', ')}" %></li>
+      <li><%= "#{file['id']}: #{file['errors'].join(', ')}" %></li>
       <% end %>
     </ol>
   </dd>
@@ -77,7 +77,7 @@
   <dd>
     <ol>
       <% @endpoint.last_harvest.success_files.each do |file| %>
-      <li><%= link_to file['filename'], file['filename'] %></li>
+      <li><%= file['id'] %></li>
       <% end %>
     </ol>
   </dd>
@@ -86,12 +86,12 @@
     All files harvested successfully
   </div>
   <dl>
-    Files (<%= @endpoint.last_harvest.files.count %>)
+    Files (<%= @endpoint.last_harvest.files&.count %>)
   </dl>
   <dd>
     <ol>
-      <% @endpoint.last_harvest.files.each do |file| %>
-      <li><%= link_to file['filename'], file['filename'] %></li>
+      <% @endpoint.last_harvest.files&.each do |file| %>
+      <li><%= link_to file['id'], solr_document_path(file['id']) %></li>
       <% end %>
     </ol>
   </dd>
