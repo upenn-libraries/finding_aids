@@ -144,7 +144,7 @@ title = "gitlab gitleaks config"
 # Generic rules
 [[rules]]
     description = "Generic credentials"
-    regex = '''(?i)[\w]*(auth|key|passwd|pw|salt|secret|token)[\s]*[:=>]+\s*['"]?[\S]{2,}['"]?'''
+    regex = '''(?i)[\w]*(auth|key|password|passwd|pw|salt|secret|token)[\s]*[:=>]+\s*['"]?[\S]{2,}['"]?'''
     [rules.allowlist]
         description = "ignore generic creds"
         files = [
@@ -156,7 +156,8 @@ title = "gitlab gitleaks config"
         regexes = [
             '''\:\s+\"\{\{''',
             '''\/run\/secrets''',
-            '''abcde12345'''
+            '''abcde12345''',
+            '''(?i)(penn_aspace_api_password)'''
         ]
 
 [[rules]]
@@ -183,7 +184,8 @@ title = "gitlab gitleaks config"
         '''8917d27a476524eb4cbf57bffc65177c44921bfe''',
         '''a11830256e05ccb6c7ad699337f5ea639e45a75f''',
         '''00b812b58376f5b0dffa233a8e42f2119f2ee2a5''',
-        '''6165f8da733ad3f8e02210f13ab55a7ac8395568'''
+        '''6165f8da733ad3f8e02210f13ab55a7ac8395568''',
+        '''82f26315dc6add518e54904be6eacde0d15524fb'''
 
     ]
     files = [
