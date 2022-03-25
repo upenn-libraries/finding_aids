@@ -11,8 +11,8 @@ class SecretsService
   # @param [String, NilClass] default
   # @return [String, NilClass]
   def self.lookup(key:, default: nil)
-    raise StandardError, 'No secret key defined' if key.blank?
-    raise StandardError, "Non-permitted secret key provided: #{key}" unless key.to_sym.in? PERMITTED_SECRETS
+    raise SecretsServiceError, 'No secret key defined' if key.blank?
+    raise SecretsServiceError, "Non-permitted secret key provided: #{key}" unless key.to_sym.in? PERMITTED_SECRETS
 
     secret_file_path = File.join SECRET_STORE_PATH, key.to_s
     if File.exist? secret_file_path
