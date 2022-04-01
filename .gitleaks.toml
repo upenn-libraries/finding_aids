@@ -157,7 +157,8 @@ title = "gitlab gitleaks config"
             '''\:\s+\"\{\{''',
             '''\/run\/secrets''',
             '''abcde12345''',
-            '''(?i)(penn_aspace_api_password)'''
+            '''(?i)penn_aspace_api_(password|username)''',
+            '''key: (''|'secret_key')''',
         ]
 
 [[rules]]
@@ -190,6 +191,5 @@ title = "gitlab gitleaks config"
     ]
     files = [
         '''(.*?)(bin|csv|doc|gif|jpg|md|pdf)$''',
-        '''.gitlab-ci.yml''',
-        '''ansible/roles/finding_aid_discovery/files/src/app/extractors/penn_archives_space_extractor.rb'''
+        '''.gitlab-ci.yml'''
     ]
