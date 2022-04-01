@@ -12,3 +12,9 @@ finding_aid_discovery:
     honeybadger_api_key:
       value: "123456"
       version: 1
+    penn_aspace_api_username:
+      value: "sample"
+      version: 1
+    penn_aspace_api_password:
+      value: "123456"
+      version: 1
