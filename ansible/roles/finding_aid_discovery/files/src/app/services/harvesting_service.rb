@@ -74,7 +74,7 @@ class HarvestingService
 
   # @param [BaseExtractor::BaseEadSource] ead
   def validate_identifier(ead)
-    return unless ead.id.in? @documents.collect(&:id)
+    return unless ead.id.in?(@documents.collect { |doc| doc['id'] })
 
     raise StandardError, "Generated ID is not unique for #{ead.url}. Please ensure each file has a unique filename."
   end
