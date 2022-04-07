@@ -3,12 +3,29 @@
 require 'rails_helper'
 
 describe SolrDocument do
-  subject(:doc) { described_class.new(xml_ss: xml) }
+  subject(:doc) { described_class.new(fields) }
 
   let(:xml) { file_fixture('ead/penn_museum_ead_1.xml').read }
+  let(:fields) { { xml_ss: xml } }
 
   it 'creates a ParsedEad' do
     expect(doc.parsed_ead).to be_an_instance_of SolrDocument::ParsedEad
+  end
+
+  describe '#penn_item?' do
+    let(:fields) { { repository_name_component_1_ssi: repo } }
+
+    context 'with a penn item' do
+      let(:repo) { 'University of Pennsylvania' }
+
+      it { is_expected.to be_a_penn_item }
+    end
+
+    context 'with a non-Penn item' do
+      let(:repo) { 'Princeton University' }
+
+      it { is_expected.not_to be_a_penn_item }
+    end
   end
 
   context 'when using ParsedEad object' do
