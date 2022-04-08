@@ -8,9 +8,10 @@
         </div>
 
         <div class="col-sm-3 col-lg-2">
-          <% containers.each do |container| %>
-            <span class="badge badge-secondary"><%= "#{container[:type]} #{container[:text]}" %></span>
+          <% container_info.each do |container| %>
+            <span class="badge badge-secondary"><%= container %></span>
           <% end %>
+          <%= requesting_checkbox if form %>
         </div>
       </div>
     </div>
@@ -24,6 +25,6 @@
       <p><%= physdesc[:text] %></p>
     <% end %>
 
-    <%= render CollectionsComponent.new(node: node, level: level + 1) %>
+    <%= render CollectionsComponent.new(node: node, level: level + 1, form: form) %>
   </div>
 </div>

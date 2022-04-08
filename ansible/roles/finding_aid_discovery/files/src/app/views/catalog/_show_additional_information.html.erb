@@ -8,4 +8,8 @@
   <%= render AdditionalInformationComponent.new title: t(section, scope: :sections), nodes: document.parsed_ead.try(section) %>
 <% end %>
 
-<%= render(CollectionsInventoryComponent.new(node: document.parsed_ead.dsc)) %>
+<%= render(CollectionsInventoryComponent.new(
+  node: document.parsed_ead.dsc,
+  enable_requesting: document.requestable?,
+  requesting_info: document.requesting_info
+)) %>

@@ -5,11 +5,12 @@ class CollectionComponent < ViewComponent::Base
   DESCRIPTIVE_DATA_SECTIONS = %w[arrangement scopecontent odd relatedmaterial
                                  userestrict].freeze
 
-  attr_reader :node, :level
+  attr_reader :node, :level, :form
 
-  def initialize(node:, level:)
+  def initialize(node:, level:, form: nil)
     @node = node
     @level = level
+    @form = form
   end
 
   def title
@@ -23,9 +24,9 @@ class CollectionComponent < ViewComponent::Base
     title.presence || '(No Title)'
   end
 
-  def containers
+  def container_info
     node.xpath('did/container').map do |container|
-      { type: container.attr(:type).titlecase, text: container.try(:text) }
+      "#{container.attr(:type).titlecase} #{container.try(:text)}"
     end
   end
 
@@ -42,11 +43,22 @@ class CollectionComponent < ViewComponent::Base
       label: physdesc_node.at_xpath('@label') }
   end
 
-  private
-
   def unitid
     node.at_xpath('did/unitid[not(@audience=\'internal\')]').try(:text)
   end
+
+  def requesting_checkbox
+    container = container_info.map { |cs| cs.gsub(' ', '_') }.to_param.gsub('/', '_')
+    name = "request_for_#{@level}_#{container}"
+    content_tag :div, class: 'custom-control custom-checkbox mt-2' do
+      safe_join([
+        form&.check_box(name, { class: 'custom-control-input', include_hidden: false }, container),
+        form&.label(name, 'Add to request', class: 'custom-control-label')
+      ])
+    end
+  end
+
+  private
 
   def unittitle_node
     node.at_xpath('did/unittitle')

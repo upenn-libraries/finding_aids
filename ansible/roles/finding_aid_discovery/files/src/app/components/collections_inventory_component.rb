@@ -5,14 +5,32 @@ class CollectionsInventoryComponent < ViewComponent::Base
   attr_accessor :node
 
   # @param [Nokogiri::XML::Element] node
-  def initialize(node:)
+  # @param [TrueClass, FalseClass] enable_requesting
+  # @param [Hash] requesting_info
+  def initialize(node:, enable_requesting:, requesting_info:)
     @node = node
+    @enable_requesting = enable_requesting
+    @requesting_info = requesting_info
   end
 
   def call
     render(CollapsableSectionComponent.new(id: t('sections.collection_inventory').parameterize)) do |c|
       c.title { t('sections.collection_inventory') }
-      c.body { render(CollectionsComponent.new(node: node, level: 1)) }
+      c.body do
+        if @enable_requesting
+          form_with url: root_path, method: :post, id: 'aeonRequestForm' do |form|
+            safe_join([
+              form.hidden_field(:call_num, value: @requesting_info[:call_num]),
+              form.hidden_field(:title, value: @requesting_info[:title]),
+              form.hidden_field(:repository, value: @requesting_info[:repository]),
+              render(CollectionsComponent.new(node: node, level: 1, form: form)),
+              form.submit('Request to view selected materials', class: 'btn btn-primary')
+            ])
+          end
+        else
+          render(CollectionsComponent.new(node: node, level: 1))
+        end
+      end
     end
   end
 end

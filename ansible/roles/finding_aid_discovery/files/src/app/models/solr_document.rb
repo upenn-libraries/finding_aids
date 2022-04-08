@@ -2,6 +2,8 @@
 
 class SolrDocument
   XML_FIELD_NAME = :xml_ss
+  REQUESTABLE_REPOSITORIES = ['Kislak Center for Special Collections, Rare Books and Manuscripts',
+                              'Archives at the Library of the Katz Center for Advanced Judaic Studies'].freeze
 
   include Blacklight::Solr::Document
 
@@ -27,6 +29,16 @@ class SolrDocument
 
   def penn_item?
     fetch('repository_name_component_1_ssi') == 'University of Pennsylvania'
+  end
+
+  def requestable?
+    fetch('repository_name_component_2_ssi').in? REQUESTABLE_REPOSITORIES
+  end
+
+  def requesting_info
+    { title: fetch('title_tsi'),
+      call_num: fetch('pretty_unit_id_ss'),
+      repository: fetch('repository_ssi') }
   end
 
   class ParsedEad
