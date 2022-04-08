@@ -1,0 +1,23 @@
+<h1>Request to view materials</h1>
+
+<p>You are requesting to view materials on-site at <%= params[:repository] %></p>
+
+<p>Please review the information and instructions below and press "Submit" when everything is in order. This will
+  create a request in the Aeon system.</p>
+
+<%# some JS to check login status with Aeon?  %>
+
+<%= bootstrap_form_with url: requests_path, method: :post, layout: :horizontal do |form| %>
+  <%= form.hidden_field :call_num, value: params[:call_num] %>
+  <%= form.hidden_field :repository, value: params[:repository] %>
+  <%= form.static_control :title, value: params[:title] %>
+  <%= form.form_group :containers_requested, label: { text: 'Items Requested' } do %>
+    <% containers_from_params(params).each do |c| %>
+      <%= form.static_control :container, value: c, label: 'Container:' %>
+    <% end %>
+  <% end  %>
+  <%= form.text_area :special_request %>
+  <%= form.text_area :notes %>
+  <%= form.date_select :retrieval_date %>
+  <%= form.primary 'Submit' %>
+<% end %>

@@ -29,7 +29,7 @@ class CollectionsInventoryComponent < ViewComponent::Base
   private
 
   def collection_component_with_form
-    form_with url: root_path, method: :post, id: 'aeonRequestForm' do |form|
+    form_with url: new_request_path, method: :get, id: 'aeonRequestForm' do |form|
       safe_join([
                   form.hidden_field(:call_num, value: @requesting_info[:call_num]),
                   form.hidden_field(:title, value: @requesting_info[:title]),

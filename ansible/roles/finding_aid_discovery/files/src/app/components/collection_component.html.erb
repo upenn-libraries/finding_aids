@@ -11,7 +11,7 @@
           <% container_info.each do |container| %>
             <span class="badge badge-secondary"><%= container %></span>
           <% end %>
-          <%= requesting_checkbox if form %>
+          <%= requesting_checkbox if form %> <%# TODO: when this collection is a 'parent' and has no container text the checkbox has issues  %>
         </div>
       </div>
     </div>

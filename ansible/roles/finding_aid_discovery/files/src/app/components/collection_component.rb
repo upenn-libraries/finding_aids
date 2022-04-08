@@ -43,20 +43,20 @@ class CollectionComponent < ViewComponent::Base
       label: physdesc_node.at_xpath('@label') }
   end
 
-  def unitid
-    node.at_xpath('did/unitid[not(@audience=\'internal\')]').try(:text)
-  end
-
   def requesting_checkbox
-    container = container_info.map { |cs| cs.tr(' ', '_') }.join('_')
-    name = "request_for_#{@level}_#{container}"
+    container = container_info.map { |cs| cs.tr(' ', '_') }.join('_') # TODO: ensure param safety
+    name = "c[req_#{@level}_#{container}]"
     content_tag :div, class: 'custom-control custom-checkbox mt-2' do
-      safe_join([form&.check_box(name, { class: 'custom-control-input', include_hidden: false }, container),
+      safe_join([form&.check_box(name, { class: 'custom-control-input', include_hidden: false }, '1'),
                  form&.label(name, 'Add to request', class: 'custom-control-label')])
     end
   end
 
   private
+
+  def unitid
+    node.at_xpath('did/unitid[not(@audience=\'internal\')]').try(:text)
+  end
 
   def unittitle_node
     node.at_xpath('did/unittitle')
