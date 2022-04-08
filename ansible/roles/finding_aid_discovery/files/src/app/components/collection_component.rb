@@ -48,13 +48,11 @@ class CollectionComponent < ViewComponent::Base
   end
 
   def requesting_checkbox
-    container = container_info.map { |cs| cs.gsub(' ', '_') }.to_param.gsub('/', '_')
+    container = container_info.map { |cs| cs.tr(' ', '_') }.join('_')
     name = "request_for_#{@level}_#{container}"
     content_tag :div, class: 'custom-control custom-checkbox mt-2' do
-      safe_join([
-        form&.check_box(name, { class: 'custom-control-input', include_hidden: false }, container),
-        form&.label(name, 'Add to request', class: 'custom-control-label')
-      ])
+      safe_join([form&.check_box(name, { class: 'custom-control-input', include_hidden: false }, container),
+                 form&.label(name, 'Add to request', class: 'custom-control-label')])
     end
   end
 

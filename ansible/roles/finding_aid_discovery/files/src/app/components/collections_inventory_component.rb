@@ -18,19 +18,25 @@ class CollectionsInventoryComponent < ViewComponent::Base
       c.title { t('sections.collection_inventory') }
       c.body do
         if @enable_requesting
-          form_with url: root_path, method: :post, id: 'aeonRequestForm' do |form|
-            safe_join([
-              form.hidden_field(:call_num, value: @requesting_info[:call_num]),
-              form.hidden_field(:title, value: @requesting_info[:title]),
-              form.hidden_field(:repository, value: @requesting_info[:repository]),
-              render(CollectionsComponent.new(node: node, level: 1, form: form)),
-              form.submit('Request to view selected materials', class: 'btn btn-primary')
-            ])
-          end
+          collection_component_with_form
         else
           render(CollectionsComponent.new(node: node, level: 1))
         end
       end
+    end
+  end
+
+  private
+
+  def collection_component_with_form
+    form_with url: root_path, method: :post, id: 'aeonRequestForm' do |form|
+      safe_join([
+                  form.hidden_field(:call_num, value: @requesting_info[:call_num]),
+                  form.hidden_field(:title, value: @requesting_info[:title]),
+                  form.hidden_field(:repository, value: @requesting_info[:repository]),
+                  render(CollectionsComponent.new(node: node, level: 1, form: form)),
+                  form.submit('Request to view selected materials', class: 'btn btn-primary')
+                ])
     end
   end
 end
