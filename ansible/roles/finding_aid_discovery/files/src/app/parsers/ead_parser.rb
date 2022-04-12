@@ -250,6 +250,14 @@ class EadParser
     doc.at_xpath('/ead/eadheader/eadid/@url').try(:text).try(:strip)
   end
 
+  # Returns truthy solr boolean value if record is penn record, otherwise returns a solr falsey value.
+  #
+  # @param [Nokogiri::XML::Document] doc
+  # @return [String]
+  def upenn_record(doc)
+    split_repositories(doc)[0] == 'University of Pennsylvania' ? 'T' : 'F'
+  end
+
   # usage: { solr_field_name: value, ... }
   # @param [String] file_id identifier-ish string for file
   # @param [String] xml contents of xml file
@@ -280,6 +288,7 @@ class EadParser
       places_ssim: places(doc),
       corpnames_ssim: corp_names(doc),
       subjects_ssim: subjects(doc),
+      upenn_record_bsi: upenn_record(doc),
       repository_name_component_1_ssi: split_repositories(doc)[0],
       repository_name_component_2_ssi: split_repositories(doc)[1],
       repository_name_component_3_ssi: split_repositories(doc)[2],
