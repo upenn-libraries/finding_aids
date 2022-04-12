@@ -48,37 +48,45 @@ namespace :tools do
     puts Rainbow('All done!').green
   end
 
-  desc 'Sync index type endpoints'
-  task sync_index_endpoints: :environment do
+  desc 'Sync all endpoints'
+  task sync_endpoints: :environment do
     # Read CSV data
-    index_endpoint_csv = Rails.root.join('data/index_endpoints.csv')
-    index_endpoint_data = CSV.parse(File.read(index_endpoint_csv), headers: true, strip: true)
+    endpoint_csv = Rails.root.join('data/endpoints.csv')
+    endpoint_data = CSV.parse(File.read(endpoint_csv), headers: true, strip: true)
 
     # Get current inventory for diffing later
-    current_index_endpoint_slugs = Endpoint.index_type.pluck(:slug)
-    puts "Current index endpoint slugs: #{current_index_endpoint_slugs.join(' | ')}"
-    puts "Index type endpoints currently configured: #{current_index_endpoint_slugs.size}"
+    current_endpoint_slugs = Endpoint.all.pluck(:slug)
+    puts "Current endpoint slugs: #{current_endpoint_slugs.join(' | ')}"
 
     # Get or build objects
-    endpoints = index_endpoint_data&.map do |endpoint_info|
+    endpoints = endpoint_data&.map do |endpoint_info|
       slug = endpoint_info['slug']
-      if Endpoint.index_type.exists? slug: slug
+      unless endpoint_info['type'].in? Endpoint::TYPES
+        puts "Invalid type set for #{slug}: #{endpoint_info['type']}"
+        next
+      end
+      if Endpoint.exists? slug: slug
         puts "Endpoint exists for #{slug}, will update."
         endpoint = Endpoint.find_by slug: slug
         endpoint.public_contacts = Array.wrap(endpoint_info['public_contact'])
         endpoint.tech_contacts = Array.wrap(endpoint_info['tech_contact'])
-        endpoint.harvest_config = { type: 'index', url: endpoint_info['url'] }
+        endpoint.harvest_config['type'] = endpoint_info['type']
+        endpoint.harvest_config['repository_id'] = endpoint_info['aspace_id'] if endpoint_info['aspace_id'].present?
+        endpoint.harvest_config['url'] = endpoint_info['index_url'] if endpoint_info['index_url'].present?
         endpoint
       else
         puts "Will create new endpoint #{slug}."
-        Endpoint.new(
+        endpoint = Endpoint.new(
           {
             slug: slug,
             public_contacts: Array.wrap(endpoint_info['public_contact']),
-            tech_contacts: Array.wrap(endpoint_info['tech_contact']),
-            harvest_config: { type: 'index', url: endpoint_info['url'] }
+            tech_contacts: Array.wrap(endpoint_info['tech_contact'])
           }
         )
+        endpoint.harvest_config['type'] = endpoint_info['type']
+        endpoint.harvest_config['repository_id'] = endpoint_info['aspace_id'] if endpoint_info['aspace_id'].present?
+        endpoint.harvest_config['url'] = endpoint_info['index_url'] if endpoint_info['index_url'].present?
+        endpoint
       end
     end
 
@@ -92,10 +100,10 @@ namespace :tools do
     end
 
     # Process removals
-    new_index_endpoint_slugs = Endpoint.index_type.pluck(:slug)
-    diff = current_index_endpoint_slugs - new_index_endpoint_slugs
+    new_endpoint_slugs = Endpoint.all.pluck(:slug)
+    diff = current_endpoint_slugs - new_endpoint_slugs
     if diff.any?
-      puts "These index endpoints were removed and will be deleted: #{diff.join(' | ')}"
+      puts "These endpoints were removed and will be deleted: #{diff.join(' | ')}"
       diff.each do |endpoint_slug_to_remove|
         rip_endpoint = Endpoint.find_by slug: endpoint_slug_to_remove
         rip_endpoint.destroy
@@ -105,66 +113,6 @@ namespace :tools do
   rescue CSV::MalformedCSVError => e
     puts "Task aborted: problem parsing CSV on line #{e.line_number}"
   rescue Errno::ENOENT
-    puts "Cannot read CSV file at #{index_endpoint_csv}."
-  end
-
-  desc 'Sync penn_aspace type endpoints'
-  task sync_penn_aspace_endpoints: :environment do
-    # Read CSV data
-    aspace_endpoint_csv = Rails.root.join('data/penn_aspace_endpoints.csv')
-    aspace_endpoint_data = CSV.parse(File.read(aspace_endpoint_csv), headers: true, strip: true)
-
-    # Get current inventory for diffing later
-    current_aspace_endpoint_slugs = Endpoint.penn_aspace_type.pluck(:slug)
-    puts "Current Penn ASpace endpoint slugs: #{current_aspace_endpoint_slugs.join(' | ')}"
-    puts "Penn ASpace type endpoints currently configured: #{current_aspace_endpoint_slugs.size}"
-
-    # Get or build objects
-    endpoints = aspace_endpoint_data&.map do |endpoint_info|
-      slug = endpoint_info['slug']
-      if Endpoint.penn_aspace_type.exists? slug: slug
-        puts "Endpoint exists for #{slug}, will update."
-        endpoint = Endpoint.find_by slug: slug
-        endpoint.public_contacts = Array.wrap(endpoint_info['public_contact'])
-        endpoint.tech_contacts = Array.wrap(endpoint_info['tech_contact'])
-        endpoint.harvest_config = { type: 'penn_archives_space', repository_id: endpoint_info['repository_id'] }
-        endpoint
-      else
-        puts "Will create new endpoint #{slug}."
-        Endpoint.new(
-          {
-            slug: slug,
-            public_contacts: Array.wrap(endpoint_info['public_contact']),
-            tech_contacts: Array.wrap(endpoint_info['tech_contact']),
-            harvest_config: { type: 'penn_archives_space', repository_id: endpoint_info['repository_id'] }
-          }
-        )
-      end
-    end
-
-    # Save and report
-    endpoints&.each do |ep|
-      if ep.save
-        puts "#{ep.slug} saved OK."
-      else
-        puts "Problem saving #{ep.slug}: #{ep.errors.as_json}"
-      end
-    end
-
-    # Process removals
-    new_aspace_endpoint_slugs = Endpoint.penn_aspace_type.pluck(:slug)
-    diff = current_aspace_endpoint_slugs - new_aspace_endpoint_slugs
-    if diff.any?
-      puts "These Penn aspace endpoints were removed and will be deleted: #{diff.join(' | ')}"
-      diff.each do |endpoint_slug_to_remove|
-        rip_endpoint = Endpoint.find_by slug: endpoint_slug_to_remove
-        rip_endpoint.destroy
-        puts "#{endpoint_slug_to_remove} removed. You might want to remove its records!"
-      end
-    end
-  rescue CSV::MalformedCSVError => e
-    puts "Task aborted: problem parsing CSV on line #{e.line_number}"
-  rescue Errno::ENOENT
-    puts "Cannot read CSV file at #{aspace_endpoint_csv}."
+    puts "Cannot read CSV file at #{endpoint_csv}."
   end
 end

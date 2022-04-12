@@ -2,10 +2,13 @@
 
 # Represent a partner's endpoint from which we will harvest records
 class Endpoint < ApplicationRecord
-  TYPES = %w[index penn_archives_space].freeze
+  INDEX_TYPE = 'index'
+  PENN_ASPACE_TYPE = 'penn_archives_space'
+  TYPES = [INDEX_TYPE, PENN_ASPACE_TYPE].freeze
 
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[a-z_]+\z/ }
   validates :type, presence: true, inclusion: TYPES
+  validate :valid_harvest_config
 
   scope :index_type, -> { where('harvest_config @> ?', { type: 'index' }.to_json) }
   scope :penn_aspace_type, -> { where('harvest_config @> ?', { type: 'penn_archives_space' }.to_json) }
@@ -141,5 +144,24 @@ class Endpoint < ApplicationRecord
     else
       EadParser
     end
+  end
+
+  private
+
+  def valid_harvest_config
+    case type
+    when INDEX_TYPE
+      validate_index_type
+    when PENN_ASPACE_TYPE
+      validate_penn_aspace_type
+    end
+  end
+
+  def validate_index_type
+    errors.add(:harvest_config, 'must have a URL provided') if harvest_config['url'].blank?
+  end
+
+  def validate_penn_aspace_type
+    errors.add(:harvest_config, 'must have a Repository ID provided') if harvest_config['repository_id'].blank?
   end
 end

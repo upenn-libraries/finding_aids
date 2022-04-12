@@ -45,6 +45,22 @@ describe Endpoint do
       expect(endpoint.valid?).to be false
       expect(endpoint.errors[:type]).to include 'is not included in the list'
     end
+
+    context 'with index type' do
+      it 'must have a URL' do
+        endpoint.harvest_config = { type: 'index', url: nil }
+        expect(endpoint.valid?).to be false
+        expect(endpoint.errors[:harvest_config]).to include 'must have a URL provided'
+      end
+    end
+
+    context 'with penn_archives_space type' do
+      it 'must have a repository id' do
+        endpoint.harvest_config = { type: 'penn_archives_space', repository_id: nil }
+        expect(endpoint.valid?).to be false
+        expect(endpoint.errors[:harvest_config]).to include 'must have a Repository ID provided'
+      end
+    end
   end
 
   describe '#harvest_results' do
