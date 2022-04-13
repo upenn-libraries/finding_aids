@@ -70,10 +70,6 @@ namespace :tools do
         endpoint = Endpoint.find_by slug: slug
         endpoint.public_contacts = Array.wrap(endpoint_info['public_contact'])
         endpoint.tech_contacts = Array.wrap(endpoint_info['tech_contact'])
-        endpoint.harvest_config['type'] = endpoint_info['type']
-        endpoint.harvest_config['repository_id'] = endpoint_info['aspace_id'] if endpoint_info['aspace_id'].present?
-        endpoint.harvest_config['url'] = endpoint_info['index_url'] if endpoint_info['index_url'].present?
-        endpoint
       else
         puts "Will create new endpoint #{slug}."
         endpoint = Endpoint.new(
@@ -83,11 +79,11 @@ namespace :tools do
             tech_contacts: Array.wrap(endpoint_info['tech_contact'])
           }
         )
-        endpoint.harvest_config['type'] = endpoint_info['type']
-        endpoint.harvest_config['repository_id'] = endpoint_info['aspace_id'] if endpoint_info['aspace_id'].present?
-        endpoint.harvest_config['url'] = endpoint_info['index_url'] if endpoint_info['index_url'].present?
-        endpoint
       end
+      endpoint.harvest_config['type'] = endpoint_info['type']
+      endpoint.harvest_config['repository_id'] = endpoint_info['aspace_id'] if endpoint_info['aspace_id'].present?
+      endpoint.harvest_config['url'] = endpoint_info['index_url'] if endpoint_info['index_url'].present?
+      endpoint
     end
 
     # Save and report
