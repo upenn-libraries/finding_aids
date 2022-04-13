@@ -7,6 +7,7 @@ en:
   fields:
     endpoint: 'Endpoint'
     repository: 'Repository'
+    record_source: 'Record Source'
     title: 'Title'
     extent: 'Extent'
     date: 'Date'

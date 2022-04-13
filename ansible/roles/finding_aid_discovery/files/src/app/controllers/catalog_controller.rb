@@ -73,6 +73,10 @@ class CatalogController < ApplicationController
 
     config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint'), limit: true
     config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true
+    config.add_facet_field 'record_source', label: I18n.t('fields.record_source'), query: {
+      upenn: { label: 'University of Pennsylvania', fq: 'upenn_record_bsi:true' },
+      non_upenn: { label: 'Other PACSCL Partners', fq: 'upenn_record_bsi:false' }
+    }
     config.add_facet_field 'subjects_ssim', label: I18n.t('fields.subjects'), limit: true
     config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.corpnames'), limit: true
     config.add_facet_field 'people_ssim', label: I18n.t('fields.people'), limit: true
