@@ -50,6 +50,7 @@ en:
     sponsor: 'Sponsor'
     author: 'Finding Aid Author'
     publisher: 'Publisher'
+    topics: 'Subjects and Topics'
   sorts:
     relevance: 'Relevance'
     year_desc: 'Year (descending)'

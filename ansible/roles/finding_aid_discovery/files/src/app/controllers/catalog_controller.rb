@@ -102,11 +102,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
     config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation')
     config.add_show_field 'display_date_ssim', label: I18n.t('fields.date')
-    config.add_show_field 'people_ssim', label: I18n.t('fields.people'), link_to_facet: true
-    config.add_show_field 'corpnames_ssim', label: I18n.t('fields.corpnames'), link_to_facet: true
     config.add_show_field 'creators_ssim', label: I18n.t('fields.creators'), link_to_facet: true
-    config.add_show_field 'subjects_ssim', label: I18n.t('fields.subjects'), link_to_facet: true
-    config.add_show_field 'places_ssim', label: I18n.t('fields.places'), link_to_facet: true
     config.add_show_field 'donors_ssim', label: I18n.t('fields.donors'), link_to_facet: true
     config.add_show_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), link_to_facet: true
     config.add_show_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents')
