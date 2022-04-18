@@ -22,7 +22,7 @@ class TopicsComponent < ViewComponent::Base
 
   def topics_list
     content_tag :ul, class: 'list-unstyled' do
-      safe_join topics.map { |t| content_tag(:li, t) }
+      safe_join(topics.map { |t| content_tag(:li, t) })
     end
   end
 end

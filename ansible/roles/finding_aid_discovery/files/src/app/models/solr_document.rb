@@ -21,12 +21,7 @@ class SolrDocument
   use_extension(Blacklight::Document::DublinCore)
 
   def topics
-    [
-      :people_ssim,
-      :corpnames_ssim,
-      :subjects_ssim,
-      :places_ssim
-    ].sum([]) { |k| fetch(k, []) }
+    %i[people_ssim corpnames_ssim subjects_ssim places_ssim].sum([]) { |k| fetch(k, []) }
   end
 
   # @return [SolrDocument::ParsedEad]
