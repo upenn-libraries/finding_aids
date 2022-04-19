@@ -29,8 +29,8 @@ class HashicorpVault:
             self.login()
 
             results = self._client.secrets.kv.read_secret(
-                mount_point = "finding-aid-discovery",
-                path = "ansible/vault/" + self.vault_id
+                mount_point = "ansible",
+                path = "vault/finding-aid-discovery/" + self.vault_id
             )
 
             return results["data"]["data"]["password"]
