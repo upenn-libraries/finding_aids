@@ -1,0 +1,12 @@
+---
+postgres:
+  database: "finding_aid_discovery"
+  image:
+    name: "postgres"
+    tag: "14"
+  replicas: 1
+  secrets:
+    password:
+      value: "{{ vault_postgres.password.value }}"
+      version: 1
+  user: "finding_aid_discovery"
