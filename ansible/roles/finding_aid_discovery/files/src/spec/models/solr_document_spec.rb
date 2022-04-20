@@ -19,8 +19,9 @@ describe SolrDocument do
     expect(doc.parsed_ead).to be_an_instance_of SolrDocument::ParsedEad
   end
 
-  it 'returns expected topics' do
-    expect(doc.topics).to contain_exactly('Philadelphia', 'Doe, John', 'Cooking', 'University of Pennsylvania')
+  it 'returns expected topics in hash form' do
+    expect(doc.topics_hash.keys).to match_array %i[places_ssim people_ssim subjects_ssim corpnames_ssim]
+    expect(doc.topics_hash[:places_ssim]).to eq ['Philadelphia']
   end
 
   context 'when using ParsedEad object' do
