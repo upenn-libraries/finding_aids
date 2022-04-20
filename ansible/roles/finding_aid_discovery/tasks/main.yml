@@ -96,7 +96,7 @@
     DATABASE_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
     DATABASE_USER: "{{ postgres.user }}"
     FINDING_AID_DISCOVERY_HONEYBADGER_API_KEY: "{{ 'finding_aid_discovery_honeybadger_api_key_v' ~ finding_aid_discovery.versioned_secrets.honeybadger_api_key.version }}"
-    FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.name }}"
+    FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.registry }}"
     FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"
     FINDING_AID_DISCOVERY_PORT: "{{ finding_aid_discovery.port }}"
     FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
