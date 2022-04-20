@@ -17,7 +17,7 @@ class Password
 
     Vault.address = "https://vault.library.upenn.edu"
     Vault.auth.ldap(hv_user, hv_pass)
-    results = Vault.logical.read("finding-aid-discovery/data/ansible/vault/vagrant").data
+    results = Vault.logical.read("ansible/data/vault/finding-aid-discovery/vagrant").data
     results.dig(:data, :password)
   end
 end
