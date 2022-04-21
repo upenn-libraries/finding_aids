@@ -2,16 +2,19 @@
   <div class="card-body">
     <%# Reducing heading size lower in the hierarchy. %>
     <div class="card-title">
-      <div class="row">
-        <div class="col-sm-9 col-lg-10">
+      <div class="row justify-content-between">
+        <% if @requestable && !children? %>
+          <div class="col-sm-2 col-lg-1">
+            <%= requesting_checkbox %>
+          </div>
+        <% end %>
+        <div class="col-sm-7 col-lg-9">
           <%= content_tag "h#{[level + 3, 6].min}", sanitize(title) %>
         </div>
-
         <div class="col-sm-3 col-lg-2">
           <% container_info.each do |container| %>
             <span class="badge badge-secondary"><%= container %></span>
           <% end %>
-          <%= requesting_checkbox if form %> <%# TODO: when this collection is a 'parent' and has no container text the checkbox has issues  %>
         </div>
       </div>
     </div>
@@ -25,6 +28,6 @@
       <p><%= physdesc[:text] %></p>
     <% end %>
 
-    <%= render CollectionsComponent.new(node: node, level: level + 1, form: form) %>
+    <%= render CollectionsComponent.new(node: node, level: level + 1, requestable: @requestable) %>
   </div>
 </div>

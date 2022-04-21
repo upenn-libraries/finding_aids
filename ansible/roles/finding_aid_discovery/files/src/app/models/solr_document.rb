@@ -28,11 +28,11 @@ class SolrDocument
   end
 
   def penn_item?
-    fetch('repository_name_component_1_ssi') == 'University of Pennsylvania'
+    fetch(:repository_name_component_1_ssi) == 'University of Pennsylvania'
   end
 
   def requestable?
-    fetch('repository_name_component_2_ssi').in? REQUESTABLE_REPOSITORIES
+    fetch(:repository_name_component_2_ssi, nil).in? REQUESTABLE_REPOSITORIES
   end
 
   def requesting_info

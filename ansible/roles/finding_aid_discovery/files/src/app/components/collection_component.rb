@@ -7,10 +7,10 @@ class CollectionComponent < ViewComponent::Base
 
   attr_reader :node, :level, :form
 
-  def initialize(node:, level:, form: nil)
+  def initialize(node:, level:, requestable: false)
     @node = node
     @level = level
-    @form = form
+    @requestable = requestable
   end
 
   def title
@@ -45,11 +45,16 @@ class CollectionComponent < ViewComponent::Base
 
   def requesting_checkbox
     container = container_info.map { |cs| cs.tr(' ', '_') }.join('_') # TODO: ensure param safety
+    # TODO: check that there is container information before rendering checkbox
     name = "c[req_#{@level}_#{container}]"
-    content_tag :div, class: 'custom-control custom-checkbox mt-2' do
-      safe_join([form&.check_box(name, { class: 'custom-control-input', include_hidden: false }, '1'),
-                 form&.label(name, 'Add to request', class: 'custom-control-label')])
+    content_tag :div do
+      safe_join([check_box_tag(name, 0),
+                 label_tag(name, 'Add to request', class: 'sr-only')])
     end
+  end
+
+  def children?
+    node.xpath('c | c01 | c02 | c03 | c04 | c05 | c06 | c07 | c08 | c09 | c10 | c11 | c12').any?
   end
 
   private

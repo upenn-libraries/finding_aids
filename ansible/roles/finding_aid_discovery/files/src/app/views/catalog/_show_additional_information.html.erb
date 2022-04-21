@@ -10,6 +10,6 @@
 
 <%= render(CollectionsInventoryComponent.new(
   node: document.parsed_ead.dsc,
-  enable_requesting: document.requestable?,
+  requestable: document.requestable?,
   requesting_info: document.requesting_info
 )) %>
