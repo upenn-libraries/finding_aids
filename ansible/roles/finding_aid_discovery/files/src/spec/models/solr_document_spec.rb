@@ -3,12 +3,25 @@
 require 'rails_helper'
 
 describe SolrDocument do
-  subject(:doc) { described_class.new(xml_ss: xml) }
+  subject(:doc) do
+    described_class.new(
+      xml_ss: xml,
+      places_ssim: ['Philadelphia'],
+      people_ssim: ['Doe, John'],
+      subjects_ssim: ['Cooking'],
+      corpnames_ssim: ['University of Pennsylvania']
+    )
+  end
 
   let(:xml) { file_fixture('ead/penn_museum_ead_1.xml').read }
 
   it 'creates a ParsedEad' do
     expect(doc.parsed_ead).to be_an_instance_of SolrDocument::ParsedEad
+  end
+
+  it 'returns expected topics in hash form' do
+    expect(doc.topics_hash.keys).to match_array %i[places_ssim people_ssim subjects_ssim corpnames_ssim]
+    expect(doc.topics_hash[:places_ssim]).to eq ['Philadelphia']
   end
 
   context 'when using ParsedEad object' do

@@ -8,4 +8,6 @@
   <%= render AdditionalInformationComponent.new title: t(section, scope: :sections), nodes: document.parsed_ead.try(section) %>
 <% end %>
 
+<%= render(TopicsComponent.new(topics: document.topics_hash)) %>
+
 <%= render(CollectionsInventoryComponent.new(node: document.parsed_ead.dsc)) %>
