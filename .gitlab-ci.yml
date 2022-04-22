@@ -415,6 +415,7 @@ deploy_staging:
 
     # Get Vault token via JWT auth locked to this project
     - export VAULT_ADDR=${VAULT_URL}
+    - echo ${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}-${DEPLOY_ENVIRONMENT}
     - export VAULT_TOKEN="$(vault write -field=token auth/jwt/${CI_SERVER_HOST}/login role=${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}-${DEPLOY_ENVIRONMENT} jwt=${CI_JOB_JWT})"
 
     # Generate signed key and write to a new pub key
