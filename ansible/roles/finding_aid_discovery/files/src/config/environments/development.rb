@@ -80,4 +80,6 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   config.hosts << ENV['FINDING_AID_DISCOVERY_URL']
+
+  config.credentials.key_path = '/run/secrets/rails_master_key'
 end
