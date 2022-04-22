@@ -415,7 +415,6 @@ deploy_staging:
 
     # Get Vault token via JWT auth locked to this project
     - export VAULT_ADDR=${VAULT_URL}
-    - echo ${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}-${DEPLOY_ENVIRONMENT}
     - export VAULT_TOKEN="$(vault write -field=token auth/jwt/${CI_SERVER_HOST}/login role=${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}-${DEPLOY_ENVIRONMENT} jwt=${CI_JOB_JWT})"
 
     # Generate signed key and write to a new pub key
@@ -443,12 +442,7 @@ deploy_staging:
     - ansible-galaxy install -g -f -r ansible/roles/requirements.yml
 
     # Run ansible playbook
-    - ansible-playbook \
-        --vault-id=${DEPLOY_ENVIRONMENT}@/tmp/.vault_pass \
-        -e "ansible_host=${DEPLOY_HOST}" \
-        -e "image_tag=${CI_COMMIT_SHORT_SHA}" \
-        -i ansible/inventories/${DEPLOY_ENVIRONMENT} \
-        ansible/site.yml
+    - ansible-playbook --vault-id=${DEPLOY_ENVIRONMENT}@/tmp/.vault_pass -e "ansible_host=${DEPLOY_HOST}" -e "image_tag=${CI_COMMIT_SHORT_SHA}" -i ansible/inventories/${DEPLOY_ENVIRONMENT} ansible/site.yml
   environment:
     name: staging
     url: https://pacscl-staging.library.upenn.edu/
