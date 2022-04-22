@@ -405,7 +405,7 @@ push_solr_image_to_registry:
 # -- Start - deploy staging
 deploy_staging:
   image: gitlab.library.upenn.edu/docker/hvas:master
-  stage: deploy
+  stage: deploy:staging
   cache: []
   variables:
     DEPLOY_ENVIRONMENT: staging
