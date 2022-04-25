@@ -40,11 +40,11 @@ class CatalogController < ApplicationController
     config.add_results_collection_tool(:view_type_group)
 
     # solr field configuration for document/show views
-    config.show.title_field = :title_tsi
+    # config.show.title_field = :title_tsi
     # config.show.display_type_field = 'format'
     # config.show.thumbnail_field = 'thumbnail_path_ss'
-    config.show.partials << :show_additional_information
-    config.show.partials.prepend(:show_finding_aids_message)
+    # config.show.partials << :show_additional_information
+    # config.show.partials.prepend(:show_finding_aids_message)
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -125,6 +125,8 @@ class CatalogController < ApplicationController
 
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = false
+
+    config.show.document_component = DocumentComponent
   end
 
   def repositories
