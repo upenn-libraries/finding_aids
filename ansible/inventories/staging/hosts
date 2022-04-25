@@ -5,7 +5,10 @@ swarm-01
 staging
 
 [docker_engine:vars]
-ansible_python_interpreter="/usr/bin/python3"
+ansible_python_interpreter="/usr/bin/python2"
 
 [docker_swarm_manager]
 swarm-01 swarm_labels='["finding_aid_discovery", "nginx", "postgres", "solr", "traefik"]'
+
+[docker_swarm_manager:vars]
+ansible_python_interpreter="/usr/bin/python3"
