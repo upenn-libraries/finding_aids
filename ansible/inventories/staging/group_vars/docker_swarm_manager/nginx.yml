@@ -9,4 +9,6 @@ nginx:
     tag: "1-21-0"
   port: 80
   replicas: 1
-  url: "pacscl-staging.library.upenn.edu"
+  urls:
+    - "pacscl01.library.upenn.int"
+    - "pacscl-staging.library.upenn.edu"
