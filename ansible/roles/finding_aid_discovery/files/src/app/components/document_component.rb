@@ -2,16 +2,6 @@
 
 # custom methods for our DocumentComponent
 class DocumentComponent < Blacklight::DocumentComponent
-  def initialize(document: nil, presenter: nil,
-                 id: nil, classes: [], component: :article, title_component: nil,
-                 metadata_component: nil,
-                 embed_component: nil,
-                 thumbnail_component: nil,
-                 counter: nil, document_counter: nil, counter_offset: 0,
-                 show: false)
-    super
-  end
-
   def admin_info
     InfoSectionsComponent.new(
       title: I18n.t('sections.admin_info'),
