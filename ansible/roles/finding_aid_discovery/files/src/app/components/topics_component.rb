@@ -44,6 +44,6 @@ class TopicsComponent < ViewComponent::Base
   # @param [String] value to use as the designated facet
   # @return [ActiveSupport::SafeBuffer]
   def facet_link_for(field, value)
-    link_to value, search_catalog_path(view_context.search_state.reset.add_facet_params(field, value))
+    link_to value, search_catalog_path("f[#{field}][]": value)
   end
 end

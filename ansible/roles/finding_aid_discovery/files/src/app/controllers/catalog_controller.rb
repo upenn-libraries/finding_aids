@@ -40,11 +40,8 @@ class CatalogController < ApplicationController
     config.add_results_collection_tool(:view_type_group)
 
     # solr field configuration for document/show views
-    config.show.title_field = :title_tsi
+    # config.show.title_field = :title_tsi
     # config.show.display_type_field = 'format'
-    # config.show.thumbnail_field = 'thumbnail_path_ss'
-    config.show.partials << :show_additional_information
-    config.show.partials.prepend(:show_finding_aids_message)
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -78,10 +75,10 @@ class CatalogController < ApplicationController
       upenn: { label: 'University of Pennsylvania', fq: 'upenn_record_bsi:true' },
       non_upenn: { label: 'Other PACSCL Partners', fq: 'upenn_record_bsi:false' }
     }
-    config.add_facet_field 'subjects_ssim', label: I18n.t('fields.subjects'), limit: true
-    config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.corpnames'), limit: true
-    config.add_facet_field 'people_ssim', label: I18n.t('fields.people'), limit: true
-    config.add_facet_field 'places_ssim', label: I18n.t('fields.places'), limit: true
+    config.add_facet_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), limit: true
+    config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.topics.corpnames'), limit: true
+    config.add_facet_field 'people_ssim', label: I18n.t('fields.topics.people'), limit: true
+    config.add_facet_field 'places_ssim', label: I18n.t('fields.topics.places'), limit: true
     config.add_facet_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), limit: true
     config.add_facet_field 'creators_ssim', label: I18n.t('fields.creators'), limit: true
     config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors'), limit: true
@@ -125,6 +122,8 @@ class CatalogController < ApplicationController
 
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = false
+
+    config.show.document_component = DocumentComponent
   end
 
   def repositories

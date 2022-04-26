@@ -1,0 +1,9 @@
+<div id="<%= title.underscore %>_section">
+  <h2><%= title %></h2>
+  <% sections.each do |section| %>
+    <%= render AdditionalInformationComponent.new(
+      title: I18n.t(section, scope: :sections),
+      nodes: nodes_for(section)
+    ) %>
+  <% end %>
+</div>

@@ -2,6 +2,9 @@ en:
   page_titles:
     repositories_list: 'PACSCL Repositories'
   labels:
+    tabs:
+      show_overview: 'Collection Overview'
+      show_inventory: 'Collection Inventory'
     titles:
       repositories_list: 'Repositories'
   fields:
@@ -52,6 +55,8 @@ en:
     author: 'Finding Aid Author'
     publisher: 'Publisher'
     topics: 'Name and Subject Headings'
+    admin_info: 'Administrative Information'
+    other_info: 'Other Information'
   sorts:
     relevance: 'Relevance'
     year_desc: 'Year (descending)'

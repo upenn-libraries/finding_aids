@@ -1,0 +1,50 @@
+<%= content_tag @component,
+                id: @id,
+                data: {
+                  'document-id': @document.id.to_s.parameterize,
+                  'document-counter': @counter,
+                },
+                itemscope: true,
+                itemtype: @document.itemtype,
+                class: classes.flatten.join(' ') do %>
+  <%= header %>
+  <% if body.present? %>
+    <%= body %>
+  <% else %>
+    <div class="document-main-section">
+      <%= title %>
+      <%= render 'catalog/show_finding_aids_message' %>
+      <ul class="nav nav-tabs mb-3" id="showPageTabs" role="tablist">
+        <li class="nav-item">
+          <a href="#overview" class="nav-link active" id="overview-tab" data-toggle="tab" role="tab" aria-controls="overview-tab" aria-selected="true">
+            <%= t 'labels.tabs.show_overview' %>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#inventory" class="nav-link" id="inventory-tab" data-toggle="tab" role="tab" aria-controls="inventory-tab" aria-selected="false">
+            <%= t 'labels.tabs.show_inventory' %>
+          </a>
+        </li>
+      </ul>
+      <%= embed %>
+      <%= content %>
+      <div class="tab-content" id="showTabContent">
+        <div id="overview" class="tab-pane fade show active" role="tabpanel" aria-labelledby="overview-tab">
+          <%= metadata component: Blacklight::DocumentMetadataComponent %>
+          <%= render admin_info %>
+          <%= render other_info %>
+          <%= render topics %>
+        </div>
+        <div id="inventory" class="tab-pane fade" role="tabpanel" aria-labelledby="inventory-tab">
+          <%= render collections_inventory %>
+        </div>
+      </div>
+      <% metadata_sections.each do |section| %>
+        <%= section %>
+      <% end %>
+    </div>
+
+    <%= thumbnail %>
+  <% end %>
+  <%= footer %>
+<% end %>
