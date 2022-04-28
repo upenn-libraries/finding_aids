@@ -36,6 +36,10 @@ class SolrDocument
     @parsed_ead ||= ParsedEad.new(fetch(XML_FIELD_NAME))
   end
 
+  def display_dates
+    fetch(:display_date_ssim)
+  end
+
   class ParsedEad
     ADMIN_INFO_SECTIONS = %w[publisher author sponsor accessrestrict userestrict].freeze
     OTHER_SECTIONS = %w[bioghist scopecontent arrangement relatedmaterials bibliography odd accruals

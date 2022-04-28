@@ -61,3 +61,5 @@ en:
     relevance: 'Relevance'
     year_desc: 'Year (descending)'
     year_asc: 'Year (ascending)'
+  messages:
+    access_clarification_html: "This is a finding aid. It is a description of archival material held at the <b>%{repository}</b>. Unless otherwise noted, the materials described below are physically available in their reading room, and not digitally available through the web."
