@@ -60,6 +60,10 @@ describe EadParser do
         )
       end
 
+      it 'has the right value for upenn record flag' do
+        expect(hash[:upenn_record_bsi]).to eql 'F'
+      end
+
       it 'has expected years' do
         expect(hash[:years_iim]).to match_array 1826..1937
       end
@@ -148,6 +152,10 @@ describe EadParser do
 
       it 'has the right full repository name' do
         expect(hash[:repository_ssi]).to eq 'University of Pennsylvania: Penn Museum Archives'
+      end
+
+      it 'has the right value for upenn record flag' do
+        expect(hash[:upenn_record_bsi]).to eql 'T'
       end
 
       it 'has the right repository name component 1' do

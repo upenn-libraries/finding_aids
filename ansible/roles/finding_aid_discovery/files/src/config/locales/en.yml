@@ -2,11 +2,15 @@ en:
   page_titles:
     repositories_list: 'PACSCL Repositories'
   labels:
+    tabs:
+      show_overview: 'Collection Overview'
+      show_inventory: 'Collection Inventory'
     titles:
       repositories_list: 'Repositories'
   fields:
     endpoint: 'Endpoint'
     repository: 'Repository'
+    record_source: 'Record Source'
     title: 'Title'
     extent: 'Extent'
     date: 'Date'
@@ -14,16 +18,17 @@ en:
     pretty_unit_id: 'Call Number'
     abstract_scope_contents: ' Abstract/Scope/Contents'
     raw_xml: 'Raw XML'
-    corpnames: 'Organization'
-    subjects: 'Subject'
-    places: 'Place'
     creators: 'Creator'
-    people: 'People'
     language: 'Language'
     donors: 'Donor'
     genre_form: 'Form'
     citation: 'Preferred Citation'
     year: 'Year'
+    topics:
+      corpnames: 'Organization'
+      subjects: 'Subject'
+      places: 'Place'
+      people: 'People'
   sections:
     collection_inventory: 'Collection Inventory'
     scopecontent: 'Scope and Content'
@@ -49,6 +54,9 @@ en:
     sponsor: 'Sponsor'
     author: 'Finding Aid Author'
     publisher: 'Publisher'
+    topics: 'Name and Subject Headings'
+    admin_info: 'Administrative Information'
+    other_info: 'Other Information'
   sorts:
     relevance: 'Relevance'
     year_desc: 'Year (descending)'

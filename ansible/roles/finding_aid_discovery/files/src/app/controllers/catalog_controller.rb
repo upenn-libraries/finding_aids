@@ -40,10 +40,8 @@ class CatalogController < ApplicationController
     config.add_results_collection_tool(:view_type_group)
 
     # solr field configuration for document/show views
-    config.show.title_field = :title_tsi
+    # config.show.title_field = :title_tsi
     # config.show.display_type_field = 'format'
-    # config.show.thumbnail_field = 'thumbnail_path_ss'
-    config.show.partials << :show_additional_information
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -73,10 +71,14 @@ class CatalogController < ApplicationController
 
     config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint'), limit: true
     config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true
-    config.add_facet_field 'subjects_ssim', label: I18n.t('fields.subjects'), limit: true
-    config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.corpnames'), limit: true
-    config.add_facet_field 'people_ssim', label: I18n.t('fields.people'), limit: true
-    config.add_facet_field 'places_ssim', label: I18n.t('fields.places'), limit: true
+    config.add_facet_field 'record_source', label: I18n.t('fields.record_source'), query: {
+      upenn: { label: 'University of Pennsylvania', fq: 'upenn_record_bsi:true' },
+      non_upenn: { label: 'Other PACSCL Partners', fq: 'upenn_record_bsi:false' }
+    }
+    config.add_facet_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), limit: true
+    config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.topics.corpnames'), limit: true
+    config.add_facet_field 'people_ssim', label: I18n.t('fields.topics.people'), limit: true
+    config.add_facet_field 'places_ssim', label: I18n.t('fields.topics.places'), limit: true
     config.add_facet_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), limit: true
     config.add_facet_field 'creators_ssim', label: I18n.t('fields.creators'), limit: true
     config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors'), limit: true
@@ -98,11 +100,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
     config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation')
     config.add_show_field 'display_date_ssim', label: I18n.t('fields.date')
-    config.add_show_field 'people_ssim', label: I18n.t('fields.people'), link_to_facet: true
-    config.add_show_field 'corpnames_ssim', label: I18n.t('fields.corpnames'), link_to_facet: true
     config.add_show_field 'creators_ssim', label: I18n.t('fields.creators'), link_to_facet: true
-    config.add_show_field 'subjects_ssim', label: I18n.t('fields.subjects'), link_to_facet: true
-    config.add_show_field 'places_ssim', label: I18n.t('fields.places'), link_to_facet: true
     config.add_show_field 'donors_ssim', label: I18n.t('fields.donors'), link_to_facet: true
     config.add_show_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), link_to_facet: true
     config.add_show_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents')
@@ -124,6 +122,8 @@ class CatalogController < ApplicationController
 
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = false
+
+    config.show.document_component = DocumentComponent
   end
 
   def repositories

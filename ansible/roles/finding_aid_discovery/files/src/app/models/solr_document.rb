@@ -22,6 +22,17 @@ class SolrDocument
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
 
+  # @return [Hash{Symbol->Array}]
+  def topics_hash
+    # %i[people_ssim corpnames_ssim subjects_ssim places_ssim].sum([]) { |k| fetch(k, []) }
+    {
+      people_ssim: fetch(:people_ssim, []),
+      corpnames_ssim: fetch(:corpnames_ssim, []),
+      subjects_ssim: fetch(:subjects_ssim, []),
+      places_ssim: fetch(:places_ssim, [])
+    }
+  end
+
   # @return [SolrDocument::ParsedEad]
   def parsed_ead
     @parsed_ead ||= ParsedEad.new(fetch(XML_FIELD_NAME))
