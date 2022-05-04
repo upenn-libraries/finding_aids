@@ -111,4 +111,16 @@ namespace :tools do
   rescue Errno::ENOENT
     puts "Cannot read CSV file at #{endpoint_csv}."
   end
+
+  desc 'Enqueue harvest jobs for the stalest endpoints'
+  task enqueue_harvest_jobs: :environment do
+    # get stalest endpoints
+    num_endpoints = ENV.fetch('HARVESTS_TO_ENQUEUE', 10)
+    endpoints = Endpoint.order(:updated_at).limit(num_endpoints)
+
+    # enqueue jobs
+    endpoints.each do |endpoint|
+      PartnerHarvestJob.perform_later endpoint
+    end
+  end
 end
