@@ -3,6 +3,29 @@
 require 'csv'
 
 namespace :tools do
+  desc 'Start Lando Dev Setup'
+  task start: :environment do
+
+    system('lando start')
+
+    system('DATABASE_HOST=localhost RAILS_ENV=development rake db:create')
+
+    system('DATABASE_HOST=localhost RAILS_ENV=development rake db:migrate')
+
+    print("run 'SOLR_URL=http://fa-disco.solr.lndo.site/solr/pacscl-fa-dev DATABASE_HOST=localhost rails s' to get to work!\n")
+    print("run 'SOLR_URL=http://fa-disco.solr.lndo.site/solr/pacscl-fa-dev DATABASE_HOST=localhost rake tools:index_sample_data' to add some sample data!\n")
+  end
+
+  desc 'Cleans development/test environment'
+  task :clean do
+    system('lando destroy -y')
+  end
+
+  desc 'Stop development/test environment'
+  task :stop do
+    system('lando stop -y')
+  end
+
   desc 'Index sample data'
   task index_sample_data: :environment do
     status = Open3.capture2e "curl -sX POST '#{ENV['SOLR_URL']}/update/json?commit=true' --data-binary @data/solr_json/sample.json -H 'Content-type:application/json'"

@@ -2,7 +2,7 @@ name: finding-aid-discovery
 services:
   postgres:
     type: postgres:13
-    portforward: 5433
+    portforward: 5432
     app_mount: false
     scanner: false
   solr:
