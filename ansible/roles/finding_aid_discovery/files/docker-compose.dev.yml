@@ -1,11 +1,13 @@
 version: "3.8"
 
 services:
-  db:
-    image: "postgres:14"
-    ports:
-      - "5432:5432"
-  solr:
-    image: "solr:8.11.1"
-    ports:
-      - "8983:8983"
+  finding_aid_discovery:
+    environment:
+      APP_UID: ${UID:-1000}
+      APP_GID: ${GID:-1000}
+      CHROME_URL: "http://chrome:${CHROME_PORT}"
+    healthcheck:
+      retries: 20
+      start_period: 5m
+    volumes:
+      - /finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/:/home/app
