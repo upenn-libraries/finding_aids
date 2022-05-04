@@ -1,12 +1,11 @@
 default: &default
   adapter: postgresql
-  database: <%= ENV['DATABASE_NAME'] %>
+  database: <%= ENV.fetch('DATABASE_NAME', 'finding_aid_discovery_development') %>
   encoding: unicode
-  host: postgres
+  host: <%= ENV.fetch('DATABASE_HOST', 'postgres') %>
   password: <%= File.exist?('/run/secrets/database_password') ? File.read('/run/secrets/database_password').strip : ENV['DATABASE_PASSWORD'] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV['DATABASE_USER'] %>
-
+  username: <%= ENV.fetch('DATABASE_USER', 'postgres') %>
 development:
   <<: *default
 
