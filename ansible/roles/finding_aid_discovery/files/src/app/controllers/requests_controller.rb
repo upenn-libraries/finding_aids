@@ -6,7 +6,16 @@ class RequestsController < ApplicationController
   def new; end
 
   # validate and map params then ship to Aeon endpoint
-  def create; end
+  def create
+    aeon_request = AeonRequest.new request_params
+    response = aeon_request.submit
+    if response.txnumber
+      redirect_to request_path
+    else
+      flash[:alert] = "Failed to create Aeon request"
+      render :new
+    end
+  end
 
   # show request response from Aeon, etc.
   def show; end
