@@ -10,3 +10,7 @@ vagrant/*
 
 # Dont track IDE project settings
 .idea
+
+#Don't track Mac files
+*.DS_Store
+* alias
