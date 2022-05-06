@@ -87,7 +87,6 @@ class CatalogController < ApplicationController
 
     config.add_facet_fields_to_solr_request!
 
-    config.add_index_field 'repository_ssi', label: I18n.t('fields.repository')
     config.add_index_field 'extent_ssi', label: I18n.t('fields.extent')
     # config.add_index_field 'display_date_ssim', label: I18n.t('fields.date')
     config.add_index_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents'),

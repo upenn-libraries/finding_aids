@@ -1,4 +1,4 @@
-<%= render 'previous_next_doc' if @search_context && search_session['document_id'] == @document.id %>
+<% render 'previous_next_doc' if @search_context && search_session['document_id'] == @document.id %>
 
 <% @page_title = t('blacklight.search.show.title', document_title: Deprecation.silence(Blacklight::BlacklightHelperBehavior) { document_show_html_title }, application_name: application_name).html_safe %>
 <% content_for(:head) { render_link_rel_alternates } %>
@@ -13,6 +13,24 @@
       <span class="Z3988" title="<%= @document.export_as_openurl_ctx_kev(Deprecation.silence(Blacklight::RenderPartialsHelperBehavior) { document_partial_name(@document) }) %>"></span>
     <% end %>
   <%  end %>
+
+  <% SolrDocument::ParsedEad::OTHER_SECTIONS.each do |section| %>
+    <% component.collapsable_metadata_section(title: I18n.t(section, scope: :sections)) do %>
+      <%= render AdditionalMetadataComponent.new(nodes: @document.parsed_ead.try(section)) %>
+    <% end %>
+  <% end %>
+
+  <% component.collapsable_metadata_section(title: t('sections.topics')) do %>
+    <%=  render TopicsComponent.new topics: @document.topics_hash %>
+  <% end %>
+
+  <% component.collapsable_metadata_section(title: t('sections.admin_info')) do %>
+    <%= render AdministrativeInformationComponent.new sections: SolrDocument::ParsedEad::ADMIN_INFO_SECTIONS, document: @document %>
+  <% end %>
+
+  <% component.collection_inventory do %>
+    <%= render(CollectionsComponent.new(node: @document.parsed_ead.dsc, level: 1)) %>
+  <% end %>
 
   <%# Use :body for complete backwards compatibility (overriding the component body markup),
         but if the app explicitly  opted-in to components, make the partials data available as :partials to ease migrations pain %>
