@@ -1,7 +1,7 @@
 <h4>
   <%= title %>
   <button
-    class="btn btn-light btn-sm collapsable-toggle"
+    class="btn btn-light btn-sm collapsable-toggle <%= open ? '' : 'collapsed' %>"
     type="button"
     data-toggle="collapse"
     data-target="#<%= @collapsable_id %>"
@@ -10,6 +10,6 @@
   ></button>
 </h4>
 
-<div class="collapse show" id="<%= @collapsable_id %>">
+<div class="collapse <%= open ? 'show' : '' %>" id="<%= @collapsable_id %>">
   <%= body %>
 </div>
