@@ -15,10 +15,6 @@ class AdministrativeInformationComponent < ViewComponent::Base
     sections.any?
   end
 
-  def title
-    t('sections.admin_info')
-  end
-
   def info_list
     sections.map do |section|
       nodes = Array.wrap(@document.parsed_ead.try(section))
