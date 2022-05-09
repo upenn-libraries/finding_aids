@@ -8,6 +8,6 @@ class CollectionsComponent < ViewComponent::Base
   end
 
   def call
-    safe_join(@collections.map { |c| render(CollectionComponent.new(node: c, level: @level)) })
+    safe_join(@collections.map.with_index { |c, i| render(CollectionComponent.new(node: c, level: @level, index: i+1)) })
   end
 end
