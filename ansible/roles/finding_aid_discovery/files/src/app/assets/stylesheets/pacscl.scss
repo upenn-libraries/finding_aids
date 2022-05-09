@@ -14,3 +14,27 @@
     }
   }
 }
+
+// Styling for collection inventory cards
+.collection-inventory-card {
+  .card-title {
+    margin-bottom: 0rem;
+  }
+
+  &.end-collection {
+    border-radius: 0;
+    border: 0;
+
+    &.dark {
+      background-color: #f8f9fa; // Should be using a CSS/SCSS variable here.
+    }
+
+    .card-body {
+      padding: .75rem;
+    }
+  }
+}
+
+.collection-inventory-card.end-collection {
+  border-radius: 0
+}

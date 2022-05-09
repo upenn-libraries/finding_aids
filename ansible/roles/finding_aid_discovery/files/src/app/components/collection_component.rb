@@ -5,11 +5,12 @@ class CollectionComponent < ViewComponent::Base
   DESCRIPTIVE_DATA_SECTIONS = %w[arrangement scopecontent odd relatedmaterial
                                  userestrict].freeze
 
-  attr_reader :node, :level
+  attr_reader :node, :level, :index
 
-  def initialize(node:, level:)
+  def initialize(node:, level:, index:)
     @node = node
     @level = level
+    @index = index
   end
 
   def title
@@ -40,6 +41,24 @@ class CollectionComponent < ViewComponent::Base
 
     { text: render(EadMarkupTranslationComponent.new(node: physdesc_node)),
       label: physdesc_node.at_xpath('@label') }
+  end
+
+  # Returns true if collection node has children, otherwise returns false.
+  def children?
+    node.xpath('c | c01 | c02 | c03 | c04 | c05 | c06 | c07 | c08 | c09 | c10 | c11 | c12').any?
+  end
+
+  def classes
+    classes = ['collection-inventory-card']
+    classes << "level-#{level}"
+
+    # Add extra styling classes if this is an end-node
+    unless children?
+      classes << 'end-collection'
+      classes << (index.odd? ? 'dark' : 'light')
+    end
+
+    classes.join(' ')
   end
 
   private
