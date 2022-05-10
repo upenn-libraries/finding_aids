@@ -11,6 +11,9 @@ body {
   font-family: $body-sans;
   line-height: 1.6;
 }
+a, a:visited {
+  color: $link-color;
+}
 /*container*/
 .container-xl, .container-lg, .container-md, .container-sm, .container {
   max-width: 150rem;
@@ -18,6 +21,7 @@ body {
     padding-right: 3rem;
     padding-left: 3rem;
   }
+}
 
 $font-size-base:              1.6rem !default;
 
@@ -206,7 +210,7 @@ footer {
       padding-top: 0;
     }
   }
-  a {
+  a, a:visited {
     color: #fff;
     text-decoration: none;
 
@@ -316,3 +320,97 @@ footer {
   }
 }
 /*results*/
+#content #sortAndPerPage {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+#documents.documents-list {
+  article.document {
+    border-top: 1px dashed #999;
+    border-bottom: none;
+    margin-top: 0;
+    padding-top: 2.5rem;
+    padding-bottom: 1.5rem;
+    .document-main-section {
+      header.documentHeader.row {
+        margin-left: 3.5rem;
+        margin-right: 0;
+        text-indent: -3.5rem;
+        h3.document-title-heading {
+          padding-left: 0;
+          font-size: 2.2rem;
+          margin-bottom: .6rem;
+          font-weight: normal;
+          .archive-box-icon svg.bi.bi-archive {
+            height: 2.4rem; width: 2.4rem;
+            margin-right: .9rem;
+          }
+        }
+      }
+
+      dl.dl-invert.row {
+        margin-left: 3.9rem;
+        dt.col-md-3 {
+          @include visually-hidden;
+        }
+        dt.blacklight-extent_ssi {
+          display:none;
+        }
+
+        dd.col-md-9 {
+          text-align: left;
+          flex: 0 0 auto;
+          max-width: 100%;
+          display:block;
+          padding-left: 0;
+          margin-top: .5rem;
+        }
+        dd.col-md-9.blacklight-extent_ssib {
+          margin-top: .5rem;
+        }
+        dd.col-md-9.blacklight-extent_ssi::before {
+          content: "Extent: ";
+          font-style: oblique;
+        }
+      }
+      dl + p {
+        font-variant: small-caps;
+        font-size: 1.8rem;
+        font-family: Arial, sans-serif;
+        line-height: 1.4;
+        background-image: url(/assets/gov-docs-bldg.svg);
+        background-repeat: no-repeat;
+        background-size: 25px 25px;
+        padding-left: 3.7rem;
+        margin-left: 3.9rem;
+        &.upenn {
+          background-image: url(/assets/upenn-shield.svg);
+        }
+        &.princeton {
+          background-image: url(/assets/princeton-shield.svg);
+        }
+      }
+
+    }
+  }
+}
+div.row.record-padding {
+  border-top: 1px dashed #999;
+  border-bottom: none;
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  padding-bottom: 1.5rem;
+  margin-left: 0;
+  .col-md-12 {
+    padding-left: 0;
+  }
+  .page-link {
+    color: $link-color;
+    padding: 0.8rem 1rem;
+  }
+  .page-item.active .page-link {
+    background-color: $button-color;
+    border-color: $button-color;
+    color: #fff;
+  }
+}
