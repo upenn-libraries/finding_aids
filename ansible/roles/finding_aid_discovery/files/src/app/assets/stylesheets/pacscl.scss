@@ -19,12 +19,9 @@ body {
     padding-left: 3rem;
   }
 
-<<<<<<< HEAD
 $font-size-base:              1.6rem !default;
-=======
-}
+
 /*reusable*/
->>>>>>> 28e0667... css for header, footer, home
 .collapsable-toggle {
   &::after {
     content: "❯";
@@ -40,7 +37,6 @@ $font-size-base:              1.6rem !default;
     }
   }
 }
-<<<<<<< HEAD
 
 // Styling for collection inventory cards
 .collection-inventory-card {
@@ -64,6 +60,28 @@ $font-size-base:              1.6rem !default;
 
 .collection-inventory-card.end-collection {
   border-radius: 0
+}
+
+/*facets*/
+@media (min-width: 992px) {
+  section#content.col-lg-9 {
+    flex: 0 0 70%;
+    max-width: 70%;
+  }
+  section#sidebar.page-sidebar.col-lg-3 {
+    flex: 0 0 30%;
+    max-width: 30%;
+  }
+}
+@media (min-width: 1200px) {
+  section#content.col-lg-9 {
+    flex: 0 0 72%;
+    max-width: 72%;
+  }
+  section#sidebar.page-sidebar.col-lg-3 {
+    flex: 0 0 27%;
+    max-width: 27%;
+  }
 }
 
 .facet-limit {
@@ -275,11 +293,16 @@ footer {
   }
 }
 /*homepage*/
+.hptitle {
+  font-family: $title-serif;
+  text-align: center;
+  font-size: 3rem;
+}
 .navbar + .container {
   padding-top: 5.1rem !important;
 }
 .hpcontent {
-  padding-top: 3.2rem;
+  padding-top: 2rem;
 }
 .hplinks {
   margin-top: 4rem;
@@ -292,3 +315,4 @@ footer {
     }
   }
 }
+/*results*/
