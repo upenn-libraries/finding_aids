@@ -1,4 +1,15 @@
+@import "_variables";
+@import "_mixins";
 // adapted from Blacklight's _bootstrap_overrides.scss .facet_field_heading
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+html {
+  font-size: 62.5%;
+}
+body, .btn {
+  font-size: 1.5rem;
+}
+
+$font-size-base:              1.6rem !default;
 .collapsable-toggle {
   &::after {
     content: "❯";
@@ -37,4 +48,73 @@
 
 .collection-inventory-card.end-collection {
   border-radius: 0
+
+.visually-hidden {
+    @include visually-hidden;
+}
+.no-list-style {
+  list-style-image: none;
+  list-style-type: none;
+  margin: 0;
+  padding-left: 0;
+}
+footer {
+  background: $navy;
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 1.2rem;
+  letter-spacing: .09rem;
+  color: #fff;
+  line-height: 1.6;
+  .footerliner {
+    max-width: 150rem;
+    margin: 0 auto;
+  }
+  a {
+    color: #fff;
+    text-decoration: none;
+
+    &:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+
+  .delivered {
+    font-style: oblique;
+  }
+  .logo {
+    display: block;
+    margin-top: .5rem;
+    img {
+      width: 21.7rem;
+    }
+  }
+  .copyright {
+    margin-top: 3.6rem;
+  }
+  .vlist {
+    float: left;
+    width: 24.5%;
+    padding: 3rem;
+    a {
+      text-transform: uppercase;
+    }
+    li {
+      margin-top: 1.3rem;
+    }
+  }
+  .hlist {
+    border-top: solid 1px #fff;
+    height: 7.5rem;
+    margin: 0 3rem;
+    padding: 3rem 0;
+    li {
+      float: left;
+      padding: 0 3rem;
+      &:first-child {
+        padding: 0 3rem 0 0;
+      }
+    }
+  }
 }
