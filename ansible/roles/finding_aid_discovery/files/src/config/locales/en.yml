@@ -31,6 +31,7 @@ en:
       people: 'People'
   sections:
     collection_inventory: 'Collection Inventory'
+    collection_overview: 'Collection Overview'
     scopecontent: 'Scope and Content'
     bioghist: 'Biography/History'
     arrangement: 'Arrangement'
@@ -61,3 +62,6 @@ en:
     relevance: 'Relevance'
     year_desc: 'Year (descending)'
     year_asc: 'Year (ascending)'
+  messages:
+    access_clarification_html: "This is a finding aid. It is a description of archival material held at the <b>%{repository}</b>. Unless otherwise noted, the materials described below are physically available in their reading room, and not digitally available through the web."
+    location_html: "Held at: %{repository} <a href=mailto:\"%{contact_email}\">[Contact Us]</a>"

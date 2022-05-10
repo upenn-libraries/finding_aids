@@ -38,6 +38,14 @@ class SolrDocument
     @parsed_ead ||= ParsedEad.new(fetch(XML_FIELD_NAME))
   end
 
+  def display_dates
+    fetch(:display_date_ssim)
+  end
+
+  def repository
+    fetch(:repository_ssi)
+  end
+
   def penn_item?
     fetch(:repository_name_component_1_ssi) == 'University of Pennsylvania'
   end
@@ -86,7 +94,8 @@ class SolrDocument
 
     # @param [String, Symbol] name
     def respond_to_missing?(name, _include_private = false)
-      name.to_s.in? OTHER_SECTIONS
+      sections = OTHER_SECTIONS + ADMIN_INFO_SECTIONS
+      name.to_s.in?(sections)
     end
 
     # @param [Symbol] symbol

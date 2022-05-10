@@ -6,7 +6,14 @@
 // Required by Blacklight
 //= require popper
 // Twitter Typeahead for autocomplete
-//= require twitter/typeahead
+// require twitter/typeahead
 //= require bootstrap
 //= require blacklight/blacklight
 //= require 'blacklight_range_limit'
+
+Blacklight.onLoad(function() {
+    //# Enable tooltips
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+})

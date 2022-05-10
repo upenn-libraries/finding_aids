@@ -13,15 +13,8 @@ class TopicsComponent < ViewComponent::Base
     topics.any?
   end
 
-  def call
-    render(CollapsableSectionComponent.new(id: t('sections.topics').parameterize)) do |c|
-      c.title { t('sections.topics') }
-      c.body { topics_list }
-    end
-  end
-
   # @return [String]
-  def topics_list
+  def call
     safe_join(
       @topics.map do |field, values|
         next if values.empty?
