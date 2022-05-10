@@ -45,13 +45,25 @@ class CollectionComponent < ViewComponent::Base
   end
 
   def requesting_checkbox
-    container = container_info.map { |cs| cs.tr(' ', '_') }.join('_') # TODO: ensure param safety
+    # container = container_info.first.map { |cs| cs.tr(' ', '_') }.join('_') # TODO: ensure param safety
+    container_info_for_checkbox
+    first_container = container_info.first
+    container = "#{first_container[:type].tr(' ', '_')}|#{first_container[:text].tr(' ', '_')}"
     # TODO: check that there is container information before rendering checkbox
-    name = "c[req_#{@level}_#{container}]"
+    name = "c[req_#{@level}_#{container_info_for_checkbox}]"
     content_tag :div do
-      safe_join([check_box_tag(name, 0),
+      safe_join([check_box_tag(name, 1),
                  label_tag(name, 'Add to request', class: 'sr-only')])
     end
+  end
+
+  # encode all container information in a way that is HTML form safe and can be extracted after submission
+  def container_info_for_checkbox
+    # TODO: avoid delimiter collisions with | and \
+    containers = container_info.map do |container_element|
+      container_element[:type].tr(' ', '_') + '|' + container_element[:text].tr(' ', '_')
+    end
+    containers.join('\\')
   end
 
   # Returns true if collection node has children, otherwise returns false.

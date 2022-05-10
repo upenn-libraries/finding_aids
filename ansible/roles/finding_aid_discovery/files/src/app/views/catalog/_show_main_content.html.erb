@@ -29,7 +29,17 @@
   <% end %>
 
   <% component.collection_inventory do %>
-    <%= render(CollectionsComponent.new(node: @document.parsed_ead.dsc, requestable: @document.requestable? ,level: 1)) %>
+    <% if @document.requestable? %>
+      <form class="form" action="<%= new_request_path %>" method="GET">
+        <%= render CollectionsComponent.new(node: @document.parsed_ead.dsc, level: 1, requestable: true) %>
+        <input type="hidden" name="call_num" value="<%= @document.requesting_info[:call_num] %>">
+        <input type="hidden" name="repository" value="<%= @document.requesting_info[:repository] %>">
+        <input type="hidden" name="title" value="<%= @document.requesting_info[:title] %>">
+        <input type="submit" value="Submit" class="btn btn-primary">
+      </form>
+    <% else %>
+      <%= render(CollectionsComponent.new(node: @document.parsed_ead.dsc, requestable: @document.requestable? ,level: 1)) %>
+    <% end %>
   <% end %>
 
   <%# Use :body for complete backwards compatibility (overriding the component body markup),

@@ -12,12 +12,13 @@
   <%= form.hidden_field :repository, value: params[:repository] %>
   <%= form.static_control :title, value: params[:title] %>
   <%= form.form_group :containers_requested, label: { text: 'Items Requested' } do %>
-    <% containers_from_params(params).each do |c| %>
-      <%= form.static_control :container, value: c, label: 'Container:' %>
+    <% containers_from_params(params).each_with_index do |c, i| %>
+      <%= form.static_control "item_#{i}", value: c, label: 'Container:' %>
     <% end %>
   <% end  %>
   <%= form.text_area :special_request %>
   <%= form.text_area :notes %>
   <%= form.date_select :retrieval_date %>
+  <%= form.check_box :save_for_later %>
   <%= form.primary 'Submit' %>
 <% end %>

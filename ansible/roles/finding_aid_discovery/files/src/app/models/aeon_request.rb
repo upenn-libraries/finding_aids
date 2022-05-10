@@ -1,12 +1,21 @@
 # frozen_string_literal: true
 
 class AeonRequest
+  attr_reader :items
+
   def initialize(params)
     @items = build_items_from params
   end
 
   def build_items_from(params)
-    # TODO ??? form in #new doesn't yet define expected params
+    item_params = params.select { |k, _v| k.starts_with? 'item' }.values
+    item_params.map.with_index do |item, i|
+      containers = item.split(',')
+      container_info = {}
+      container_info[:type] = containers[0] if containers[0].present?
+      container_info[:text] = containers[1] if containers[1].present?
+      Item.new i, container_info, self
+    end
   end
 
   # Submit request to Aeon
@@ -29,22 +38,24 @@ class AeonRequest
   # ItemIssue_0=Album 1, 2
 
   class Item
-    # @param [Hash] data
+    # @param [Hash] container
+    # @param [AeonRequest] request
     # @param [String] number
-    def initialize(number, data)
+    def initialize(number, container, request)
       @number = number
-      @data = data
+      @container = container
+      @request = request
     end
 
     def to_param
-      hash = { 'CallNumber' => '',
-               'ItemTitle' => '',
-               'ItemAuthor' => '',
-               'Site' => '',
-               'SubLocation' => '',
-               'Location' => '',
-               'ItemVolume' => '',
-               'ItemIssue' => ''
+      hash = { 'CallNumber' => @request.call_number,
+               'ItemTitle' => @request.title,
+               'ItemAuthor' => '', # ever set?
+               'Site' => '', # internally mapped? see JS
+               'SubLocation' => '', # internally mapped? see JS
+               'Location' => '', # from repository value? see JS
+               'ItemVolume' => @container.try(:type),
+               'ItemIssue' => @container.try(:text)
              }.transform_keys { |key| key += "_#{@number}" }
       hash.store('Request', @number)
       hash

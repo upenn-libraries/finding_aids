@@ -6,7 +6,8 @@ module RequestsHelper
   # @return [Array<String>]
   def containers_from_params(params)
     params[:c].keys.map do |container|
-      container.gsub(/req_\d/, '').tr('_', ' ').titleize
+      containers_info = container.gsub(/req_\d_/, '').split('\\')
+      containers_info.map { |c| c.tr('|', ' ') }.join(', ').titleize
     end
   end
 end
