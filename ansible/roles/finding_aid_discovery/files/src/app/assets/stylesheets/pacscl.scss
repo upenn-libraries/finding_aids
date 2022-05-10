@@ -1,15 +1,30 @@
 @import "_variables";
 @import "_mixins";
 // adapted from Blacklight's _bootstrap_overrides.scss .facet_field_heading
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 html {
   font-size: 62.5%;
 }
 body, .btn {
-  font-size: 1.5rem;
+  font-size: $font-size-base;
 }
+body {
+  font-family: $body-sans;
+  line-height: 1.6;
+}
+/*container*/
+.container-xl, .container-lg, .container-md, .container-sm, .container {
+  max-width: 150rem;
+  @media (min-width: 1200px) {
+    padding-right: 3rem;
+    padding-left: 3rem;
+  }
 
+<<<<<<< HEAD
 $font-size-base:              1.6rem !default;
+=======
+}
+/*reusable*/
+>>>>>>> 28e0667... css for header, footer, home
 .collapsable-toggle {
   &::after {
     content: "❯";
@@ -25,6 +40,7 @@ $font-size-base:              1.6rem !default;
     }
   }
 }
+<<<<<<< HEAD
 
 // Styling for collection inventory cards
 .collection-inventory-card {
@@ -50,8 +66,58 @@ $font-size-base:              1.6rem !default;
   border-radius: 0
 }
 
+.facet-limit {
+  margin-bottom: 1.6rem;
+}
+.facet-field-heading {
+  border-bottom: 0;
+
+  button.btn,
+  button.btn.p-2 {
+    font-weight: normal;
+    padding: .8rem .4rem .8rem 0 !important;
+    &::before {
+      content: "❯";
+      float: left;
+      transform: rotate(90deg);
+      display:block;
+      height: 2.4rem;
+      width: 3rem;
+      position: relative;
+      top: .75rem;
+      padding: 0 1rem 0 .5rem;
+      left: 0;
+    }
+    &::after {
+      content: "";
+    }
+
+    &.collapsed {
+      border-bottom: 0;
+      &::before {
+        transform: rotate(0deg);
+        transition: transform 0.1s ease;
+        width: auto;
+        padding: 0 1.8rem 0 .5rem;
+        top: -.1rem;
+        left: .6rem;
+      }
+      &::after {
+        content: "";
+      }
+    }
+  }
+}
+
 .visually-hidden {
     @include visually-hidden;
+}
+.bg-light {
+  background-color: $light-blue!important;
+}
+.btn-primary {
+  background-color: $button-color;
+  border-color: $button-color;
 }
 .no-list-style {
   list-style-image: none;
@@ -59,6 +125,53 @@ $font-size-base:              1.6rem !default;
   margin: 0;
   padding-left: 0;
 }
+/*header*/
+header.sitebrand {
+  background: $navy;
+  color: #fff;
+
+  padding: 2rem;
+  @media (min-width: 768px) {
+    padding: 3rem;
+  }
+  @media (min-width: 992px) {
+    padding: 4.2rem 3rem;
+  }
+
+  .sitename {
+    font-family: $title-serif;
+    text-align: center;
+    font-size: 2.8rem;
+    @media (min-width: 600px) {
+      font-size: 3.2rem;
+    }
+    @media (min-width: 992px) {
+      font-size: 4.35rem;
+    }
+  }
+}
+/*search*/
+.navbar-search.navbar {
+  padding: 3rem 2rem;
+}
+.search-query-form {
+  margin: 0 auto;
+}
+.input-group > .input-group-append > .btn {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: .375rem .8rem .375rem 1rem;
+}
+input#q.search-q.q.form-control.rounded-left {
+  height: 4.1rem;
+  border-top-left-radius: 4px!important;
+  border-bottom-left-radius: 4px!important;
+  font-size: 1.6rem;
+}
+.submit-search-text {
+  @include visually-hidden;
+}
+/*footer*/
 footer {
   background: $navy;
   font-family: "Roboto", Helvetica, Arial, sans-serif;
@@ -70,6 +183,10 @@ footer {
   .footerliner {
     max-width: 150rem;
     margin: 0 auto;
+    padding-top: 1.5rem;
+    @media (min-width: 992px) {
+      padding-top: 0;
+    }
   }
   a {
     color: #fff;
@@ -95,9 +212,24 @@ footer {
     margin-top: 3.6rem;
   }
   .vlist {
-    float: left;
-    width: 24.5%;
-    padding: 3rem;
+    padding: 1.5rem 3rem;
+    @media (min-width: 576px) {
+      width: 49.5%;
+      float: left;
+      padding: 1.5rem 3rem;
+    }
+    @media (min-width: 992px) {
+
+      width: 23.5%;
+      padding: 3rem;
+      &.branding {
+        width: 27.5%;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      padding: 3rem;
+    }
     a {
       text-transform: uppercase;
     }
@@ -106,16 +238,57 @@ footer {
     }
   }
   .hlist {
-    border-top: solid 1px #fff;
-    height: 7.5rem;
+    border-top: solid 1px #bbbfcf;
+
     margin: 0 3rem;
     padding: 3rem 0;
+    @media (min-width: 576px) {
+      height: 11.5rem;
+    }
+    @media (min-width: 768px) {
+      height: 7.5rem;
+    }
     li {
-      float: left;
-      padding: 0 3rem;
-      &:first-child {
-        padding: 0 3rem 0 0;
+      padding: 1rem 3rem 0 0;
+      @media (min-width: 576px) {
+        float: left;
+        width: 49.5%;
+        padding: 0 3rem;
+        &:first-child {
+          padding-left: 0;
+        }
+        &.acc {
+          width: 100%;
+          padding: 1rem 3rem 0 0;
+        }
+
       }
+      @media (min-width: 768px) {
+        width: auto;
+        padding: 0 3rem;
+        &.acc {
+          width: auto;
+          padding: 0 3rem;
+        }
+      }
+    }
+  }
+}
+/*homepage*/
+.navbar + .container {
+  padding-top: 5.1rem !important;
+}
+.hpcontent {
+  padding-top: 3.2rem;
+}
+.hplinks {
+  margin-top: 4rem;
+  li {
+    float: left;
+    text-transform: uppercase;
+    width: 36%;
+    &.all {
+      width: 28%;
     }
   }
 }
