@@ -27,7 +27,7 @@ class CollectionComponent < ViewComponent::Base
 
   def container_info
     node.xpath('did/container').map do |container|
-      "#{container.attr(:type).titlecase} #{container.try(:text)}"
+      { type: container.attr(:type).titlecase, text: container.try(:text) }
     end
   end
 
