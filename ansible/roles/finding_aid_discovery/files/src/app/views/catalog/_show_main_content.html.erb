@@ -29,7 +29,7 @@
   <% end %>
 
   <% component.collection_inventory do %>
-    <%= render(CollectionsComponent.new(node: @document.parsed_ead.dsc, level: 1)) %>
+    <%= render(CollectionsComponent.new(node: @document.parsed_ead.dsc, requestable: @document.requestable? ,level: 1)) %>
   <% end %>
 
   <%# Use :body for complete backwards compatibility (overriding the component body markup),
