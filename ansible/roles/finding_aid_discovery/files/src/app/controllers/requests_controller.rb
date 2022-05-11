@@ -8,11 +8,11 @@ class RequestsController < ApplicationController
   # validate and map params then ship to Aeon endpoint
   def create
     aeon_request = AeonRequest.new request_params
-    response = aeon_request.submit
+    response = AeonService.submit request: aeon_request, auth_type: :penn # TODO: support other auth types
     if response.txnumber
       redirect_to request_path
     else
-      flash[:alert] = "Failed to create Aeon request"
+      flash[:alert] = 'Failed to create Aeon request'
       render :new
     end
   end

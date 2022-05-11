@@ -1,10 +1,18 @@
 # frozen_string_literal: true
 
 class AeonRequest
-  attr_reader :items
+  KISLAK_REPOSITORY_NAME = 'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
+  KISLAK_REPOSITORY_ATTRIBUTES = { site: 'KISLAK', location: 'scmss', sublocation: 'Manuscripts' }.freeze
+
+  KATZ_REPOSITORY_NAME = 'University of Pennsylvania: Archives at the Library of the Katz Center for Advanced Judaic Studies'
+  KATZ_REPOSITORY_ATTRIBUTES = { site: 'KATZ', location: 'cjsarcms', sublocation: 'Arc Room Ms.' }.freeze
+
+  attr_reader :items, :repository
 
   def initialize(params)
     @items = build_items_from params
+    @repository = repository_info params[:repository]
+    # TODO: notes fields?
   end
 
   def build_items_from(params)
@@ -16,6 +24,25 @@ class AeonRequest
       container_info[:text] = containers[1] if containers[1].present?
       Item.new i, container_info, self
     end
+  end
+
+  # @return [Proc]
+  # @param [String] repository_name
+  def repository_info(repository_name)
+    repository_hash = case(repository_name)
+                      when 'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
+                        KISLAK_REPOSITORY_ATTRIBUTES
+                      when 'University of Pennsylvania: Archives at the Library of the Katz Center for Advanced Judaic Studies'
+                        KATZ_REPOSITORY_ATTRIBUTES
+                      else
+                        # TODO: raise?
+                      end
+    repository_hash.to_proc
+  end
+
+  # TODO: aggregate base params, item params 'n stuff
+  def to_param
+    @items.map(&:to_param).flatten
   end
 
   # Submit request to Aeon
@@ -51,9 +78,9 @@ class AeonRequest
       hash = { 'CallNumber' => @request.call_number,
                'ItemTitle' => @request.title,
                'ItemAuthor' => '', # ever set?
-               'Site' => '', # internally mapped? see JS
-               'SubLocation' => '', # internally mapped? see JS
-               'Location' => '', # from repository value? see JS
+               'Site' => @repository.site,
+               'SubLocation' => @repository.sublocation,
+               'Location' => @repository.location,
                'ItemVolume' => @container.try(:type),
                'ItemIssue' => @container.try(:text)
              }.transform_keys { |key| key += "_#{@number}" }

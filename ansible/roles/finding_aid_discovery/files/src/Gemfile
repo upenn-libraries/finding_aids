@@ -30,8 +30,9 @@ gem 'webpacker', '~> 5.0'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'factory_bot_rails'
+  gem 'faker'
   gem 'rspec-rails', '~> 5.0.0'
-  gem 'webmock'
 end
 
 group :development do
@@ -41,12 +42,8 @@ group :development do
   gem 'web-console', '>= 4.1.0'
 end
 
-group :development, :test do
-  gem 'factory_bot_rails'
-  gem 'faker'
-end
-
 group :test do
   gem 'capybara'
   gem 'cuprite'
+  gem 'webmock'
 end
