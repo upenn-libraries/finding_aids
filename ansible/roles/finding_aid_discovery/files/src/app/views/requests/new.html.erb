@@ -13,7 +13,7 @@
   <%= form.static_control :title, value: params[:title] %>
   <%= form.form_group :containers_requested, label: { text: 'Items Requested' } do %>
     <% containers_from_params(params).each_with_index do |c, i| %>
-      <%= form.static_control "item_#{i}", value: c, label: 'Container:' %>
+      <%= form.static_control "item#{i}", value: c, label: 'Container:' %>
     <% end %>
   <% end  %>
   <%= form.text_area :special_request %>

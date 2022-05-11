@@ -4,8 +4,8 @@ require 'rails_helper'
 
 describe AeonService do
   describe '.submit' do
-    context 'successful request' do
-      context 'for penn affiliates' do
+    context 'with a successful request' do
+      context 'with a penn affiliates' do
         let(:base_url) { 'https://aeon.library.upenn.edu/aeon/aeon.dll' }
         let(:request_params) do
           { 'SpecialRequest' => '',
@@ -15,22 +15,22 @@ describe AeonService do
             'AeonForm' => '',
             'WebRequestForm' => '',
             'SubmitButton' => 'Submit',
-            'Request' => 0,
+            'Request' => "0",
             'ItemTitle_0' => '',
             'CallNumber_0' => '',
             'Site_0' => 'KISLAK',
             'SubLocation_0' => 'Manuscripts',
             'Location_0' => 'scmss',
             'ItemVolume_0' => '',
-            'ItemIssue_0' => ''
-          }
+            'ItemIssue_0' => '' }
         end
         let(:aeon_request) do
           aeon_request = instance_double('AeonRequest')
           allow(aeon_request).to receive(:to_param).and_return request_params
           aeon_request
         end
-        let(:successful_response_html) do <<-HTML
+        let(:successful_response_html) do
+          <<~HTML
 <html lang="en-US">
 <head>
 <title>Aeon Main Menu</title>
@@ -222,11 +222,12 @@ Awaiting User Review
         HTML
 end
         before do
-          stub_request(:post, base_url).with(body: request_params).to_return(successful_response_html)
+          stub_request(:post, base_url).with(body: request_params)
+                                       .to_return(status: 200, body: successful_response_html)
         end
         it 'works' do
           response = described_class.submit request: aeon_request, auth_type: :penn
-          expect(response.success?).to be_true
+          expect(response.success?).to be true
           expect(response.txnumber).to eq '12345'
         end
       end

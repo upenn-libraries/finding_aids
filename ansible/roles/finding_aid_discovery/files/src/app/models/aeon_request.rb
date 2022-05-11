@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
+# Represent a request of one or more items to Aeon
 class AeonRequest
-  KISLAK_REPOSITORY_NAME = 'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
+  KISLAK_REPOSITORY_NAME =
+    'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
   KISLAK_REPOSITORY_ATTRIBUTES = { site: 'KISLAK', location: 'scmss', sublocation: 'Manuscripts' }.freeze
 
-  KATZ_REPOSITORY_NAME = 'University of Pennsylvania: Archives at the Library of the Katz Center for Advanced Judaic Studies'
+  KATZ_REPOSITORY_NAME =
+    'University of Pennsylvania: Archives at the Library of the Katz Center for Advanced Judaic Studies'
   KATZ_REPOSITORY_ATTRIBUTES = { site: 'KATZ', location: 'cjsarcms', sublocation: 'Arc Room Ms.' }.freeze
 
   attr_reader :items, :repository
@@ -29,10 +32,10 @@ class AeonRequest
   # @return [Proc]
   # @param [String] repository_name
   def repository_info(repository_name)
-    repository_hash = case(repository_name)
-                      when 'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
+    repository_hash = case repository_name
+                      when KISLAK_REPOSITORY_NAME
                         KISLAK_REPOSITORY_ATTRIBUTES
-                      when 'University of Pennsylvania: Archives at the Library of the Katz Center for Advanced Judaic Studies'
+                      when KATZ_REPOSITORY_NAME
                         KATZ_REPOSITORY_ATTRIBUTES
                       else
                         # TODO: raise?
@@ -64,6 +67,7 @@ class AeonRequest
   # ItemVolume_0=Box 1
   # ItemIssue_0=Album 1, 2
 
+  # Represent a single Item (checked box in the site) in the context of the request
   class Item
     # @param [Hash] container
     # @param [AeonRequest] request
@@ -82,8 +86,8 @@ class AeonRequest
                'SubLocation' => @repository.sublocation,
                'Location' => @repository.location,
                'ItemVolume' => @container.try(:type),
-               'ItemIssue' => @container.try(:text)
-             }.transform_keys { |key| key += "_#{@number}" }
+               'ItemIssue' => @container.try(:text) }
+               .transform_keys { |key| key + "_#{@number}" }
       hash.store('Request', @number)
       hash
     end

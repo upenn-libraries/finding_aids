@@ -45,10 +45,7 @@ class CollectionComponent < ViewComponent::Base
   end
 
   def requesting_checkbox
-    # container = container_info.first.map { |cs| cs.tr(' ', '_') }.join('_') # TODO: ensure param safety
-    container_info_for_checkbox
-    first_container = container_info.first
-    container = "#{first_container[:type].tr(' ', '_')}|#{first_container[:text].tr(' ', '_')}"
+    # TODO: ensure param safety
     # TODO: check that there is container information before rendering checkbox
     name = "c[req_#{@level}_#{container_info_for_checkbox}]"
     content_tag :div do
@@ -61,7 +58,7 @@ class CollectionComponent < ViewComponent::Base
   def container_info_for_checkbox
     # TODO: avoid delimiter collisions with | and \
     containers = container_info.map do |container_element|
-      container_element[:type].tr(' ', '_') + '|' + container_element[:text].tr(' ', '_')
+      "#{container_element[:type].tr(' ', '_')}|#{container_element[:text].tr(' ', '_')}"
     end
     containers.join('\\')
   end
