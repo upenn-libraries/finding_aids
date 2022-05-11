@@ -46,6 +46,9 @@
         name: redis
       tags: redis
     - import_role:
+        name: sidekiq
+      tags: sidekiq
+    - import_role:
         name: nginx
       tags: nginx
     - import_role:

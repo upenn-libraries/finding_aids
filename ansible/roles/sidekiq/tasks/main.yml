@@ -1,0 +1,66 @@
+---
+- name: Create sidekiq dir
+  ansible.builtin.file:
+    path: "{{ project_root ~ '/sidekiq' }}"
+    state: directory
+
+- name: Copy base and dev docker-compose files
+  ansible.builtin.copy:
+    src: "../files/{{ item }}"
+    dest: "{{ project_root ~ '/sidekiq/' }}"
+  when: is_development | default (false) == true
+  loop:
+    - "docker-compose.yml"
+    - "docker-compose.dev.yml"
+  tags: dev_environment
+
+- name: Deploy Sidekiq development environment
+  community.docker.docker_stack:
+    name: "fad"
+    compose:
+      - "{{ project_root ~ '/sidekiq/docker-compose.yml' }}"
+      - "{{ project_root ~ '/sidekiq/docker-compose.dev.yml' }}"
+    state: present
+  changed_when: false
+  environment:
+    DATABASE_NAME: "{{ postgres.database }}"
+    DATABASE_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
+    DATABASE_USER: "{{ postgres.user }}"
+    FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.name }}"
+    FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"
+    REDIS_SIDEKIQ_USER: "sidekiq"
+    REDIS_SIDEKIQ_PASSWORD: "{{ 'redis_sidekiq_password_v' ~ redis.versioned_configs.users_acl.users | selectattr('name', 'equalto', 'sidekiq') | map(attribute='version')  | join('') }}"
+    REDIS_PORT: "{{ redis.port }}"
+    REPLICAS: "{{ sidekiq.replicas }}"
+    SOLR_CORE_NAME: "{{ solr.core_name }}"
+  no_log: true
+  when: is_development | default (false) == true
+  tags: dev_environment
+
+# Execute staging/production steps
+- name: Copy docker-compose file
+  ansible.builtin.copy:
+    src: "../files/docker-compose.yml"
+    dest: "{{ project_root ~ '/sidekiq/' }}"
+  when: not is_development | default (false) == true
+
+- name: Deploy Sidekiq
+  community.docker.docker_stack:
+    name: "fad"
+    compose:
+      - "{{ project_root ~ '/sidekiq/docker-compose.yml' }}"
+    state: present
+  changed_when: false
+  environment:
+    DATABASE_NAME: "{{ postgres.database }}"
+    DATABASE_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
+    DATABASE_USER: "{{ postgres.user }}"
+    FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.name }}"
+    FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"
+    REDIS_SIDEKIQ_USER: "sidekiq"
+    REDIS_SIDEKIQ_PASSWORD: "{{ 'redis_sidekiq_password_v' ~ redis.versioned_configs.users_acl.users | selectattr('name', 'equalto', 'sidekiq') | map(attribute='version')  | join('') }}"
+    REDIS_PORT: "{{ redis.port }}"
+    REPLICAS: "{{ sidekiq.replicas }}"
+    SOLR_CORE_NAME: "{{ solr.core_name }}"
+  no_log: true
+  when: not is_development | default (false) == true
