@@ -11,6 +11,5 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'pacscl-staging.library.upenn.edu' }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
-  config.active_job.queue_adapter = :resque
-  config.active_job.queue_name_prefix = 'finding_aid_discovery_staging'
+  config.active_job.queue_adapter = :sidekiq
 end
