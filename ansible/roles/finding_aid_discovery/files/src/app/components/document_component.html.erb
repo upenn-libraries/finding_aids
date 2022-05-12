@@ -12,8 +12,10 @@
     <%= body %>
   <% else %>
     <div class="document-main-section">
+      <h2 id="main-content" class="visually-hidden">Main content</h2>
       <% if @show %>
         <%= title %>
+
         <ul class="nav nav-tabs mb-3" id="showPageTabs" role="tablist">
           <li class="nav-item">
             <a href="#overview" class="nav-link active" id="overview-tab" data-toggle="tab" role="tab" aria-controls="overview-tab" aria-selected="true">
@@ -30,20 +32,37 @@
         <%= content %>
         <div class="tab-content" id="showTabContent">
           <div id="overview" class="tab-pane fade show active" role="tabpanel" aria-labelledby="overview-tab">
+            <h3 class="visually-hidden">Notifications</h3>
             <%= location_message %>
             <%= access_clarification_message %>
+            <h3 class="visually-hidden">Overview and metadata sections</h2>
             <%= render CollapsableMetadataSection.new(title: t('sections.collection_overview'), open: true) do %>
               <%= render metadata component: Blacklight::DocumentMetadataComponent %>
             <% end %>
             <% collapsable_metadata_sections.each do |section| %>
               <%= section %>
             <% end %>
+            <h3 class="visually-hidden">Navigation links</h3>
+            <ul class="show-page-links no-list-style clearfix">
+               <li class="go-inventory"><%= link_to "Go to the inventory", "" %></li>
+               <li class="print-all"><%= link_to "Print the complete finding aid", "" %></li>
+               <li class="suggest"><%= link_to "Suggest a correction", "" %></li>
+            </ul>
           </div>
           <div id="inventory" class="tab-pane fade" role="tabpanel" aria-labelledby="inventory-tab">
+            <div aria-hidden="false">
             <%= location_message %>
             <%= access_clarification_message %>
-            <h4><%= t('sections.collection_inventory') %></h4>
+            </div>
+            <div class="request-instructions"><h3>To request materials,</h3> click to open a section, then click the request button.</div>
+            <h3><%= t('sections.collection_inventory') %></h3>
             <%= collection_inventory %>
+            <h3 class="visually-hidden">Navigation links</h3>
+            <ul class="show-page-links no-list-style clearfix">
+               <li class="go-inventory"><%= link_to "Go to the Overview", "" %></li>
+               <li class="print-all"><%= link_to "Print the complete finding aid", "" %></li>
+               <li class="suggest"><%= link_to "Suggest a correction", "" %></li>
+            </ul>
           </div>
         </div>
       <% else %>
