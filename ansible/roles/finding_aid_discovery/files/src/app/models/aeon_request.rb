@@ -10,12 +10,15 @@ class AeonRequest
     'University of Pennsylvania: Archives at the Library of the Katz Center for Advanced Judaic Studies'
   KATZ_REPOSITORY_ATTRIBUTES = { site: 'KATZ', location: 'cjsarcms', sublocation: 'Arc Room Ms.' }.freeze
 
+  BASE_PARAMS = { AeonForm: 'EADRequest', WebRequestForm: 'DefaultRequest', SubmitButton: 'Submit Request' }.freeze
+
   attr_reader :items, :repository
 
+  # @param [ActionController::Parameters] params
   def initialize(params)
     @items = build_items_from params
-    @repository = repository_info params[:repository]
-    # TODO: notes fields?
+    @repository = repository_info params[:repository].to_s
+    @params = params
   end
 
   def build_items_from(params)
@@ -43,9 +46,21 @@ class AeonRequest
     repository_hash.to_proc
   end
 
+  # @return [Hash{String (frozen)->String}]
+  def note_fields
+    { 'SpecialRequest' => @params[:special_request].to_s,
+      'Notes' => @params[:notes].to_s }
+  end
+
+  def fulfillment_fields
+    { 'UserReview' => @params[:save_for_later] ? 'Yes' : 'No', # TODO: confirm booleanness of param after paramification
+      'ScheduledDate' => @params[:retrieval_date] # TODO: ensure format - m/d/yyyy
+    }
+  end
+
   # TODO: aggregate base params, item params 'n stuff
   def to_param
-    @items.map(&:to_param).flatten
+    BASE_PARAMS + note_fields + fulfillment_fields + @items.map(&:to_param).flatten
   end
 
   # Submit request to Aeon

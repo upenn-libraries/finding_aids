@@ -5,13 +5,11 @@ require 'faraday/net_http'
 
 # handle submission of requests to Aeon
 class AeonService
-  BASE_PARAMS = { AeonForm: 'EADRequest', WebRequestForm: 'DefaultRequest', SubmitButton: 'Submit Request' }.freeze
-
   # @param [AeonRequest] request
   # @param [Symbol] auth_type- either :penn or :external
   def self.submit(request:, auth_type:)
     http_conn = Faraday.new(url: submit_url(auth_type))
-    response = http_conn.post('', request.to_param) # TODO: add base and auth params?
+    response = http_conn.post('', request.to_param) # TODO: add auth param based on auth type?
     if response.status == 200
       Response.new response.body
     else

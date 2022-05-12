@@ -10,7 +10,7 @@ describe AeonService do
         let(:request_params) do
           { 'SpecialRequest' => '',
             'Notes' => '',
-            'auth' => 1,
+            'auth' => '1',
             'UserReview' => '',
             'AeonForm' => '',
             'WebRequestForm' => '',

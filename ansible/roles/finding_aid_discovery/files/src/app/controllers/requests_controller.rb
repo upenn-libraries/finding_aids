@@ -7,7 +7,7 @@ class RequestsController < ApplicationController
 
   # validate and map params then ship to Aeon endpoint
   def create
-    aeon_request = AeonRequest.new request_params
+    aeon_request = AeonRequest.new params
     response = AeonService.submit request: aeon_request, auth_type: :penn # TODO: support other auth types
     if response.txnumber
       redirect_to request_path

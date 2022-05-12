@@ -10,7 +10,7 @@ describe AeonRequest do
       let(:params) do
         ActionController::Parameters.new(
           { call_num: 'test-call-num',
-            repository: 'a-requestable-repo',
+            repository: 'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts',
             title: 'some-old-thing',
             special_request: 'I need this NOW!!',
             notes: 'Thanks',
