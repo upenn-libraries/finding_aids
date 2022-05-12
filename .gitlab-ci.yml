@@ -450,7 +450,7 @@ deploy_staging:
     - push_prod_app_image_to_registry
     - push_solr_image_to_registry
   only:
-    - staging
+    - main
   tags:
     - deploy
 # -- End - deploy staging
