@@ -19,7 +19,7 @@ end
 if Sidekiq.server?
   Sidekiq::Cron::Job.create(
     name: 'Run harvesting jobs for the most out-of-date Endpoints',
-    description: 'Will enqueue PartnerHarvestJobs for 10 (or a integer specified in HARVESTS_TO_ENQUEUE env var) Endpoints sorted by oldest updated_at value',
+    description: 'Enqueues PartnerHarvestJobs for Endpoints sorted by oldest updated_at value',
     cron: '0 6 * * *', # 6AM everyday
     class: 'PartnerHarvestEnqueueJob',
     active_job: true
