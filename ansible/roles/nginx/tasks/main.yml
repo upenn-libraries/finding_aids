@@ -17,6 +17,10 @@
   changed_when: false
   no_log: true
 
+- name: Set application urls for Traefik
+  set_fact:
+    application_urls: "{{ nginx.urls | map('regex_replace', '^(.*)$', 'Host(`\\1`)') | join(' || ') }}"
+
 - name: Deploy Nginx development environment
   docker_stack:
     name: "fad"
@@ -29,6 +33,6 @@
     NGINX_IMAGE_NAME: "{{ nginx.image.name }}"
     NGINX_IMAGE_TAG: "{{ nginx.image.tag }}"
     NGINX_PORT: "{{ nginx.port }}"
-    NGINX_URL: "{{ nginx.url }}"
+    NGINX_URLS: "{{ application_urls }}"
     REPLICAS: "{{ nginx.replicas }}"
   no_log: true

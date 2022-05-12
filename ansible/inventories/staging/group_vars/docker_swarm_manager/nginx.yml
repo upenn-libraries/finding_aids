@@ -10,4 +10,5 @@ nginx:
   port: 80
   replicas: 1
   urls:
-    - "finding-aid-discovery-dev.library.upenn.edu"
+    - "pacscl01.library.upenn.int"
+    - "pacscl-staging.library.upenn.edu"

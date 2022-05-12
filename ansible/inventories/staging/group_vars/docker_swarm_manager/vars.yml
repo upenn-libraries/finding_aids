@@ -1,0 +1,5 @@
+---
+is_development: false
+
+project_root: "/opt/devops"
+url: "pacscl-staging.library.upenn.edu"
