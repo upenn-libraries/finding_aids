@@ -6,7 +6,7 @@ class SolrService
   ENDPOINT_SLUG_FIELD = 'endpoint_tsi'
 
   def initialize
-    @solr = RSolr.connect url: ENV['SOLR_URL']
+    @solr = RSolr.connect url: ENV.fetch('SOLR_URL')
   end
 
   # @param [Array[<Hash>]] documents
