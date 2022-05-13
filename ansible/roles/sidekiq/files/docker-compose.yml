@@ -3,7 +3,7 @@ version: "3.8"
 services:
   sidekiq:
     image: ${FINDING_AID_DISCOVERY_IMAGE_NAME}:${FINDING_AID_DISCOVERY_IMAGE_TAG}
-    command: ["bundle", "exec", "sidekiq"]
+    command: ["bundle", "exec", "sidekiq", "-c", "2"]
     deploy:
       placement:
         constraints:
@@ -69,4 +69,3 @@ secrets:
   redis_sidekiq_password:
     external: true
     name: ${REDIS_SIDEKIQ_PASSWORD}
-    

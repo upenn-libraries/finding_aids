@@ -6,6 +6,9 @@ redis_connection = {
   password: SecretsService.lookup(key: 'redis_sidekiq_password')
 }
 
+# limit retries to 3
+Sidekiq.default_job_options = { retry: 3 }
+
 # Sidekiq/Redis configuration
 Sidekiq.configure_server do |config|
   config.redis = redis_connection
@@ -18,9 +21,9 @@ end
 # Job schedule
 if Sidekiq.server?
   Sidekiq::Cron::Job.create(
-    name: 'Run harvesting jobs for the most out-of-date Endpoints',
+    name: 'Run harvesting jobs for all Endpoints',
     description: 'Enqueues PartnerHarvestJobs for Endpoints sorted by oldest updated_at value',
-    cron: '0 6 * * *', # 6AM everyday
+    cron: '0 5 * * 1,3,5', # 5AM MWF
     class: 'PartnerHarvestEnqueueJob',
     active_job: true
   )
