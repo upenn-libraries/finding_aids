@@ -49,8 +49,7 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
-  # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "finding_aid_discovery_production"
+  config.active_job.queue_adapter = :sidekiq
 
   # Deliver emails via smtp
   config.action_mailer.delivery_method = :smtp

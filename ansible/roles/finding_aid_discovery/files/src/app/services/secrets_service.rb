@@ -2,7 +2,7 @@
 
 # helper for pulling secrets from docker secrets store or environment
 class SecretsService
-  PERMITTED_SECRETS = %i[penn_aspace_api_username penn_aspace_api_password honeybadger_api_key].freeze
+  PERMITTED_SECRETS = %i[penn_aspace_api_username penn_aspace_api_password honeybadger_api_key redis_sidekiq_password].freeze
   SECRET_STORE_PATH = '/run/secrets'
 
   class InvalidKeyError < StandardError; end
