@@ -7,7 +7,7 @@ describe HarvestingService do
 
   describe '#process_deletes' do
     let(:solr_service) do
-      instance_double 'SolrService'
+      instance_double SolrService
     end
     let(:harvesting_service) { described_class.new(endpoint, solr_service) }
 

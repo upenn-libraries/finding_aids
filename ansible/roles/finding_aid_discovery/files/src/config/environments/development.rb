@@ -82,7 +82,7 @@ Rails.application.configure do
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 
-  config.hosts << ENV['FINDING_AID_DISCOVERY_URL']
+  config.hosts << ENV.fetch('FINDING_AID_DISCOVERY_URL')
 
   config.credentials.key_path = '/run/secrets/rails_master_key'
 end
