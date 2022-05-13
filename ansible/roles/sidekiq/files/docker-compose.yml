@@ -1,13 +1,13 @@
 version: "3.8"
 
 services:
-  finding_aid_discovery:
+  sidekiq:
     image: ${FINDING_AID_DISCOVERY_IMAGE_NAME}:${FINDING_AID_DISCOVERY_IMAGE_TAG}
-    command: ["bin/rails", "server", "-b", "0.0.0.0", "-p", "${FINDING_AID_DISCOVERY_PORT}"]
+    command: ["bundle", "exec", "sidekiq", "-c", "2"]
     deploy:
       placement:
         constraints:
-          - "node.labels.finding_aid_discovery == true"
+          - "node.labels.sidekiq == true"
       replicas: ${REPLICAS}
       update_config:
         order: "start-first"
@@ -17,17 +17,18 @@ services:
       DATABASE_PASSWORD: /run/secrets/database_password
       DATABASE_USER: ${DATABASE_USER}
       FINDING_AID_DISCOVERY_URL: ${FINDING_AID_DISCOVERY_URL}
-      RAILS_ENV: ${FINDING_AID_DISCOVERY_RAILS_ENV}
+      REDIS_SIDEKIQ_USER: ${REDIS_SIDEKIQ_USER}
+      REDIS_URL: "redis://redis:${REDIS_PORT}/0"
       SOLR_URL: "http://solr:8983/solr/${SOLR_CORE_NAME}"
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "curl -fsSL localhost:${FINDING_AID_DISCOVERY_PORT} || exit 1",
+          "ps aux | grep '[s]idekiq 6' || exit 1",
         ]
       interval: 30s
-      retries: 6
-      start_period: 30s
+      retries: 3
+      start_period: 1m
       timeout: 30s
     logging:
       driver: json-file
@@ -36,21 +37,19 @@ services:
         max-size: "10m"
     networks:
       - database
-      - finding_aid_discovery
+      - redis
       - solr
     secrets:
       - database_password
       - honeybadger_api_key
       - penn_aspace_api_password
       - penn_aspace_api_username
-      - rails_master_key
+      - redis_sidekiq_password
 networks:
   database:
     external: true
-  finding_aid_discovery:
-    driver: overlay
-    name: finding_aid_discovery
-    attachable: true
+  redis:
+    external: true
   solr:
     external: true
 
@@ -67,6 +66,6 @@ secrets:
   penn_aspace_api_username:
     external: true
     name: ${FINDING_AID_DISCOVERY_PENN_ASPACE_API_USERNAME}
-  rails_master_key:
+  redis_sidekiq_password:
     external: true
-    name: ${FINDING_AID_DISCOVERY_RAILS_MASTER_KEY}
+    name: ${REDIS_SIDEKIQ_PASSWORD}

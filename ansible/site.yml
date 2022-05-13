@@ -45,6 +45,12 @@
         name: finding_aid_discovery
       tags: finding_aid_discovery
     - import_role:
+        name: redis
+      tags: redis
+    - import_role:
+        name: sidekiq
+      tags: sidekiq
+    - import_role:
         name: nginx
       tags: nginx
     - import_role:
