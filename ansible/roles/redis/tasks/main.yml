@@ -1,12 +1,12 @@
 ---
 - name: Create redis dir
-  ansible.builtin.file:
+  file:
     path: "{{ project_root ~ '/redis' }}"
     state: directory
     mode: 0440
 
 - name: Create template configs
-  community.docker.docker_config:
+  docker_config:
     name: "{{ 'redis_' ~ item.key ~ '_v' ~ item.value.version }}"
     data: "{{ lookup('template', item.value.filename) }}"
     state: present
@@ -14,7 +14,7 @@
     - "{{ redis.versioned_configs }}"
 
 - name: Create versioned docker secrets
-  community.docker.docker_secret:
+  docker_secret:
     name: "{{ 'redis_' ~ item.name ~ '_password_v' ~ item.version }}"
     data: "{{ item.password }}"
     state: present
@@ -23,13 +23,13 @@
   no_log: true
 
 - name: Copy docker-compose files
-  ansible.builtin.copy:
+  copy:
     src: "docker-compose.yml"
     dest: "{{ project_root ~ '/redis/' }}"
     mode: 0440
 
 - name: Deploy Redis
-  community.docker.docker_stack:
+  docker_stack:
     name: "fad"
     compose:
       - "{{ project_root ~ '/redis/docker-compose.yml' }}"

@@ -1,11 +1,11 @@
 ---
 - name: Create sidekiq dir
-  ansible.builtin.file:
+  file:
     path: "{{ project_root ~ '/sidekiq' }}"
     state: directory
 
 - name: Copy base and dev docker-compose files
-  ansible.builtin.copy:
+  copy:
     src: "../files/{{ item }}"
     dest: "{{ project_root ~ '/sidekiq/' }}"
   when: is_development | default (false) == true
@@ -15,7 +15,7 @@
   tags: dev_environment
 
 - name: Deploy Sidekiq development environment
-  community.docker.docker_stack:
+  docker_stack:
     name: "fad"
     compose:
       - "{{ project_root ~ '/sidekiq/docker-compose.yml' }}"
@@ -42,13 +42,13 @@
 
 # Execute staging/production steps
 - name: Copy docker-compose file
-  ansible.builtin.copy:
+  copy:
     src: "../files/docker-compose.yml"
     dest: "{{ project_root ~ '/sidekiq/' }}"
   when: not is_development | default (false) == true
 
 - name: Deploy Sidekiq
-  community.docker.docker_stack:
+  docker_stack:
     name: "fad"
     compose:
       - "{{ project_root ~ '/sidekiq/docker-compose.yml' }}"
