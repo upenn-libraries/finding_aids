@@ -41,6 +41,7 @@ services:
       - solr
     secrets:
       - database_password
+      - honeybadger_api_key
       - penn_aspace_api_password
       - penn_aspace_api_username
       - redis_sidekiq_password
@@ -56,6 +57,9 @@ secrets:
   database_password:
     external: true
     name: ${DATABASE_PASSWORD}
+  honeybadger_api_key:
+    external: true
+    name: ${FINDING_AID_DISCOVERY_HONEYBADGER_API_KEY}
   penn_aspace_api_password:
     external: true
     name: ${FINDING_AID_DISCOVERY_PENN_ASPACE_API_PASSWORD}
