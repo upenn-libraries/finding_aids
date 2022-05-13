@@ -26,6 +26,7 @@ stages:
   - sast
   - remove:tmp_images_from_registry
   - push:final_images
+  - deploy:staging
   - remove:tmp_images_from_host
 
 # -- Start - build and push base image
@@ -395,6 +396,59 @@ push_solr_image_to_registry:
   tags:
     - build
 # -- End - push final images to registry
+
+# -- Start - deploy staging
+deploy_staging:
+  image: gitlab.library.upenn.edu/docker/hvas:master
+  stage: deploy:staging
+  cache: []
+  variables:
+    DEPLOY_ENVIRONMENT: staging
+  before_script:
+    # Create onetime key pair
+    - ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -P ""
+
+    # Get Vault token via JWT auth locked to this project
+    - export VAULT_ADDR=${VAULT_URL}
+    - export VAULT_TOKEN="$(vault write -field=token auth/jwt/${CI_SERVER_HOST}/login role=${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}-${DEPLOY_ENVIRONMENT} jwt=${CI_JOB_JWT})"
+
+    # Generate signed key and write to a new pub key
+    - vault write -field=signed_key ${VAULT_SSH_CLIENT_ENDPOINT}/sign/${VAULT_SSH_CLIENT_ROLE} public_key=@${HOME}/.ssh/id_ed25519.pub valid_principals=${VALID_PRINCIPALS} > ~/.ssh/id_ed25519-cert.pub
+    - chmod 0400 ~/.ssh/id_ed25519-cert.pub
+
+    # Verify the SSH host keys
+    - ssh-keyscan ${DEPLOY_HOST} >> ~/.ssh/known_hosts
+    - chmod 0644 ~/.ssh/known_hosts
+
+    # Create password file and assign to ANSIBLE_VAULT_PASSWORD_FILE
+    - vault kv get -field=password ${VAULT_ANSIBLE_ENDPOINT}${DEPLOY_ENVIRONMENT} > /tmp/.vault_pass
+    - export ANSIBLE_VAULT_PASSWORD_FILE=/tmp/.vault_pass
+
+    # Set the remote user for ansible
+    - export ANSIBLE_REMOTE_USER=${DEPLOY_USER}
+
+    # Set the private key for ansible
+    - export ANSIBLE_PRIVATE_KEY_FILE=~/.ssh/id_ed25519
+
+    # Set the vault id
+    - export ANSIBLE_VAULT_ID_MATCH=${DEPLOY_ENVIRONMENT}
+  script:
+    # Install ansible requirements
+    - ansible-galaxy install -g -f -r ansible/roles/requirements.yml
+
+    # Run ansible playbook
+    - ansible-playbook --vault-id=${DEPLOY_ENVIRONMENT}@/tmp/.vault_pass -e "ansible_host=${DEPLOY_HOST}" -e "image_tag=${CI_COMMIT_SHORT_SHA}" -i ansible/inventories/${DEPLOY_ENVIRONMENT} ansible/site.yml
+  environment:
+    name: staging
+    url: https://pacscl-staging.library.upenn.edu/
+  needs:
+    - push_prod_app_image_to_registry
+    - push_solr_image_to_registry
+  only:
+    - main
+  tags:
+    - deploy
+# -- End - deploy staging
 
 # -- Start - remove images passed through pipeline
 remove_tmp_base_app_image_from_host:

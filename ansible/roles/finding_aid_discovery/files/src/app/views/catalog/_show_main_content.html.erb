@@ -14,6 +14,24 @@
     <% end %>
   <%  end %>
 
+  <% SolrDocument::ParsedEad::OTHER_SECTIONS.each do |section| %>
+    <% component.collapsable_metadata_section(title: I18n.t(section, scope: :sections)) do %>
+      <%= render AdditionalMetadataComponent.new(nodes: @document.parsed_ead.try(section)) %>
+    <% end %>
+  <% end %>
+
+  <% component.collapsable_metadata_section(title: t('sections.topics')) do %>
+    <%=  render TopicsComponent.new topics: @document.topics_hash %>
+  <% end %>
+
+  <% component.collapsable_metadata_section(title: t('sections.admin_info')) do %>
+    <%= render AdministrativeInformationComponent.new sections: SolrDocument::ParsedEad::ADMIN_INFO_SECTIONS, document: @document %>
+  <% end %>
+
+  <% component.collection_inventory do %>
+    <%= render(CollectionsComponent.new(node: @document.parsed_ead.dsc, level: 1)) %>
+  <% end %>
+
   <%# Use :body for complete backwards compatibility (overriding the component body markup),
         but if the app explicitly  opted-in to components, make the partials data available as :partials to ease migrations pain %>
   <% component.public_send(blacklight_config.view_config(:show).document_component.blank? && blacklight_config.view_config(:show).partials.any? ? :body : :partial) do %>

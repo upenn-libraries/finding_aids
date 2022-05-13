@@ -4,11 +4,11 @@ finding_aid_discovery:
   image:
     name: "finding_aid_discovery"
     registry: "gitlab.library.upenn.edu/pacscl/finding-aid-discovery/app"
-    tag: "main-development"
+    tag: "{{ image_tag }}"
   port: 4567
-  rails_env: "development"
+  rails_env: "staging"
   replicas: 1
-  url: "finding-aid-discovery-dev.library.upenn.edu"
+  url: "pacscl-staging.library.upenn.edu"
   versioned_secrets:
     honeybadger_api_key:
       value: "{{ finding_aid_discovery_vault.versioned_secrets.honeybadger_api_key.value }}"
