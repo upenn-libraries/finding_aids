@@ -135,7 +135,7 @@ $font-size-base:              1.6rem !default;
     @include visually-hidden;
 }
 .bg-light {
-  background-color: $light-blue!important;
+  background-color: $light-blue !important;
 }
 .btn-primary {
   background-color: $button-color;
