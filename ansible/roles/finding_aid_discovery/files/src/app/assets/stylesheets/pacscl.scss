@@ -366,10 +366,6 @@ footer {
         dd.col-md-9.blacklight-extent_ssib {
           margin-top: .5rem;
         }
-        dd.col-md-9.blacklight-extent_ssi::before {
-          content: "Extent: ";
-          font-style: oblique;
-        }
       }
       dl + p {
         font-variant: small-caps;
