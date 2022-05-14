@@ -59,7 +59,7 @@
     DATABASE_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
     DATABASE_USER: "{{ postgres.user }}"
     FINDING_AID_DISCOVERY_HONEYBADGER_API_KEY: "{{ 'finding_aid_discovery_honeybadger_api_key_v' ~ finding_aid_discovery.versioned_secrets.honeybadger_api_key.version }}"
-    FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.name }}"
+    FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.registry }}"
     FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"
     FINDING_AID_DISCOVERY_PENN_ASPACE_API_PASSWORD: "{{ 'finding_aid_discovery_penn_aspace_api_password_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_password.version }}"
     FINDING_AID_DISCOVERY_PENN_ASPACE_API_USERNAME: "{{ 'finding_aid_discovery_penn_aspace_api_username_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_username.version }}"
