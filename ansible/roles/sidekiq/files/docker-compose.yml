@@ -17,6 +17,7 @@ services:
       DATABASE_PASSWORD: /run/secrets/database_password
       DATABASE_USER: ${DATABASE_USER}
       FINDING_AID_DISCOVERY_URL: ${FINDING_AID_DISCOVERY_URL}
+      RAILS_ENV: ${FINDING_AID_DISCOVERY_RAILS_ENV}
       REDIS_SIDEKIQ_USER: ${REDIS_SIDEKIQ_USER}
       REDIS_URL: "redis://redis:${REDIS_PORT}/0"
       SOLR_URL: "http://solr:8983/solr/${SOLR_CORE_NAME}"
