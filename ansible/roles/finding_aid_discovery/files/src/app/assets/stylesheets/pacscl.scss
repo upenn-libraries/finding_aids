@@ -351,10 +351,17 @@ footer {
         dt.col-md-3 {
           @include visually-hidden;
         }
-        dt.blacklight-extent_ssi {
-          display:none;
-        }
 
+        @media (min-width: 768px) {
+          dt {
+            text-align: left;
+          }
+          dt.col-md-3,
+          dd.col-md-9 {
+            flex: 0 0 auto;
+            max-width: auto;
+          }
+        }
         dd.col-md-9 {
           text-align: left;
           flex: 0 0 auto;
@@ -363,8 +370,23 @@ footer {
           padding-left: 0;
           margin-top: .5rem;
         }
-        dd.col-md-9.blacklight-extent_ssib {
+        dt.blacklight-extent_ssi {
+          @include visually-hidden-off;
+        }
+        dt.col-md-3.blacklight-extent_ssi,
+        dd.col-md-9.blacklight-extent_ssi {
+          @include inline-block;
+          padding-left: 0;
+          padding-right: 0;
           margin-top: .5rem;
+        }
+        dt.col-md-3.blacklight-extent_ssi {
+          width: 6rem;
+          color: #000;
+          font-style: oblique;
+        }
+        dd.col-md-9.blacklight-extent_ssi {
+          width: 80%;
         }
       }
       dl + p {

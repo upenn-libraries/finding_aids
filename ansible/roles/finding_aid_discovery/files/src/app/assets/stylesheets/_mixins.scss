@@ -18,3 +18,9 @@
     @include visually-hidden-off;
   }
 }
+@mixin inline-block {
+  display: inline-block;
+  vertical-align: top;
+  *vertical-align: top;
+  *zoom: 1;
+}
