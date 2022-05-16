@@ -578,6 +578,9 @@ header h1.index_title.document-title-heading {
       float: left;
       text-transform: uppercase;
       width: 33%;
+      &.print-all {
+        text-align: center;
+      }
       &.suggest {
         text-align: right;
       }
