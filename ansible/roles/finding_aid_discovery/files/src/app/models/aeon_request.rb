@@ -2,6 +2,8 @@
 
 # Represent a request of one or more items to Aeon
 class AeonRequest
+  class InvalidRequestError < StandardError; end
+
   KISLAK_REPOSITORY_NAME =
     'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
   KISLAK_REPOSITORY_ATTRIBUTES = { site: 'KISLAK', location: 'scmss', sublocation: 'Manuscripts' }.freeze
@@ -22,12 +24,9 @@ class AeonRequest
   end
 
   def build_items_from(params)
-    item_params = params.select { |k, _v| k.starts_with? 'item' }.values
-    item_params.map.with_index do |item, i|
-      containers = item.split(',')
-      container_info = {}
-      container_info[:type] = containers[0] if containers[0].present?
-      container_info[:text] = containers[1] if containers[1].present?
+    params['item'].map.with_index do |item, i|
+      volume, issue = item.split(':').map(&:strip)
+      container_info = { volume: volume, issue: issue }
       Item.new i, container_info, self
     end
   end
@@ -41,7 +40,7 @@ class AeonRequest
                       when KATZ_REPOSITORY_NAME
                         KATZ_REPOSITORY_ATTRIBUTES
                       else
-                        # TODO: raise?
+                        raise InvalidRequestError, "Repository #{repository_name} does not support Aeon requesting"
                       end
     repository_hash.to_proc
   end
@@ -54,18 +53,16 @@ class AeonRequest
 
   def fulfillment_fields
     { 'UserReview' => @params[:save_for_later] ? 'Yes' : 'No', # TODO: confirm booleanness of param after paramification
-      'ScheduledDate' => @params[:retrieval_date] # TODO: ensure format - m/d/yyyy
-    }
+      'ScheduledDate' => @params[:retrieval_date] } # TODO: ensure format - m/d/yyyy
   end
 
-  # TODO: aggregate base params, item params 'n stuff
+  # @return [Hash]
   def to_param
     BASE_PARAMS + note_fields + fulfillment_fields + @items.map(&:to_param).flatten
   end
 
-  # Submit request to Aeon
+  # Typical Aeon params:
   #
-  # e.g.,
   # SpecialRequest=notes & questions
   # Notes=my notes
   # auth=1
@@ -100,9 +97,9 @@ class AeonRequest
                'Site' => @repository.site,
                'SubLocation' => @repository.sublocation,
                'Location' => @repository.location,
-               'ItemVolume' => @container.try(:type),
-               'ItemIssue' => @container.try(:text) }
-               .transform_keys { |key| key + "_#{@number}" }
+               'ItemVolume' => @container.try(:volume),
+               'ItemIssue' => @container.try(:issue) }
+             .transform_keys { |key| key + "_#{@number}" }
       hash.store('Request', @number)
       hash
     end

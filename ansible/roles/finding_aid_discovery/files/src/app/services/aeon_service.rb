@@ -5,6 +5,8 @@ require 'faraday/net_http'
 
 # handle submission of requests to Aeon
 class AeonService
+  class AeonRequestFailedError < StandardError; end
+
   # @param [AeonRequest] request
   # @param [Symbol] auth_type- either :penn or :external
   def self.submit(request:, auth_type:)
@@ -13,7 +15,7 @@ class AeonService
     if response.status == 200
       Response.new response.body
     else
-      # TODO: boom!
+      raise AeonRequestFailedError, "Aeon submission failed! Request body: #{request.to_param}. Response: #{response.body}"
     end
   end
 
@@ -26,7 +28,7 @@ class AeonService
     when :external
       'https://aeon.library.upenn.edu/nonshib/aeon.dll'
     else
-      # TODO: raise?
+      raise AeonRequestFailedError, "Invalid auth type sent: #{auth_type.to_s}"
     end
   end
 

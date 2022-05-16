@@ -1,13 +1,26 @@
 # frozen_string_literal: true
 
-# helpers for
+# helpers for Aeon requesting
 module RequestsHelper
+  # Turn form params into a nice hash, aggregating page/issue requests per volume
   # @param [ActionController::Parameters] params
   # @return [Array<String>]
   def containers_from_params(params)
-    params[:c].keys.map do |container|
-      containers_info = container.gsub(/req_\d_/, '').split('\\')
-      containers_info.map { |c| c.tr('|', ' ') }.join(', ').titleize
+    params[:c].to_unsafe_h.map do |k, v|
+      volume = k.tr('_', ' ')
+      "#{volume}: #{issues_from_param(v)}"
     end
+  end
+
+  # Turn a hash of requests from a volume into a human-friendly string
+  # @param [Hash] param
+  # @return [String (frozen)]
+  def issues_from_param(param)
+    first_key = param.keys.first
+    return unless first_key
+
+    label = first_key.split('_').first
+    issues = param.keys.map { |k| k.split('_').second }.join(', ')
+    "#{label} #{issues}"
   end
 end

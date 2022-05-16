@@ -16,8 +16,7 @@ describe AeonRequest do
             notes: 'Thanks',
             retrieval_date: '',
             save_for_later: true,
-            item0: 'Month January, Page 6',
-            item1: 'Month December, Plate 40' }
+            item: ['Month January: Page 6', 'Month December: Plate 40'] }
         )
       end
 
