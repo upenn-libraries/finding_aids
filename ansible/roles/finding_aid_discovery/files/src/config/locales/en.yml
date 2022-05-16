@@ -16,7 +16,7 @@ en:
     date: 'Date'
     bulk_date: 'Bulk Date'
     pretty_unit_id: 'Call Number'
-    abstract_scope_contents: ' Abstract/Scope/Contents'
+    abstract_scope_contents: 'Abstract'
     raw_xml: 'Raw XML'
     creators: 'Creator'
     language: 'Language'
