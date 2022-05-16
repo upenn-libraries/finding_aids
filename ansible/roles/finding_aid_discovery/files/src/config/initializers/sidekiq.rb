@@ -27,4 +27,12 @@ if Sidekiq.server?
     class: 'PartnerHarvestEnqueueJob',
     active_job: true
   )
+
+  Sidekiq::Cron::Job.create(
+    name: 'Delete Old Searches (Daily)',
+    description: 'Remove searches that are older than 7 days',
+    cron: '0 1 * * *',
+    class: 'DeleteSearchesJob',
+    active_job: true
+  )
 end
