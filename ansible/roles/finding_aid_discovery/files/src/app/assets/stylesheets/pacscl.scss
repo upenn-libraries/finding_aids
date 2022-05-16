@@ -7,10 +7,12 @@ html {
 body, .btn {
   font-size: $font-size-base;
 }
-body {
+body, .facets-heading, h6, .h6, .facet-field-heading {
   font-family: $body-sans;
   line-height: 1.6;
+  font-size: $font-size-base;
 }
+
 a, a:visited {
   color: $link-color;
 }
@@ -21,6 +23,10 @@ a, a:visited {
     padding-right: 3rem;
     padding-left: 3rem;
   }
+}
+
+.navbar + .container {
+  padding-top: 4.5rem !important;
 }
 
 /*reusable*/
@@ -298,13 +304,16 @@ footer {
 .hptitle {
   font-family: $title-serif;
   text-align: center;
-  font-size: 3rem;
+  font-size: 2.5rem;
+    @media (min-width: 400px) {
+      font-size: 3.5rem;
+    }
 }
 .navbar + .container {
   padding-top: 5.1rem !important;
 }
 .hpcontent {
-  padding-top: 2rem;
+  padding-top: 2.8rem;
 }
 .hplinks {
   margin-top: 4rem;
@@ -407,4 +416,208 @@ div.row.record-padding {
     border-color: $button-color;
     color: #fff;
   }
+}
+
+/*overview*/
+.nav-tabs {
+  border-bottom: 1px solid #dee2e6;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-bottom: solid 3px $navy;
+}
+.nav-tabs .nav-item {
+  width: 49.5%;
+  @media (min-width: 400px) {
+    width: auto;
+  }
+}
+.nav-tabs .nav-link {
+  margin-bottom: 0;
+  border: 1px solid transparent;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding: 1.6rem .5rem;
+  font-size: 1.5rem;
+  @media (min-width: 400px) {
+    margin-right: 2rem;
+  }
+
+  @media (min-width: 550px) {
+    margin-right: 7rem;
+    font-size: 1.8rem;
+    padding: 1.6rem 1rem;
+  }
+}
+header h1.index_title.document-title-heading {
+  font-family: $title-serif;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+    @media (min-width: 400px) {
+      font-size: 3.5rem;
+    }
+}
+#overview,
+#inventory {
+  margin-top: 3rem;
+  p.repository-info {
+    font-variant: small-caps;
+    font-size: 1.8rem;
+    font-family: Arial, sans-serif;
+    line-height: 1.4;
+    background-image: url(/assets/gov-docs-bldg.svg);
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
+    padding-left: 3.7rem;
+    &.upenn {
+      background-image: url(/assets/upenn-shield.svg);
+    }
+    &.princeton {
+      background-image: url(/assets/princeton-shield.svg);
+    }
+  }
+  p.access-clarification {
+    margin-top: 2rem;
+    i {
+      font-style: normal;
+    }
+  }
+}
+#overview {
+  h3 {
+    margin-top: 2rem;
+    button.collapsable-toggle {
+      background-color: $bright-blue;
+      color: #fff;
+      padding: 3.8rem 2rem 4rem 3.9rem;
+      font-family: $title-sans;
+      font-size: 2.6rem;
+      font-weight: normal;
+      width: 100%;
+      text-align: left;
+      &::after {
+        content: ' ';
+        display:none;
+      }
+      &::before {
+        float: left;
+        transform: rotate(90deg);
+        transition: transform 0.1s ease;
+        content: url(/assets/collapsearrow-right-fff.svg);
+        height: 2.4rem;
+        width: 2.4rem;
+        margin-right: 1.4rem;
+        position: relative;
+        top: 1rem;
+      }
+      &.collapsed {
+        background-color: transparent;
+        border-bottom: solid 2px $bright-blue;
+        color: #000;
+        &::before {
+          transform: rotate(0deg);
+          content: url(/assets/collapsearrow-right-000.svg);
+          top: 0;
+        }
+      }
+    }
+  }
+  h3 + div {
+    border: solid 2px #4078bc;
+    padding: 2rem;
+    margin-top: -.7rem;
+    h5 {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #000;
+      margin: .33rem 0 0;
+    }
+  }
+  dl.document-metadata.dl-invert.row {
+    dt.col-md-3,
+    dd.col-md-9 {
+      text-align: left;
+      width: 100%;
+      flex: 0 0 100%;
+      max-width: 100%;
+      display:block;
+    }
+    dt.col-md-3,
+    dt {
+      font-weight: bold;
+      color: #000;
+      margin-top: .33rem;
+    }
+  }
+}
+.show-page-links {
+  margin-top: 4rem;
+  padding-bottom: 3rem;
+  li {
+    float: left;
+    text-transform: uppercase;
+    width: 33%;
+    &.suggest {
+      text-align: right;
+    }
+  }
+}
+#inventory {
+  h3 {
+    color: #000;
+    padding: 3.8rem 2rem 4rem 0;
+    font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 2.6rem;
+    font-weight: normal;
+    width: 100%;
+    text-align: left;
+  }
+  .request-instructions {
+    h3 {
+      display: inline;
+      font-size: 1.6rem;
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+    }
+    background: $alert-color;
+    padding:  .5rem;
+
+  }
+}
+/*request buttons
+<button class="request"><span>Request</span></button>*/
+button.request {
+  background: #transparent;
+  border: solid 1px #0778b3;
+  border-radius: 13px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  letter-spacing: 0rem;
+  line-height: 1.3;
+  text-align: center;
+  font-weight: normal;
+  padding: .5rem 1rem;
+  height: 2.6rem;
+  width: 9rem;
+  box-shadow: none;
+  display: inline-block;
+  margin-right: 1.8rem;
+  &.requested {
+    background: $bright-blue;
+    color: #fff;
+    span::after {
+      content: "ed";
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+  }
+}
+.card-title h6 {
+  display: inline-block;
 }
