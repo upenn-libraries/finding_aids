@@ -16,8 +16,8 @@ module RequestsHelper
   # @param [Hash] param
   # @return [String (frozen)]
   def issues_from_param(param)
-    first_key = param.keys.first
-    return unless first_key
+    first_issue = param.keys.first
+    return unless first_issue
 
     label = first_key.split('_').first
     issues = param.keys.map { |k| k.split('_').second }.join(', ')
