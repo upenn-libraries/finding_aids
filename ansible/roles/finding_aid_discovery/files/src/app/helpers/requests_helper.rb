@@ -19,7 +19,7 @@ module RequestsHelper
     first_issue = param.keys.first
     return unless first_issue
 
-    label = first_key.split('_').first
+    label = first_issue.split('_').first
     issues = param.keys.map { |k| k.split('_').second }.join(', ')
     "#{label} #{issues}"
   end

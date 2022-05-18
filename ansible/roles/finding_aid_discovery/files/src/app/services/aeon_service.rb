@@ -7,28 +7,32 @@ require 'faraday/net_http'
 class AeonService
   class AeonRequestFailedError < StandardError; end
 
+  PENN_AUTH_URL = 'https://aeon.library.upenn.edu/aeon/aeon.dll'
+  EXT_AUTH_URL = 'https://aeon.library.upenn.edu/nonshib/aeon.dll'
+
   # @param [AeonRequest] request
   # @param [Symbol] auth_type- either :penn or :external
   def self.submit(request:, auth_type:)
     http_conn = Faraday.new(url: submit_url(auth_type))
-    response = http_conn.post('', request.to_param) # TODO: add auth param based on auth type?
-    if response.status == 200
-      Response.new response.body
-    else
-      raise AeonRequestFailedError, "Aeon submission failed! Request body: #{request.to_param}. Response: #{response.body}"
+    response = http_conn.post('', request.to_h) # TODO: add auth param based on auth type?
+    unless response.status == 200
+      raise(AeonRequestFailedError,
+            "Aeon submission failed! Request body: #{request.to_param}. Response: #{response.body}")
     end
+
+    Response.new response.body
   end
 
   # @param [Symbol] auth_type
   # @return [String (frozen)]
   def self.submit_url(auth_type)
-    case auth_type
+    case auth_type.to_sym
     when :penn
-      'https://aeon.library.upenn.edu/aeon/aeon.dll'
+      PENN_AUTH_URL
     when :external
-      'https://aeon.library.upenn.edu/nonshib/aeon.dll'
+      EXT_AUTH_URL
     else
-      raise AeonRequestFailedError, "Invalid auth type sent: #{auth_type.to_s}"
+      raise AeonRequestFailedError, "Invalid auth type sent: #{auth_type}"
     end
   end
 

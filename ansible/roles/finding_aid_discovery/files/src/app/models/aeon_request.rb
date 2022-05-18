@@ -57,7 +57,7 @@ class AeonRequest
   end
 
   # @return [Hash]
-  def to_param
+  def to_h
     BASE_PARAMS + note_fields + fulfillment_fields + @items.map(&:to_param).flatten
   end
 
@@ -90,15 +90,10 @@ class AeonRequest
       @request = request
     end
 
-    def to_param
-      hash = { 'CallNumber' => @request.call_number,
-               'ItemTitle' => @request.title,
-               'ItemAuthor' => '', # ever set?
-               'Site' => @repository.site,
-               'SubLocation' => @repository.sublocation,
-               'Location' => @repository.location,
-               'ItemVolume' => @container.try(:volume),
-               'ItemIssue' => @container.try(:issue) }
+    def to_h
+      hash = { 'CallNumber' => @request.call_number, 'ItemTitle' => @request.title, 'ItemAuthor' => '',
+               'Site' => @repository.site, 'SubLocation' => @repository.sublocation, 'Location' => @repository.location,
+               'ItemVolume' => @container.try(:volume), 'ItemIssue' => @container.try(:issue) }
              .transform_keys { |key| key + "_#{@number}" }
       hash.store('Request', @number)
       hash

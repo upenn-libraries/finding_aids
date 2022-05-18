@@ -7,10 +7,6 @@
 
 <%# some JS to check login status with Aeon?  %>
 
-<pre>
-  <%= pp params.to_unsafe_h %>
-</pre>
-
 <%= bootstrap_form_with url: requests_path, method: :post, layout: :horizontal do |form| %>
   <%= form.hidden_field :call_num, value: params[:call_num] %>
   <%= form.hidden_field :repository, value: params[:repository] %>

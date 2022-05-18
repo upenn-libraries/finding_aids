@@ -25,11 +25,9 @@ describe AeonRequest do
       end
 
       it 'has an array of Items' do
-        expect(request.items).to be_a Array
         expect(request.items.length).to eq 2
         expect(request.items.first).to be_an AeonRequest::Item
       end
     end
   end
-
 end
