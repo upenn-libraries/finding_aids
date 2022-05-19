@@ -9,7 +9,7 @@ class CollectionsComponent < ViewComponent::Base
 
   def call
     safe_join(
-      @collections.map.with_index { |c, i| render(CollectionComponent.new(node: c, level: @level, index: i + 1)) }
+      @collections.map.with_index { |c, i| render(CollectionComponent.new(node: c, level: @level, index: i + 1, id: "collection_#{i}" )) }
     )
   end
 end

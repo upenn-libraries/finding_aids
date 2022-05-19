@@ -1,5 +1,4 @@
 <h3>
-
   <button
     class="btn btn-light btn-sm collapsable-toggle <%= open ? '' : 'collapsed' %>"
     type="button"
@@ -9,7 +8,6 @@
     aria-controls="<%= @collapsable_id %>"
   ><%= title %></button>
 </h3>
-
 <div class="collapse <%= open ? 'show' : '' %>" id="<%= @collapsable_id %>">
   <%= body %>
 </div>

@@ -5,12 +5,13 @@ class CollectionComponent < ViewComponent::Base
   DESCRIPTIVE_DATA_SECTIONS = %w[arrangement scopecontent odd relatedmaterial
                                  userestrict].freeze
 
-  attr_reader :node, :level, :index
+  attr_reader :node, :level, :index, :id
 
-  def initialize(node:, level:, index:)
+  def initialize(node:, level:, index:, id:)
     @node = node
     @level = level
     @index = index
+    @collapsable_id = id
   end
 
   def title

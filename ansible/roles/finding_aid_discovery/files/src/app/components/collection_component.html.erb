@@ -4,7 +4,17 @@
     <div class="card-title">
       <div class="row justify-content-between">
         <div class="col-sm-9 col-md-10">
-          <%= content_tag "h#{ children? ? [level + 3, 6].min : 6 }", sanitize(title) %>
+          <%= content_tag "h#{ children? ? [level + 3, 6].min : 6 } role = heading" do -%>
+            <button
+              class="btn btn-light btn-sm collapsable-toggle"
+              type="button"
+              data-toggle="collapse"
+              data-target="#<%= @collapsable_id %>"
+              aria-expanded="true"
+              aria-controls="<%= @collapsable_id %>">
+                <%= sanitize(title) %>
+            </button>
+          <% end -%>
         </div>
 
         <div class="col-sm-3 col-md-2">
@@ -16,16 +26,17 @@
         </div>
       </div>
     </div>
+    <div class="card-records">
+      <% descriptive_data.each do |description| %>
+        <%= render EadMarkupTranslationComponent.new(node: description) %>
+      <% end %>
 
-    <% descriptive_data.each do |description| %>
-      <%= render EadMarkupTranslationComponent.new(node: description) %>
-    <% end %>
+      <% if physdesc %>
+        <% if physdesc[:label] %><strong><%= physdesc[:label] %></strong><% end %>
+        <p class="physdesc"><%= physdesc[:text] %></p>
+      <% end %>
 
-    <% if physdesc %>
-      <% if physdesc[:label] %><strong><%= physdesc[:label] %></strong><% end %>
-      <p class="physdesc"><%= physdesc[:text] %></p>
-    <% end %>
-
-    <%= render CollectionsComponent.new(node: node, level: level + 1) %>
+      <%= render CollectionsComponent.new(node: node, level: level + 1) %>
+    </div>
   </div>
 </div>
