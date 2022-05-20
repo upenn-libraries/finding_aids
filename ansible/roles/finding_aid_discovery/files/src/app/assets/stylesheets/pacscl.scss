@@ -55,13 +55,8 @@ a, a:visited {
   &.end-collection {
     border-radius: 0;
     border: 0;
-
-    &.dark {
-      background-color: #f8f9fa; // Should be using a CSS/SCSS variable here.
-    }
-
     .card-body {
-      padding: .75rem;
+      padding: .5rem;
     }
   }
 }
@@ -97,7 +92,6 @@ a, a:visited {
 }
 .facet-field-heading {
   border-bottom: 0;
-
   button.btn,
   button.btn.p-2 {
     font-weight: normal;
@@ -117,7 +111,6 @@ a, a:visited {
     &::after {
       content: "";
     }
-
     &.collapsed {
       border-bottom: 0;
       &::before {
@@ -587,29 +580,6 @@ header h1.index_title.document-title-heading {
     }
   }
 }
-#inventory {
-  h3 {
-    color: #000;
-    padding: 2.8rem 2rem 3rem 0;
-    font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
-    font-size: 2.6rem;
-    font-weight: normal;
-    width: 100%;
-    text-align: left;
-  }
-  .request-instructions {
-    h3 {
-      display: inline;
-      font-size: 1.6rem;
-      margin: 0;
-      padding: 0;
-      font-weight: bold;
-    }
-    background: $alert-color;
-    padding:  .5rem;
-
-  }
-}
 /*request buttons
 <button class="request"><span>Request</span></button>*/
 button.request {
@@ -639,32 +609,55 @@ button.request {
     }
   }
 }
-
 /*inventory*/
-
 #inventory {
+  h3 {
+    color: #000;
+    padding: 2.8rem 2rem 3rem 0;
+    font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 2.6rem;
+    font-weight: normal;
+    width: 100%;
+    text-align: left;
+  }
   > h3:nth-child(3) {
     border-bottom: solid 2px $bright-blue;
+  }
+  .request-instructions {
+    h3 {
+      display: inline;
+      font-size: 1.6rem;
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+    }
+    background: $alert-color;
+    padding:  .5rem;
 
   }
-  /*h4*/
-  /*h5*/
+}
 
 
 
+#inventory {
   > .card.collection-inventory-card.level-1 {
+    /*pull them up so first one (with H4) coincides with h3 underline*/
     margin-top: -.5rem;
     border: none;
     > .card-body {
       padding: 0;
       margin-bottom: 2.3rem;
       border: none;
-      > .card-title > .row/*,
-      > .card-records > .card.collection-inventory-card.level-2 > .card-body > .card-title > .row,*/
-        {
+      > .card-title > .row {
         > .col-sm-9.col-md-10 {
           flex: 0 0 100%;
           max-width: 100%;
+        }
+        > .col-sm-9.col-md-10 + div.col-sm-3.col-md-2 {
+          position: relative;
+          top: -3rem;
+          left: 83%;
+          margin-bottom: -2.5rem;
         }
       }
       > .card-records {
@@ -680,6 +673,7 @@ button.request {
       }
     }
   }
+  /*Top block level is h4*/
   .collection-inventory-card {
     &.level-1 h4 {
       margin: 0 -.1rem;
@@ -700,7 +694,7 @@ button.request {
           font-size: 2.3rem;
         }
         &::after {
-          content: ' ';
+          content: "";
           display:none;
         }
         &::before {
@@ -729,43 +723,57 @@ button.request {
         }
       }
     }
+    /*h5 light blue block. I think h5 only exists as a header*/
     &.level-2 {
+      margin-top: 2rem;
+      > .card-body > .card-title {
+        margin-bottom: 2rem;
+      }
+      &.end-collection {
+        margin-top: 0;
+        &.dark {
+          background: #f0f0f0;
+        }
+        > .card-body > .card-title {
+          margin-bottom: 0;
+        }
+      }
       h5 {
-      margin: -1.5rem -22% 0 -1.5rem;
-      button.collapsable-toggle {
-        background-color: $light-blue;
-        color: #000;
-        padding: 1.8rem 2rem 2rem 3.9rem;
-        font-family: $title-sans;
-        font-size: 1.5rem;
-        font-weight: normal;
-        width: 100%;
-        text-align: left;
-        @media (min-width: 400px) {
+        margin: -1.5rem -22% 0 -1.5rem;
+        button.collapsable-toggle {
+          background-color: $light-blue;
+          color: #000;
+          padding: 1.8rem 2rem 2rem 3.9rem;
+          font-family: $title-sans;
           font-size: 1.5rem;
-        }
-        @media (min-width: 500px) {
-          font-size: 1.8rem;
-        }
-        &::after {
-          content: ' ';
-          display:none;
-        }
-        &::before {
-          float: left;
-          transform: rotate(90deg);
-          transition: transform 0.1s ease;
-          content: url(/assets/collapsearrow-right-000.svg);
-          height: 1.8rem;
-          width: 1.8rem;
-          margin-right: 1.4rem;
-          position: relative;
-          top: .2rem;
-          @media (min-width: 500px) {
-            top: .8rem;
+          font-weight: normal;
+          width: 100%;
+          text-align: left;
+          @media (min-width: 400px) {
+            font-size: 1.5rem;
           }
-        }
-        &.collapsed {
+          @media (min-width: 500px) {
+            font-size: 1.8rem;
+          }
+          &::after {
+            content: "";
+            display:none;
+          }
+          &::before {
+            float: left;
+            transform: rotate(90deg);
+            transition: transform 0.1s ease;
+            content: url(/assets/collapsearrow-right-000.svg);
+            height: 1.8rem;
+            width: 1.8rem;
+            margin-right: 1.4rem;
+            position: relative;
+            top: .2rem;
+            @media (min-width: 500px) {
+              top: .5rem;
+            }
+          }
+          &.collapsed {
           background-color: transparent;
           border-bottom: solid 1px #bbb;
           color: #000;
@@ -775,20 +783,14 @@ button.request {
             top: .2rem;
           }
         }
+        }
       }
-    }
-
-    }
-    /*h6*/&.level-3,
-    /*h7*/&.level-4,
-    /*h8*/&.level-5 {
-      border: none;
-      h6, h7, h8 {
+      &.end-collection h6 {
+        margin: 0;
         button.collapsable-toggle {
           background-color: transparent;
-          color: #000;
-          padding: .5rem 2rem .5rem 3.9rem;
-          font-family: $title-sans;
+          padding: 0m;
+          font-family: $body-sans;
           font-size: 1.5rem;
           font-weight: normal;
           width: 100%;
@@ -800,7 +802,99 @@ button.request {
             font-size: 1.5rem;
           }
           &::after {
-            content: ' ';
+            content: "";
+            display: none;
+          }
+          &::before {
+            content: "";
+            display: none;
+          }
+          &.collapsed {
+            background-color: transparent;
+            border-bottom: none;
+            color: #000;
+            &::before {
+              content: "";
+              display: none;
+            }
+          }
+        }
+      }
+    }
+    /*h6*/&.level-3,
+    /*h7*/&.level-4,
+    /*h8*/&.level-5 {
+      &.card {
+        border: none;
+      }
+      &.end-collection {
+        border: none !important;
+        &.dark {
+          background: #f0f0f0 !important;
+        }
+        h6, h7, h8 {
+          button.collapsable-toggle {
+            background-color: transparent;
+            color: #000;
+            padding: 0;
+            font-family: $body-sans;
+            font-size: 1.5rem;
+            font-weight: normal;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 0;
+            @media (min-width: 400px) {
+              font-size: 1.5rem;
+            }
+            @media (min-width: 500px) {
+              font-size: 1.5rem;
+            }
+            &::after {
+              content:"";
+              display:none;
+            }
+            &::before {
+              content: "";
+              display:none;
+            }
+            &.collapsed {
+              border-bottom: none;
+              &::before {
+                content: "";
+                display:none;
+              }
+            }
+          }
+        }
+      }
+    }
+    /*h6*/&.level-3,
+    /*h7*/&.level-4,
+    /*h8*/&.level-5 {
+      /*good test: border: solid 1px #f00 !important;*/
+      .card-body {
+        padding-right: 0;
+      }
+      h6, h7, h8 {
+        button.collapsable-toggle {
+          background-color: transparent;
+          color: #000;
+          padding: 0 2rem 0 4.4rem;
+          font-family: $title-sans;
+          font-size: 1.5rem;
+          font-weight: normal;
+          width: 100%;
+          text-align: left;
+          font-weight: bold;
+          margin-bottom: 2rem;
+          @media (min-width: 400px) {
+            font-size: 1.5rem;
+          }
+          @media (min-width: 500px) {
+            font-size: 1.5rem;
+          }
+          &::after {
+            content: "";
             display:none;
           }
           &::before {
@@ -814,22 +908,24 @@ button.request {
             position: relative;
             top: .2rem;
             @media (min-width: 500px) {
-              top: .8rem;
+              top: .4rem !important;
             }
           }
           &.collapsed {
             background-color: transparent;
             border-bottom: solid 1px #bbb;
             color: #000;
+            font-weight: normal;
+            margin-bottom: 0;
             &::before {
               transform: rotate(0deg);
               content: url(/assets/collapsearrow-right-000.svg);
-              top: .2rem;
+              top: .2rem !important;
             }
           }
         }
       }
     }
-    
+
   }
 }
