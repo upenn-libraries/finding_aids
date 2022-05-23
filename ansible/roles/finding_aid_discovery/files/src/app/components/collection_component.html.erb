@@ -4,17 +4,21 @@
     <div class="card-title">
       <div class="row justify-content-between">
         <div class="col-sm-9 col-md-10">
-          <%= content_tag "h#{ children? ? [level + 3, 6].min : 6 } role = heading" do -%>
-            <button
-              class="btn btn-light btn-sm collapsable-toggle"
-              type="button"
-              data-toggle="collapse"
-              data-target="#<%= id %>"
-              aria-expanded="true"
-              aria-controls="<%= id %>">
+          <% if children? %>
+            <%= content_tag "h#{level + 3}", role: 'heading' do %>
+              <button
+                class="btn btn-light btn-sm collapsable-toggle"
+                type="button"
+                data-toggle="collapse"
+                data-target="#<%= id %>"
+                aria-expanded="true"
+                aria-controls="<%= id %>">
                 <%= sanitize(title) %>
-            </button>
-          <% end -%>
+              </button>
+            <% end %>
+          <% else %>
+              <%= content_tag :div, sanitize(title), class: 'item-title' %>
+          <% end %>
         </div>
 
         <div class="col-sm-3 col-md-2">
