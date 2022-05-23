@@ -396,16 +396,16 @@ footer {
         font-size: 1.8rem;
         font-family: Arial, sans-serif;
         line-height: 1.4;
-        background-image: url(/assets/gov-docs-bldg.svg);
+        background-image: image-url("gov-docs-bldg.svg");
         background-repeat: no-repeat;
         background-size: 25px 25px;
         padding-left: 3.7rem;
         margin-left: 3.9rem;
         &.upenn {
-          background-image: url(/assets/upenn-shield.svg);
+          background-image: image-url("upenn-shield.svg");
         }
         &.princeton {
-          background-image: url(/assets/princeton-shield.svg);
+          background-image: image-url("princeton-shield.svg");
         }
       }
 
@@ -490,15 +490,15 @@ header h1.index_title.document-title-heading {
     font-size: 1.8rem;
     font-family: Arial, sans-serif;
     line-height: 1.4;
-    background-image: url(/assets/gov-docs-bldg.svg);
+    background-image: image-url("gov-docs-bldg.svg");
     background-repeat: no-repeat;
     background-size: 25px 25px;
     padding-left: 3.7rem;
     &.upenn {
-      background-image: url(/assets/upenn-shield.svg);
+      background-image: image-url("upenn-shield.svg");
     }
     &.princeton {
-      background-image: url(/assets/princeton-shield.svg);
+      background-image: image-url("princeton-shield.svg");
     }
   }
   p.access-clarification {
@@ -534,7 +534,7 @@ header h1.index_title.document-title-heading {
         float: left;
         transform: rotate(90deg);
         transition: transform 0.1s ease;
-        content: url(/assets/collapsearrow-right-fff.svg);
+        content: image-url("collapsearrow-right-fff.svg");
         height: 2.3rem;
         width: 2.3rem;
         margin-right: 1.4rem;
@@ -550,7 +550,7 @@ header h1.index_title.document-title-heading {
         color: #000;
         &::before {
           transform: rotate(0deg);
-          content: url(/assets/collapsearrow-right-000.svg);
+          content: image-url("collapsearrow-right-000.svg");
           top: .2rem;
         }
       }
@@ -723,7 +723,7 @@ button.request {
           float: left;
           transform: rotate(90deg);
           transition: transform 0.1s ease;
-          content: url(/assets/collapsearrow-right-fff.svg);
+          content: image-url("collapsearrow-right-fff.svg");
           height: 2.3rem;
           width: 2.3rem;
           margin-right: 1.4rem;
@@ -739,7 +739,7 @@ button.request {
           color: #000;
           &::before {
             transform: rotate(0deg);
-            content: url(/assets/collapsearrow-right-000.svg);
+            content: image-url("collapsearrow-right-000.svg");
             top: .2rem;
           }
         }
@@ -785,7 +785,7 @@ button.request {
             float: left;
             transform: rotate(90deg);
             transition: transform 0.1s ease;
-            content: url(/assets/collapsearrow-right-000.svg);
+            content: image-url("collapsearrow-right-000.svg");
             height: 1.8rem;
             width: 1.8rem;
             margin-right: 1.4rem;
@@ -801,7 +801,7 @@ button.request {
           color: #000;
           &::before {
             transform: rotate(0deg);
-            content: url(/assets/collapsearrow-right-000.svg);
+            content: image-url('collapsearrow-right-000.svg');
             top: .2rem;
           }
         }
@@ -923,7 +923,7 @@ button.request {
             float: left;
             transform: rotate(90deg);
             transition: transform 0.1s ease;
-            content: url(/assets/collapsearrow-right-000.svg);
+            content: image-url("collapsearrow-right-000.svg");
             height: 1.5rem;
             width: 1.5rem;
             margin-right: 1.4rem;
@@ -941,7 +941,7 @@ button.request {
             margin-bottom: 0;
             &::before {
               transform: rotate(0deg);
-              content: url(/assets/collapsearrow-right-000.svg);
+              content: image-url("collapsearrow-right-000.svg");
               top: .2rem !important;
             }
           }
