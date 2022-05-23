@@ -11,7 +11,7 @@ class CollectionComponent < ViewComponent::Base
     @node = node
     @level = level
     @index = index
-    @collapsable_id = id
+    @id = id
   end
 
   def title

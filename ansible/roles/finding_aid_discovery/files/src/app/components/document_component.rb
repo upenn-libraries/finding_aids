@@ -9,7 +9,7 @@ class DocumentComponent < Blacklight::DocumentComponent
   renders_many :collapsable_metadata_sections, 'CollapsableMetadataSection'
 
   def location_message
-    content_tag :p, class:"repository-info" do
+    content_tag :p, class: 'repository-info' do
       t('messages.location_html',
         repository: @document.repository,
         contact_email: @document[:contact_emails_ssm].first)
@@ -17,7 +17,7 @@ class DocumentComponent < Blacklight::DocumentComponent
   end
 
   def access_clarification_message
-    content_tag :p, class:"access-clarification" do
+    content_tag :p, class: 'access-clarification' do
       content_tag :i do
         t('messages.access_clarification_html', repository: @document.repository)
       end

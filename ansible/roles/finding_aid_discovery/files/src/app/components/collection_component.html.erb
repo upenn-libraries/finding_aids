@@ -9,9 +9,9 @@
               class="btn btn-light btn-sm collapsable-toggle"
               type="button"
               data-toggle="collapse"
-              data-target="#<%= @collapsable_id %>"
+              data-target="#<%= id %>"
               aria-expanded="true"
-              aria-controls="<%= @collapsable_id %>">
+              aria-controls="<%= id %>">
                 <%= sanitize(title) %>
             </button>
           <% end -%>
@@ -26,7 +26,8 @@
         </div>
       </div>
     </div>
-    <div class="card-records">
+
+    <div class="collapse show card-records" id="<%= id %>">
       <% descriptive_data.each do |description| %>
         <%= render EadMarkupTranslationComponent.new(node: description) %>
       <% end %>
@@ -36,7 +37,7 @@
         <p class="physdesc"><%= physdesc[:text] %></p>
       <% end %>
 
-      <%= render CollectionsComponent.new(node: node, level: level + 1) %>
+      <%= render CollectionsComponent.new(node: node, level: level + 1, parent_id: id) %>
     </div>
   </div>
 </div>
