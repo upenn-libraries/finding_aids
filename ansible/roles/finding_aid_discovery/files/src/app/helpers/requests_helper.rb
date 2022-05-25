@@ -10,7 +10,7 @@ module RequestsHelper
 
     containers = params[:c].to_unsafe_h.map do |k, v|
       volume = k.tr('_', ' ')
-      if v == '1' # if v is 1 that is the input value and indicates the presence of only 1 container
+      if v === '1' # if v is 1 that is the input value and indicates the presence of only 1 container
         volume
       else
         "#{volume}: #{issues_from_param(v)}"
