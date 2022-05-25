@@ -5,9 +5,7 @@
 <p>Please review the information and instructions below and press "Submit" when everything is in order. This will
   create a request in the Aeon system.</p>
 
-<%# some JS to check login status with Aeon?  %>
-
-<%= bootstrap_form_with url: requests_path, method: :post, layout: :horizontal do |form| %>
+<%= bootstrap_form_with id: 'aeonRequestForm', url: '#', method: :post, layout: :horizontal do |form| %>
   <%= form.hidden_field :call_num, value: params[:call_num] %>
   <%= form.hidden_field :repository, value: params[:repository] %>
   <%= form.static_control :title, value: params[:title] %>
@@ -19,6 +17,10 @@
   <%= form.text_area :special_request %>
   <%= form.text_area :notes %>
   <%= form.date_select :retrieval_date %>
+  <%= form.form_group :auth_type, label: { text: 'Login status' }, help: 'You must be logged in to your Special Collections Reference Account before submitting a request. Please ensure that you are logged in and confirm your account type.' do %>
+    <%= form.radio_button :auth_type, 'penn', label: 'I am logged in as a Penn affiliate', checked: true %>
+    <%= form.radio_button :auth_type, 'external', label: 'I am logged in as a Visitor' %>
+  <% end %>
   <%= form.check_box :save_for_later %>
   <%= form.primary 'Submit' %>
 <% end %>

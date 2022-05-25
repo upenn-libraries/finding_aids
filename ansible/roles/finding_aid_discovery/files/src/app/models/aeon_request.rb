@@ -14,35 +14,48 @@ class AeonRequest
 
   BASE_PARAMS = { AeonForm: 'EADRequest', WebRequestForm: 'DefaultRequest', SubmitButton: 'Submit Request' }.freeze
 
+  PENN_AUTH_INFO = { url: 'https://aeon.library.upenn.edu/aeon/aeon.dll', param: '1' }.freeze
+  EXT_AUTH_INFO = { url: 'https://aeon.library.upenn.edu/nonshib/aeon.dll', param: '2' }.freeze
+
   attr_reader :items, :repository
 
-  # @param [ActionController::Parameters] params
+  # @param [ActiveSupport::HashWithIndifferentAccess] params
   def initialize(params)
-    @items = build_items_from params
     @repository = repository_info params[:repository].to_s
     @params = params
+    @items = build_items
   end
 
-  def build_items_from(params)
-    params['item'].map.with_index do |item, i|
+  # @return [Array[AeonRequest::Item]]
+  def build_items
+    @params['item'].map.with_index do |item, i|
       volume, issue = item.split(':').map(&:strip)
       container_info = { volume: volume, issue: issue }
       Item.new i, container_info, self
     end
   end
 
-  # @return [Proc]
+  # @return [Hash]
   # @param [String] repository_name
   def repository_info(repository_name)
-    repository_hash = case repository_name
-                      when KISLAK_REPOSITORY_NAME
-                        KISLAK_REPOSITORY_ATTRIBUTES
-                      when KATZ_REPOSITORY_NAME
-                        KATZ_REPOSITORY_ATTRIBUTES
-                      else
-                        raise InvalidRequestError, "Repository #{repository_name} does not support Aeon requesting"
-                      end
-    repository_hash.to_proc
+    case repository_name
+    when KISLAK_REPOSITORY_NAME
+      KISLAK_REPOSITORY_ATTRIBUTES
+    when KATZ_REPOSITORY_NAME
+      KATZ_REPOSITORY_ATTRIBUTES
+    else
+      raise InvalidRequestError, "Repository #{repository_name} does not support Aeon requesting"
+    end
+  end
+
+  # @return [Hash{Symbol->String (frozen)}]
+  def auth_info
+    case @params[:auth_type]
+    when 'penn' then PENN_AUTH_INFO
+    when 'external' then EXT_AUTH_INFO
+    else
+      raise InvalidRequestError, "Invalid auth type specified: #{@params[:auth_type]}"
+    end
   end
 
   # @return [Hash{String (frozen)->String}]
@@ -51,33 +64,46 @@ class AeonRequest
       'Notes' => @params[:notes].to_s }
   end
 
+  # @return [Hash{String (frozen)->String}]
   def fulfillment_fields
     { 'UserReview' => @params[:save_for_later] ? 'Yes' : 'No', # TODO: confirm booleanness of param after paramification
       'ScheduledDate' => @params[:retrieval_date] } # TODO: ensure format - m/d/yyyy
   end
 
-  # @return [Hash]
-  def to_h
-    BASE_PARAMS + note_fields + fulfillment_fields + @items.map(&:to_param).flatten
+  # @return [Hash{String (frozen)->String (frozen)}]
+  def auth_param
+    { 'auth' => auth_info[:param] }
   end
 
-  # Typical Aeon params:
-  #
-  # SpecialRequest=notes & questions
-  # Notes=my notes
-  # auth=1
-  # UserReview=Yes
-  # AeonForm=EADRequest
-  # WebRequestForm=DefaultRequest
-  # SubmitButton=Submit Request
-  # Request=0
-  # ItemTitle_0=
-  # CallNumber_0=Ms. Coll. 1375
-  # Site_0=KISLAK
-  # SubLocation_0=Manuscripts
-  # Location_0=scmss
-  # ItemVolume_0=Box 1
-  # ItemIssue_0=Album 1, 2
+  # @return [String]
+  def call_number
+    @params[:call_num]
+  end
+
+  # @return [String]
+  def title
+    @params[:title]
+  end
+
+  # @return [Hash]
+  def to_h
+    item_fields = {}
+    @items.each do |i|
+      i.to_h.each do |k, v|
+        item_fields[k] = v
+      end
+    end
+    BASE_PARAMS.merge(note_fields)
+               .merge(auth_param)
+               .merge(fulfillment_fields)
+               .merge(item_fields)
+  end
+
+  # @return [Hash{Symbol->String (frozen)]
+  def prepared
+    { url: auth_info[:url],
+      body: to_h }
+  end
 
   # Represent a single Item (checked box in the site) in the context of the request
   class Item
@@ -92,8 +118,9 @@ class AeonRequest
 
     def to_h
       hash = { 'CallNumber' => @request.call_number, 'ItemTitle' => @request.title, 'ItemAuthor' => '',
-               'Site' => @repository.site, 'SubLocation' => @repository.sublocation, 'Location' => @repository.location,
-               'ItemVolume' => @container.try(:volume), 'ItemIssue' => @container.try(:issue) }
+               'Site' => @request.repository[:site], 'SubLocation' => @request.repository[:sublocation],
+               'Location' => @request.repository[:location], 'ItemVolume' => @container[:volume],
+               'ItemIssue' => @container[:issue] }
              .transform_keys { |key| key + "_#{@number}" }
       hash.store('Request', @number)
       hash

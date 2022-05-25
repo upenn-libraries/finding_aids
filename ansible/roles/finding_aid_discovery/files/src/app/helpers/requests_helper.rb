@@ -4,12 +4,19 @@
 module RequestsHelper
   # Turn form params into a nice hash, aggregating page/issue requests per volume
   # @param [ActionController::Parameters] params
-  # @return [Array<String>]
+  # @return [Array]
   def containers_from_params(params)
-    params[:c].to_unsafe_h.map do |k, v|
+    return [] if params[:c].blank?
+
+    containers = params[:c].to_unsafe_h.map do |k, v|
       volume = k.tr('_', ' ')
-      "#{volume}: #{issues_from_param(v)}"
+      if v == '1' # if v is 1 that is the input value and indicates the presence of only 1 container
+        volume
+      else
+        "#{volume}: #{issues_from_param(v)}"
+      end
     end
+    Array.wrap(containers)
   end
 
   # Turn a hash of requests from a volume into a human-friendly string

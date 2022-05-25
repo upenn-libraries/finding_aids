@@ -3,20 +3,11 @@
 # Actions for showing status information about Endpoints
 class RequestsController < ApplicationController
   # show 'confirmation' form with note and date fields
+  # TODO: raise if no c[] params? we dont want empty requests...
   def new; end
 
-  # validate and map params then ship to Aeon endpoint
-  def create
-    aeon_request = AeonRequest.new params
-    response = AeonService.submit request: aeon_request, auth_type: :penn # TODO: support other auth types
-    if response.txnumber
-      redirect_to request_path
-    else
-      flash[:alert] = 'Failed to create Aeon request'
-      render :new
-    end
+  # return request destination URL and Aeon request body in JSON
+  def prepare
+    render json: AeonRequest.new(params).prepared
   end
-
-  # show request response from Aeon, etc.
-  def show; end
 end
