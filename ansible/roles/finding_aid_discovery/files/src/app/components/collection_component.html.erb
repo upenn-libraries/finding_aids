@@ -3,26 +3,25 @@
     <%# Reducing heading size lower in the hierarchy. %>
     <div class="card-title">
       <div class="row justify-content-between">
-        <% if @requestable && !children? %>
-          <div class="col-sm-1 col-md-2">
-            <%= requesting_checkbox %>
-            <%= content_tag :div, sanitize(title), class: 'item-title' %>
-          </div>
-        <% elsif children? %>
-          <%= content_tag "h#{level + 3}", role: 'heading' do %>
-            <button
-              class="btn btn-light btn-sm collapsable-toggle"
-              type="button"
-              data-toggle="collapse"
-              data-target="#<%= id %>"
-              aria-expanded="true"
-              aria-controls="<%= id %>">
-              <%= sanitize(title) %>
-            </button>
-          <% end %>
-        <% end %>
         <div class="col-sm-9 col-md-10">
-          <%= content_tag "h#{ children? ? [level + 3, 6].min : 6 }", sanitize(title) %>
+          <% if children? %>
+            <%= content_tag "h#{level + 3}", role: 'heading' do %>
+              <button
+                class="btn btn-light btn-sm collapsable-toggle"
+                type="button"
+                data-toggle="collapse"
+                data-target="#<%= id %>"
+                aria-expanded="true"
+                aria-controls="<%= id %>">
+                <%= sanitize(title) %>
+              </button>
+            <% end %>
+          <% else %>
+            <%= content_tag :div, class: 'item-title' do %>
+              <%= requesting_checkbox if @requestable %>
+              <%= sanitize(title) %>
+            <% end %>
+        <% end %>
         </div>
 
         <div class="col-sm-3 col-md-2">
