@@ -15,7 +15,11 @@ class CollectionsComponent < ViewComponent::Base
 
   def collections_components
     @collections.map.with_index do |c, i|
-      render(CollectionComponent.new(node: c, level: @level, index: i + 1, id: "#{@parent_id}-#{i + 1}", requestable: @requestable))
+      render(
+        CollectionComponent.new(
+          node: c, level: @level, index: i + 1, id: "#{@parent_id}-#{i + 1}", requestable: @requestable
+        )
+      )
     end
   end
 end

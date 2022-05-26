@@ -6,7 +6,11 @@ RSpec.describe CollectionComponent, type: :component do
   let(:fragment) { Nokogiri::XML.fragment(xml) }
 
   before do
-    render_inline(described_class.new(node: fragment, level: 1, index: 1, requestable: true))
+    render_inline(
+      described_class.new(
+        node: fragment, level: 1, index: 1, id: 'test', requestable: true
+      )
+    )
   end
 
   context 'with a single container' do
