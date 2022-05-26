@@ -16,4 +16,13 @@ Blacklight.onLoad(function() {
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
+
+    // facilitate styling by applying class if descendents contain
+    // a collapsable element
+    $('.collection-inventory-card .level-2').each(function() {
+        let $card = $(this);
+        if($card.find('h5 > button').length > 0) {
+            $card.addClass('has-collapsed');
+        }
+    });
 })
