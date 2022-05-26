@@ -125,13 +125,11 @@ class AeonRequest
     end
 
     def to_h
-      hash = { 'CallNumber' => @request.call_number, 'ItemTitle' => @request.title, 'ItemAuthor' => '',
-               'Site' => @request.repository[:site], 'SubLocation' => @request.repository[:sublocation],
-               'Location' => @request.repository[:location], 'ItemVolume' => @container[:volume],
-               'ItemIssue' => @container[:issue] }
-             .transform_keys { |key| key + "_#{@number}" }
-      hash.store('Request', @number)
-      hash
+      { 'CallNumber' => @request.call_number, 'ItemTitle' => @request.title, 'ItemAuthor' => '',
+        'Site' => @request.repository[:site], 'SubLocation' => @request.repository[:sublocation],
+        'Location' => @request.repository[:location], 'ItemVolume' => @container[:volume],
+        'ItemIssue' => @container[:issue], 'Request' => @number }
+        .transform_keys { |key| key + "_#{@number}" }
     end
   end
 end

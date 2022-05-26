@@ -11,7 +11,9 @@ Blacklight.onLoad(function() {
             $form.attr('action', data.url);
             $form.find(':input').prop('disabled', true);
             $form.append($.map(data.body, function (k, v) {
-                return $('<input>', {type: 'hidden', name: v, value: k})
+                // 'Request' param must be duplicated to cause multiple requests
+                if(v.startsWith('Request_')) { v = 'Request' }
+                return $('<input>', {type: 'hidden', name: v, value: k});
             }));
         }).fail(function() {
             alert('Something unexpected happened. Please try again.');
