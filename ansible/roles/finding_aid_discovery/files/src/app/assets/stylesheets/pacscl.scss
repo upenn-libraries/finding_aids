@@ -301,7 +301,6 @@ footer {
           width: 100%;
           padding: 1rem 3rem 0 0;
         }
-
       }
       @media (min-width: 768px) {
         width: auto;
@@ -319,9 +318,9 @@ footer {
   font-family: $title-serif;
   text-align: center;
   font-size: 2.5rem;
-    @media (min-width: 400px) {
-      font-size: 3.5rem;
-    }
+  @media (min-width: 400px) {
+    font-size: 3.5rem;
+  }
 }
 .navbar + .container {
   padding-top: 5.1rem !important;
@@ -516,11 +515,13 @@ header h1.index_title.document-title-heading {
     }
   }
 }
+
 #overview {
   h3 {
     margin-top: 2rem;
-    button.collapsable-toggle {
-      background-color: $bright-blue;
+    button.collapsable-toggle,
+    button.collapsable-toggle.btn-light:hover {
+      background-color: $bright-blue !important;
       color: #fff;
       padding: 2.8rem 2rem 3rem 3.9rem;
       font-family: $title-sans;
@@ -553,7 +554,7 @@ header h1.index_title.document-title-heading {
         }
       }
       &.collapsed {
-        background-color: transparent;
+        background-color: transparent !important;
         border-bottom: solid 2px $bright-blue;
         color: #000;
         &::before {
@@ -648,6 +649,11 @@ button.request {
 }
 /*inventory*/
 #inventory {
+  .end-collection div.card-body [id^="collection"].collapse.show.card-records {
+    border: none;
+    height: auto !important;
+    padding: 0;
+  }
   h3 {
     color: #000;
     padding: 2.8rem 2rem 3rem 0;
@@ -780,7 +786,7 @@ button.request {
         }
       }
     }
-    /*h5 light blue block. I think h5 only exists as a header*/
+    /*h5 light blue block.*/
     &.level-2 {
       margin-top: 2rem;
       border: none;
@@ -798,7 +804,7 @@ button.request {
         }
       }
       > div.card-body {
-        padding: 1.25rem 1.25rem 0 1.25rem;
+        padding: 1.25rem;
         h5 {
           margin: -1.5rem -1.5rem 0 -1.5rem;
           @media (min-width: 576px) {
@@ -892,44 +898,13 @@ button.request {
           border: solid 1px #ccc;
           border-top: none;
         }
-
       }
-      /*&.end-collection h6 {
-        margin: 0;
-        button.collapsable-toggle {
-          background-color: transparent;
-          padding: 0m;
-          font-family: $body-sans;
-          font-size: 1.5rem;
-          font-weight: normal;
-          width: 100%;
-          text-align: left;
-          @media (min-width: 400px) {
-            font-size: 1.5rem;
-          }
-          @media (min-width: 500px) {
-            font-size: 1.5rem;
-          }
-          &::after {
-            content: "";
-            display: none;
-          }
-          &::before {
-            content: "";
-            display: none;
-          }
-          &.collapsed {
-            background-color: transparent;
-            border-bottom: none;
-            color: #000;
-            &::before {
-              content: "";
-              display: none;
-            }
-          }
-        }
+    }
+    &.level-4,
+    &.level-5 {
+      .card-body {
+        padding-right: 0;
       }
-      */
     }
     /*h6*/&.level-3,
     /*h7*/&.level-4,
@@ -942,52 +917,7 @@ button.request {
         &.dark {
           background: #f0f0f0 !important;
         }
-        h6, h7, h8 {
-          button.collapsable-toggle {
-            background-color: transparent;
-            color: #000;
-            padding: 0;
-            font-family: $body-sans;
-            font-size: 1.5rem;
-            font-weight: normal;
-            width: 100%;
-            text-align: left;
-            margin-bottom: 0;
-            @media (min-width: 400px) {
-              font-size: 1.5rem;
-            }
-            @media (min-width: 500px) {
-              font-size: 1.5rem;
-            }
-            &::after {
-              content:"";
-              display:none;
-            }
-            &::before {
-              content: "";
-              display:none;
-            }
-            &.collapsed {
-              border-bottom: none;
-              &::before {
-                content: "";
-                display:none;
-              }
-            }
-          }
-        }
       }
-    }
-
-    &.level-4,
-    &.level-5 {
-      .card-body {
-        padding-right: 0;
-      }
-    }
-    /*h6*/&.level-3,
-    /*h7*/&.level-4,
-    /*h8*/&.level-5 {
       /*good test: border: solid 1px #f00 !important;*/
       h6, h7, h8 {
         button.collapsable-toggle {
@@ -1040,6 +970,5 @@ button.request {
         }
       }
     }
-
   }
 }
