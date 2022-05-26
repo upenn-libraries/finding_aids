@@ -76,7 +76,7 @@
   environment:
     SOLR_CONFIG_LOCATION: "{{ solr.config_location }}"
     SOLR_CORE_NAME: "{{ solr.core_name }}"
-    SOLR_IMAGE_NAME: "{{ solr.image.name }}"
+    SOLR_IMAGE_NAME: "{{ solr.image.registry }}"
     SOLR_IMAGE_TAG: "{{ solr.image.tag }}"
     REPLICAS: "{{ solr.replicas }}"
   no_log: true

@@ -9,4 +9,9 @@ Rails.application.configure do
 
   # Set hostname for urls generated within emails
   config.action_mailer.default_url_options = { host: 'pacscl-staging.library.upenn.edu' }
+
+  # Use sidekiq in staging
+  config.active_job.queue_adapter = :sidekiq
+
+  config.credentials.key_path = '/run/secrets/rails_master_key'
 end

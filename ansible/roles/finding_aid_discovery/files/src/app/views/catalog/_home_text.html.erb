@@ -1,4 +1,7 @@
-<p>
+<h1 class="hptitle">About the Research Portal</h1>
+<h2 class="visually-hidden">Main content</h2>
+<div class="hpcontent">
+  <p>
   This Philadelphia Area Archival Research Portal (PAARP), formerly the PACSCL Finding Aids Site, provides access
   to descriptions of more than 5,000 collections from over 200 regional institutions documenting the region's vital
   role in our collective history, from colonization to the present day, from the everyday citizen to some of America's
@@ -12,5 +15,10 @@
   ideal starting point for researchers to discover related collections across more than 200 regional repositories,
   large and small.
 </p>
-
-<%= link_to 'Browse Repositories', repositories_path %>
+</div>
+ 
+<ul class="hplinks no-list-style clearfix">
+   <li class="how-to"><%= link_to "How to use the portal", "https://www.library.upenn.edu" %></li>
+   <li class="browse-rep"><%= link_to 'Browse by repositories', repositories_path %></li>
+   <li class="all"><%= link_to 'Show all records', "/catalog?search_field=all_fields&q=" %></li>
+</ul>

@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-if [ "$1" = "bin/rails" ]; then
+if [ "$1" = "bin/rails" ] || [ "$1" = "bundle" -a "$2" = "exec" -a "$3" = "sidekiq" ]; then
     if [ ! -z "${APP_UID}" ] && [ ! -z "${APP_GID}" ]; then
         usermod -u ${APP_UID} app
         groupmod -g ${APP_GID} app
@@ -23,8 +23,10 @@ if [ "$1" = "bin/rails" ]; then
         rm -f ${PROJECT_ROOT}/tmp/pids/server.pid
     fi
 
-    # run db migrations
-    bundle exec rake db:migrate
+    # run db migrations on finding_aid_discovery container
+    if [ "$1" = "bin/rails" ]; then
+        bundle exec rake db:migrate
+    fi
 
     # run the application as the app user
     exec su-exec app "$@"

@@ -24,7 +24,8 @@ describe SolrService do
 
   describe '#find_ids_by_endpoint' do
     let(:endpoint) { build(:endpoint, :index_harvest) }
-    let(:endpoint_sample_documents) { sample_documents(endpoint.slug) }
+    let(:slug) { endpoint.slug }
+    let(:endpoint_sample_documents) { sample_documents(slug) }
 
     before do
       solr.add_many documents: endpoint_sample_documents
@@ -33,7 +34,7 @@ describe SolrService do
     end
 
     it "finds only the ID for an specified endpoint's records" do
-      ids = solr.find_ids_by_endpoint endpoint
+      ids = solr.find_ids_by_endpoint slug
       expect(ids).to include(*endpoint_sample_documents.pluck(:id))
       expect(ids).not_to include(*sample_documents('dont-return-these').pluck(:id))
     end

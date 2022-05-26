@@ -6,9 +6,22 @@
         <% if @requestable && !children? %>
           <div class="col-sm-1 col-md-2">
             <%= requesting_checkbox %>
+            <%= content_tag :div, sanitize(title), class: 'item-title' %>
           </div>
+        <% elsif children? %>
+          <%= content_tag "h#{level + 3}", role: 'heading' do %>
+            <button
+              class="btn btn-light btn-sm collapsable-toggle"
+              type="button"
+              data-toggle="collapse"
+              data-target="#<%= id %>"
+              aria-expanded="true"
+              aria-controls="<%= id %>">
+              <%= sanitize(title) %>
+            </button>
+          <% end %>
         <% end %>
-        <div class="col-sm-8 col-md-8">
+        <div class="col-sm-9 col-md-10">
           <%= content_tag "h#{ children? ? [level + 3, 6].min : 6 }", sanitize(title) %>
         </div>
 
@@ -22,16 +35,17 @@
       </div>
     </div>
 
-    <% descriptive_data.each do |description| %>
-      <%= render EadMarkupTranslationComponent.new(node: description) %>
-    <% end %>
+    <div class="collapse show card-records" id="<%= id %>">
+      <% descriptive_data.each do |description| %>
+        <%= render EadMarkupTranslationComponent.new(node: description) %>
+      <% end %>
 
-    <% if physdesc %>
-      <% if physdesc[:label] %><strong><%= physdesc[:label] %></strong><% end %>
-      <p><%= physdesc[:text] %></p>
-    <% end %>
+      <% if physdesc %>
+        <% if physdesc[:label] %><strong><%= physdesc[:label] %></strong><% end %>
+        <p class="physdesc"><%= physdesc[:text] %></p>
+      <% end %>
 
-    <%= render CollectionsComponent.new(node: node, level: level + 1, requestable: @requestable) %>
-
+      <%= render CollectionsComponent.new(node: node, level: level + 1, parent_id: id, requestable: @requestable) %>
+    </div>
   </div>
 </div>

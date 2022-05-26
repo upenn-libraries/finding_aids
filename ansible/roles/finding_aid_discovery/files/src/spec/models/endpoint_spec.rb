@@ -70,7 +70,7 @@ describe Endpoint do
       end
 
       it 'return status as nil' do
-        expect(endpoint.last_harvest.status).to be nil
+        expect(endpoint.last_harvest.status).to be_nil
       end
     end
 

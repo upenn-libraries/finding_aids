@@ -17,6 +17,7 @@ services:
       DATABASE_PASSWORD: /run/secrets/database_password
       DATABASE_USER: ${DATABASE_USER}
       FINDING_AID_DISCOVERY_URL: ${FINDING_AID_DISCOVERY_URL}
+      RAILS_ENV: ${FINDING_AID_DISCOVERY_RAILS_ENV}
       SOLR_URL: "http://solr:8983/solr/${SOLR_CORE_NAME}"
     healthcheck:
       test:
@@ -40,8 +41,9 @@ services:
     secrets:
       - database_password
       - honeybadger_api_key
-      - penn_aspace_api_username
       - penn_aspace_api_password
+      - penn_aspace_api_username
+      - rails_master_key
 networks:
   database:
     external: true
@@ -59,9 +61,12 @@ secrets:
   honeybadger_api_key:
     external: true
     name: ${FINDING_AID_DISCOVERY_HONEYBADGER_API_KEY}
-  penn_aspace_api_username:
-    external: true
-    name: ${FINDING_AID_DISCOVERY_PENN_ASPACE_API_USERNAME}
   penn_aspace_api_password:
     external: true
     name: ${FINDING_AID_DISCOVERY_PENN_ASPACE_API_PASSWORD}
+  penn_aspace_api_username:
+    external: true
+    name: ${FINDING_AID_DISCOVERY_PENN_ASPACE_API_USERNAME}
+  rails_master_key:
+    external: true
+    name: ${FINDING_AID_DISCOVERY_RAILS_MASTER_KEY}

@@ -38,10 +38,10 @@ end
 
 # Parse URL
 # NOTE: REMOTE_CHROME_HOST should be added to Webmock/VCR allowlist if you use any of those.
-REMOTE_CHROME_URL = ENV['CHROME_URL']
+REMOTE_CHROME_URL = ENV.fetch('CHROME_URL')
 REMOTE_CHROME_HOST, REMOTE_CHROME_PORT =
   if REMOTE_CHROME_URL
-    URI.parse(REMOTE_CHROME_URL).yield_self do |uri|
+    URI.parse(REMOTE_CHROME_URL).then do |uri|
       [uri.host, uri.port]
     end
   end

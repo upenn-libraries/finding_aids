@@ -146,6 +146,11 @@ class Endpoint < ApplicationRecord
     end
   end
 
+  def reload
+    @last_harvest = nil # Resetting last_harvest so the object is re-instantiated with fresh data.
+    super
+  end
+
   private
 
   def valid_harvest_config

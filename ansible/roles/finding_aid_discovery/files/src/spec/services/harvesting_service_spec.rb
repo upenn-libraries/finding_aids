@@ -6,19 +6,18 @@ describe HarvestingService do
   let(:endpoint) { create :endpoint, :index_harvest }
 
   describe '#process_deletes' do
-    let(:solr_service) do
-      instance_double 'SolrService'
-    end
+    let(:solr_service) { instance_double SolrService }
     let(:harvesting_service) { described_class.new(endpoint, solr_service) }
 
     before do
-      allow(solr_service).to receive(:find_ids_by_endpoint).with(endpoint).and_return([1, 3])
+      allow(solr_service).to receive(:find_ids_by_endpoint).with(endpoint.slug).and_return([1, 3])
       allow(solr_service).to receive(:delete_by_ids)
+      allow(harvesting_service).to receive(:documents).and_return([{ id: 1 }, { id: 2 }])
     end
 
     it 'sends correct ids for records to remove to the solr service' do
       expect(solr_service).to receive(:delete_by_ids).with([3])
-      harvesting_service.process_removals(harvested_doc_ids: [1, 2])
+      harvesting_service.process_removals
     end
   end
 
@@ -27,6 +26,7 @@ describe HarvestingService do
       before do
         stub_request(:get, endpoint.url).to_return(status: [404, 'Not Found'])
         described_class.new(endpoint).harvest
+        endpoint.reload
       end
 
       it 'saves error information to Endpoint' do
@@ -45,6 +45,7 @@ describe HarvestingService do
       before do
         stub_request(:get, endpoint.url).to_return(status: [500, 'Internal Server Error'])
         described_class.new(endpoint).harvest
+        endpoint.reload
       end
 
       it 'saves error information to Endpoint' do
@@ -68,6 +69,7 @@ describe HarvestingService do
         stub_request(:get, endpoint.url).to_return(status: [200])
         stub_request(:get, url).to_return(status: [404, 'Not Found'])
         described_class.new(endpoint).harvest
+        endpoint.reload
       end
 
       it 'saves file error information to endpoint' do

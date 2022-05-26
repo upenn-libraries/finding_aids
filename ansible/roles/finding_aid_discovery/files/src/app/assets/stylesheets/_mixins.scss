@@ -1,0 +1,26 @@
+@mixin visually-hidden-off {
+  position: static !important;
+  clip: auto;
+  height: auto;
+  width: auto;
+  overflow: auto;
+}
+@mixin visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  &:focus {
+    @include visually-hidden-off;
+  }
+}
+@mixin inline-block {
+  display: inline-block;
+  vertical-align: top;
+  *vertical-align: top;
+  *zoom: 1;
+}

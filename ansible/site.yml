@@ -2,6 +2,8 @@
 - name: "Provision Docker Swarm Cluster"
   hosts: all
   become: yes
+  vars:
+    ansible_python_interpreter: "/usr/bin/python2"
   pre_tasks:
     - name: Install python3-pip
       package:
@@ -42,6 +44,12 @@
     - import_role:
         name: finding_aid_discovery
       tags: finding_aid_discovery
+    - import_role:
+        name: redis
+      tags: redis
+    - import_role:
+        name: sidekiq
+      tags: sidekiq
     - import_role:
         name: nginx
       tags: nginx

@@ -159,6 +159,9 @@ title = "gitlab gitleaks config"
             '''abcde12345''',
             '''(?i)penn_aspace_api_(password|username)''',
             '''key: (''|'secret_key')''',
+            '''SecretsService\.lookup''',
+            '''auth\:\s1''',
+            '''\:\s+\"password\"'''
         ]
 
 [[rules]]
@@ -187,7 +190,8 @@ title = "gitlab gitleaks config"
         '''00b812b58376f5b0dffa233a8e42f2119f2ee2a5''',
         '''6165f8da733ad3f8e02210f13ab55a7ac8395568''',
         '''82f26315dc6add518e54904be6eacde0d15524fb''',
-        '''5867da3ef0065d30beb9afd742dfa8abc567bb7b'''
+        '''5867da3ef0065d30beb9afd742dfa8abc567bb7b''',
+        '''d612f2915a82083dd5bbe6a089411f8f27992e6c'''
 
     ]
     files = [

@@ -6,6 +6,7 @@ development
 
 [docker_engine:vars]
 ansible_user=vagrant
+ansible_python_interpreter="/usr/bin/python3"
 
 [docker_swarm_manager]
-swarm-01 swarm_labels='["finding_aid_discovery", "nginx", "postgres", "solr", "traefik"]'
+swarm-01 swarm_labels='["finding_aid_discovery", "nginx", "postgres", "redis", "sidekiq", "solr", "traefik"]'

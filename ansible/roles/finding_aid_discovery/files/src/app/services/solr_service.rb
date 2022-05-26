@@ -6,7 +6,7 @@ class SolrService
   ENDPOINT_SLUG_FIELD = 'endpoint_tsi'
 
   def initialize
-    @solr = RSolr.connect url: ENV['SOLR_URL']
+    @solr = RSolr.connect url: ENV.fetch('SOLR_URL')
   end
 
   # @param [Array[<Hash>]] documents
@@ -35,10 +35,12 @@ class SolrService
     solr.commit
   end
 
-  # @param [Endpoint] endpoint
+  # Query for all documents related to an endpoint.
+  #
+  # @param [String] slug
   # @return [Array<String>]
-  def find_ids_by_endpoint(endpoint)
-    resp = solr.get 'select', params: { fq: "#{ENDPOINT_SLUG_FIELD}:#{endpoint.slug}", fl: 'id' }
+  def find_ids_by_endpoint(slug)
+    resp = solr.get 'select', params: { fq: "#{ENDPOINT_SLUG_FIELD}:#{slug}", fl: 'id' }
     resp.dig('response', 'docs')&.collect { |d| d['id'] }
   end
 end
