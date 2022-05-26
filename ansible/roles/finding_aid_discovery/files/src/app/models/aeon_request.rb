@@ -66,8 +66,16 @@ class AeonRequest
 
   # @return [Hash{String (frozen)->String}]
   def fulfillment_fields
-    { 'UserReview' => @params[:save_for_later] ? 'Yes' : 'No', # TODO: confirm booleanness of param after paramification
-      'ScheduledDate' => @params[:retrieval_date] } # TODO: ensure format - m/d/yyyy
+    { 'UserReview' => @params[:save_for_later] == '1' ? 'Yes' : 'No',
+      'ScheduledDate' => formatted_retrieval_date }
+  end
+
+  # @return [String]
+  def formatted_retrieval_date
+    day = @params['retrieval_date(3i)'].to_i
+    month = @params['retrieval_date(2i)'].to_i
+    year = @params['retrieval_date(1i)'].to_i
+    DateTime.new(year, month, day).strftime('%m/%d/%Y')
   end
 
   # @return [Hash{String (frozen)->String (frozen)}]
