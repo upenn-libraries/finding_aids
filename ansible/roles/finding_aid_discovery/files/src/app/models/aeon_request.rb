@@ -6,16 +6,17 @@ class AeonRequest
 
   KISLAK_REPOSITORY_NAME =
     'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
-  KISLAK_REPOSITORY_ATTRIBUTES = { site: 'KISLAK', location: 'scmss', sublocation: 'Manuscripts' }.freeze
-
   KATZ_REPOSITORY_NAME =
     'University of Pennsylvania: Archives at the Library of the Katz Center for Advanced Judaic Studies'
-  KATZ_REPOSITORY_ATTRIBUTES = { site: 'KATZ', location: 'cjsarcms', sublocation: 'Arc Room Ms.' }.freeze
-
+  REPOSITORY_ATTRIBUTE_MAP = {
+    KISLAK_REPOSITORY_NAME => { site: 'KISLAK', location: 'scmss', sublocation: 'Manuscripts' },
+    KATZ_REPOSITORY_NAME => { site: 'KATZ', location: 'cjsarcms', sublocation: 'Arc Room Ms.' }
+  }.freeze
+  AUTH_INFO_MAP = {
+    penn: { url: 'https://aeon.library.upenn.edu/aeon/aeon.dll', param: '1' },
+    external: { url: 'https://aeon.library.upenn.edu/nonshib/aeon.dll', param: '2' }
+  }.freeze
   BASE_PARAMS = { AeonForm: 'EADRequest', WebRequestForm: 'DefaultRequest', SubmitButton: 'Submit Request' }.freeze
-
-  PENN_AUTH_INFO = { url: 'https://aeon.library.upenn.edu/aeon/aeon.dll', param: '1' }.freeze
-  EXT_AUTH_INFO = { url: 'https://aeon.library.upenn.edu/nonshib/aeon.dll', param: '2' }.freeze
 
   attr_reader :items, :repository
 
@@ -38,24 +39,18 @@ class AeonRequest
   # @return [Hash]
   # @param [String] repository_name
   def repository_info(repository_name)
-    case repository_name
-    when KISLAK_REPOSITORY_NAME
-      KISLAK_REPOSITORY_ATTRIBUTES
-    when KATZ_REPOSITORY_NAME
-      KATZ_REPOSITORY_ATTRIBUTES
-    else
-      raise InvalidRequestError, "Repository #{repository_name} does not support Aeon requesting"
-    end
+    info = REPOSITORY_ATTRIBUTE_MAP[repository_name]
+    raise InvalidRequestError, "Repository #{repository_name} does not support Aeon requesting" unless info
+
+    info
   end
 
   # @return [Hash{Symbol->String (frozen)}]
-  def auth_info
-    case @params[:auth_type]
-    when 'penn' then PENN_AUTH_INFO
-    when 'external' then EXT_AUTH_INFO
-    else
-      raise InvalidRequestError, "Invalid auth type specified: #{@params[:auth_type]}"
-    end
+  def auth_info(auth_type)
+    info = AUTH_INFO_MAP[auth_type.to_sym]
+    raise InvalidRequestError, "Invalid auth type specified: #{auth_type}" unless info
+
+    info
   end
 
   # @return [Hash{String (frozen)->String}]
@@ -80,7 +75,7 @@ class AeonRequest
 
   # @return [Hash{String (frozen)->String (frozen)}]
   def auth_param
-    { 'auth' => auth_info[:param] }
+    { 'auth' => auth_info(@params[:auth_type])[:param] }
   end
 
   # @return [String]
@@ -109,7 +104,7 @@ class AeonRequest
 
   # @return [Hash{Symbol->String (frozen)]
   def prepared
-    { url: auth_info[:url],
+    { url: auth_info(@params[:auth_type])[:url],
       body: to_h }
   end
 

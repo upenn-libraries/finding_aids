@@ -37,7 +37,7 @@ describe AeonRequest do
 
       it 'has an array of Items' do
         expect(request.items.length).to eq 2
-        expect(request.items.first).to be_an AeonRequest::Item
+        expect(request.items.first).to be_an described_class::Item
       end
 
       it 'has Items with proper hash representation' do
@@ -68,7 +68,7 @@ describe AeonRequest do
 
     describe '#prepare' do
       it 'has expected url value' do
-        expect(request.prepared).to include({ url: described_class::PENN_AUTH_INFO[:url] })
+        expect(request.prepared).to include({ url: described_class::AUTH_INFO_MAP[:penn][:url] })
       end
 
       it 'has expected request representation as a hash' do

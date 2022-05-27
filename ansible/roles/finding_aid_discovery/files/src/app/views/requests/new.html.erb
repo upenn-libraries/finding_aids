@@ -2,7 +2,7 @@
 
 <%= t('requests.form.messages.instructions_html', repository: params[:repository]) %>
 
-<%= bootstrap_form_with id: 'aeonRequestForm', url: AeonRequest::PENN_AUTH_INFO[:url], method: :post, layout: :horizontal do |form| %>
+<%= bootstrap_form_with id: 'aeonRequestForm', url: penn_aeon_auth_url, method: :post, layout: :horizontal do |form| %>
   <%= form.hidden_field :call_num, value: params[:call_num] %>
   <%= form.hidden_field :repository, value: params[:repository] %>
   <%= form.static_control :title, value: params[:title], label: t('requests.form.fields.title') %>
