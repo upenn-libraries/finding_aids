@@ -50,7 +50,7 @@ class SolrDocument
   end
 
   def requestable?
-    fetch(:repository_name_component_2_ssi, nil).in? REQUESTABLE_REPOSITORIES
+    fetch(:repository_ssi, nil).in? REQUESTABLE_REPOSITORIES
   end
 
   def requesting_info
