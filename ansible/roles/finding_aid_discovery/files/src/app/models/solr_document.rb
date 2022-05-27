@@ -2,8 +2,7 @@
 
 class SolrDocument
   XML_FIELD_NAME = :xml_ss
-  REQUESTABLE_REPOSITORIES = ['Kislak Center for Special Collections, Rare Books and Manuscripts',
-                              'Archives at the Library of the Katz Center for Advanced Judaic Studies'].freeze
+  REQUESTABLE_REPOSITORIES = [AeonRequest::KISLAK_REPOSITORY_NAME, AeonRequest::KATZ_REPOSITORY_NAME].freeze
 
   include Blacklight::Solr::Document
 
