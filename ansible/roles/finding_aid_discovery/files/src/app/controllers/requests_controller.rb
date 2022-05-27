@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Actions for showing status information about Endpoints
+# Actions for handling Aeon requests
 class RequestsController < ApplicationController
   # show 'confirmation' form with note and date fields
   # TODO: raise if no c[] params? we dont want empty requests...
