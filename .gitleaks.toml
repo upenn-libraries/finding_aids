@@ -161,7 +161,8 @@ title = "gitlab gitleaks config"
             '''key: (''|'secret_key')''',
             '''SecretsService\.lookup''',
             '''auth\:\s1''',
-            '''\:\s+\"password\"'''
+            '''\:\s+\"password\"''',
+            '''(external|penn)_auth'''
         ]
 
 [[rules]]
