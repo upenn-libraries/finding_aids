@@ -7,11 +7,12 @@ class CollectionComponent < ViewComponent::Base
 
   attr_reader :node, :level, :index, :id
 
-  def initialize(node:, level:, index:, id:)
+  def initialize(node:, level:, index:, id:, requestable: false)
     @node = node
     @level = level
     @index = index
     @id = id
+    @requestable = requestable
   end
 
   def title
@@ -25,7 +26,7 @@ class CollectionComponent < ViewComponent::Base
     title.presence || '(No Title)'
   end
 
-  def containers
+  def container_info
     node.xpath('did/container').map do |container|
       { type: container.attr(:type).titlecase, text: container.try(:text) }
     end
@@ -42,6 +43,24 @@ class CollectionComponent < ViewComponent::Base
 
     { text: render(EadMarkupTranslationComponent.new(node: physdesc_node)),
       label: physdesc_node.at_xpath('@label') }
+  end
+
+  def requesting_checkbox
+    # TODO: ensure param safety
+    # TODO: check that there is container information before rendering checkbox
+    name = "c#{container_info_for_checkbox}"
+    content_tag :div do
+      safe_join([check_box_tag(name, 1),
+                 label_tag(name, 'Add to request', class: 'sr-only')])
+    end
+  end
+
+  # encode all container information in a way that is HTML form safe and can be extracted after submission
+  def container_info_for_checkbox
+    containers = container_info.map do |container_element|
+      "[#{container_element[:type]}_#{container_element[:text]}]"
+    end
+    containers.join
   end
 
   # Returns true if collection node has children, otherwise returns false.

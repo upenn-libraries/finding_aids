@@ -1,0 +1,23 @@
+<h2><%= t('requests.form.header') %></h2>
+
+<%= t('requests.form.messages.instructions_html', repository: params[:repository]) %>
+
+<%= bootstrap_form_with id: 'aeonRequestForm', url: penn_aeon_auth_url, method: :post, layout: :horizontal do |form| %>
+  <%= form.hidden_field :call_num, value: params[:call_num] %>
+  <%= form.hidden_field :repository, value: params[:repository] %>
+  <%= form.static_control :title, value: params[:title], label: t('requests.form.fields.title') %>
+  <%= form.form_group :containers_requested, label: { text: t('requests.form.fields.containers') } do %>
+    <% containers_from_params(params).each do |c| %>
+      <%= form.static_control 'item[]', value: c, label: t('requests.form.fields.container') %>
+    <% end %>
+  <% end  %>
+  <%= form.text_area :special_request, label: t('requests.form.fields.special_request') %>
+  <%= form.text_area :notes, label: t('requests.form.fields.notes') %>
+  <%= form.date_select :retrieval_date, label: t('requests.form.fields.retrieval_date') %>
+  <%= form.form_group :auth_type, label: { text: t('requests.form.fields.auth_types') }, help: t('requests.form.messages.auth_help') do %>
+    <%= form.radio_button :auth_type, 'penn', label: t('requests.form.fields.penn_auth'), checked: true %>
+    <%= form.radio_button :auth_type, 'external', label: t('requests.form.fields.external_auth') %>
+  <% end %>
+  <%= form.check_box :save_for_later, label: t('requests.form.fields.save_for_later') %>
+  <%= form.primary t('requests.form.fields.submit') %>
+<% end %>

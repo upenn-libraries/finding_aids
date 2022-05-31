@@ -17,13 +17,16 @@
               </button>
             <% end %>
           <% else %>
-              <%= content_tag :div, sanitize(title), class: 'item-title' %>
-          <% end %>
+            <%= content_tag :div, class: 'item-title' do %>
+              <%= requesting_checkbox if @requestable %>
+              <%= sanitize(title) %>
+            <% end %>
+        <% end %>
         </div>
 
         <div class="col-sm-3 col-md-2">
           <span class="float-right">
-            <% containers.each do |container| %>
+            <% container_info.each do |container| %>
               <span class="badge badge-secondary"><%= "#{container[:type]} #{container[:text]}" %></span>
             <% end %>
           </span>
@@ -41,7 +44,7 @@
         <p class="physdesc"><%= physdesc[:text] %></p>
       <% end %>
 
-      <%= render CollectionsComponent.new(node: node, level: level + 1, parent_id: id) %>
+      <%= render CollectionsComponent.new(node: node, level: level + 1, parent_id: id, requestable: @requestable) %>
     </div>
   </div>
 </div>
