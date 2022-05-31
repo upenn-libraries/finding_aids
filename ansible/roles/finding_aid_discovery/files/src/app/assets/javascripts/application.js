@@ -19,10 +19,8 @@ Blacklight.onLoad(function() {
 
     // facilitate styling by applying class if descendents contain
     // a collapsable element
-    $('.collection-inventory-card .level-2').each(function() {
-        let $card = $(this);
-        if($card.find('h5 > button').length > 0) {
-            $card.addClass('has-collapsed');
-        }
+    $('.h5-collapse').click(function() {
+        $(this).parents('.collection-inventory-card .level-2')
+            .toggleClass('has-collapsed');
     });
 })
