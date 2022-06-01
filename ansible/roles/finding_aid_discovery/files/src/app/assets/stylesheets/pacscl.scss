@@ -791,10 +791,33 @@ button.request {
       margin-top: 2rem;
       border: none;
       box-shadow: none;
+      background-image: url(assets/light-blue.gif);
+      background-size: 100% 7rem;
+      background-repeat: no-repeat;
+      border: solid 1px #bbb;
+
+      > div.card-body {
+        padding: 1.25rem;
+      }
+      &.has-collapsed {
+        background-image: none !important;
+        border: none;
+        margin-top: 0;
+        &:nth-child(1)  {
+          margin-top: -1.5rem;
+        }
+        > div.card-body {
+          padding: 1.25rem 1.25rem 0 1.25rem;
+        }
+      }
       &.end-collection {
         margin-top: 0;
+        border: none;
         &.dark {
           background: #f0f0f0;
+        }
+        &.light {
+          background-image: none;
         }
         > .card-body {
           background-image: none;
@@ -804,44 +827,12 @@ button.request {
         }
       }
       > div.card-body {
-        padding: 1.25rem;
         h5 {
-          margin: -1.5rem -1.5rem 0 -1.5rem;
-          @media (min-width: 576px) {
-            margin: -1.5rem -40.65% 0 -1.5rem;
-          }
-          @media (min-width: 600px) {
-            margin: -1.5rem -40% 0 -1.5rem;
-          }
-          @media (min-width: 670px) {
-            margin: -1.5rem -39.5% 0 -1.5rem;
-          }
-          @media (min-width: 670px) {
-            margin: -1.5rem -39% 0 -1.5rem;
-          }
-          @media (min-width: 768px) {
-            margin: -1.5rem -29.5% 0 -1.5rem;
-          }
-          @media (min-width: 830px) {
-            margin: -1.5rem -29% 0 -1.5rem;
-          }
-          @media (min-width: 900px) {
-            margin: -1.5rem -28.5% 0 -1.5rem;
-          }
-          @media (min-width: 1024px) {
-            margin: -1.5rem -28% 0 -1.5rem;
-          }
-          @media (min-width: 1180px) {
-            margin: -1.5rem -27.5% 0 -1.5rem;
-          }
-          @media (min-width: 1450px) {
-            margin: -1.5rem -27.2% 0 -1.5rem;
-          }
           button.collapsable-toggle,
           button.collapsable-toggle.btn-light:hover,
           button.collapsable-toggle:visited {
-            border: solid 1px #ccc;
-            background-color: $light-blue !important;
+            margin: -1.2rem 0 0 -1.5rem;
+            background: transparent;
             color: #000;
             font-family: $title-sans;
             font-size: 1.5rem;
@@ -888,14 +879,25 @@ button.request {
                 top: .2rem;
               }
             }
+            &.btn-light:not(:disabled):not(.disabled):active,
+            &.btn-light.active:not(:disabled):not(.disabled),
+            &.btn-light:focus,
+            &.btn-light.focus {
+              border: dotted 1px #00f;
+              box-shadow: none;
+              transition: none;
+            }
+            &.btn-light:visited {
+              border: none;
+            }
           }
+
         }
 
         > .card-records.show {
           margin-top: 2rem;
           margin: 0 -1.5rem;
-          padding: 2rem 1.5rem;
-          border: solid 1px #ccc;
+          padding: 2rem 1.5rem .5rem 1.5rem;
           border-top: none;
         }
       }
@@ -923,14 +925,14 @@ button.request {
         button.collapsable-toggle {
           background-color: transparent;
           color: #000;
-          padding: 0 2rem 0 4.4rem;
+          padding: 0 2rem 1rem 4.4rem;
           font-family: $title-sans;
           font-size: 1.5rem;
           font-weight: normal;
           width: 100%;
           text-align: left;
           font-weight: bold;
-          margin-bottom: 2rem;
+          margin: 0 0 1rem 0;
           @media (min-width: 400px) {
             font-size: 1.5rem;
           }
@@ -960,7 +962,8 @@ button.request {
             border-bottom: solid 1px #bbb;
             color: #000;
             font-weight: normal;
-            margin-bottom: 0;
+            margin: -1.5rem 0 0 0;
+            padding-bottom: 1.5rem;
             &::before {
               transform: rotate(0deg);
               content: url(/assets/collapsearrow-right-000.svg);
