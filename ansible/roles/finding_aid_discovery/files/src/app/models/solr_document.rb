@@ -2,6 +2,7 @@
 
 class SolrDocument
   XML_FIELD_NAME = :xml_ss
+  REQUESTABLE_REPOSITORIES = [AeonRequest::KISLAK_REPOSITORY_NAME, AeonRequest::KATZ_REPOSITORY_NAME].freeze
 
   include Blacklight::Solr::Document
 
@@ -42,6 +43,20 @@ class SolrDocument
 
   def repository
     fetch(:repository_ssi)
+  end
+
+  def penn_item?
+    fetch(:repository_name_component_1_ssi) == 'University of Pennsylvania'
+  end
+
+  def requestable?
+    fetch(:repository_ssi, nil).in? REQUESTABLE_REPOSITORIES
+  end
+
+  def requesting_info
+    { title: fetch('title_tsi'),
+      call_num: fetch('pretty_unit_id_ss'),
+      repository: fetch('repository_ssi') }
   end
 
   class ParsedEad

@@ -35,7 +35,7 @@
             <h3 class="visually-hidden">Notifications</h3>
             <%= location_message %>
             <%= access_clarification_message %>
-            <h3 class="visually-hidden">Overview and metadata sections</h2>
+            <h3 class="visually-hidden">Overview and metadata sections</h3>
             <%= render CollapsableMetadataSection.new(title: t('sections.collection_overview'), open: true) do %>
               <%= render metadata component: Blacklight::DocumentMetadataComponent %>
             <% end %>
