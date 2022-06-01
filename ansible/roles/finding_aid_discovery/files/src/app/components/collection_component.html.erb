@@ -7,7 +7,7 @@
           <% if children? %>
             <%= content_tag "h#{level + 3}", role: 'heading' do %>
               <button
-                class="btn btn-light btn-sm collapsable-toggle"
+                class="btn btn-light btn-sm collapsable-toggle<%= ' h5-collapse' if level == 2 %>"
                 type="button"
                 data-toggle="collapse"
                 data-target="#<%= id %>"

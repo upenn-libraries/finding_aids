@@ -1,6 +1,6 @@
-@import "_variables";
 @import "_mixins";
-// adapted from Blacklight's _bootstrap_overrides.scss .facet_field_heading
+@import "_variables";
+
 html {
   font-size: 62.5%;
 }
@@ -15,6 +15,18 @@ body, .facets-heading, h6, .h6, .facet-field-heading {
 
 a, a:visited {
   color: $link-color;
+}
+.btn-light:hover {
+  color: #000;
+  background-color: transparent !important;
+  border: none;
+  box-shadow: none;
+}
+.btn-light:focus, .btn-light.focus {
+  color: #000;
+  background-color: transparent;
+  border: dotted 1px #000;
+  box-shadow: none;
 }
 /*container*/
 .container-xl, .container-lg, .container-md, .container-sm, .container {
@@ -49,14 +61,14 @@ a, a:visited {
 // Styling for collection inventory cards
 .collection-inventory-card {
   .card-title {
-    margin-bottom: 0rem;
+    margin-bottom: 0;
   }
 
   &.end-collection {
     border-radius: 0;
     border: 0;
     .card-body {
-      padding: .5rem;
+      padding: .9rem .4rem .9rem .9rem;
     }
   }
 }
@@ -66,6 +78,15 @@ a, a:visited {
 }
 
 /*facets*/
+.facet-limit-active {
+  border-color: #ccc !important;
+  .card-header {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+  }
+}
+.facet-values li .selected {
+  color: #000 !important;
+}
 @media (min-width: 992px) {
   section#content.col-lg-9 {
     flex: 0 0 70%;
@@ -280,7 +301,6 @@ footer {
           width: 100%;
           padding: 1rem 3rem 0 0;
         }
-
       }
       @media (min-width: 768px) {
         width: auto;
@@ -298,9 +318,9 @@ footer {
   font-family: $title-serif;
   text-align: center;
   font-size: 2.5rem;
-    @media (min-width: 400px) {
-      font-size: 3.5rem;
-    }
+  @media (min-width: 400px) {
+    font-size: 3.5rem;
+  }
 }
 .navbar + .container {
   padding-top: 5.1rem !important;
@@ -351,17 +371,16 @@ footer {
       dl.dl-invert.row {
         margin-left: 3.9rem;
         dt.col-md-3 {
+          text-align: left;
           @include visually-hidden;
-        }
-
-        @media (min-width: 768px) {
-          dt {
-            text-align: left;
-          }
-          dt.col-md-3,
-          dd.col-md-9 {
+          &.blacklight-extent_ssi {
+            @include visually-hidden-off;
+            @include inline-block;
+            width: 5.5rem;
+            font-style: oblique;
+            margin-top: .5rem;
+            color: #000;
             flex: 0 0 auto;
-            max-width: auto;
           }
         }
         dd.col-md-9 {
@@ -372,23 +391,11 @@ footer {
           padding-left: 0;
           margin-top: .5rem;
         }
-        dt.blacklight-extent_ssi {
-          @include visually-hidden-off;
-        }
-        dt.col-md-3.blacklight-extent_ssi,
         dd.col-md-9.blacklight-extent_ssi {
-          @include inline-block;
-          padding-left: 0;
-          padding-right: 0;
           margin-top: .5rem;
-        }
-        dt.col-md-3.blacklight-extent_ssi {
-          width: 6rem;
-          color: #000;
-          font-style: oblique;
-        }
-        dd.col-md-9.blacklight-extent_ssi {
-          width: 80%;
+          @include inline-block;
+          display: inline-block !important;
+          width: 75%;
         }
       }
       dl + p {
@@ -508,11 +515,13 @@ header h1.index_title.document-title-heading {
     }
   }
 }
+
 #overview {
   h3 {
     margin-top: 2rem;
-    button.collapsable-toggle {
-      background-color: $bright-blue;
+    button.collapsable-toggle,
+    button.collapsable-toggle.btn-light:hover {
+      background-color: $bright-blue !important;
       color: #fff;
       padding: 2.8rem 2rem 3rem 3.9rem;
       font-family: $title-sans;
@@ -545,7 +554,7 @@ header h1.index_title.document-title-heading {
         }
       }
       &.collapsed {
-        background-color: transparent;
+        background-color: transparent !important;
         border-bottom: solid 2px $bright-blue;
         color: #000;
         &::before {
@@ -631,8 +640,20 @@ button.request {
     }
   }
 }
+.badge-secondary {
+  color: #000;
+  background-color: transparent;
+  border-left: dotted 2px #888;
+  padding-left: 1rem;
+  border-radius: 0 !important;
+}
 /*inventory*/
 #inventory {
+  .end-collection div.card-body [id^="collection"].collapse.show.card-records {
+    border: none;
+    height: auto !important;
+    padding: 0;
+  }
   h3 {
     color: #000;
     padding: 2.8rem 2rem 3rem 0;
@@ -662,6 +683,16 @@ button.request {
 
 
 #inventory {
+  @media (min-width: 768px) {
+    .col-md-10 {
+      flex: 0 0 80%;
+      max-width: 80%;
+    }
+    .col-md-2 {
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+  }
   > .card.collection-inventory-card.level-1 {
     /*pull them up so first one (with H4) coincides with h3 underline*/
     margin-top: -.5rem;
@@ -688,10 +719,17 @@ button.request {
         margin-top: -.2rem;
       }
       > .card.collection-inventory-card.level-1 > .card-body > .card-records > .card.collection-inventory-card.level-2 > .card-body > .card-title > .row {
-        > .col-sm-9.col-md-10 {
-          flex: 0 0 83.3333333333%;
-          max-width: 83.3333333333%;
+        @media (min-width: 768px) {
+          > .col-sm-9.col-md-10 {
+            flex: 0 0 80%;
+            max-width: 80%;
+          }
+          > .col-sm-3.col-md-2 {
+            flex: 0 0 20%;
+            max-width: 20%;
+          }
         }
+
       }
     }
   }
@@ -699,8 +737,10 @@ button.request {
   .collection-inventory-card {
     &.level-1 h4 {
       margin: 0 -.1rem;
-      button.collapsable-toggle {
-        background-color: $bright-blue;
+      button.collapsable-toggle,
+      button.collapsable-toggle.btn-light:hover,
+      button.collapsable-toggle:visited {
+        background-color: $bright-blue !important;
         border: none;
         color: #fff;
         padding: 2.8rem 2rem 3rem 3.9rem;
@@ -709,6 +749,7 @@ button.request {
         font-weight: normal;
         width: 100%;
         text-align: left;
+        text-decoration: none;
         @media (min-width: 400px) {
           font-size: 2rem;
         }
@@ -745,102 +786,125 @@ button.request {
         }
       }
     }
-    /*h5 light blue block. I think h5 only exists as a header*/
+    /*h5 light blue block.*/
     &.level-2 {
       margin-top: 2rem;
-      > .card-body > .card-title {
-        margin-bottom: 2rem;
+      box-shadow: none;
+      background-image: image-url("light-blue.gif");
+      background-size: 100% 7rem;
+      background-repeat: no-repeat;
+      border: solid 1px #bbb;
+
+      > div.card-body {
+        padding: 1.25rem;
+      }
+      &.has-collapsed {
+        background-image: none !important;
+        border: none;
+        margin-top: 0;
+        &:nth-child(1)  {
+          margin-top: -1.5rem;
+        }
+        > div.card-body {
+          padding: 1.25rem 1.25rem 0 1.25rem;
+        }
       }
       &.end-collection {
         margin-top: 0;
+        border: none;
         &.dark {
           background: #f0f0f0;
         }
-        > .card-body > .card-title {
-          margin-bottom: 0;
+        &.light {
+          background-image: none;
+        }
+        > .card-body {
+          background-image: none;
+          > .card-title {
+            margin-bottom: 0;
+          }
         }
       }
-      h5 {
-        margin: -1.5rem -22% 0 -1.5rem;
-        button.collapsable-toggle {
-          background-color: $light-blue;
-          color: #000;
-          padding: 1.8rem 2rem 2rem 3.9rem;
-          font-family: $title-sans;
-          font-size: 1.5rem;
-          font-weight: normal;
-          width: 100%;
-          text-align: left;
-          @media (min-width: 400px) {
-            font-size: 1.5rem;
-          }
-          @media (min-width: 500px) {
-            font-size: 1.8rem;
-          }
-          &::after {
-            content: "";
-            display:none;
-          }
-          &::before {
-            float: left;
-            transform: rotate(90deg);
-            transition: transform 0.1s ease;
-            content: image-url("collapsearrow-right-000.svg");
-            height: 1.8rem;
-            width: 1.8rem;
-            margin-right: 1.4rem;
-            position: relative;
-            top: .2rem;
-            @media (min-width: 500px) {
-              top: .5rem;
-            }
-          }
-          &.collapsed {
-          background-color: transparent;
-          border-bottom: solid 1px #bbb;
-          color: #000;
-          &::before {
-            transform: rotate(0deg);
-            content: image-url('collapsearrow-right-000.svg');
-            top: .2rem;
-          }
-        }
-        }
-      }
-      &.end-collection h6 {
-        margin: 0;
-        button.collapsable-toggle {
-          background-color: transparent;
-          padding: 0m;
-          font-family: $body-sans;
-          font-size: 1.5rem;
-          font-weight: normal;
-          width: 100%;
-          text-align: left;
-          @media (min-width: 400px) {
-            font-size: 1.5rem;
-          }
-          @media (min-width: 500px) {
-            font-size: 1.5rem;
-          }
-          &::after {
-            content: "";
-            display: none;
-          }
-          &::before {
-            content: "";
-            display: none;
-          }
-          &.collapsed {
-            background-color: transparent;
-            border-bottom: none;
+      > div.card-body {
+        h5 {
+          button.collapsable-toggle,
+          button.collapsable-toggle.btn-light:hover,
+          button.collapsable-toggle:visited {
+            margin: -1.2rem 0 0 -1.5rem;
+            background: transparent;
             color: #000;
-            &::before {
+            font-family: $title-sans;
+            font-size: 1.5rem;
+            font-weight: normal;
+            width: 100%;
+            text-align: left;
+            text-decoration: none;
+            padding: 1.8rem 2rem 2rem 1.5rem;
+            @media (min-width: 400px) {
+              font-size: 1.5rem;
+            }
+            @media (min-width: 500px) {
+              font-size: 1.8rem;
+            }
+            @media (min-width: 768px) {
+              padding: 1.8rem 2rem 2rem 3.9rem;
+            }
+            &::after {
               content: "";
-              display: none;
+              display:none;
+            }
+            &::before {
+              float: left;
+              transform: rotate(90deg);
+              transition: transform 0.1s ease;
+              content: image-url("collapsearrow-right-000.svg");
+              height: 1.8rem;
+              width: 1.8rem;
+              margin-right: 1.4rem;
+              position: relative;
+              top: .2rem;
+              @media (min-width: 500px) {
+                top: .5rem;
+              }
+            }
+            &.collapsed {
+              border: none;
+              border-bottom: solid 1px #bbb;
+              background-color: transparent !important;
+              color: #000;
+              &::before {
+                transform: rotate(0deg);
+                content: image-url("collapsearrow-right-000.svg");
+                top: .2rem;
+              }
+            }
+            &.btn-light:not(:disabled):not(.disabled):active,
+            &.btn-light.active:not(:disabled):not(.disabled),
+            &.btn-light:focus,
+            &.btn-light.focus {
+              border: dotted 1px #00f;
+              box-shadow: none;
+              transition: none;
+            }
+            &.btn-light:visited {
+              border: none;
             }
           }
+
         }
+
+        > .card-records.show {
+          margin-top: 2rem;
+          margin: 0 -1.5rem;
+          padding: 2rem 1.5rem .5rem 1.5rem;
+          border-top: none;
+        }
+      }
+    }
+    &.level-4,
+    &.level-5 {
+      .card-body {
+        padding-right: 0;
       }
     }
     /*h6*/&.level-3,
@@ -854,61 +918,19 @@ button.request {
         &.dark {
           background: #f0f0f0 !important;
         }
-        h6, h7, h8 {
-          button.collapsable-toggle {
-            background-color: transparent;
-            color: #000;
-            padding: 0;
-            font-family: $body-sans;
-            font-size: 1.5rem;
-            font-weight: normal;
-            width: 100%;
-            text-align: left;
-            margin-bottom: 0;
-            @media (min-width: 400px) {
-              font-size: 1.5rem;
-            }
-            @media (min-width: 500px) {
-              font-size: 1.5rem;
-            }
-            &::after {
-              content:"";
-              display:none;
-            }
-            &::before {
-              content: "";
-              display:none;
-            }
-            &.collapsed {
-              border-bottom: none;
-              &::before {
-                content: "";
-                display:none;
-              }
-            }
-          }
-        }
       }
-    }
-    /*h6*/&.level-3,
-    /*h7*/&.level-4,
-    /*h8*/&.level-5 {
       /*good test: border: solid 1px #f00 !important;*/
-      .card-body {
-        padding-right: 0;
-      }
       h6, h7, h8 {
         button.collapsable-toggle {
           background-color: transparent;
           color: #000;
-          padding: 0 2rem 0 4.4rem;
+          padding: 0 2rem 1rem 4.4rem;
           font-family: $title-sans;
           font-size: 1.5rem;
-          font-weight: normal;
           width: 100%;
           text-align: left;
           font-weight: bold;
-          margin-bottom: 2rem;
+          margin: 0 0 1rem 0;
           @media (min-width: 400px) {
             font-size: 1.5rem;
           }
@@ -938,7 +960,8 @@ button.request {
             border-bottom: solid 1px #bbb;
             color: #000;
             font-weight: normal;
-            margin-bottom: 0;
+            margin: -1.5rem 0 0 0;
+            padding-bottom: 1.5rem;
             &::before {
               transform: rotate(0deg);
               content: image-url("collapsearrow-right-000.svg");
@@ -948,6 +971,5 @@ button.request {
         }
       }
     }
-
   }
 }
