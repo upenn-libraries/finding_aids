@@ -49,9 +49,9 @@ class CollectionComponent < ViewComponent::Base
     # TODO: ensure param safety
     # TODO: check that there is container information before rendering checkbox
     name = "c#{container_info_for_checkbox}"
-    content_tag :div do
-      safe_join([check_box_tag(name, 1),
-                 label_tag(name, 'Add to request', class: 'sr-only')])
+    content_tag :div, class: 'custom-control custom-checkbox request-checkbox-area' do
+      safe_join([check_box_tag(name, 1, false, class: 'custom-control-input request-checkbox-input'),
+                 label_tag(name, 'Request', class: 'custom-control-label request-checkbox-label')])
     end
   end
 
