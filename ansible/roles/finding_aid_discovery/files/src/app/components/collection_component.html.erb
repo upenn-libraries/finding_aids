@@ -3,8 +3,9 @@
     <%# Reducing heading size lower in the hierarchy. %>
     <div class="card-title">
       <div class="row justify-content-between">
-        <div class="col-sm-9 col-md-10">
+        <div class="col-12">
           <% if children? %>
+            <%# header row - full width %>
             <%= content_tag "h#{level + 3}", role: 'heading' do %>
               <button
                 class="btn btn-light btn-sm collapsable-toggle<%= ' h5-collapse' if level == 2 %>"
@@ -17,19 +18,25 @@
               </button>
             <% end %>
           <% else %>
-            <%= content_tag :div, class: 'item-title' do %>
-              <%= requesting_checkbox if @requestable %>
-              <%= sanitize(title) %>
+            <%# item row - show title and container cols, and maybe requesting checkbox %>
+            <%= content_tag :div, class: 'item-title row' do %>
+              <% if @requestable %>
+                <div class="col-auto">
+                  <%= requesting_checkbox%>
+                </div>
+              <% end %>
+              <div class="col">
+                <%= sanitize(title) %>
+              </div>
+              <div class="col-sm-3 col-md-2">
+                <span class="float-right">
+                  <% container_info.each do |container| %>
+                    <span class="badge badge-secondary"><%= "#{container[:type]} #{container[:text]}" %></span>
+                  <% end %>
+                </span>
+              </div>
             <% end %>
         <% end %>
-        </div>
-
-        <div class="col-sm-3 col-md-2">
-          <span class="float-right">
-            <% container_info.each do |container| %>
-              <span class="badge badge-secondary"><%= "#{container[:type]} #{container[:text]}" %></span>
-            <% end %>
-          </span>
         </div>
       </div>
     </div>
