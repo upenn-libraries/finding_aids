@@ -67,7 +67,7 @@
   <dd>
     <ol>
       <% @endpoint.last_harvest.problem_files.each do |file| %>
-      <li><%= "#{file['id']}: #{file['errors'].join(', ')}" %></li>
+      <li><%= error_message_for(@endpoint, file).html_safe %></li>
       <% end %>
     </ol>
   </dd>
