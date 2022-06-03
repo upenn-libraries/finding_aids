@@ -19,9 +19,9 @@ class SolrService
     solr.delete_by_id ids
   end
 
-  # @param [Endpoint] endpoint
-  def delete_by_endpoint(endpoint)
-    solr.delete_by_query "#{ENDPOINT_SLUG_FIELD}:#{endpoint.slug}"
+  # @param [String] endpoint_slug
+  def delete_by_endpoint(endpoint_slug)
+    solr.delete_by_query "#{ENDPOINT_SLUG_FIELD}:#{endpoint_slug}"
   end
 
   def delete_all
