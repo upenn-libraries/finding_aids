@@ -9,11 +9,13 @@
     src: "../files/docker-compose.yml"
     dest: "{{ project_root ~ '/nginx/' }}"
 
-- name: Create nginx default.conf
+- name: Create template configs
   docker_config:
-    name: "{{ 'nginx_default_conf_v' ~ nginx.configs.default_conf.version }}"
-    data: "{{ lookup('template', nginx.configs.default_conf.filename, convert_data=False) | string }}"
+    name: "{{ 'nginx_' ~ item.key ~ '_v' ~ item.value.version }}"
+    data: "{{ lookup('template', item.value.filename) }}"
     state: present
+  with_dict:
+    - "{{ nginx.versioned_configs }}"
   changed_when: false
   no_log: true
 
@@ -29,7 +31,8 @@
     state: present
   changed_when: false
   environment:
-    NGINX_DEFAULT_CONF: "{{ 'nginx_default_conf_v' ~ nginx.configs.default_conf.version }}"
+    NGINX_DEFAULT_CONF: "{{ 'nginx_default_conf_v' ~ nginx.versioned_configs.default_conf.version }}"
+    NGINX_CONF: "{{ 'nginx_nginx_conf_v' ~ nginx.versioned_configs.nginx_conf.version }}"
     NGINX_IMAGE_NAME: "{{ nginx.image.name }}"
     NGINX_IMAGE_TAG: "{{ nginx.image.tag }}"
     NGINX_PORT: "{{ nginx.port }}"
