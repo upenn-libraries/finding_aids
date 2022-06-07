@@ -4,6 +4,9 @@
      from this file.  Please refer to http://wiki.apache.org/solr/SolrConfigXml,
      as well as the default solrconfig file included with Solr -->
 
+  <!-- dont use a manged-schema -->
+  <schemaFactory class="ClassicIndexSchemaFactory"/>
+
   <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
 
   <luceneMatchVersion>6.1.0</luceneMatchVersion>
@@ -56,15 +59,19 @@
        -->
         <str name="qf">
           id
+          unit_id_ssi
           title_tsim
           abstract_scope_contents_tsi
           repositories_ssim
+          all_text_tmiv
         </str>
         <str name="pf">
           id
+          unit_id_ssi
           title_tsim
           abstract_scope_contents_tsi
           repositories_ssim
+          all_text_tmiv
         </str>
 
        <str name="title_qf">
