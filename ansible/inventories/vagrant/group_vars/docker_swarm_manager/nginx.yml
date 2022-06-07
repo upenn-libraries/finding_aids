@@ -2,7 +2,7 @@
 nginx:
   image:
     name: "gitlab.library.upenn.edu/docker/nginx-modsec"
-    tag: "1-21-0"
+    tag: "1-22-0"
   port: 80
   replicas: 2
   urls:
