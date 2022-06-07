@@ -27,7 +27,10 @@ server {
         modsecurity_rules_file /etc/nginx/modsec/main.conf;
 
         set $skip_cache 1;
-        
+
+        limit_conn addr 10;
+        limit_req zone=perip burst=15 delay=10;
+
         try_files $uri @rails;
     }
 
@@ -68,9 +71,6 @@ server {
     # }
 
     location @rails {
-        #limit_conn addr 10;
-        #limit_req zone=perip burst=10 nodelay;
-
         # for testing cache HITS/MISS
         # add_header X-Cache-Status $upstream_cache_status;
 

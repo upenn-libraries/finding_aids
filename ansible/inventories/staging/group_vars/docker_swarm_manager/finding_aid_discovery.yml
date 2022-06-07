@@ -7,7 +7,7 @@ finding_aid_discovery:
     tag: "{{ image_tag }}"
   port: 4567
   rails_env: "staging"
-  replicas: 1
+  replicas: 2
   url: "pacscl-staging.library.upenn.edu"
   versioned_secrets:
     honeybadger_api_key:
