@@ -4,7 +4,7 @@ nginx:
     name: "gitlab.library.upenn.edu/docker/nginx-modsec"
     tag: "1-21-0"
   port: 80
-  replicas: 1
+  replicas: 2
   urls:
     - "finding-aid-discovery-dev.library.upenn.edu"
   versioned_configs:
