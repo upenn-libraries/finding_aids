@@ -58,24 +58,7 @@ a, a:visited {
   }
 }
 
-// Styling for collection inventory cards
-.collection-inventory-card {
-  .card-title {
-    margin-bottom: 0;
-  }
 
-  &.end-collection {
-    border-radius: 0;
-    border: 0;
-    .card-body {
-      padding: .9rem .4rem .9rem .9rem;
-    }
-  }
-}
-
-.collection-inventory-card.end-collection {
-  border-radius: 0
-}
 
 /*facets*/
 .facet-limit-active {
@@ -612,14 +595,20 @@ header h1.index_title.document-title-heading {
   }
 }
 /*request item checkbox styles */
-
+/*request item checkbox styles */
+.dark label.custom-control-label.request-checkbox-label {
+  color: #f0f0f0;
+}
+label.custom-control-label.request-checkbox-label {
+  color: #fff;
+}
 .custom-control-label::before {
   position: absolute;
   top: .25rem;
   left: -1.5rem;
   display: block;
   width: 7.7rem !important;
-  height: 2rem;
+  height: 2.4rem;
   content: "Add" !important;
   background-color: #fff;
   border: #000 solid 1px;
@@ -628,6 +617,10 @@ header h1.index_title.document-title-heading {
   text-align: center;
   padding-top: .2rem;
   text-transform: uppercase;
+  color: #000;
+}
+.dark .custom-control-label::before {
+  background-color: #f0f0f0;
 }
 .custom-control-label::after {
   display: none;
@@ -647,6 +640,8 @@ header h1.index_title.document-title-heading {
 
 /* end request checkbox styles */
 
+/* end request checkbox styles */
+
 .badge-secondary {
   color: #000;
   background-color: transparent;
@@ -655,6 +650,24 @@ header h1.index_title.document-title-heading {
   border-radius: 0 !important;
 }
 /*inventory*/
+// Styling for collection inventory cards
+.collection-inventory-card {
+  .card-title {
+    margin-bottom: 0;
+  }
+
+  &.end-collection {
+    border-radius: 0;
+    border: 0;
+    .card-body {
+      padding: .9rem .4rem .9rem .9rem;
+    }
+  }
+}
+
+.collection-inventory-card.end-collection {
+  border-radius: 0
+}
 #inventory {
   .end-collection div.card-body [id^="collection"].collapse.show.card-records {
     border: none;
@@ -684,11 +697,7 @@ header h1.index_title.document-title-heading {
     padding:  1rem;
     margin: 0 0 2.3rem 0;
   }
-}
 
-
-
-#inventory {
   @media (min-width: 768px) {
     .col-md-10 {
       flex: 0 0 80%;
@@ -699,13 +708,14 @@ header h1.index_title.document-title-heading {
       max-width: 20%;
     }
   }
-  > .card.collection-inventory-card.level-1 {
+  .card.collection-inventory-card.level-1 {
     /*pull them up so first one (with H4) coincides with h3 underline*/
-    margin-top: -.5rem;
+    margin-bottom: 2.2rem;
     border: none;
     > .card-body {
+      padding-top: 0;
       padding: 0;
-      margin-bottom: 2.3rem;
+      margin: 0 -1rem;
       border: none;
       > .card-title > .row {
         > .col-sm-9.col-md-10 {
@@ -720,7 +730,7 @@ header h1.index_title.document-title-heading {
         }
       }
       > .card-records {
-        padding: 3rem;
+        padding: 1rem 2rem 2rem;
         border: solid 2px $bright-blue;
         margin-top: -.2rem;
       }
@@ -781,7 +791,7 @@ header h1.index_title.document-title-heading {
           }
         }
         &.collapsed {
-          background-color: transparent;
+          background-color: transparent !important;
           border-bottom: solid 2px $bright-blue;
           color: #000;
           &::before {
@@ -802,15 +812,12 @@ header h1.index_title.document-title-heading {
       border: solid 1px #bbb;
 
       > div.card-body {
-        padding: 1.25rem;
+        padding: 2rem;
       }
       &.has-collapsed {
         background-image: none !important;
         border: none;
         margin-top: 0;
-        &:nth-child(1)  {
-          margin-top: -1.5rem;
-        }
         > div.card-body {
           padding: 1.25rem 1.25rem 0 1.25rem;
         }
@@ -826,6 +833,7 @@ header h1.index_title.document-title-heading {
         }
         > .card-body {
           background-image: none;
+          padding: .9rem .4rem .9rem .9rem;
           > .card-title {
             margin-bottom: 0;
           }
@@ -913,9 +921,9 @@ header h1.index_title.document-title-heading {
         padding-right: 0;
       }
     }
-    /*h6*/&.level-3,
-    /*h7*/&.level-4,
-    /*h8*/&.level-5 {
+    &.level-3,
+    &.level-4,
+    &.level-5 {
       &.card {
         border: none;
       }
@@ -923,6 +931,11 @@ header h1.index_title.document-title-heading {
         border: none !important;
         &.dark {
           background: #f0f0f0 !important;
+        }
+      }
+      &:nth-child(1)  {
+        h6, h7, h8 {
+          margin-top: -1.5rem
         }
       }
       /*good test: border: solid 1px #f00 !important;*/
