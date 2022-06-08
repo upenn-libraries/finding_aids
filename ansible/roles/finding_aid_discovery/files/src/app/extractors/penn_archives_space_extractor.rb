@@ -8,7 +8,7 @@ class PennArchivesSpaceExtractor < BaseExtractor
   # @param [ArchivesSpaceExtractor::ArchivesSpaceApi] api
   def initialize(endpoint:, api: nil)
     @api = api || ArchivesSpaceApi.new(endpoint.harvest_config['repository_id'])
-    super(endpoint: endpoint)
+    super endpoint:
   end
 
   # return iterable of ArchivesSpaceFiles
@@ -22,7 +22,7 @@ class PennArchivesSpaceExtractor < BaseExtractor
     # @param [String] id
     # @param [ArchivesSpaceExtractor::ArchivesSpaceApi] api
     def initialize(id:, api:)
-      super(id: id)
+      super id:
       @api = api
     end
 

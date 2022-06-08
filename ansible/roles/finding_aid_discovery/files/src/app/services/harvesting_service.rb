@@ -110,7 +110,7 @@ class HarvestingService
     errors = Array.wrap(errors)
     Rails.logger.error "Fatal error during harvesting: #{errors.join(', ')}"
     @endpoint.update!(
-      last_harvest_results: { date: DateTime.current, files: [], errors: errors }
+      last_harvest_results: { date: DateTime.current, files: [], errors: }
     )
   end
 end

@@ -7,7 +7,7 @@ describe SearchBuilder do
 
   let(:user_params) { {} }
   let(:blacklight_config) { Blacklight::Configuration.new }
-  let(:scope) { double blacklight_config: blacklight_config }
+  let(:scope) { double blacklight_config: }
 
   # describe "my custom step" do
   #   subject(:query_parameters) do
