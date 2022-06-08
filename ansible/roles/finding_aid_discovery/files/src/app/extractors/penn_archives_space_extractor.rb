@@ -22,7 +22,7 @@ class PennArchivesSpaceExtractor < BaseExtractor
     # @param [String] id
     # @param [ArchivesSpaceExtractor::ArchivesSpaceApi] api
     def initialize(id:, api:)
-      super id:
+      super id: id
       @api = api
     end
 

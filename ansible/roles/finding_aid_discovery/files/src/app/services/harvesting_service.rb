@@ -101,7 +101,7 @@ class HarvestingService
   def log_documents_removed(ids)
     Rails.logger.info "Deleting records for #{@endpoint.slug} not present in latest harvest: #{ids.join(', ')}"
     ids.each do |id|
-      @file_results << { id: id, status: :removed }
+      @file_results << { id:, status: :removed }
     end
   end
 
