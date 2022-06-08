@@ -74,7 +74,7 @@ namespace :tools do
         puts "Will create new endpoint #{slug}."
         endpoint = Endpoint.new(
           {
-            slug: slug,
+            slug:,
             public_contacts: Array.wrap(endpoint_info['public_contact']),
             tech_contacts: Array.wrap(endpoint_info['tech_contact'])
           }

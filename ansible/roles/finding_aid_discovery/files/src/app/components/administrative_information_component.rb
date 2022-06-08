@@ -20,7 +20,7 @@ class AdministrativeInformationComponent < ViewComponent::Base
       nodes = Array.wrap(@document.parsed_ead.try(section))
       next if nodes.blank?
 
-      values = nodes.map { |node| render EadMarkupTranslationComponent.new(node: node, remove_head: true) }
+      values = nodes.map { |node| render EadMarkupTranslationComponent.new(node:, remove_head: true) }
 
       content_tag(:dt, I18n.t(section, scope: :sections)) + safe_join(values.map { |v| content_tag(:dd, v) })
     end
