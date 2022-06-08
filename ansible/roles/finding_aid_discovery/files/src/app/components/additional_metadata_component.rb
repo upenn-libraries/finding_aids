@@ -14,6 +14,6 @@ class AdditionalMetadataComponent < ViewComponent::Base
   end
 
   def call
-    safe_join(nodes.map { |node| render(EadMarkupTranslationComponent.new(node: node, remove_head: true)) })
+    safe_join(nodes.map { |node| render(EadMarkupTranslationComponent.new(node:, remove_head: true)) })
   end
 end
