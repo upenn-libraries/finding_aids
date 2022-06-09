@@ -3,7 +3,7 @@
 class SolrService
   attr_reader :solr
 
-  ENDPOINT_SLUG_FIELD = 'endpoint_tsi'
+  ENDPOINT_SLUG_FIELD = 'endpoint_ssi'
 
   def initialize
     @solr = RSolr.connect url: ENV.fetch('SOLR_URL')

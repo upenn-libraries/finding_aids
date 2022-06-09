@@ -25,6 +25,9 @@ class CatalogController < ApplicationController
       rows: 10
     }
 
+    # disable tracking links since we don't allow paginating through a results set
+    config.track_search_session = false
+
     # solr path which will be added to solr base url before the other solr params.
     # config.solr_path = 'select'
     # config.document_solr_path = 'get'

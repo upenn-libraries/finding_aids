@@ -2,12 +2,12 @@
 
 FactoryBot.define do
   factory :solr_document do
-    id { "test-endpoint_#{Faker::File.unique.file_name(ext: '')}" }
+    id { "test-endpoint_#{Faker::File.unique.file_name(ext: '').gsub('/', '-')}" }
     endpoint_ssi { 'test-endpoint' }
     xml_ss { '' }
     link_url_ss { '' }
     ead_id_ssi { '' }
-    unit_id_ssi { 'TE-Foo. 1234' }
+    unit_id_tsi { 'TE-Foo. 1234' }
     pretty_unit_id_ss { '1234' }
     contact_emails_ssm { [Faker::Internet.email] }
     title_tsi { Faker::Book.title }

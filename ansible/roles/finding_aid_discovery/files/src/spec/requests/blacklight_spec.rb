@@ -31,7 +31,7 @@ describe 'Blacklight' do
     end
 
     it 'shows the record in results with an identifier search' do
-      get "/?q=#{document_hash[:unit_id_ssi]}"
+      get "/?q=#{document_hash[:unit_id_tsi]}"
       expect(response.body).to include document_hash[:title_tsi]
     end
 

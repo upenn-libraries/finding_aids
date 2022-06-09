@@ -271,7 +271,7 @@ class EadParser
       xml_ss: xml,
       link_url_ss: link_url(doc),
       ead_id_ssi: ead_id(doc),
-      unit_id_ssi: unit_id(doc),
+      unit_id_tsi: unit_id(doc),
       pretty_unit_id_ss: pretty_unit_id(doc),
       contact_emails_ssm: contact_emails,
       title_tsi: title(doc),
