@@ -14,4 +14,4 @@ nginx:
       version: 4
     nginx_conf:
       filename: "nginx.conf.j2"
-      version: 1
+      version: 2
