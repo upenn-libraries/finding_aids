@@ -1,6 +1,6 @@
 ---
 solr:
-  build_docker_image: yes
+  build_docker_image: false
   config_location: "/finding_aid_discovery_configs"
   core_name: "finding-aid-discovery-core"
   image:
