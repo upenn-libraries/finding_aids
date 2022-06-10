@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :solr_document do
-    id { "test-endpoint_#{Faker::File.unique.file_name(ext: '').gsub('/', '-')}" }
+    id { "test-endpoint_#{Faker::File.unique.file_name(ext: '').tr('/', '-')}" }
     endpoint_ssi { 'test-endpoint' }
     xml_ss { '' }
     link_url_ss { '' }

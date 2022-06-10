@@ -53,14 +53,14 @@
 
        <str name="qf">
          unit_id_tsi^1000
-         title_tsim^500
+         title_tsi^500
          abstract_scope_contents_tsi^250
          subject_tsim^100
          source_xml
        </str>
        <str name="pf">
          unit_id_tsi^1000
-         title_tsim^500
+         title_tsi^500
          abstract_scope_contents_tsi^250
          subject_tsim^100
          source_xml
