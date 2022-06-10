@@ -34,11 +34,10 @@
           <div class="request-instructions"><h4>Requesting materials:</h4> Click on the 'ADD' button next to any containers you wish to request. When complete, click the 'Submit' button.</div>
           <%= collection_inventory %>
         </div>
-        <h3 class="visually-hidden">Navigation links</h3>
+        <h3 class="visually-hidden">Print, Suggest</h3>
         <ul class="show-page-links no-list-style clearfix">
-          <li class="go-inventory"><%= link_to "Go to the inventory", "" %></li>
-          <li class="print-all"><%= link_to "Print the complete finding aid", "" %></li>
-          <li class="suggest"><%= link_to "Suggest a correction", "" %></li>
+          <li class="print-all"><button onClick="window.print()">Print the finding aid</button></li>
+          <li class="suggest"><%= mail_to "", "Suggest a correction" %></li>
         </ul>
       <% else %>
         <%= title component: ::DocumentTitleComponent %>

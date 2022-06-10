@@ -35,7 +35,7 @@
         <input type="hidden" name="call_num" value="<%= @document.requesting_info[:call_num] %>">
         <input type="hidden" name="repository" value="<%= @document.requesting_info[:repository] %>">
         <input type="hidden" name="title" value="<%= @document.requesting_info[:title] %>">
-        <input type="submit" value="Submit" class="btn btn-primary">
+        <input id="submit-request" type="submit" value="Submit" class="btn btn-primary">
       </form>
     <% else %>
       <%= render(CollectionsComponent.new(node: @document.parsed_ead.dsc, requestable: @document.requestable? ,level: 1)) %>

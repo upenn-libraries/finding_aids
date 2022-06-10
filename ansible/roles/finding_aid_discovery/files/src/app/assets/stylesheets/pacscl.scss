@@ -13,6 +13,17 @@ body, .facets-heading, h6, .h6, .facet-field-heading {
   font-size: $font-size-base;
 }
 
+a.catalog_startOverLink,
+a.catalog_startOverLink:visited,
+h1.sitename a,
+a:visited {
+  color: #fff;
+  &:hover {
+    text-decoration-line: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 0.1rem;
+  }
+}
 a, a:visited {
   color: $link-color;
 }
@@ -577,30 +588,40 @@ header h1.index_title.document-title-heading {
   }
 }
 .show-page-links {
-  margin-top: 3rem;
+  margin: 3rem auto 0;
   padding-bottom: 3rem;
+  @media (min-width: 992px) {
+    width: 992px;
+    max-width: 100%;
+  }
   li {
     margin-top: 1rem;
-    @media (min-width: 992px) {
+    text-align: center;
+    text-transform: uppercase;
+    &.print-all {
+      button {
+        color: $link-color;
+        background: transparent;
+        box-shadow:none;
+        border: none;
+        text-transform: uppercase;
+      }
+    }
+    @media (min-width: 576px) {
+      width: 50%;
       float: left;
-      text-transform: uppercase;
-      width: 33%;
-      &.print-all {
-        text-align: center;
-      }
-      &.suggest {
-        text-align: right;
-      }
     }
   }
 }
-/*request item checkbox styles */
+
 /*request item checkbox styles */
 .dark label.custom-control-label.request-checkbox-label {
   color: #f0f0f0;
 }
 label.custom-control-label.request-checkbox-label {
   color: #fff;
+  font-size: .9rem;
+  line-height: 2.1rem;
 }
 .custom-control-label::before {
   position: absolute;
@@ -638,7 +659,7 @@ label.custom-control-label.request-checkbox-label {
   content: "Added" !important;
 }
 
-/* end request checkbox styles */
+
 
 /* end request checkbox styles */
 
@@ -745,7 +766,6 @@ label.custom-control-label.request-checkbox-label {
             max-width: 20%;
           }
         }
-
       }
     }
   }
@@ -904,12 +924,10 @@ label.custom-control-label.request-checkbox-label {
               border: none;
             }
           }
-
         }
-
         > .card-records.show {
           margin-top: 2rem;
-          margin: 0 -1.5rem;
+          margin: 0;
           padding: 2rem 1.5rem .5rem 1.5rem;
           border-top: none;
         }
@@ -990,5 +1008,72 @@ label.custom-control-label.request-checkbox-label {
         }
       }
     }
+  }
+  #submit-request {
+      border: solid 20px #fff;
+      position: fixed;
+      left: 2.3rem;
+      bottom: 2rem;
+      z-index: 99999;
+      @media (min-width: 1550px) {
+        left: 50%;
+        margin-left: -78rem;
+      }
+  }
+}
+
+@media print {
+  header.sitebrand,
+  footer,
+  .show-page-links,
+  #sortAndPerPage .search-widgets,
+  .catalog_startOverLink,
+  .hplinks {
+    display: none;
+  }
+  .collapse:not(.show) {
+    display: block;
+  }
+  #facets .panel-collapse.facet-content.collapse {
+    display: none;
+  }
+  #overview h3,
+  h3,
+  #inventory .collection-inventory-card.level-1 h4,
+  .collection-inventory-card.level-1 h4 {
+    button.collapsable-toggle,
+    button.collapsable-toggle.btn-light:hover,
+    button.collapsable-toggle:visited {
+      background-color: transparent !important;
+      color: #000;
+      border: solid 2px $bright-blue;
+      &.collapsed {
+        background-color: transparent !important;
+        border: solid 2px $bright-blue;
+        color: #000;
+      }
+      &:before {
+        content: "" !important;
+      }
+    }
+  }
+  .collection-inventory-card.level-2 {
+    border: solid 1px #aaa;
+    &.has-collapsed {
+      border: solid 1px #aaa;
+    }
+    &.end-collection {
+      margin-top: 0;
+      border: none;
+    }
+  }
+  #submit-request {
+    display: none;
+  }
+  label.custom-control-label {
+    display: none;
+  }
+  .custom-control-input:checked ~ .custom-control-label {
+    display: inline-block;
   }
 }
