@@ -37,7 +37,9 @@
         <h3 class="visually-hidden">Print, Suggest</h3>
         <ul class="show-page-links no-list-style clearfix">
           <li class="print-all"><button onClick="window.print()">Print the finding aid</button></li>
-          <li class="suggest"><%= mail_to "", "Suggest a correction" %></li>
+          <li class="suggest">
+            <%= correction_email_link request.original_url %>
+          </li>
         </ul>
       <% else %>
         <%= title component: ::DocumentTitleComponent %>

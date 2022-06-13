@@ -11,20 +11,20 @@
 		<ul class="no-list-style vlist info">
 			<li><%= link_to "Home", "/" %></li>
 			<li><%= link_to "About the site", "/" %></li>
-			<li><%= link_to "How to use the portal", "https://www.library.upenn.edu/paarp/how-to-use-paarp-site", :class => "ext" %></li>
-			<li><%= link_to "Collections Recently Added", "" %></li>
+			<li><%= link_to "How to use the portal", "https://www.library.upenn.edu/paarp/how-to-use-paarp-site", class: "ext" %></li>
+			<li><%= link_to "Collections Recently Added", "" %></li><%# TODO: %>
 		</ul>
 		<h3 class="visually-hidden">Repositories</h3>
 		<ul class="no-list-style vlist repos">
-			<li><%= link_to "PACSCL Members", "https://www.library.upenn.edu/paarp/paarp-participating-repositories", :class => "ext" %></li>
-			<li><%= link_to "Other Repositories", "https://www.library.upenn.edu/paarp/hidden-collections", :class => "ext" %></li>
+			<li><%= link_to "PACSCL Members", "https://www.library.upenn.edu/paarp/paarp-participating-repositories", class: "ext" %></li>
+			<li><%= link_to "Other Repositories", "https://www.library.upenn.edu/paarp/hidden-collections", class: "ext" %></li>
 			<li class="browse-rep"><%= link_to 'Finding aids by repository', repositories_path %></li>
 		</ul>
 		<h3 class="visually-hidden">PACSCL</h3>
 		<ul class="no-list-style vlist pacscl">
-			<li><%= link_to "PACSCL", "http://www.pacscl.org/", :class => "ext" %></li>
-			<li><%= link_to "CLIR Hidden Collections Grant", "https://www.library.upenn.edu/paarp/clir-hidden-collections-grant", :class => "ext" %></li>
-			<li><%= link_to "Hidden Collections Initiative for Pennsylvania Small Archival Repositories", "http://hsp.org/hcipsar", :class => "ext" %></li>
+			<li><%= link_to "PACSCL", "https://www.pacscl.org/", class: "ext" %></li>
+			<li><%= link_to "CLIR Hidden Collections Grant", "https://www.library.upenn.edu/paarp/clir-hidden-collections-grant", class: "ext" %></li>
+			<li><%= link_to "Hidden Collections Initiative for Pennsylvania Small Archival Repositories", "https://hsp.org/hcipsar", class: "ext" %></li>
 		</ul>
 	</div>
 	<div class="footerliner two">

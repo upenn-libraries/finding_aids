@@ -37,12 +37,24 @@ class SolrDocument
     @parsed_ead ||= ParsedEad.new(fetch(XML_FIELD_NAME))
   end
 
+  # @return [String (frozen)]
   def display_dates
-    fetch(:display_date_ssim)
+    fetch(:display_date_ssim, '')
   end
 
+  # @return [String (frozen)]
+  def title
+    fetch('title_tsi', '')
+  end
+
+  # @return [String (frozen)]
+  def call_num
+    fetch('pretty_unit_id_ss', '')
+  end
+
+  # @return [String (frozen)]
   def repository
-    fetch(:repository_ssi)
+    fetch(:repository_ssi, '')
   end
 
   def penn_item?
@@ -53,10 +65,13 @@ class SolrDocument
     fetch(:repository_ssi, nil).in? REQUESTABLE_REPOSITORIES
   end
 
+  def correction_email
+    fetch(:contact_emails_ssm).first
+  end
+
+  # @return [Hash{Symbol->Unknown}]
   def requesting_info
-    { title: fetch('title_tsi'),
-      call_num: fetch('pretty_unit_id_ss'),
-      repository: fetch('repository_ssi') }
+    { title:, call_num:, repository: }
   end
 
   class ParsedEad
