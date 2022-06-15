@@ -1009,17 +1009,6 @@ label.custom-control-label.request-checkbox-label {
       }
     }
   }
-  #submit-request {
-      border: solid 20px #fff;
-      position: fixed;
-      left: 2.3rem;
-      bottom: 2rem;
-      z-index: 99999;
-      @media (min-width: 1550px) {
-        left: 50%;
-        margin-left: -78rem;
-      }
-  }
 }
 
 @media print {
