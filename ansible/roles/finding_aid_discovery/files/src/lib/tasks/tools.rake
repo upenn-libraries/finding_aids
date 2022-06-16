@@ -96,7 +96,7 @@ namespace :tools do
     end
 
     # Process removals
-    new_endpoint_slugs = Endpoint.all.pluck(:slug)
+    new_endpoint_slugs = endpoints.map(&:slug)
     diff = current_endpoint_slugs - new_endpoint_slugs
     if diff.any?
       puts "These endpoints were removed and will be deleted: #{diff.join(' | ')}"
