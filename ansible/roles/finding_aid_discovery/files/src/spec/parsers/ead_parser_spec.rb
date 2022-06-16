@@ -122,7 +122,7 @@ describe EadParser do
         )
       end
 
-      it 'has the right subjects' do
+      it 'has the right subjects with no duplicate values' do
         expect(hash[:subjects_ssim]).to eq(
           [
             'Physical anthropology',
