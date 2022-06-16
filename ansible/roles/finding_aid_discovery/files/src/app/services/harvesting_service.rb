@@ -12,14 +12,14 @@ class HarvestingService
     @endpoint = endpoint
     @parser = endpoint.parser
     @solr = solr_service
+    @existing_record_ids = @solr.find_ids_by_endpoint(@endpoint.slug)
     @file_results = []
-    @documents = []
+    @document_ids = []
   end
 
   def harvest
     harvest_all_files
     process_removals
-    index_documents
     save_outcomes
   rescue StandardError => e
     fatal_error "Problem extracting URLs from Endpoint URL: #{e.message}"
@@ -33,30 +33,34 @@ class HarvestingService
     xml_files = @endpoint.extractor.files
     Rails.logger.info "Parsing #{xml_files.size} files from #{@endpoint.slug}"
 
-    xml_files.each do |ead|
-      validate_identifier(ead)
-      document = @parser.parse(ead.id, ead.xml)
-      @documents << document
-    rescue StandardError => e
-      log_error_from(ead, e)
-    else
-      log_document_added(ead, document)
-    ensure
-      sleep CRAWL_DELAY
+    xml_files.each_slice(500) do |slice|
+      documents = []
+      slice.each do |ead|
+        validate_identifier(ead)
+        document = @parser.parse(ead.id, ead.xml)
+        documents << document
+        @document_ids << document[:id]
+      rescue StandardError => e
+        log_error_from(ead, e)
+      else
+        log_document_added(ead, document)
+      ensure
+        sleep CRAWL_DELAY
+      end
+      index_documents(documents)
     end
   end
 
   # Removes documents that are no longer present at the endpoint.
   def process_removals
-    harvested_ids = documents.pluck(:id)
-    existing_record_ids = @solr.find_ids_by_endpoint(@endpoint.slug)
-    removed_ids = existing_record_ids - harvested_ids
+    removed_ids = @existing_record_ids - @document_ids
     @solr.delete_by_ids removed_ids
     log_documents_removed(removed_ids)
   end
 
-  def index_documents
-    @solr.add_many documents: @documents
+  def index_documents(documents)
+    @solr.add_many(documents:)
+    Rails.logger.info "Indexed #{documents.length} documents"
   rescue StandardError => e
     fatal_error e.message
   end
@@ -77,7 +81,7 @@ class HarvestingService
 
   # @param [BaseExtractor::BaseEadSource] ead
   def validate_identifier(ead)
-    return unless ead.id.in?(@documents.collect { |doc| doc['id'] })
+    return unless ead.id.in?(@document_ids)
 
     raise StandardError, "Generated ID is not unique for #{ead.url}. Please ensure each file has a unique filename."
   end
