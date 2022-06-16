@@ -2,7 +2,7 @@
     This template was inspired by the Blacklight template at: app/views/catalog/facet.html.erb
 %>
 
-<% @page_title = t('labels.titles.repositories_list') %>
+<% @page_title = t('blacklight.repositories.page_title', application_name: application_name) %>
 
 <%= render Blacklight::System::ModalComponent.new do |component| %>
   <% component.prefix do %>
