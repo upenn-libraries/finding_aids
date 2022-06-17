@@ -74,7 +74,6 @@ class CatalogController < ApplicationController
     # :index_range can be an array or range of prefixes that will be used to create the navigation
     #              (note: It is case sensitive when searching values)
 
-    config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint'), limit: true
     config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true
     config.add_facet_field 'record_source', label: I18n.t('fields.record_source'), query: {
       upenn: { label: 'University of Pennsylvania', fq: 'upenn_record_bsi:true' },
@@ -89,6 +88,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors'), limit: true
     config.add_facet_field 'languages_ssim', label: I18n.t('fields.language'), limit: true
     config.add_facet_field 'years_iim', label: I18n.t('fields.year'), range: true
+    config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint'), limit: true, unless: Rails.env.production?
 
     config.add_facet_fields_to_solr_request!
 
