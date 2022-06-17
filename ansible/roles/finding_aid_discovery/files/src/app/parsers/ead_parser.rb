@@ -172,7 +172,7 @@ class EadParser
       else
         raw_name
       end
-    end
+    end.uniq
   end
 
   # TODO: determine what distinguishes this from the people/corp_names fields, functionally
@@ -181,7 +181,7 @@ class EadParser
     doc.xpath(".//controlaccess/persname | .//controlaccess/famname |
                .//controlaccess/corpname | //origination[@label='creator']").map do |node|
       node.text.try(:strip)
-    end
+    end.uniq
   end
 
   # @param [Nokogiri::XML::Document] doc
@@ -189,7 +189,7 @@ class EadParser
   def people(doc)
     doc.xpath('.//controlaccess/persname | .//controlaccess/famname').map do |node|
       node.text.try(:strip)
-    end
+    end.uniq
   end
 
   # @param [Nokogiri::XML::Document] doc
@@ -197,7 +197,7 @@ class EadParser
   def corp_names(doc)
     doc.xpath('.//controlaccess/corpname').map do |node|
       node.text.try(:strip)
-    end
+    end.uniq
   end
 
   # @param [Nokogiri::XML::Document] doc
@@ -205,7 +205,7 @@ class EadParser
   def subjects(doc)
     doc.xpath('.//controlaccess/subject').map do |node|
       node.text.strip.gsub(/\s*\.\s*$/, '')
-    end
+    end.uniq
   end
 
   # @param [Nokogiri::XML::Document] doc
@@ -213,7 +213,7 @@ class EadParser
   def places(doc)
     doc.xpath('.//controlaccess/geogname').map do |node|
       node.text.try(:strip)
-    end
+    end.uniq
   end
 
   # https://www.loc.gov/ead/tglib/elements/language.html
@@ -224,7 +224,7 @@ class EadParser
       code = node.text.try(:strip).try(:downcase)
       iso_entry = ISO_639.find_by_code code
       iso_entry&.english_name || code
-    end
+    end.uniq
   end
 
   # @param [Nokogiri::XML::Document] doc
@@ -232,7 +232,7 @@ class EadParser
   def donor(doc)
     doc.xpath(".//controlaccess/persname[@role='Donor (dnr)']").map do |node|
       node.text.try(:strip)
-    end
+    end.uniq
   end
 
   # https://www.loc.gov/ead/tglib/elements/genreform.html
@@ -241,7 +241,7 @@ class EadParser
   def genre_form(doc)
     doc.xpath('.//controlaccess/genreform').map do |node|
       node.text.try(:strip)
-    end
+    end.uniq
   end
 
   # @param [Nokogiri::XML::Document] doc
