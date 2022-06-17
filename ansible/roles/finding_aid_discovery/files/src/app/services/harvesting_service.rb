@@ -5,7 +5,7 @@
 class HarvestingService
   CRAWL_DELAY = 0.2
 
-  attr_reader :file_results, :documents
+  attr_reader :file_results, :document_ids
 
   # @param [Endpoint] endpoint
   def initialize(endpoint, solr_service = SolrService.new)
@@ -39,7 +39,7 @@ class HarvestingService
         validate_identifier(ead)
         document = @parser.parse(ead.id, ead.xml)
         documents << document
-        @document_ids << document[:id]
+        document_ids << document[:id]
       rescue StandardError => e
         log_error_from(ead, e)
       else
@@ -53,7 +53,7 @@ class HarvestingService
 
   # Removes documents that are no longer present at the endpoint.
   def process_removals
-    removed_ids = @existing_record_ids - @document_ids
+    removed_ids = @existing_record_ids - document_ids
     @solr.delete_by_ids removed_ids
     log_documents_removed(removed_ids)
   end
@@ -81,7 +81,7 @@ class HarvestingService
 
   # @param [BaseExtractor::BaseEadSource] ead
   def validate_identifier(ead)
-    return unless ead.id.in?(@document_ids)
+    return unless ead.id.in?(document_ids)
 
     raise StandardError, "Generated ID is not unique for #{ead.url}. Please ensure each file has a unique filename."
   end

@@ -12,7 +12,7 @@ describe HarvestingService do
     before do
       allow(solr_service).to receive(:find_ids_by_endpoint).with(endpoint.slug).and_return([1, 3])
       allow(solr_service).to receive(:delete_by_ids)
-      allow(harvesting_service).to receive(:documents).and_return([{ id: 1 }, { id: 2 }])
+      allow(harvesting_service).to receive(:document_ids).and_return([1, 2])
     end
 
     it 'sends correct ids for records to remove to the solr service' do
