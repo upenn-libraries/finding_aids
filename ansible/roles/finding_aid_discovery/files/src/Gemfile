@@ -20,7 +20,7 @@ gem 'net-pop', require: false
 gem 'net-smtp', require: false
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
-gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
+gem 'rails', '~> 7.0.2'
 gem 'rainbow'
 gem 'retryable'
 gem 'rsolr', '>= 1.0', '< 3'
@@ -42,7 +42,6 @@ end
 group :development do
   gem 'listen', '~> 3.3'
   gem 'rack-mini-profiler', '~> 2.0'
-  gem 'spring'
   gem 'web-console', '>= 4.1.0'
 end
 

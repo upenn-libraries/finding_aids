@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_14_215305) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_01_14_215305) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,8 +20,8 @@ ActiveRecord::Schema.define(version: 2022_01_14_215305) do
     t.string "document_id"
     t.string "document_type"
     t.binary "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["document_id"], name: "index_bookmarks_on_document_id"
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
@@ -33,8 +32,8 @@ ActiveRecord::Schema.define(version: 2022_01_14_215305) do
     t.string "tech_contacts", array: true
     t.jsonb "harvest_config", default: {}, null: false
     t.jsonb "last_harvest_results", default: {}
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_endpoints_on_slug", unique: true
   end
 
@@ -42,8 +41,8 @@ ActiveRecord::Schema.define(version: 2022_01_14_215305) do
     t.binary "query_params"
     t.integer "user_id"
     t.string "user_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_searches_on_user_id"
   end
 
