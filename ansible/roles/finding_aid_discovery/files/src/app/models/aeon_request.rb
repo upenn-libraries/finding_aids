@@ -4,6 +4,8 @@
 class AeonRequest
   class InvalidRequestError < StandardError; end
 
+  AEON_URL = 'https://aeon.library.upenn.edu'
+
   KISLAK_REPOSITORY_NAME =
     'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
   KATZ_REPOSITORY_NAME =

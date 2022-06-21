@@ -31,11 +31,22 @@
   <% component.collection_inventory do %>
     <% if @document.requestable? %>
       <form class="form" action="<%= new_request_path %>" method="GET">
+        <div class="sticky-top bg-light p-4 mb-3">
+          <div id="requestingInfo" class="row justify-content-between">
+            <div class="col-sm-12 col-md-8">
+              <strong>Request to View Materials</strong>
+              <p class="instructions">Materials can be requested by first <%= link_to 'logging in to Aeon', AeonRequest::AEON_URL, class: 'ext', target: '_blank', rel: 'noopener' %>. Then, click on the ADD button next
+                to any containers you wish to request. When complete, click the Request button.</p>
+            </div>
+            <div class="col-sm-12 col-md-2 align-self-center">
+              <input id="submit-request" type="submit" value="Request" class="btn btn-primary" disabled>
+            </div>
+          </div>
+        </div>
         <%= render CollectionsComponent.new(node: @document.parsed_ead.dsc, level: 1, requestable: true) %>
         <input type="hidden" name="call_num" value="<%= @document.requesting_info[:call_num] %>">
         <input type="hidden" name="repository" value="<%= @document.requesting_info[:repository] %>">
         <input type="hidden" name="title" value="<%= @document.requesting_info[:title] %>">
-        <input id="submit-request" type="submit" value="Submit" class="btn btn-primary">
       </form>
     <% else %>
       <%= render(CollectionsComponent.new(node: @document.parsed_ead.dsc, requestable: @document.requestable? ,level: 1)) %>

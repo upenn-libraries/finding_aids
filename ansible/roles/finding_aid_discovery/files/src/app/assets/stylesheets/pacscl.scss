@@ -13,6 +13,24 @@ body, .facets-heading, h6, .h6, .facet-field-heading {
   font-size: $font-size-base;
 }
 
+#requestingInfo {
+  .instructions {
+    font-size: 1.2rem;
+  }
+  #submit-request:disabled {
+    cursor: not-allowed;
+  }
+}
+
+#aeonRequestForm {
+  .form-control-plaintext, .form-control {
+    font-size: 16px;
+  }
+  .form-check-label {
+    padding-left: 10px;
+  }
+}
+
 a.catalog_startOverLink,
 a.catalog_startOverLink:visited,
 h1.sitename a,
@@ -198,8 +216,8 @@ header.sitebrand {
 }
 input#q.search-q.q.form-control.rounded-left {
   height: 4.1rem;
-  border-top-left-radius: 4px!important;
-  border-bottom-left-radius: 4px!important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
   font-size: 1.6rem;
 }
 .submit-search-text {
@@ -707,17 +725,6 @@ label.custom-control-label.request-checkbox-label {
   > h3:nth-child(3) {
     border-bottom: solid 2px $bright-blue;
   }
-  .request-instructions {
-    h4 {
-      display: inline;
-      font-size: 1.6rem;
-      padding: 0;
-      font-weight: bold;
-    }
-    background: $alert-color;
-    padding:  1rem;
-    margin: 0 0 2.3rem 0;
-  }
 
   @media (min-width: 768px) {
     .col-md-10 {
@@ -736,7 +743,6 @@ label.custom-control-label.request-checkbox-label {
     > .card-body {
       padding-top: 0;
       padding: 0;
-      margin: 0 -1rem;
       border: none;
       > .card-title > .row {
         > .col-sm-9.col-md-10 {
