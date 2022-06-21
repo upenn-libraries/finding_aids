@@ -32,12 +32,14 @@
     <% if @document.requestable? %>
       <form class="form" action="<%= new_request_path %>" method="GET">
         <div class="sticky-top bg-light p-4 mb-3">
-          <div class="row justify-content-between">
-            <div class="col-sm-8">
-              <span><strong>Materials for the record can be requested via Aeon.</strong> Click on the 'ADD' button next to any containers you wish to request. When complete, click the 'Submit Request' button.</span>
+          <div id="requestingInfo" class="row justify-content-between">
+            <div class="col-sm-12 col-md-8">
+              <strong>Request to View Materials</strong>
+              <p class="instructions">Materials can be requested by first <%= link_to 'logging in to Aeon', AeonRequest::AEON_URL, class: 'ext', target: '_blank', rel: 'noopener' %>. Then, click on the ADD button next
+                to any containers you wish to request. When complete, click the Request button.</p>
             </div>
-            <div class="col-sm-2 align-self-center">
-              <input id="submit-request" type="submit" value="Submit Request" class="btn btn-primary">
+            <div class="col-sm-12 col-md-2 align-self-center">
+              <input id="submit-request" type="submit" value="Request" class="btn btn-primary" disabled>
             </div>
           </div>
         </div>

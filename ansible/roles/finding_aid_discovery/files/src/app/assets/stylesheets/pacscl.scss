@@ -13,6 +13,24 @@ body, .facets-heading, h6, .h6, .facet-field-heading {
   font-size: $font-size-base;
 }
 
+#requestingInfo {
+  .instructions {
+    font-size: 1.2rem;
+  }
+  #submit-request:disabled {
+    cursor: not-allowed;
+  }
+}
+
+#aeonRequestForm {
+  .form-control-plaintext, .form-control {
+    font-size: 16px;
+  }
+  .form-check-label {
+    padding-left: 10px;
+  }
+}
+
 a.catalog_startOverLink,
 a.catalog_startOverLink:visited,
 h1.sitename a,
@@ -198,8 +216,8 @@ header.sitebrand {
 }
 input#q.search-q.q.form-control.rounded-left {
   height: 4.1rem;
-  border-top-left-radius: 4px!important;
-  border-bottom-left-radius: 4px!important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
   font-size: 1.6rem;
 }
 .submit-search-text {
