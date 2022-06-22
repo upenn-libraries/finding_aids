@@ -21,7 +21,7 @@ XML
       end
 
       it 'converts to bolded text in a new div' do
-        expect(rendered_component).to have_xpath '//div/strong', text: 'Header'
+        expect(page).to have_xpath '//div/strong', text: 'Header'
       end
     end
 
@@ -44,29 +44,29 @@ XML
         end
 
         it 'applies underline markup and class accordingly' do
-          expect(rendered_component).to have_xpath '//span[@class="underline"]', count: 1, text: 'Underline'
+          expect(page).to have_xpath '//span[@class="underline"]', count: 1, text: 'Underline'
         end
 
         it 'applies sub- and super-script markup accordingly' do
-          expect(rendered_component).to have_xpath '//sup', count: 1, text: 'Superscript'
-          expect(rendered_component).to have_xpath '//sub', count: 1, text: 'Subscript'
+          expect(page).to have_xpath '//sup', count: 1, text: 'Superscript'
+          expect(page).to have_xpath '//sub', count: 1, text: 'Subscript'
         end
 
         it 'applies markup for bolded text' do
-          expect(rendered_component).to have_xpath '//strong', count: 1, text: 'Bolded'
+          expect(page).to have_xpath '//strong', count: 1, text: 'Bolded'
         end
 
         it 'applies markup for italicized text' do
-          expect(rendered_component).to have_xpath '//em', count: 2, text: /Italicized/
+          expect(page).to have_xpath '//em', count: 2, text: /Italicized/
         end
 
         it 'applies markup for small-caps text' do
-          expect(rendered_component).to have_xpath '//span[@class="small-caps"]', count: 1, text: 'Small Caps'
+          expect(page).to have_xpath '//span[@class="small-caps"]', count: 1, text: 'Small Caps'
         end
 
         it 'wraps text with quotations accordingly' do
-          expect(rendered_component).to have_xpath '//span', count: 1, text: '"Double Quotes"'
-          expect(rendered_component).to have_xpath '//span', count: 1, text: "'Single Quotes'"
+          expect(page).to have_xpath '//span', count: 1, text: '"Double Quotes"'
+          expect(page).to have_xpath '//span', count: 1, text: "'Single Quotes'"
         end
       end
 
@@ -83,16 +83,16 @@ XML
         end
 
         it 'applies combined bold and italic markup accordingly' do
-          expect(rendered_component).to have_xpath '//strong/em', count: 1, text: 'Bolded and Italicized'
+          expect(page).to have_xpath '//strong/em', count: 1, text: 'Bolded and Italicized'
         end
 
         it 'applies combined bold and small-caps markup' do
-          expect(rendered_component).to have_xpath '//strong[@class="small-caps"]', count: 1, text: 'Bolded Small Caps'
+          expect(page).to have_xpath '//strong[@class="small-caps"]', count: 1, text: 'Bolded Small Caps'
         end
 
         it 'wraps text with quotations accordingly' do
-          expect(rendered_component).to have_xpath '//strong', count: 1, text: '"Bolded with Double Quotes"'
-          expect(rendered_component).to have_xpath '//strong', count: 1, text: "'Bolded with Single Quotes'"
+          expect(page).to have_xpath '//strong', count: 1, text: '"Bolded with Double Quotes"'
+          expect(page).to have_xpath '//strong', count: 1, text: "'Bolded with Single Quotes'"
         end
       end
     end
@@ -121,8 +121,8 @@ XML
       end
 
       it 'converts nodes to proper definition list structure' do
-        expect(rendered_component).to have_xpath '//dl/dt', count: 2, text: /Label/
-        expect(rendered_component).to have_xpath '//dl/dd', count: 2, text: /Content/
+        expect(page).to have_xpath '//dl/dt', count: 2, text: /Label/
+        expect(page).to have_xpath '//dl/dd', count: 2, text: /Content/
       end
     end
 
@@ -138,7 +138,7 @@ XML
       end
 
       it 'converts nodes to proper unordered list structure' do
-        expect(rendered_component).to have_xpath '//ul/li', count: 3, text: /Item/
+        expect(page).to have_xpath '//ul/li', count: 3, text: /Item/
       end
     end
 
@@ -155,7 +155,7 @@ XML
       end
 
       it 'converts nodes to proper ordered list structure' do
-        expect(rendered_component).to have_xpath '//ol/li', count: 4, text: /Item/
+        expect(page).to have_xpath '//ol/li', count: 4, text: /Item/
       end
     end
 
@@ -177,8 +177,8 @@ XML
       end
 
       it 'converts nodes to properly reflect a nested list' do
-        expect(rendered_component).to have_xpath '//ol/li[1]/dl/dt', count: 1, text: /Label/
-        expect(rendered_component).to have_xpath '//ol/li', count: 2, text: /Item/
+        expect(page).to have_xpath '//ol/li[1]/dl/dt', count: 1, text: /Label/
+        expect(page).to have_xpath '//ol/li', count: 2, text: /Item/
       end
     end
   end

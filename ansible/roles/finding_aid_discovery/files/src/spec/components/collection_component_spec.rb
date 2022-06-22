@@ -25,7 +25,7 @@ XML
     end
 
     it 'shows a checkbox with the expected name value' do
-      expect(rendered_component).to have_field 'c[Box_1]'
+      expect(page).to have_field 'c[Box_1]'
     end
   end
 
@@ -42,7 +42,7 @@ XML
     end
 
     it 'shows a checkbox with the expected name value' do
-      expect(rendered_component).to have_field 'c[Box_1][Folder_1]'
+      expect(page).to have_field 'c[Box_1][Folder_1]'
     end
   end
 
@@ -60,7 +60,7 @@ XML
     end
 
     it 'shows a checkbox with the expected name value' do
-      expect(rendered_component).to have_field 'c[Drawer_1][Box_1][Folder_1]'
+      expect(page).to have_field 'c[Drawer_1][Box_1][Folder_1]'
     end
   end
 end
