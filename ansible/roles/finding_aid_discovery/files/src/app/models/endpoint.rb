@@ -23,6 +23,10 @@ class Endpoint < ApplicationRecord
     harvest_config['type']
   end
 
+  def penn_aspace_type?
+    type == PENN_ASPACE_TYPE
+  end
+
   def last_harvest
     @last_harvest ||= LastHarvest.new(last_harvest_results)
   end
