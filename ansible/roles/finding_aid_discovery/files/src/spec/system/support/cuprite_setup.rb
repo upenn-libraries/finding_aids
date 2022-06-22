@@ -73,7 +73,7 @@ Capybara.register_driver(:better_cuprite) do |app|
       # See additional options for Dockerized environment in the respective section of this article
       browser_options: remote_chrome ? { 'no-sandbox' => nil } : {},
       # Increase Chrome startup wait time (required for stable CI builds)
-      process_timeout: 10,
+      process_timeout: 30,
       # Enable debugging capabilities
       inspector: true,
       js_errors: true,
