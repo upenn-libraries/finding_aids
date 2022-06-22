@@ -161,7 +161,12 @@ a, a:visited {
   }
 }
 
-.visually-hidden {
+// Bootstrap 4 specific visually-hidden class.
+//
+// This class was renamed from visually-hidden to bs4-visually-hidden because Bootstrap 5 defines its own
+// visually-hidden class. Blacklight supports both Bootstrap 4 and 5 so there are places
+// where the visually-hidden class is used that are not intended for applications that use Boostrap 4.
+.bs4-visually-hidden {
     @include visually-hidden;
 }
 .bg-light {
