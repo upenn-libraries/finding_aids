@@ -13,10 +13,9 @@ en:
         penn_auth: 'I am logged in as a Penn affiliate'
         external_auth: 'I am logged in as a Visitor'
         save_for_later: 'Save request to submit later?'
-        submit: 'Submit'
+        submit: 'Submit Request'
       messages:
-        auth_help: 'You must be logged in to your Special Collections Reference Account before submitting a request. Please ensure that you are logged in and confirm your account type.'
-        instructions_html: "<p>You are requesting to view materials on-site at %{repository}</p><p>Please review the information and instructions below and press \"Submit\" when everything is in order. This will create a request in the Aeon system.</p>"
+        auth_help_html: "You must be logged in to your Special Collections Reference Account before submitting a request. Please %{aeon_link} and confirm your account type."
   page_titles:
     repositories_list: 'PACSCL Repositories'
   labels:
