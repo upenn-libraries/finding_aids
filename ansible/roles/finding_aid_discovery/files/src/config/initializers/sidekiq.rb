@@ -13,28 +13,16 @@ Rails.application.config.to_prepare do
   # Sidekiq/Redis configuration
   Sidekiq.configure_server do |config|
     config.redis = redis_connection
+
+    # TODO: Remove this configuration once a version of sidekiq-cron is released where jobs in config/schedule.yml
+    #       are automatically loaded.
+    config.on(:startup) do
+      schedule_file = 'config/schedule.yml'
+      Sidekiq::Cron::Job.load_from_hash YAML.load_file(schedule_file) if File.exist?(schedule_file)
+    end
   end
 
   Sidekiq.configure_client do |config|
     config.redis = redis_connection
-  end
-
-  # Job schedule
-  if Sidekiq.server?
-    Sidekiq::Cron::Job.create(
-      name: 'Run harvesting jobs for all Endpoints',
-      description: 'Enqueues PartnerHarvestJobs for Endpoints sorted by oldest updated_at value',
-      cron: '0 5 * * 1,3,5', # 5AM MWF
-      class: 'PartnerHarvestEnqueueJob',
-      active_job: true
-    )
-
-    Sidekiq::Cron::Job.create(
-      name: 'Delete Old Searches (Daily)',
-      description: 'Remove searches that are older than 7 days',
-      cron: '0 1 * * *',
-      class: 'DeleteSearchesJob',
-      active_job: true
-    )
   end
 end
