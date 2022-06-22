@@ -4,6 +4,9 @@
      from this file.  Please refer to http://wiki.apache.org/solr/SolrConfigXml,
      as well as the default solrconfig file included with Solr -->
 
+  <!-- dont use a manged-schema -->
+  <schemaFactory class="ClassicIndexSchemaFactory"/>
+
   <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
 
   <luceneMatchVersion>6.1.0</luceneMatchVersion>
@@ -47,37 +50,20 @@
        <int name="qs">1</int>
        <int name="ps">2</int>
        <float name="tie">0.01</float>
-       <!-- this qf and pf are used by default, if not otherwise specified by
-            client. The default blacklight_config will use these for the
-            "keywords" search. See the author_qf/author_pf, title_qf, etc
-            below, which the default blacklight_config will specify for
-            those searches. You may also be interested in:
-            http://wiki.apache.org/solr/LocalParams
-       -->
-        <str name="qf">
-          id
-          title_tsim
-          abstract_scope_contents_tsi
-          repositories_ssim
-        </str>
-        <str name="pf">
-          id
-          title_tsim
-          abstract_scope_contents_tsi
-          repositories_ssim
-        </str>
 
-       <str name="title_qf">
-         title_tsim
+       <str name="qf">
+         unit_id_tsi^1000
+         title_tsi^500
+         abstract_scope_contents_tsi^250
+         subject_tsim^100
+         source_xml
        </str>
-       <str name="title_pf">
-         title_tsim
-       </str>
-
-       <str name="subject_qf">
-          subject_tsim
-       </str>
-       <str name="subject_pf">
+       <str name="pf">
+         unit_id_tsi^1000
+         title_tsi^500
+         abstract_scope_contents_tsi^250
+         subject_tsim^100
+         source_xml
        </str>
 
        <str name="fl">

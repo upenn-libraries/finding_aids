@@ -12,7 +12,7 @@ describe HarvestingService do
     before do
       allow(solr_service).to receive(:find_ids_by_endpoint).with(endpoint.slug).and_return([1, 3])
       allow(solr_service).to receive(:delete_by_ids)
-      allow(harvesting_service).to receive(:documents).and_return([{ id: 1 }, { id: 2 }])
+      allow(harvesting_service).to receive(:document_ids).and_return([1, 2])
     end
 
     it 'sends correct ids for records to remove to the solr service' do
@@ -55,7 +55,7 @@ describe HarvestingService do
 
     context 'when EAD cannot not be retrieved because of a HTTP error' do
       let(:url) { 'https://www.test.com/not_here.xml' }
-      let(:xml_file) { IndexExtractor::XMLFile.new(url: url) }
+      let(:xml_file) { IndexExtractor::XMLFile.new(url:) }
       let(:expected_file_error_hash) do
         [{
           'id' => 'not_here',

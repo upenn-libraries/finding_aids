@@ -1,6 +1,15 @@
-<h2><%= t('requests.form.header') %></h2>
+<% @page_title = "Request to View Materials" %>
 
-<%= t('requests.form.messages.instructions_html', repository: params[:repository]) %>
+<h2 class="mb-4"><%= t('requests.form.header') %></h2>
+
+<div class="bg-light p-4 mb-3">
+  <div class="row">
+    <div class="col">
+      <p>You are requesting to view materials on-site at: <strong><%= params[:repository] %></strong>.</p>
+      <p>Please confirm that <%= link_to 'you are logged in to the Aeon system', AeonRequest::AEON_URL, class: 'ext', target: '_blank', rel: 'noopener' %>, then review the selected items and complete the form below and press Submit when everything is in order.</p>
+    </div>
+  </div>
+</div>
 
 <%= bootstrap_form_with id: 'aeonRequestForm', url: penn_aeon_auth_url, method: :post, layout: :horizontal do |form| %>
   <%= form.hidden_field :call_num, value: params[:call_num] %>
@@ -14,10 +23,14 @@
   <%= form.text_area :special_request, label: t('requests.form.fields.special_request') %>
   <%= form.text_area :notes, label: t('requests.form.fields.notes') %>
   <%= form.date_select :retrieval_date, label: t('requests.form.fields.retrieval_date') %>
-  <%= form.form_group :auth_type, label: { text: t('requests.form.fields.auth_types') }, help: t('requests.form.messages.auth_help') do %>
+  <%= form.form_group :auth_type, label: { text: t('requests.form.fields.auth_types') }, help: t('requests.form.messages.auth_help_html', aeon_link: link_to('ensure that you are logged in', AeonRequest::AEON_URL, class: 'ext', target: '_blank', rel: 'noopener')) do %>
     <%= form.radio_button :auth_type, 'penn', label: t('requests.form.fields.penn_auth'), checked: true %>
     <%= form.radio_button :auth_type, 'external', label: t('requests.form.fields.external_auth') %>
   <% end %>
-  <%= form.check_box :save_for_later, label: t('requests.form.fields.save_for_later') %>
-  <%= form.primary t('requests.form.fields.submit') %>
+  <%= form.form_group do %>
+    <%= form.check_box :save_for_later, label: t('requests.form.fields.save_for_later') %>
+  <% end %>
+  <%= form.form_group do %>
+    <%= form.primary t('requests.form.fields.submit') %>
+  <% end %>
 <% end %>

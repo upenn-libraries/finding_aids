@@ -16,10 +16,6 @@
     <field name="lng" type="tdouble" stored="true" indexed="true" multiValued="false"/>
     <!-- NOTE:  not all possible Solr field types are represented in the dynamic fields -->
 
-    <!-- legacy DLA PACSCL fields
-         these should probably be obviated with novel indexing strategies, and removed -->
-    <field name="xml" type="string" stored="true" indexed="false" multiValued="false" />
-    <dynamicField name="*_field" type="text" stored="true" indexed="true" multiValued="true" />
 
     <!-- text (_t...) -->
 
@@ -198,21 +194,12 @@
     <dynamicField name="*spell" type="textSpell" indexed="true" stored="false" multiValued="true" />
     <dynamicField name="*suggest" type="textSuggest" indexed="true" stored="false" multiValued="true" />
 
-    <!-- you must define copyField source and dest fields explicity or schemaBrowser doesn't work -->
-    <field name="all_text_timv" type="text" stored="false" indexed="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true"/>
-
+    <!-- XML field, inspired by Franklin's version -->
+    <field name="source_xml" type="xml" indexed="true" stored="false" multiValued="false" />
   </fields>
 
-
-  <!-- Above, multiple source fields are copied to the [text] field.
-      Another way to map multiple source fields to the same
-      destination field is to use the dynamic field syntax.
-      copyField also supports a maxChars to copy setting.  -->
-
-  <copyField source="*_tsim" dest="all_text_timv" maxChars="3000"/>
-  <copyField source="*_tesim" dest="all_text_timv" maxChars="3000"/>
-  <copyField source="*_ssim" dest="all_text_timv" maxChars="3000"/>
-  <copyField source="*_si" dest="all_text_timv" maxChars="3000"/>
+  <!-- copyField declarations -->
+  <copyField source="xml_ss" dest="source_xml"/>
 
   <types>
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
@@ -372,6 +359,25 @@
       </analyzer>
     </fieldType>
 
+    <!-- XML field type, inspired by Franklin's XML type -->
+    <fieldtype name="xml" class="solr.TextField" sortMissingLast="true">
+      <analyzer type="query">
+        <tokenizer class="solr.ICUTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="protwords.txt" ignoreCase="true" expand="true"/>
+        <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="1" splitOnCaseChange="1" preserveOriginal="1" stemEnglishPossessive="0" protected="protwords.txt"/>
+        <filter class="solr.ICUFoldingFilterFactory"/>
+      </analyzer>
+      <analyzer type="index">
+        <charFilter class="solr.HTMLStripCharFilterFactory"/>
+        <tokenizer class="solr.ICUTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+        <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="1" splitOnCaseChange="1" preserveOriginal="1" stemEnglishPossessive="0" protected="protwords.txt"/>
+        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+        <filter class="solr.ICUFoldingFilterFactory"/>
+        <filter class="solr.FlattenGraphFilterFactory"/>
+      </analyzer>
+    </fieldtype>
   </types>
-
 </schema>

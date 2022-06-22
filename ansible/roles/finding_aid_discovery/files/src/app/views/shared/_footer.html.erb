@@ -9,28 +9,27 @@
 		</div>
 		<h3 class="visually-hidden">Site info</h3>
 		<ul class="no-list-style vlist info">
-			<li><a href="/ ">Home</a></li>
-			<li><a href="" class="ext">About the Site</a></li>
-			<li><a href="" class="ext">How to Use the Portal</a></li>
-			<li><a href="">Collections Recently Added</a></li>
+			<li><%= link_to "Home", "/" %></li>
+			<li><%= link_to "About the site", "https://www.library.upenn.edu/paarp/about-paarp", class: "ext" %></li>
+			<li><%= link_to "How to use the portal", "https://www.library.upenn.edu/paarp/how-to-use-paarp-site", class: "ext" %></li>
 		</ul>
 		<h3 class="visually-hidden">Repositories</h3>
 		<ul class="no-list-style vlist repos">
-			<li><a href="https://www.library.upenn.edu/paarp/paarp-participating-repositories" class="ext">PACSCL Members</a></li>
-			<li><a href="https://www.library.upenn.edu/paarp/hidden-collections" class="ext">Other Repositories</a></li>
-			<li><a href="">Finding Aids by Repository</a></li>
+			<li><%= link_to "PACSCL Members", "https://www.library.upenn.edu/paarp/paarp-participating-repositories", class: "ext" %></li>
+			<li><%= link_to "Other Repositories", "https://www.library.upenn.edu/paarp/hidden-collections", class: "ext" %></li>
+			<li class="browse-rep"><%= link_to 'Finding aids by repository', repositories_path %></li>
 		</ul>
 		<h3 class="visually-hidden">PACSCL</h3>
 		<ul class="no-list-style vlist pacscl">
-			<li><a href="http://www.pacscl.org/" class="ext">PACSCL</a></li>
-			<li><a href="https://www.library.upenn.edu/paarp/clir-hidden-collections-grant" class="ext">CLIR Hidden Collections Grant</a></li>
-			<li><a href="http://hsp.org/hcipsar">Hidden Collections Initiative for Pennsylvania Small Archival Repositories</a></li>
+			<li><%= link_to "PACSCL", "https://www.pacscl.org/", class: "ext" %></li>
+			<li><%= link_to "CLIR Hidden Collections Grant", "https://www.library.upenn.edu/paarp/clir-hidden-collections-grant", class: "ext" %></li>
+			<li><%= link_to "Hidden Collections Initiative for Pennsylvania Small Archival Repositories", "https://hsp.org/hcipsar", class: "ext" %></li>
 		</ul>
 	</div>
 	<div class="footerliner two">
 		<h3 class="visually-hidden">Policy links</h3>
 		<ul class="no-list-style hlist policy">
-			<li class="disc"><a href="" class="ext">Disclaimer</a></li>
+			<li class="disc"><a href="https://docs.google.com/document/d/17iZV-mBIqeDbHWFu-8Z4PAwA_-0Xi8OrNFOPVCsKcQQ/" class="ext">Disclaimer</a></li>
 			<li class="privacy"><a href="https://www.library.upenn.edu/about/policies/privacy" class="ext">Privacy Policy</a></li>
 			<li class="acc"><a href="https://accessibility.web-resources.upenn.edu/get-help">Report Accessibility Issues and Get Help</a></li>
 		</ul>

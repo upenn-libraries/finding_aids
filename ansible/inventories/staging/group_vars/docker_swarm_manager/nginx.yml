@@ -1,14 +1,17 @@
 ---
 nginx:
-  configs:
-    default_conf:
-      filename: "default.conf.j2"
-      version: 1
   image:
     name: "gitlab.library.upenn.edu/docker/nginx-modsec"
-    tag: "1-21-0"
+    tag: "1-22-0"
   port: 80
-  replicas: 1
+  replicas: 2
   urls:
     - "pacscl01.library.upenn.int"
     - "pacscl-staging.library.upenn.edu"
+  versioned_configs:
+    default_conf:
+      filename: "default.conf.j2"
+      version: 4
+    nginx_conf:
+      filename: "nginx.conf.j2"
+      version: 2

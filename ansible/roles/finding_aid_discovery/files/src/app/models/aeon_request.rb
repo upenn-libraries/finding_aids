@@ -4,6 +4,8 @@
 class AeonRequest
   class InvalidRequestError < StandardError; end
 
+  AEON_URL = 'https://aeon.library.upenn.edu'
+
   KISLAK_REPOSITORY_NAME =
     'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
   KATZ_REPOSITORY_NAME =
@@ -31,7 +33,7 @@ class AeonRequest
   def build_items
     @params['item'].map.with_index do |item, i|
       volume, issue = item.split(':').map(&:strip)
-      container_info = { volume: volume, issue: issue }
+      container_info = { volume:, issue: }
       Item.new i, container_info, self
     end
   end

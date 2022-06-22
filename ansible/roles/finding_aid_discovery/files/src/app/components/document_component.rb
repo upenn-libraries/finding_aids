@@ -24,6 +24,12 @@ class DocumentComponent < Blacklight::DocumentComponent
     end
   end
 
+  def correction_email_link(page_url)
+    mail_to @document.correction_email, 'Suggest a correction',
+            subject: "Correction to #{@document.title} finding aid",
+            body: "\n\nFrom: #{page_url}"
+  end
+
   # Component for a collapsable metadata section
   class CollapsableMetadataSection < ViewComponent::Base
     attr_reader :title, :open
@@ -38,7 +44,7 @@ class DocumentComponent < Blacklight::DocumentComponent
     end
 
     def call
-      render CollapsableSectionComponent.new(id: title.parameterize, open: open) do |section|
+      render CollapsableSectionComponent.new(id: title.parameterize, open:) do |section|
         section.title { title }
         section.body { content }
       end

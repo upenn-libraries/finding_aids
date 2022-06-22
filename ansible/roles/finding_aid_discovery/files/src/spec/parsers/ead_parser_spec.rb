@@ -96,7 +96,7 @@ describe EadParser do
       end
 
       it 'has the right unit id' do
-        expect(hash[:unit_id_ssi]).to eq 'PU-Mu. 0040'
+        expect(hash[:unit_id_tsi]).to eq 'PU-Mu. 0040'
       end
 
       it 'has the right pretty unit id' do
@@ -122,7 +122,7 @@ describe EadParser do
         )
       end
 
-      it 'has the right subjects' do
+      it 'has the right subjects with no duplicate values' do
         expect(hash[:subjects_ssim]).to eq(
           [
             'Physical anthropology',

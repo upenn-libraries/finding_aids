@@ -74,7 +74,7 @@ namespace :tools do
         puts "Will create new endpoint #{slug}."
         endpoint = Endpoint.new(
           {
-            slug: slug,
+            slug:,
             public_contacts: Array.wrap(endpoint_info['public_contact']),
             tech_contacts: Array.wrap(endpoint_info['tech_contact'])
           }
@@ -96,7 +96,7 @@ namespace :tools do
     end
 
     # Process removals
-    new_endpoint_slugs = Endpoint.all.pluck(:slug)
+    new_endpoint_slugs = endpoints.map(&:slug)
     diff = current_endpoint_slugs - new_endpoint_slugs
     if diff.any?
       puts "These endpoints were removed and will be deleted: #{diff.join(' | ')}"

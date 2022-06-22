@@ -11,7 +11,7 @@ class IndexExtractor < BaseExtractor
     attr_accessor :url
 
     def initialize(url:)
-      super id: id_from(url: url)
+      super id: id_from(url:)
       @url = url
     end
 
