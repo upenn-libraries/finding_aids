@@ -25,7 +25,7 @@ class DocumentComponent < Blacklight::DocumentComponent
   end
 
   def correction_email_link(page_url)
-    mail_to @document.correction_email, 'Suggest a correction',
+    mail_to @document.correction_email, t('document.links.submit_correction'),
             subject: "Correction to #{@document.title} finding aid",
             body: "\n\nFrom: #{page_url}"
   end

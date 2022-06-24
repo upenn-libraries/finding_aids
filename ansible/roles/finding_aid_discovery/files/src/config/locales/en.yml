@@ -1,4 +1,31 @@
 en:
+  common:
+    links:
+      home: 'Home'
+      about: 'About the site'
+      how_to: 'How to use this site'
+      browse_repositories: 'Browse Repositories'
+  homepage:
+    page_title: 'Finding Aids - Philadelphia Area Archival Research Portal (PAARP)'
+    header: 'About the Research Portal'
+    links:
+      see_all: 'Show all records'
+  document:
+    links:
+      print: 'Print the finding aid'
+      submit_correction: 'Suggest a correction'
+  footer:
+    links:
+      members: 'PACSCL Members'
+      other_repositories: 'Other Repositories'
+      pacscl: 'PACSCL Members'
+      clir_grant: 'CLIR Hidden Collections Grant'
+      hidden_coll_init: 'Hidden Collections Initiative for Pennsylvania Small Archival Repositories'
+      disclaimer: 'Disclaimer'
+      privacy: 'Privacy Policy'
+      a11y: 'Report Accessibility Issues and Get Help'
+    copyright: '© University of Pennsylvania'
+    delivered_by: 'Delivered by'
   requests:
     form:
       header: 'Request to view materials'
