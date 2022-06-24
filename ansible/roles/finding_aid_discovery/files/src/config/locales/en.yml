@@ -1,4 +1,11 @@
 en:
+  homepage:
+    page_title: 'Finding Aids - Philadelphia Area Archival Research Portal (PAARP)'
+    header: 'About the Research Portal'
+    links:
+      how_to: 'How to use this site'
+      browse_repositories: 'Browse Repositories'
+      see_all: 'Show all records'
   requests:
     form:
       header: 'Request to view materials'
