@@ -1,37 +1,37 @@
 <footer>
-	<div class="footerliner one clearfix">
-		<h2 class="visually-hidden" id="h2navfooter">Footer: Sitemap for navigation</h2>
-		<h3 class="visually-hidden">Branding</h3>
-		<div class="vlist branding">
-			<div class="delivered">Delivered by</div>
-			<a class="logo" href="https://www.library.upenn.edu"><%= image_tag "logo-2020-whitetite.svg" %></a>
-			<div class="copyright">&#169; University of Pennsylvania</div>
-		</div>
-		<h3 class="visually-hidden">Site info</h3>
-		<ul class="no-list-style vlist info">
-			<li><%= link_to "Home", "/" %></li>
-			<li><%= link_to "About the site", "https://www.library.upenn.edu/paarp/about-paarp", class: "ext" %></li>
-			<li><%= link_to "How to use the portal", "https://www.library.upenn.edu/paarp/how-to-use-paarp-site", class: "ext" %></li>
-		</ul>
-		<h3 class="visually-hidden">Repositories</h3>
-		<ul class="no-list-style vlist repos">
-			<li><%= link_to "PACSCL Members", "https://www.library.upenn.edu/paarp/paarp-participating-repositories", class: "ext" %></li>
-			<li><%= link_to "Other Repositories", "https://www.library.upenn.edu/paarp/hidden-collections", class: "ext" %></li>
-			<li class="browse-rep"><%= link_to 'Finding aids by repository', repositories_path %></li>
-		</ul>
-		<h3 class="visually-hidden">PACSCL</h3>
-		<ul class="no-list-style vlist pacscl">
-			<li><%= link_to "PACSCL", "https://www.pacscl.org/", class: "ext" %></li>
-			<li><%= link_to "CLIR Hidden Collections Grant", "https://www.library.upenn.edu/paarp/clir-hidden-collections-grant", class: "ext" %></li>
-			<li><%= link_to "Hidden Collections Initiative for Pennsylvania Small Archival Repositories", "https://hsp.org/hcipsar", class: "ext" %></li>
-		</ul>
-	</div>
-	<div class="footerliner two">
-		<h3 class="visually-hidden">Policy links</h3>
-		<ul class="no-list-style hlist policy">
-			<li class="disc"><a href="https://docs.google.com/document/d/17iZV-mBIqeDbHWFu-8Z4PAwA_-0Xi8OrNFOPVCsKcQQ/" class="ext">Disclaimer</a></li>
-			<li class="privacy"><a href="https://www.library.upenn.edu/about/policies/privacy" class="ext">Privacy Policy</a></li>
-			<li class="acc"><a href="https://accessibility.web-resources.upenn.edu/get-help">Report Accessibility Issues and Get Help</a></li>
-		</ul>
-	</div>
+  <div class="footerliner one clearfix">
+    <h2 class="visually-hidden" id="h2navfooter">Footer: Sitemap for navigation</h2>
+    <h3 class="visually-hidden">Branding</h3>
+    <div class="vlist branding">
+      <div class="delivered"><%= t('footer.delivered_by') %></div>
+      <a class="logo" href="https://www.library.upenn.edu"><%= image_tag "logo-2020-whitetite.svg" %></a>
+      <div class="copyright"><%= t('footer.copyright') %></div>
+    </div>
+    <h3 class="visually-hidden">Site info</h3>
+    <ul class="no-list-style vlist info">
+      <li><%= link_to t('common.links.home'), root_path %></li>
+      <li><%= link_to t('common.links.about'), "https://www.library.upenn.edu/paarp/about-paarp", class: "ext" %></li>
+      <li><%= link_to t('common.links.how_to'), "https://www.library.upenn.edu/paarp/how-to-use-paarp-site", class: "ext" %></li>
+    </ul>
+    <h3 class="visually-hidden">Repositories</h3>
+    <ul class="no-list-style vlist repos">
+      <li><%= link_to t('footer.links.members'), "https://www.library.upenn.edu/paarp/paarp-participating-repositories", class: "ext" %></li>
+      <li><%= link_to t('footer.links.other_repositories'), "https://www.library.upenn.edu/paarp/hidden-collections", class: "ext" %></li>
+      <li class="browse-rep"><%= link_to t('common.links.browse_repositories'), repositories_path %></li>
+    </ul>
+    <h3 class="visually-hidden">PACSCL</h3>
+    <ul class="no-list-style vlist pacscl">
+      <li><%= link_to t('footer.links.pacscl'), "https://www.pacscl.org/", class: "ext" %></li>
+      <li><%= link_to t('footer.links.clir_grant'), "https://www.library.upenn.edu/paarp/clir-hidden-collections-grant", class: "ext" %></li>
+      <li><%= link_to t('footer.links.hidden_coll_init'), "https://hsp.org/hcipsar", class: "ext" %></li>
+    </ul>
+  </div>
+  <div class="footerliner two">
+    <h3 class="visually-hidden">Policy links</h3>
+    <ul class="no-list-style hlist policy">
+      <li class="disc"><%= link_to t('footer.links.disclaimer'), 'https://docs.google.com/document/d/17iZV-mBIqeDbHWFu-8Z4PAwA_-0Xi8OrNFOPVCsKcQQ/', class: 'ext' %></li>
+      <li class="privacy"><%= link_to t('footer.links.privacy'), 'https://www.library.upenn.edu/about/policies/privacy', class: 'ext' %></li>
+      <li class="acc"><%= link_to t('footer.links.a11y'), 'https://accessibility.web-resources.upenn.edu/get-help', class: 'ext'%></li>
+    </ul>
+  </div>
 </footer>
