@@ -4,6 +4,7 @@
 class CollectionComponent < ViewComponent::Base
   DESCRIPTIVE_DATA_SECTIONS = %w[arrangement scopecontent odd relatedmaterial
                                  userestrict].freeze
+  NO_TITLE = '(No Title)'
 
   attr_reader :node, :level, :index, :id
 
@@ -16,6 +17,11 @@ class CollectionComponent < ViewComponent::Base
   end
 
   def title
+    @title ||= compute_title
+  end
+
+  # @return [String (frozen)]
+  def compute_title
     title = render EadMarkupTranslationComponent.new(node: unittitle_node)
 
     title = [unitid, origination, title].compact_blank.join('. ')
@@ -23,21 +29,29 @@ class CollectionComponent < ViewComponent::Base
     title.concat '.' unless title.ends_with?('.') # always add a period
     title.concat extent
 
-    title.presence || '(No Title)'
+    title.presence || NO_TITLE
+  end
+  
+  def container_info
+    @container_info ||= compute_container_info
   end
 
-  def container_info
+  def compute_container_info
     node.xpath('did/container').map do |container|
       { type: container.attr(:type).titlecase, text: container.try(:text) }
     end
   end
-
+  
   def descriptive_data
     node.xpath(DESCRIPTIVE_DATA_SECTIONS.join('|'))
   end
 
-  # @return [Hash{Symbol->String}]
   def physdesc
+    @physdesc ||= compute_physdesc
+  end
+
+  # @return [Hash{Symbol->String}]
+  def compute_physdesc
     physdesc_node = node.at_xpath('did/physdesc')
     return nil unless physdesc_node
 
@@ -49,9 +63,10 @@ class CollectionComponent < ViewComponent::Base
     # TODO: ensure param safety
     # TODO: check that there is container information before rendering checkbox
     name = "c#{container_info_for_checkbox}"
+    id = unique_id_for_collection
     content_tag :div, class: 'custom-control custom-checkbox request-checkbox-area' do
-      safe_join([check_box_tag(name, 1, false, class: 'custom-control-input request-checkbox-input'),
-                 label_tag(name, 'Toggle request', class: 'custom-control-label request-checkbox-label')])
+      safe_join([check_box_tag(name, 1, false, id: id, class: 'custom-control-input request-checkbox-input'),
+                 label_tag(id, 'Toggle request', class: 'custom-control-label request-checkbox-label')])
     end
   end
 
@@ -83,6 +98,13 @@ class CollectionComponent < ViewComponent::Base
 
   private
 
+  # Attempt to quickly and easily generate a unique string for this collection for usage as HTML ID attr
+  # @return [String]
+  def unique_id_for_collection
+    id = "req_cb_#{title}#{@index}#{@level}"
+    id.downcase.gsub(/[^a-z\d]/,'')
+  end
+  
   def unitid
     node.at_xpath('did/unitid[not(@audience=\'internal\')]').try(:text)
   end
