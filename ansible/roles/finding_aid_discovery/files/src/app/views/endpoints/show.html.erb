@@ -77,7 +77,7 @@
   <dd>
     <ol>
       <% @endpoint.last_harvest.success_files.each do |file| %>
-      <li><%= file['id'] %></li>
+      <li><%= link_to file['id'], solr_document_path(file['id']) %></li>
       <% end %>
     </ol>
   </dd>
