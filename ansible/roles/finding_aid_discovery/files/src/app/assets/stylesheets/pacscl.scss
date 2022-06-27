@@ -777,53 +777,72 @@ label.custom-control-label.request-checkbox-label {
   }
   /*Top block level is h4*/
   .collection-inventory-card {
-    &.level-1 h4 {
-      margin: 0 -.1rem;
-      button.collapsable-toggle,
-      button.collapsable-toggle.btn-light:hover,
-      button.collapsable-toggle:visited {
-        background-color: $bright-blue !important;
+    &.level-1 {
+      &.end-collection {
+        margin-top: 0;
         border: none;
-        color: #fff;
-        padding: 2.8rem 2rem 3rem 3.9rem;
-        font-family: $title-sans;
-        font-size: 1.5rem;
-        font-weight: normal;
-        width: 100%;
-        text-align: left;
-        text-decoration: none;
-        @media (min-width: 400px) {
-          font-size: 2rem;
+        &.dark {
+          background: #f0f0f0;
         }
-        @media (min-width: 500px) {
-          font-size: 2.3rem;
+        &.light {
+          background-image: none;
         }
-        &::after {
-          content: "";
-          display:none;
-        }
-        &::before {
-          float: left;
-          transform: rotate(90deg);
-          transition: transform 0.1s ease;
-          content: image-url("collapsearrow-right-fff.svg");
-          height: 2.3rem;
-          width: 2.3rem;
-          margin-right: 1.4rem;
-          position: relative;
-          top: .2rem;
-          @media (min-width: 500px) {
-            top: .8rem;
+        > .card-body {
+          background-image: none;
+          padding: .9rem .4rem .9rem .9rem;
+          > .card-title {
+            margin-bottom: 0;
           }
         }
-        &.collapsed {
-          background-color: transparent !important;
-          border-bottom: solid 2px $bright-blue;
-          color: #000;
+      }
+      h4 {
+        margin: 0 -.1rem;
+        button.collapsable-toggle,
+        button.collapsable-toggle.btn-light:hover,
+        button.collapsable-toggle:visited {
+          background-color: $bright-blue !important;
+          border: none;
+          color: #fff;
+          padding: 2.8rem 2rem 3rem 3.9rem;
+          font-family: $title-sans;
+          font-size: 1.5rem;
+          font-weight: normal;
+          width: 100%;
+          text-align: left;
+          text-decoration: none;
+          @media (min-width: 400px) {
+            font-size: 2rem;
+          }
+          @media (min-width: 500px) {
+            font-size: 2.3rem;
+          }
+          &::after {
+            content: "";
+            display:none;
+          }
           &::before {
-            transform: rotate(0deg);
-            content: image-url("collapsearrow-right-000.svg");
+            float: left;
+            transform: rotate(90deg);
+            transition: transform 0.1s ease;
+            content: image-url("collapsearrow-right-fff.svg");
+            height: 2.3rem;
+            width: 2.3rem;
+            margin-right: 1.4rem;
+            position: relative;
             top: .2rem;
+            @media (min-width: 500px) {
+              top: .8rem;
+            }
+          }
+          &.collapsed {
+            background-color: transparent !important;
+            border-bottom: solid 2px $bright-blue;
+            color: #000;
+            &::before {
+              transform: rotate(0deg);
+              content: image-url("collapsearrow-right-000.svg");
+              top: .2rem;
+            }
           }
         }
       }
