@@ -87,7 +87,9 @@ class CatalogController < ApplicationController
     config.add_facet_field 'creators_ssim', label: I18n.t('fields.creators'), limit: true
     config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors'), limit: true
     config.add_facet_field 'languages_ssim', label: I18n.t('fields.language'), limit: true
-    config.add_facet_field 'years_iim', label: I18n.t('fields.year'), range: true
+    config.add_facet_field 'years_iim', label: I18n.t('fields.year'), range: {
+      assumed_boundaries: [1600, Time.zone.now.year + 2]
+    }
     config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint'), limit: true, unless: Rails.env.production?
 
     config.add_facet_fields_to_solr_request!
