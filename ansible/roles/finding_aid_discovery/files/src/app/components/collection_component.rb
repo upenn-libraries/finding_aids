@@ -31,7 +31,7 @@ class CollectionComponent < ViewComponent::Base
 
     title.presence || NO_TITLE
   end
-  
+
   def container_info
     @container_info ||= compute_container_info
   end
@@ -41,7 +41,7 @@ class CollectionComponent < ViewComponent::Base
       { type: container.attr(:type).titlecase, text: container.try(:text) }
     end
   end
-  
+
   def descriptive_data
     node.xpath(DESCRIPTIVE_DATA_SECTIONS.join('|'))
   end
@@ -65,7 +65,7 @@ class CollectionComponent < ViewComponent::Base
     name = "c#{container_info_for_checkbox}"
     id = unique_id_for_collection
     content_tag :div, class: 'custom-control custom-checkbox request-checkbox-area' do
-      safe_join([check_box_tag(name, 1, false, id: id, class: 'custom-control-input request-checkbox-input'),
+      safe_join([check_box_tag(name, 1, false, id:, class: 'custom-control-input request-checkbox-input'),
                  label_tag(id, 'Toggle request', class: 'custom-control-label request-checkbox-label')])
     end
   end
@@ -102,9 +102,9 @@ class CollectionComponent < ViewComponent::Base
   # @return [String]
   def unique_id_for_collection
     id = "req_cb_#{title}#{@index}#{@level}"
-    id.downcase.gsub(/[^a-z\d]/,'')
+    id.downcase.gsub(/[^a-z\d]/, '')
   end
-  
+
   def unitid
     node.at_xpath('did/unitid[not(@audience=\'internal\')]').try(:text)
   end
