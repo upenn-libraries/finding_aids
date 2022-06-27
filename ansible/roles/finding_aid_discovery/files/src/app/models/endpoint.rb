@@ -2,6 +2,8 @@
 
 # Represent a partner's endpoint from which we will harvest records
 class Endpoint < ApplicationRecord
+  include Synchronizable
+
   INDEX_TYPE = 'index'
   PENN_ASPACE_TYPE = 'penn_archives_space'
   TYPES = [INDEX_TYPE, PENN_ASPACE_TYPE].freeze

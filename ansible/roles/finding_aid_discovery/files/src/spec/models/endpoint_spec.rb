@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative 'concerns/synchronizable_spec'
 
 describe Endpoint do
   let(:index_endpoint) { build(:endpoint, :index_harvest) }
+
+  it_behaves_like 'synchronizable'
 
   it 'has no validation errors' do
     expect(index_endpoint.valid?).to be true
