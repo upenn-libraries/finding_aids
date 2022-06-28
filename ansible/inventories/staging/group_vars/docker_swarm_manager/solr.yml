@@ -7,4 +7,8 @@ solr:
     name: "solr"
     registry: "gitlab.library.upenn.edu/pacscl/finding-aid-discovery/solr"
     tag: "{{ image_tag }}"
+  java:
+    memory:
+      min: "2g"
+      max: "2g"
   replicas: 1

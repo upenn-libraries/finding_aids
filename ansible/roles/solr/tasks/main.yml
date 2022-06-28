@@ -53,6 +53,8 @@
     SOLR_CORE_NAME: "{{ solr.core_name }}"
     SOLR_IMAGE_NAME: "{{ solr.image.name }}"
     SOLR_IMAGE_TAG: "{{ solr.image.tag }}"
+    SOLR_JAVA_MEMORY_MIN: "{{ solr.java.memory.min }}"
+    SOLR_JAVA_MEMORY_MAX: "{{ solr.java.memory.max }}"
     REPLICAS: "{{ solr.replicas }}"
     URL: "{{ url }}"
   no_log: true
@@ -78,6 +80,8 @@
     SOLR_CORE_NAME: "{{ solr.core_name }}"
     SOLR_IMAGE_NAME: "{{ solr.image.registry }}"
     SOLR_IMAGE_TAG: "{{ solr.image.tag }}"
+    SOLR_JAVA_MEMORY_MIN: "{{ solr.java.memory.min }}"
+    SOLR_JAVA_MEMORY_MAX: "{{ solr.java.memory.max }}"
     REPLICAS: "{{ solr.replicas }}"
   no_log: true
   when: not is_development | default (false) == true
