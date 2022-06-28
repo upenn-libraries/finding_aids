@@ -1,25 +1,25 @@
 <footer>
   <div class="footerliner one clearfix">
-    <h2 class="visually-hidden" id="h2navfooter">Footer: Sitemap for navigation</h2>
-    <h3 class="visually-hidden">Branding</h3>
+    <h2 class="bs4-visually-hidden" id="h2navfooter">Footer: Sitemap for navigation</h2>
+    <h3 class="bs4-visually-hidden">Branding</h3>
     <div class="vlist branding">
       <div class="delivered"><%= t('footer.delivered_by') %></div>
       <a class="logo" href="https://www.library.upenn.edu"><%= image_tag "logo-2020-whitetite.svg" %></a>
       <div class="copyright"><%= t('footer.copyright') %></div>
     </div>
-    <h3 class="visually-hidden">Site info</h3>
+    <h3 class="bs4-visually-hidden">Site info</h3>
     <ul class="no-list-style vlist info">
       <li><%= link_to t('common.links.home'), root_path %></li>
       <li><%= link_to t('common.links.about'), "https://www.library.upenn.edu/paarp/about-paarp", class: "ext" %></li>
       <li><%= link_to t('common.links.how_to'), "https://www.library.upenn.edu/paarp/how-to-use-paarp-site", class: "ext" %></li>
     </ul>
-    <h3 class="visually-hidden">Repositories</h3>
+    <h3 class="bs4-visually-hidden">Repositories</h3>
     <ul class="no-list-style vlist repos">
       <li><%= link_to t('footer.links.members'), "https://www.library.upenn.edu/paarp/paarp-participating-repositories", class: "ext" %></li>
       <li><%= link_to t('footer.links.other_repositories'), "https://www.library.upenn.edu/paarp/hidden-collections", class: "ext" %></li>
       <li class="browse-rep"><%= link_to t('common.links.browse_repositories'), repositories_path %></li>
     </ul>
-    <h3 class="visually-hidden">PACSCL</h3>
+    <h3 class="bs4-visually-hidden">PACSCL</h3>
     <ul class="no-list-style vlist pacscl">
       <li><%= link_to t('footer.links.pacscl'), "https://www.pacscl.org/", class: "ext" %></li>
       <li><%= link_to t('footer.links.clir_grant'), "https://www.library.upenn.edu/paarp/clir-hidden-collections-grant", class: "ext" %></li>
@@ -27,7 +27,7 @@
     </ul>
   </div>
   <div class="footerliner two">
-    <h3 class="visually-hidden">Policy links</h3>
+    <h3 class="bs4-visually-hidden">Policy links</h3>
     <ul class="no-list-style hlist policy">
       <li class="disc"><%= link_to t('footer.links.disclaimer'), 'https://docs.google.com/document/d/17iZV-mBIqeDbHWFu-8Z4PAwA_-0Xi8OrNFOPVCsKcQQ/', class: 'ext' %></li>
       <li class="privacy"><%= link_to t('footer.links.privacy'), 'https://www.library.upenn.edu/about/policies/privacy', class: 'ext' %></li>

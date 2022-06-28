@@ -161,7 +161,12 @@ a, a:visited {
   }
 }
 
-.visually-hidden {
+// Bootstrap 4 specific visually-hidden class.
+//
+// This class was renamed from visually-hidden to bs4-visually-hidden because Bootstrap 5 defines its own
+// visually-hidden class. Blacklight supports both Bootstrap 4 and 5 so there are places
+// where the visually-hidden class is used that are not intended for applications that use Boostrap 4.
+.bs4-visually-hidden {
     @include visually-hidden;
 }
 .bg-light {
@@ -209,7 +214,7 @@ header.sitebrand {
 .search-query-form {
   margin: 0 auto;
 }
-.input-group > .input-group-append > .btn {
+.input-group > .input-group-append > .search-btn {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   padding: .375rem .8rem .375rem 1rem;
