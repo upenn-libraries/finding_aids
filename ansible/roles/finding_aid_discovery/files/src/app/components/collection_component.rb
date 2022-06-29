@@ -101,8 +101,7 @@ class CollectionComponent < ViewComponent::Base
   # Attempt to quickly and easily generate a unique string for this collection for usage as HTML ID attr
   # @return [String]
   def unique_id_for_collection
-    id = "req_cb_#{title}#{@index}#{@level}"
-    id.downcase.gsub(/[^a-z\d]/, '')
+    SecureRandom.uuid
   end
 
   def unitid

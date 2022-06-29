@@ -2,10 +2,10 @@
 
 # Actions for handling Aeon requests
 class RequestsController < ApplicationController
-  before_action :require_container, only: :new
+  before_action :require_container, only: :create
 
   # show 'confirmation' form with note and date fields
-  def new; end
+  def create; end
 
   # return request destination URL and Aeon request body in JSON
   def prepare

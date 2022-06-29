@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   resources :solr_documents, only: [:show], path: '/catalog',
                              controller: 'catalog', constraints: { id: %r{[^/]+} }
 
-  resources :requests, only: %i[new] do
+  resources :requests, only: %i[create] do
     collection do
       post 'prepare'
     end
