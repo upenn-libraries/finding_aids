@@ -20,26 +20,8 @@ class CollectionComponent < ViewComponent::Base
     @title ||= compute_title
   end
 
-  # @return [String (frozen)]
-  def compute_title
-    title = render EadMarkupTranslationComponent.new(node: unittitle_node)
-
-    title = [unitid, origination, title].compact_blank.join('. ')
-    title = [title, date].compact_blank.join(', ')
-    title.concat '.' unless title.ends_with?('.') # always add a period
-    title.concat extent
-
-    title.presence || NO_TITLE
-  end
-
   def container_info
     @container_info ||= compute_container_info
-  end
-
-  def compute_container_info
-    node.xpath('did/container').map do |container|
-      { type: container.attr(:type).titlecase, text: container.try(:text) }
-    end
   end
 
   def descriptive_data
@@ -48,15 +30,6 @@ class CollectionComponent < ViewComponent::Base
 
   def physdesc
     @physdesc ||= compute_physdesc
-  end
-
-  # @return [Hash{Symbol->String}]
-  def compute_physdesc
-    physdesc_node = node.at_xpath('did/physdesc')
-    return nil unless physdesc_node
-
-    { text: render(EadMarkupTranslationComponent.new(node: physdesc_node)),
-      label: physdesc_node.at_xpath('@label') }
   end
 
   def requesting_checkbox
@@ -97,6 +70,34 @@ class CollectionComponent < ViewComponent::Base
   end
 
   private
+
+  # @return [String (frozen)]
+  def compute_title
+    title = render EadMarkupTranslationComponent.new(node: unittitle_node)
+
+    title = [unitid, origination, title].compact_blank.join('. ')
+    title = [title, date].compact_blank.join(', ')
+    title.concat '.' unless title.ends_with?('.') # always add a period
+    title.concat extent
+
+    title.presence || NO_TITLE
+  end
+
+  # @return [Array]
+  def compute_container_info
+    node.xpath('did/container').map do |container|
+      { type: container.attr(:type).titlecase, text: container.try(:text) }
+    end
+  end
+
+  # @return [Hash{Symbol->String}]
+  def compute_physdesc
+    physdesc_node = node.at_xpath('did/physdesc')
+    return nil unless physdesc_node
+
+    { text: render(EadMarkupTranslationComponent.new(node: physdesc_node)),
+      label: physdesc_node.at_xpath('@label') }
+  end
 
   # Attempt to quickly and easily generate a unique string for this collection for usage as HTML ID attr
   # @return [String]
