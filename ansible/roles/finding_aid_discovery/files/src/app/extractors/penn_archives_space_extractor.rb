@@ -3,18 +3,8 @@
 # Extract XML content from Penn ArchivesSpace
 class PennArchivesSpaceExtractor < BaseExtractor
   WEB_URL_PRODUCTION = 'https://upennstaff.as.atlas-sys.com'
-  WEB_URL_SANDBOX = 'https://upennsbstaff.as.atlas-sys.com'
 
   attr_reader :endpoint
-
-  # @return [String (frozen)]
-  def self.web_url
-    if Rails.env.production?
-      WEB_URL_PRODUCTION
-    else
-      WEB_URL_SANDBOX
-    end
-  end
 
   # @param [Endpoint] endpoint
   # @param [ArchivesSpaceExtractor::ArchivesSpaceApi] api
@@ -75,7 +65,7 @@ class PennArchivesSpaceExtractor < BaseExtractor
     def config
       ArchivesSpace::Configuration.new(
         {
-          base_uri: 'https://upennsbapi.as.atlas-sys.com',
+          base_uri: 'https://upennapi.as.atlas-sys.com',
           base_repo: '',
           username: SecretsService.lookup(key: 'penn_aspace_api_username'),
           password: SecretsService.lookup(key: 'penn_aspace_api_password'),
