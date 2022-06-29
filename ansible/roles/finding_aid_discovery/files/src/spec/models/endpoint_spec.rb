@@ -33,8 +33,8 @@ describe Endpoint do
       expect(endpoint.errors[:slug]).to include('has already been taken')
     end
 
-    it 'must only contain lowercase letters and underscores' do
-      endpoint.slug = 'PLAC_DF'
+    it 'must only contain lowercase/uppercase letters and underscores' do
+      endpoint.slug = 'PLAC_DF9'
       expect(endpoint.valid?).to be false
       expect(endpoint.errors[:slug]).to include('is invalid')
     end
