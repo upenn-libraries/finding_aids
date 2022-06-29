@@ -21,10 +21,12 @@ class PennArchivesSpaceExtractor < BaseExtractor
 
   # Pretend the API is like a file
   class PennArchivesSpaceFile < BaseEadSource
+    attr_reader :id
+
     # @param [String] id
     # @param [ArchivesSpaceExtractor::ArchivesSpaceApi] api
     def initialize(id:, api:)
-      super id: id
+      @id = id
       @api = api
     end
 
@@ -32,6 +34,10 @@ class PennArchivesSpaceExtractor < BaseExtractor
     # @return [String]
     def xml
       @api.resource_ead_xml(id)
+    end
+
+    def source_id
+      @id
     end
   end
 

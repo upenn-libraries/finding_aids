@@ -19,11 +19,24 @@ class EadParser
     @endpoint = endpoint
   end
 
-  # internal ID - used with delete logic at least
+  # Site-wide identifier for EAD record
+  #
+  # Note: This is the same identifier that was used in the previous site. Eventually we may
+  #       want to think about a better identifier for our records.
+  #
+  # @param [Nokogiri::XML::Document] doc
   # @return [String]
-  # @param [String] file_id
-  def id(file_id)
-    "#{@endpoint.slug}_#{file_id}"
+  def id(doc)
+    raw_id = ead_id(doc)
+    raw_id = unit_id(doc) if raw_id.blank?
+
+    if (agency_code = doc.at_xpath('/ead/eadheader/eadid/@mainagencycode').try :text)
+      raw_id = "#{raw_id}#{agency_code}"
+    end
+
+    raw_id = raw_id.gsub(/[^A-Za-z0-9]/, '')
+
+    "#{@endpoint.slug}_#{raw_id}"
   end
 
   # Not always present...
@@ -31,14 +44,14 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def ead_id(doc)
-    doc.at_xpath('.//eadheader/eadid').try :text
+    doc.at_xpath('.//eadheader/eadid').try(:text).try(:strip)
   end
 
   # https://www.loc.gov/ead/tglib/elements/unitid.html
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def unit_id(doc)
-    doc.at_xpath("/ead/archdesc/did/unitid[not(@audience='internal')]").try :text
+    doc.at_xpath("/ead/archdesc/did/unitid[not(@audience='internal')]").try(:text).try(:strip)
   end
 
   # @param [Nokogiri::XML::Document] doc
@@ -259,14 +272,13 @@ class EadParser
   end
 
   # usage: { solr_field_name: value, ... }
-  # @param [String] file_id identifier-ish string for file
   # @param [String] xml contents of xml file
   # @return [Hash]
-  def parse(file_id, xml)
+  def parse(xml)
     doc = Nokogiri::XML.parse xml
     doc.remove_namespaces!
     {
-      id: id(file_id),
+      id: id(doc),
       endpoint_ssi: @endpoint.slug,
       xml_ss: xml,
       link_url_ss: link_url(doc),

@@ -86,11 +86,11 @@
     All files harvested successfully
   </div>
   <dl>
-    Files (<%= @endpoint.last_harvest.files&.count %>)
+    Files (<%= @endpoint.last_harvest.success_files&.count %>)
   </dl>
   <dd>
     <ol>
-      <% @endpoint.last_harvest.files&.each do |file| %>
+      <% @endpoint.last_harvest.success_files&.each do |file| %>
       <li><%= link_to file['id'], solr_document_path(file['id']) %></li>
       <% end %>
     </ol>

@@ -71,7 +71,7 @@ describe HarvestingService do
       let(:xml_file) { IndexExtractor::XMLFile.new(url:) }
       let(:expected_file_error_hash) do
         [{
-          'id' => 'not_here',
+          'id' => 'not_here.xml',
           'status' => 'failed',
           'errors' => ['Problem downloading file: 404 Not Found']
         }]

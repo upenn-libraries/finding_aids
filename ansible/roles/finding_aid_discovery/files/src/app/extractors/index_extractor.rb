@@ -11,7 +11,6 @@ class IndexExtractor < BaseExtractor
     attr_accessor :url
 
     def initialize(url:)
-      super id: id_from(url:)
       @url = url
     end
 
@@ -20,13 +19,14 @@ class IndexExtractor < BaseExtractor
       validate_encoding(DownloadService.fetch(url))
     end
 
-    private
-
-    # ID is just the final component without any query params
+    # Returns filename as the source_id
+    #
     # @return [String]
-    def id_from(url:)
-      url.split('/').last.gsub(/\.xml.*$/, '')
+    def source_id
+      url.split('/').last.gsub(/(\.xml).*$/, '\1')
     end
+
+    private
 
     # Convert string encoding to UTF-8, if encoded differently.
     #
