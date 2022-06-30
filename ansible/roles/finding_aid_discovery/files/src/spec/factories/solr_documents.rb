@@ -33,6 +33,10 @@ FactoryBot.define do
     names_ssim { ['A Machine', 'A Tester', 'A Donor'] }
   end
 
+  trait :requestable do
+    repository_ssi { AeonRequest::KISLAK_REPOSITORY_NAME }
+  end
+
   trait :with_collection_data do
     xml_ss do
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>

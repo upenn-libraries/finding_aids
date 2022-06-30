@@ -4,6 +4,7 @@
 class CollectionComponent < ViewComponent::Base
   DESCRIPTIVE_DATA_SECTIONS = %w[arrangement scopecontent odd relatedmaterial
                                  userestrict].freeze
+  NO_TITLE = '(No Title)'
 
   attr_reader :node, :level, :index, :id
 
@@ -16,42 +17,29 @@ class CollectionComponent < ViewComponent::Base
   end
 
   def title
-    title = render EadMarkupTranslationComponent.new(node: unittitle_node)
-
-    title = [unitid, origination, title].compact_blank.join('. ')
-    title = [title, date].compact_blank.join(', ')
-    title.concat '.' unless title.ends_with?('.') # always add a period
-    title.concat extent
-
-    title.presence || '(No Title)'
+    @title ||= compute_title
   end
 
   def container_info
-    node.xpath('did/container').map do |container|
-      { type: container.attr(:type).titlecase, text: container.try(:text) }
-    end
+    @container_info ||= compute_container_info
   end
 
   def descriptive_data
     node.xpath(DESCRIPTIVE_DATA_SECTIONS.join('|'))
   end
 
-  # @return [Hash{Symbol->String}]
   def physdesc
-    physdesc_node = node.at_xpath('did/physdesc')
-    return nil unless physdesc_node
-
-    { text: render(EadMarkupTranslationComponent.new(node: physdesc_node)),
-      label: physdesc_node.at_xpath('@label') }
+    @physdesc ||= compute_physdesc
   end
 
   def requesting_checkbox
     # TODO: ensure param safety
     # TODO: check that there is container information before rendering checkbox
     name = "c#{container_info_for_checkbox}"
+    id = unique_id_for_collection
     content_tag :div, class: 'custom-control custom-checkbox request-checkbox-area' do
-      safe_join([check_box_tag(name, 1, false, class: 'custom-control-input request-checkbox-input'),
-                 label_tag(name, 'Toggle request', class: 'custom-control-label request-checkbox-label')])
+      safe_join([check_box_tag(name, 1, false, id:, class: 'custom-control-input request-checkbox-input'),
+                 label_tag(id, 'Toggle request', class: 'custom-control-label request-checkbox-label')])
     end
   end
 
@@ -82,6 +70,40 @@ class CollectionComponent < ViewComponent::Base
   end
 
   private
+
+  # @return [String (frozen)]
+  def compute_title
+    title = render EadMarkupTranslationComponent.new(node: unittitle_node)
+
+    title = [unitid, origination, title].compact_blank.join('. ')
+    title = [title, date].compact_blank.join(', ')
+    title.concat '.' unless title.ends_with?('.') # always add a period
+    title.concat extent
+
+    title.presence || NO_TITLE
+  end
+
+  # @return [Array]
+  def compute_container_info
+    node.xpath('did/container').map do |container|
+      { type: container.attr(:type).titlecase, text: container.try(:text) }
+    end
+  end
+
+  # @return [Hash{Symbol->String}]
+  def compute_physdesc
+    physdesc_node = node.at_xpath('did/physdesc')
+    return nil unless physdesc_node
+
+    { text: render(EadMarkupTranslationComponent.new(node: physdesc_node)),
+      label: physdesc_node.at_xpath('@label') }
+  end
+
+  # Attempt to quickly and easily generate a unique string for this collection for usage as HTML ID attr
+  # @return [String]
+  def unique_id_for_collection
+    SecureRandom.uuid
+  end
 
   def unitid
     node.at_xpath('did/unitid[not(@audience=\'internal\')]').try(:text)
