@@ -6,7 +6,7 @@ class HarvestNotificationMailer < ApplicationMailer
   default to: -> { @endpoint.tech_contacts }
 
   def complete_harvest_notification
-    mail(subject: "Harvest of #{@endpoint.slug} completed successful")
+    mail(subject: "Harvest of #{@endpoint.slug} completed successfully")
   end
 
   def partial_harvest_notification
