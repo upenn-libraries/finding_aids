@@ -48,6 +48,7 @@ describe HarvestingService do
       it 'sends failure notification to tech contacts' do
         expect(ActionMailer::Base.deliveries.count).to be 1
         expect(ActionMailer::Base.deliveries.last.to).to match_array(endpoint.tech_contacts)
+        expect(ActionMailer::Base.deliveries.last.from).to match_array('no-reply@library.upenn.edu')
         expect(ActionMailer::Base.deliveries.last.subject).to eq "Harvest of #{endpoint.slug} failed"
         expect(ActionMailer::Base.deliveries.last.body.to_s).to match('404 Not Found')
       end
