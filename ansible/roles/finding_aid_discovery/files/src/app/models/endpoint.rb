@@ -8,7 +8,7 @@ class Endpoint < ApplicationRecord
   PENN_ASPACE_TYPE = 'penn_archives_space'
   TYPES = [INDEX_TYPE, PENN_ASPACE_TYPE].freeze
 
-  validates :slug, presence: true, uniqueness: true, format: { with: /\A[a-z_]+\z/ }
+  validates :slug, presence: true, uniqueness: true, format: { with: /\A[A-Za-z_]+\z/ }
   validates :type, presence: true, inclusion: TYPES
   validate :valid_harvest_config
 
