@@ -72,6 +72,8 @@ class HarvestingService
   end
 
   def send_notifications
+    return if @endpoint.last_harvest.status == Endpoint::LastHarvest::COMPLETE
+
     HarvestNotificationMailer.with(endpoint: @endpoint)
                              .send("#{@endpoint.last_harvest.status}_harvest_notification")
                              .deliver_now # TODO: Should swap this to deliver_later when we get our job queues configured.

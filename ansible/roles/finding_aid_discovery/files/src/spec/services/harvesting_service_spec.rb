@@ -22,6 +22,18 @@ describe HarvestingService do
   end
 
   describe '#harvest' do
+    context 'when everything goes to plan' do
+      before do
+        stub_request(:get, endpoint.url).to_return(status: [200, ''])
+        described_class.new(endpoint).harvest
+        endpoint.reload
+      end
+
+      it 'does not send an email to tech contacts' do
+        expect(ActionMailer::Base.deliveries.count).to be 0
+      end
+    end
+
     context 'when endpoint url returns a 404 error' do
       before do
         stub_request(:get, endpoint.url).to_return(status: [404, 'Not Found'])
