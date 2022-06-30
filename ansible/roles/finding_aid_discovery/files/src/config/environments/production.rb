@@ -59,6 +59,11 @@ Rails.application.configure do
     domain: 'upenn.edu'
   }
 
+  # set a default from address for emails
+  config.action_mailer.default_options = {
+    from: 'noreply@library.upenn.edu'
+  }
+
   # Set hostname for urls generated within emails
   # config.action_mailer.default_url_options = { host: 'pacscl-staging.library.upenn.edu' }
 
