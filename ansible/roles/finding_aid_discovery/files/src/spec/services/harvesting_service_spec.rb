@@ -54,7 +54,7 @@ describe HarvestingService do
       end
     end
 
-    context 'when endpoint url return a 500 error' do
+    context 'when endpoint url returns a 500 error' do
       before do
         stub_request(:get, endpoint.url).to_return(status: [500, 'Internal Server Error'])
         described_class.new(endpoint).harvest
@@ -92,6 +92,12 @@ describe HarvestingService do
       it 'sends partial harvest notification to tech contacts' do
         expect(ActionMailer::Base.deliveries.count).to be 1
         expect(ActionMailer::Base.deliveries.last.to).to match_array(endpoint.tech_contacts)
+        expect(ActionMailer::Base.deliveries.last.cc).to(
+          match_array(HarvestNotificationMailer::FRIENDLY_PENN_PACSCL_CONTACT)
+        )
+      end
+
+      it 'sends partial harvest notification with appropriate subject and content' do
         expect(ActionMailer::Base.deliveries.last.subject).to eq "Harvest of #{endpoint.slug} partially completed"
         expect(ActionMailer::Base.deliveries.last.body.to_s).to match('Last Harvest Partially Completed')
         expect(ActionMailer::Base.deliveries.last.body.to_s).to match('404 Not Found')
