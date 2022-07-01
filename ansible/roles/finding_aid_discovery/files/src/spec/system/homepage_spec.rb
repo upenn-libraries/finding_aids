@@ -12,4 +12,9 @@ describe 'Homepage' do
     visit root_path
     expect(page).to have_css '.hplinks'
   end
+
+  it 'fails and takes a screenshot with png and html' do
+    visit root_path
+    expect(page).to have_text 'BUY NOW'
+  end
 end
