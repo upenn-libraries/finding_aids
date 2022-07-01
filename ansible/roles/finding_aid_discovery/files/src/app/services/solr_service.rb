@@ -40,7 +40,7 @@ class SolrService
   # @param [String] slug
   # @return [Array<String>]
   def find_ids_by_endpoint(slug)
-    resp = solr.get 'select', params: { fq: "#{ENDPOINT_SLUG_FIELD}:#{slug}", fl: 'id' }
+    resp = solr.get 'select', params: { fq: "#{ENDPOINT_SLUG_FIELD}:#{slug}", fl: 'id', rows: 100_000 }
     resp.dig('response', 'docs')&.collect { |d| d['id'] }
   end
 end

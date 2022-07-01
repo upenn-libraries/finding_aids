@@ -19,24 +19,43 @@ class EadParser
     @endpoint = endpoint
   end
 
-  # Site-wide identifier for EAD record
+  # Site-wide identifier for an EAD record
   #
-  # Note: This is the same identifier that was used in the previous site. Eventually we may
-  #       want to think about a better identifier for our records.
+  # Each EAD should have a unit id that is unique for that repository. If this is ever not true,
+  # the repository needs to fix their data. We are uppercasing the identifiers so they aren't
+  # case-sensitive going forward.
+  #
+  # Note: This is not the same identifier that was used in the previous site.
   #
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def id(doc)
+    id = unit_id(doc)&.gsub(/[^A-Za-z0-9]/, '')&.upcase
+    raise 'Missing unit id' if id.blank?
+
+    "#{@endpoint.slug}_#{id}"
+  end
+
+  # Legacy ID that was used in the previous site.
+  #
+  # The previous application union'ed two fields and the order in which those two fields
+  # were joined was not consistent. Therefore to cover all of our bases we are generating
+  # two possible legacy ids. We are also uppercasing the entire ID so that we can do
+  # case-insensitive matching.
+  #
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array<String>]
+  def legacy_ids(doc)
     raw_id = ead_id(doc)
     raw_id = unit_id(doc) if raw_id.blank?
-
-    if (agency_code = doc.at_xpath('/ead/eadheader/eadid/@mainagencycode').try :text)
-      raw_id = "#{raw_id}#{agency_code}"
-    end
-
     raw_id = raw_id.gsub(/[^A-Za-z0-9]/, '')
 
-    "#{@endpoint.slug}_#{raw_id}"
+    agency_code = doc.at_xpath('/ead/eadheader/eadid/@mainagencycode').try(:text)&.gsub(/[^A-Za-z0-9]/, '')
+
+    [
+      "#{@endpoint.slug}_#{agency_code}#{raw_id}",
+      "#{@endpoint.slug}_#{raw_id}#{agency_code}"
+    ].map(&:upcase).uniq
   end
 
   # Not always present...
@@ -279,6 +298,7 @@ class EadParser
     doc.remove_namespaces!
     {
       id: id(doc),
+      legacy_ids_ssim: legacy_ids(doc),
       endpoint_ssi: @endpoint.slug,
       xml_ss: xml,
       link_url_ss: link_url(doc),

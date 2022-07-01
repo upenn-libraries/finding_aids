@@ -50,7 +50,14 @@ describe EadParser do
       end
 
       it 'has expected value for the id suffix' do
-        expect(hash[:id]).to end_with 'SFHLSC289USPSH'
+        expect(hash[:id]).to end_with 'SFHLSC289'
+      end
+
+      it 'has expected values for legacy ids' do
+        expect(hash[:legacy_ids_ssim]).to contain_exactly(
+          "#{endpoint.slug.upcase}_USPSHSFHLSC289",
+          "#{endpoint.slug.upcase}_SFHLSC289USPSH"
+        )
       end
 
       it 'has expected value for title_tsim' do
@@ -72,7 +79,11 @@ describe EadParser do
       let(:xml) { file_fixture('ead/penn_museum_ead_1.xml') }
 
       it 'has expected value for the id suffix' do
-        expect(hash[:id]).to end_with 'PUMu0040'
+        expect(hash[:id]).to end_with 'PUMU0040'
+      end
+
+      it 'has expected values for legacy ids' do
+        expect(hash[:legacy_ids_ssim][0]).to end_with 'PUMU0040'
       end
 
       it 'has the right title' do
