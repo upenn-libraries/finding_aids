@@ -48,5 +48,7 @@ end
 group :test do
   gem 'capybara'
   gem 'cuprite'
+  gem 'simplecov', require: false
+  gem 'simplecov-cobertura'
   gem 'webmock'
 end

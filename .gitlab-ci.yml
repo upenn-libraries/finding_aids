@@ -155,6 +155,9 @@ rspec_app_test:
     expire_in: 1 week
     reports:
       junit: ansible/roles/finding_aid_discovery/files/src/rspec.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: tmp/coverage/coverage.xml
   rules:
     - if: $DISABLE_RSPEC_TEST == "true"
       when: never

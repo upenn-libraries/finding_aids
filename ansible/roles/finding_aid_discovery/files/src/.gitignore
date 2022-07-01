@@ -43,3 +43,6 @@ yarn-debug.log*
 
 # Ignore development bundle files
 vendor/bundle
+
+# Ignore SimpleCov output
+coverage

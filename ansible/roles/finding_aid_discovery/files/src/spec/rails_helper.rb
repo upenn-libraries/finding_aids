@@ -12,6 +12,13 @@ require 'rspec/rails'
 require 'webmock/rspec'
 require 'view_component/test_helpers'
 require 'capybara/rspec'
+require 'simplecov'
+require 'simplecov-cobertura'
+
+SimpleCov.start 'rails' do
+  coverage_dir 'tmp/coverage'
+  formatter SimpleCov::Formatter::CoberturaFormatter
+end
 
 WebMock.disable_net_connect!(
   allow_localhost: true,
