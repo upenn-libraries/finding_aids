@@ -28,7 +28,7 @@ module EndpointsHelper
   def link_to_penn_aspace_record(endpoint_aspace_id, record_id)
     return '' if record_id.blank? || endpoint_aspace_id.blank?
 
-    base_url = PennArchivesSpaceExtractor.web_url
+    base_url = PennArchivesSpaceExtractor::WEB_URL_PRODUCTION
     link_to(record_id,
             "#{base_url}/resolve/edit?uri=/repositories/#{endpoint_aspace_id}/resources/#{record_id}",
             target: '_blank', rel: 'noopener')

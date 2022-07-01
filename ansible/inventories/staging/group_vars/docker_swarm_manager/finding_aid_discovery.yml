@@ -18,7 +18,7 @@ finding_aid_discovery:
       version: 1
     penn_aspace_api_password:
       value: "{{ finding_aid_discovery_vault.versioned_secrets.penn_aspace_api_password.value }}"
-      version: 1
+      version: 2
     rails_master_key:
       value: "{{ finding_aid_discovery_vault.versioned_secrets.rails_master_key.value }}"
       version: 1
