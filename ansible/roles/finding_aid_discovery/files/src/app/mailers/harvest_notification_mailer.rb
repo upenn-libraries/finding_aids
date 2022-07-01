@@ -3,7 +3,10 @@
 class HarvestNotificationMailer < ApplicationMailer
   before_action { @endpoint = params[:endpoint] }
 
-  default to: -> { @endpoint.tech_contacts }
+  FRIENDLY_PENN_PACSCL_CONTACT = 'hmengel@pobox.upenn.edu'
+
+  default to: -> { @endpoint.tech_contacts },
+          cc: FRIENDLY_PENN_PACSCL_CONTACT
 
   def complete_harvest_notification
     mail(subject: "Harvest of #{@endpoint.slug} completed successfully")
