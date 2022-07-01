@@ -17,18 +17,21 @@ class BaseExtractor
     raise AbstractMethodCallError, '#files method on BaseExtractor called. Implement this in your own Extractor class!'
   end
 
-  # Represent an individual EAD file - with an id and xml
+  # Represent an individual EAD file
   class BaseEadSource
-    attr_accessor :id
-
-    def initialize(id:)
-      @id = id
-    end
-
+    # Returns raw xml.
     def xml
       raise(
         BaseExtractor::AbstractMethodCallError,
-        '#files method on BaseExtractor::BaseEadSource called. Implement this in your own class!'
+        '#xml method on BaseExtractor::BaseEadSource called. Implement this in your own class!'
+      )
+    end
+
+    # Return identifier for the source context. This is used when displaying error messages.
+    def source_id
+      raise(
+        BaseExtractor::AbstractMethodCallError,
+        '#source_id method on BaseExtractor::BaseEadSource called. Implement this in your own class!'
       )
     end
   end

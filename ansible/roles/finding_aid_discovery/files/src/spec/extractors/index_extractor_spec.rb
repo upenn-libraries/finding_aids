@@ -26,8 +26,10 @@ describe IndexExtractor do
       expect(files.first).to be_an_instance_of IndexExtractor::XMLFile
     end
 
-    it 'returns XMLFile objects with properly derived IDs' do
-      expect(files.map(&:id)).to match_array %w[OM_D767 OM_E467_S53 OM_LMOR OM_PN2277 PS2043__A44]
+    it 'returns XMLFile objects with properly derived source IDs' do
+      expect(
+        files.map(&:source_id)
+      ).to match_array %w[OM_D767.xml OM_E467_S53.xml OM_LMOR.xml OM_PN2277.xml PS2043__A44.xml]
     end
 
     context 'when URL raises a 404' do

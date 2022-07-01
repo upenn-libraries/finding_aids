@@ -36,14 +36,14 @@ class HarvestingService
     xml_files.each_slice(500) do |slice|
       documents = []
       slice.each do |ead|
-        validate_identifier(ead)
-        document = @parser.parse(ead.id, ead.xml)
+        document = @parser.parse(ead.xml)
+        validate_identifier(ead, document[:id])
         documents << document
         document_ids << document[:id]
       rescue StandardError => e
         log_error_from(ead, e)
       else
-        log_document_added(ead, document)
+        log_document_added(document)
       ensure
         sleep CRAWL_DELAY
       end
@@ -82,24 +82,24 @@ class HarvestingService
   private
 
   # @param [BaseExtractor::BaseEadSource] ead
-  def validate_identifier(ead)
-    return unless ead.id.in?(document_ids)
+  # @param [String] id
+  def validate_identifier(ead, id)
+    return unless id.in?(document_ids)
 
-    raise StandardError, "Generated ID is not unique for #{ead.url}. Please ensure each file has a unique filename."
+    raise StandardError, "Generated ID is not unique for #{ead.source_id}. Please ensure each file has a unique id."
   end
 
   # @param [BaseEadFile] ead_file
   # @param [Exception] exception
   def log_error_from(ead_file, exception)
-    Rails.logger.error "Problem parsing #{ead_file.id}: #{exception.message}"
-    @file_results << { id: ead_file.id, status: :failed,
+    Rails.logger.error "Problem parsing #{ead_file.source_id}: #{exception.message}"
+    @file_results << { id: ead_file.source_id, status: :failed,
                        errors: ["Problem downloading file: #{exception.message}"] }
   end
 
-  # @param [BaseEadFile] ead_file
   # @param [Hash] document
-  def log_document_added(ead_file, document)
-    Rails.logger.info "Parsed #{ead_file.id} OK"
+  def log_document_added(document)
+    Rails.logger.info "Parsed #{document[:id]} OK"
     @file_results << { status: :ok, id: document[:id] }
   end
 

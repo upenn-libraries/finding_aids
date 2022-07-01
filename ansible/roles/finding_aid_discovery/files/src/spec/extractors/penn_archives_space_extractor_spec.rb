@@ -31,5 +31,9 @@ describe PennArchivesSpaceExtractor do
     it 'returns PennArchivesSpaceFile objects with properly derived IDs' do
       expect(files.map(&:id)).to match_array %w[test]
     end
+
+    it 'returns PennArchivesSpaceFile objects with properly derived source IDs' do
+      expect(files.map(&:source_id)).to match_array %w[test]
+    end
   end
 end
