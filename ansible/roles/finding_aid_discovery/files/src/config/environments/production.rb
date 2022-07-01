@@ -65,7 +65,7 @@ Rails.application.configure do
   }
 
   # Set hostname for urls generated within emails
-  # config.action_mailer.default_url_options = { host: 'pacscl-staging.library.upenn.edu' }
+  config.action_mailer.default_url_options = { host: 'findingaids.library.upenn.edu' }
 
   config.action_mailer.perform_caching = false
 
