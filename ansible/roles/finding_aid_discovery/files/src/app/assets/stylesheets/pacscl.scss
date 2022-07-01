@@ -681,7 +681,32 @@ label.custom-control-label.request-checkbox-label {
   background-color: #4078BC;
   content: "Added" !important;
 }
-
+.collection-inventory-card.level-1.end-collection {
+  .custom-control-label::before {
+    position: absolute;
+    top: .25rem;
+    left: -1.5rem;
+    display: block;
+    content: "Add" !important;
+    background-color: $bright-blue;
+    border: #fff solid 1px;
+    color: #fff;
+  }
+  .custom-control-label,
+  &.light .custom-control-label,
+  &.dark .custom-control-label {
+    color: $bright-blue;
+    margin: 3rem -3rem 0 0;
+    &::before {
+      background-color: $bright-blue;
+    }
+  }
+  .custom-control-input:checked~.custom-control-label::before {
+    color: $bright-blue;
+    background-color: #fff;
+    content: "Added" !important;
+  }
+}
 
 
 /* end request checkbox styles */
@@ -712,7 +737,44 @@ label.custom-control-label.request-checkbox-label {
 .collection-inventory-card.end-collection {
   border-radius: 0
 }
+
 #inventory {
+  .card.collection-inventory-card.level-1.end-collection {
+      padding: 0!important;
+      border: solid 2px $bright-blue!important;
+      background: #fff!important;
+      > .card-body {
+        padding-bottom: 0;
+      }
+      .item-title {
+        color: #fff;
+        background-color: $bright-blue !important;
+        margin: -1rem -.5rem 0 -1rem;
+        .col {
+          font-size: 2.3rem;
+          padding: 3.7rem 0 1.9rem 3.9rem;
+          margin: -1rem -.5rem .5rem .5rem;
+        }
+        .col-sm-3.col-md-2 {
+          padding: 3.7rem 1.5rem 0 0;
+          margin: -1rem 0 .5rem .5rem;
+          span.float-right span.badge.badge-secondary {
+            color: #fff;
+            &:nth-child(2) {
+              border-left: dotted 2px #fff;
+            }
+          }
+        }
+      }
+      .card-records,
+      .collapse.show.card-records[id^="collection"] {
+        padding-left: 1rem;
+        div:first-child,
+        p:first-child {
+          padding-top: 1rem;
+        }
+      }
+  }
   .end-collection div.card-body [id^="collection"].collapse.show.card-records {
     border: none;
     height: auto !important;
@@ -730,7 +792,6 @@ label.custom-control-label.request-checkbox-label {
   > h3:nth-child(3) {
     border-bottom: solid 2px $bright-blue;
   }
-
   @media (min-width: 768px) {
     .col-md-10 {
       flex: 0 0 80%;
@@ -741,6 +802,7 @@ label.custom-control-label.request-checkbox-label {
       max-width: 20%;
     }
   }
+
   .card.collection-inventory-card.level-1 {
     /*pull them up so first one (with H4) coincides with h3 underline*/
     margin-bottom: 2.2rem;
