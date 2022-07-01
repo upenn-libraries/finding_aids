@@ -150,15 +150,12 @@ rspec_app_test:
     - push_tmp_solr_image_to_registry
   artifacts:
     paths:
-      - ansible/roles/finding_aid_discovery/files/src/tmp/coverage
+      - ansible/roles/finding_aid_discovery/files/src/tmp/coverage/index.html
       - ansible/roles/finding_aid_discovery/files/src/tmp/screenshots
       - ansible/roles/finding_aid_discovery/files/src/rspec.xml
     expire_in: 1 week
     reports:
       junit: ansible/roles/finding_aid_discovery/files/src/rspec.xml
-      coverage_report:
-        coverage_format: cobertura
-        path: tmp/coverage/coverage.xml
   rules:
     - if: $DISABLE_RSPEC_TEST == "true"
       when: never
