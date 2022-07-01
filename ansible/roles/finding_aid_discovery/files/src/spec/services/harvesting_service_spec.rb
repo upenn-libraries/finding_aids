@@ -95,6 +95,9 @@ describe HarvestingService do
         expect(ActionMailer::Base.deliveries.last.cc).to(
           match_array(HarvestNotificationMailer::FRIENDLY_PENN_PACSCL_CONTACT)
         )
+      end
+
+      it 'sends partial harvest notification with appropriate subject and content' do
         expect(ActionMailer::Base.deliveries.last.subject).to eq "Harvest of #{endpoint.slug} partially completed"
         expect(ActionMailer::Base.deliveries.last.body.to_s).to match('Last Harvest Partially Completed')
         expect(ActionMailer::Base.deliveries.last.body.to_s).to match('404 Not Found')
