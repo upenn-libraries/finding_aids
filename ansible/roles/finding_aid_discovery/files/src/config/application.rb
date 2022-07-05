@@ -19,11 +19,6 @@ module FindingAidDiscovery
     # Initialize configuration defaults for the new Rails version.
     config.load_defaults 7.0
 
-    # TODO: Remove once the application is deployed to staging. Using old caching
-    #       style until the cache is converted to the new style.
-    #       See: https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#new-activesupport-cache-serialization-format
-    config.active_support.cache_format_version = 6.1
-
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
