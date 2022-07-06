@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :solr_document do
     id { "test-endpoint_#{Faker::File.unique.file_name(ext: '').tr('/', '-')}" }
+    legacy_ids_ssim { ['UPENN_PUUSTEFoo1234'] }
     endpoint_ssi { 'test-endpoint' }
     xml_ss { '' }
     link_url_ss { '' }
