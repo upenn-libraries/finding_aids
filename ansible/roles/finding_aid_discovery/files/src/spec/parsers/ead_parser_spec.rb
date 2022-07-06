@@ -50,7 +50,7 @@ describe EadParser do
       end
 
       it 'has expected value for the id suffix' do
-        expect(hash[:id]).to end_with 'SFHLSC289'
+        expect(hash[:id]).to end_with 'SFHL.SC.289'
       end
 
       it 'has expected values for legacy ids' do
@@ -79,7 +79,7 @@ describe EadParser do
       let(:xml) { file_fixture('ead/penn_museum_ead_1.xml') }
 
       it 'has expected value for the id suffix' do
-        expect(hash[:id]).to end_with 'PUMU0040'
+        expect(hash[:id]).to end_with 'PU-MU.0040'
       end
 
       it 'has expected values for legacy ids' do
