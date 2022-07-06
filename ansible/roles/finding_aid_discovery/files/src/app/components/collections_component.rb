@@ -10,7 +10,17 @@ class CollectionsComponent < ViewComponent::Base
   end
 
   def call
-    safe_join(collections_components)
+    if @collections.any?
+      safe_join(collections_components)
+    elsif @level == 1
+      no_collections
+    end
+  end
+
+  def no_collections
+    content_tag :div, class: 'alert alert-secondary', role: 'alert' do
+      'Collection information not available.'
+    end
   end
 
   def collections_components

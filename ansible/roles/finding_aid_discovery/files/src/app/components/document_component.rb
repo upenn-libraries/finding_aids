@@ -2,10 +2,10 @@
 
 # custom methods for our DocumentComponent
 class DocumentComponent < Blacklight::DocumentComponent
-  # Content for the collection inventory tab
+  # Slot for the collection inventory section
   renders_one :collection_inventory
 
-  # Slot for collapsable metadata sections
+  # Slots for collapsable metadata sections
   renders_many :collapsable_metadata_sections, 'CollapsableMetadataSection'
 
   def location_message
