@@ -30,7 +30,7 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def id(doc)
-    id = unit_id(doc)&.gsub(/[^A-Za-z0-9]/, '')&.upcase
+    id = unit_id(doc)&.gsub(/[^A-Za-z0-9.-]/, '')&.upcase
     raise 'Missing unit id' if id.blank?
 
     "#{@endpoint.slug}_#{id}"

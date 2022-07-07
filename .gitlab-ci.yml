@@ -139,6 +139,7 @@ rspec_app_test:
     POSTGRES_PASSWORD: "rspec_test"
     POSTGRES_USER: "rspec_test"
     RAILS_ENV: "test"
+    RAILS_SYSTEM_TESTING_SCREENSHOT_HTML: "1"
     SOLR_URL: "http://solr:8983/solr/finding-aid-discovery-core"
   script:
     - cd ${CI_PROJECT_DIR}/ansible/roles/finding_aid_discovery/files/src/
@@ -151,7 +152,7 @@ rspec_app_test:
   artifacts:
     paths:
       - ansible/roles/finding_aid_discovery/files/src/tmp/coverage/index.html
-      - ansible/roles/finding_aid_discovery/files/src/tmp/screenshots
+      - ansible/roles/finding_aid_discovery/files/src/tmp/capybara
       - ansible/roles/finding_aid_discovery/files/src/rspec.xml
     expire_in: 1 week
     reports:
