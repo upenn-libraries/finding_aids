@@ -13,7 +13,7 @@ class SolrService
   # @param [String] legacy_id
   # @return [String, nil]
   def find_id_by_legacy_id(legacy_id)
-    resp = solr.get 'select', params: { fq: "#{LEGACY_ID_FIELD}:#{legacy_id}", fl: 'id', rows: 1 }
+    resp = solr.get 'select', params: { fq: "#{LEGACY_ID_FIELD}:#{legacy_id.upcase}", fl: 'id', rows: 1 }
     return resp.dig('response', 'docs')[0]['id'] if resp.dig('response', 'docs')&.any?
 
     nil
