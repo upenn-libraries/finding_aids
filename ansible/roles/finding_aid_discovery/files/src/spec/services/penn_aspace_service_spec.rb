@@ -9,8 +9,12 @@ describe PennAspaceService do
   let(:response_headers) { { 'Content-Type': 'application/json' } }
 
   before do
-    stub_request(:post, %r{https://upennapi.as.atlas-sys.com/users/pacscl_api/login?})
+    stub_request(:post, %r{https://upennapi.as.atlas-sys.com/users/[a-z_]*/login?})
       .to_return(status: 200, body: { session: '1234' }.to_json, headers: response_headers)
+    allow(SecretsService).to receive(:lookup).with(key: 'penn_aspace_api_username')
+                                             .and_return('test_user')
+    allow(SecretsService).to receive(:lookup).with(key: 'penn_aspace_api_password')
+                                             .and_return('test_pass')
   end
 
   describe '#all_resource_ids' do
