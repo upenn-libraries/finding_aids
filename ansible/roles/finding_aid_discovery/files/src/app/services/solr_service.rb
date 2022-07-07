@@ -4,9 +4,19 @@ class SolrService
   attr_reader :solr
 
   ENDPOINT_SLUG_FIELD = 'endpoint_ssi'
+  LEGACY_ID_FIELD = 'legacy_ids_ssim'
 
   def initialize
     @solr = RSolr.connect url: ENV.fetch('SOLR_URL')
+  end
+
+  # @param [String] legacy_id
+  # @return [String, nil]
+  def find_id_by_legacy_id(legacy_id)
+    resp = solr.get 'select', params: { fq: "#{LEGACY_ID_FIELD}:#{legacy_id.upcase}", fl: 'id', rows: 1 }
+    return resp.dig('response', 'docs')[0]['id'] if resp.dig('response', 'docs')&.any?
+
+    nil
   end
 
   # @param [Array[<Hash>]] documents

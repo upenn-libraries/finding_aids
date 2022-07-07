@@ -26,6 +26,8 @@ en:
       a11y: 'Report Accessibility Issues and Get Help'
     copyright: '© University of Pennsylvania'
     delivered_by: 'Delivered by'
+  legacy:
+    redirect: 'The identifier for this item has been updated. Please use this page URL to access this item.'
   requests:
     form:
       header: 'Request to view materials'
