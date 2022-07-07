@@ -15,7 +15,8 @@
   <%  end %>
 
   <% SolrDocument::ParsedEad::OTHER_SECTIONS.each do |section| %>
-    <% component.collapsable_metadata_section(title: I18n.t(section, scope: :sections)) do %>
+    <% open = %w[bioghist scopecontent arrangement].include?(section) %>
+    <% component.collapsable_metadata_section(title: I18n.t(section, scope: :sections), open: open) do %>
       <%= render AdditionalMetadataComponent.new(nodes: @document.parsed_ead.try(section)) %>
     <% end %>
   <% end %>
