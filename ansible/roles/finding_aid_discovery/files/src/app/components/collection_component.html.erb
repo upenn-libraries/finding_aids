@@ -20,7 +20,7 @@
           <% else %>
             <%# item row - show title and container cols, and maybe requesting checkbox %>
             <%= content_tag :div, class: 'item-title row' do %>
-              <% if @requestable %>
+              <% if requestable? %>
                 <div class="col-auto">
                   <%= requesting_checkbox %>
                 </div>
