@@ -511,7 +511,7 @@ header h1.index_title.document-title-heading {
   margin-top: 3rem;
   p.repository-info {
     font-variant: small-caps;
-    font-size: 1.8rem;
+    font-size: 2.1rem;
     font-family: Arial, sans-serif;
     line-height: 1.4;
     background-image: image-url("gov-docs-bldg.svg");
@@ -527,9 +527,7 @@ header h1.index_title.document-title-heading {
   }
   p.access-clarification {
     margin-top: 2rem;
-    i {
-      font-style: normal;
-    }
+    font-size: 1.4rem;
   }
 }
 
