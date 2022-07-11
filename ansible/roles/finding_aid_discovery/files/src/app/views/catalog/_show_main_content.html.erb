@@ -34,14 +34,16 @@
       <form id="requestItemsForm" class="form" action="<%= requests_path %>" method="POST">
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
         <div class="sticky-top bg-light p-4 mb-3">
-          <div id="requestingInfo" class="row justify-content-between">
+          <div id="requestingInfo" class="row justify-content-between align-items-center">
             <div class="col-sm-12 col-md-8">
               <strong>Request to View Materials</strong>
               <p class="instructions">Materials can be requested by first <%= link_to 'logging in to Aeon', AeonRequest::AEON_URL, class: 'ext', target: '_blank', rel: 'noopener' %>. Then, click on the ADD button next
                 to any containers you wish to request. When complete, click the Request button.</p>
             </div>
-            <div class="col-sm-12 col-md-2 align-self-center">
-              <input id="submit-request" type="submit" value="Request" class="btn btn-primary" disabled>
+            <div class="col-sm-12 col-md-2">
+              <span class="float-right">
+                <input id="submit-request" type="submit" value="Request" class="btn btn-primary" disabled>
+              </span>
             </div>
           </div>
         </div>

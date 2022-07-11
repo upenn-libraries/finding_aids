@@ -32,9 +32,14 @@ class CollectionComponent < ViewComponent::Base
     @physdesc ||= compute_physdesc
   end
 
+  # Checks that the item is supposed to be requestable and that there is container information. Without container
+  # information a collection cannot be requestable.
+  def requestable?
+    @requestable && container_info.present?
+  end
+
   def requesting_checkbox
     # TODO: ensure param safety
-    # TODO: check that there is container information before rendering checkbox
     name = "c#{container_info_for_checkbox}"
     id = unique_id_for_collection
     content_tag :div, class: 'custom-control custom-checkbox request-checkbox-area' do
