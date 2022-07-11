@@ -5,16 +5,16 @@ Rails.application.routes.draw do
   mount Blacklight::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new
 
-  resource :catalog, only: [:index], as: 'catalog', path: '/record',
+  resource :catalog, only: [:index], as: 'catalog', path: '/records',
                      controller: 'catalog', constraints: { id: %r{[^/]+} } do
     concerns :searchable
     concerns :range_searchable
   end
 
   # Legacy ID lookup route
-  get '/record/legacy/:id', to: 'legacy#redirect'
+  get '/records/legacy/:id', to: 'legacy#redirect'
 
-  resources :solr_documents, only: [:show], path: '/record',
+  resources :solr_documents, only: [:show], path: '/records',
                              controller: 'catalog', constraints: { id: %r{[^/]+} }
 
   resources :requests, only: %i[create] do

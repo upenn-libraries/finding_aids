@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Legacy identifier redirection' do
   context 'without the identifier in the index' do
     it 'returns a 404' do
-      get '/record/legacy/not-a-valid-legacy-id'
+      get '/records/legacy/not-a-valid-legacy-id'
       expect(response.code).to eq '404'
     end
   end
@@ -25,7 +25,7 @@ describe 'Legacy identifier redirection' do
     end
 
     it 'redirects to show page' do
-      get "/record/legacy/#{document_hash[:legacy_ids_ssim].first}"
+      get "/records/legacy/#{document_hash[:legacy_ids_ssim].first}"
       expect(response).to have_http_status :permanent_redirect
       expect(response).to redirect_to(solr_document_url(document_hash[:id]))
     end
