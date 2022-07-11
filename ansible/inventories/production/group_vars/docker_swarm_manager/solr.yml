@@ -1,0 +1,10 @@
+---
+solr:
+  build_docker_image: false
+  config_location: "/finding_aid_discovery_configs"
+  core_name: "finding-aid-discovery-core"
+  image:
+    name: "solr"
+    registry: "gitlab.library.upenn.edu/pacscl/finding-aid-discovery/solr"
+    tag: "{{ image_tag }}"
+  replicas: 1

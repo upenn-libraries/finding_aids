@@ -1,0 +1,17 @@
+---
+nginx:
+  image:
+    name: "gitlab.library.upenn.edu/docker/nginx-modsec"
+    tag: "1-22-0"
+  port: 80
+  replicas: 2
+  urls:
+    - "pacsclprod01.library.upenn.int"
+    - "findingaids.library.upenn.edu"
+  versioned_configs:
+    default_conf:
+      filename: "default.conf.j2"
+      version: 4
+    nginx_conf:
+      filename: "nginx.conf.j2"
+      version: 2
