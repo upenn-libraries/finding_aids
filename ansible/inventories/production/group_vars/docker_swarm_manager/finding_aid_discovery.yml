@@ -1,0 +1,24 @@
+---
+finding_aid_discovery:
+  build_docker_image: false
+  image:
+    name: "finding_aid_discovery"
+    registry: "gitlab.library.upenn.edu/pacscl/finding-aid-discovery/app"
+    tag: "{{ image_tag }}"
+  port: 4567
+  rails_env: "production"
+  replicas: 2
+  url: "findingaids.library.upenn.edu"
+  versioned_secrets:
+    honeybadger_api_key:
+      value: "{{ finding_aid_discovery_vault.versioned_secrets.honeybadger_api_key.value }}"
+      version: 2
+    penn_aspace_api_username:
+      value: "{{ finding_aid_discovery_vault.versioned_secrets.penn_aspace_api_username.value }}"
+      version: 1
+    penn_aspace_api_password:
+      value: "{{ finding_aid_discovery_vault.versioned_secrets.penn_aspace_api_password.value }}"
+      version: 2
+    rails_master_key:
+      value: "{{ finding_aid_discovery_vault.versioned_secrets.rails_master_key.value }}"
+      version: 1

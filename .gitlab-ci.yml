@@ -26,7 +26,7 @@ stages:
   - sast
   - remove:tmp_images_from_registry
   - push:final_images
-  - deploy:staging
+  - deploy
   - remove:tmp_images_from_host
 
 # -- Start - build and push base image
@@ -400,13 +400,10 @@ push_solr_image_to_registry:
     - build
 # -- End - push final images to registry
 
-# -- Start - deploy staging
-deploy_staging:
+# -- Start - deployment
+.deploy: &deploy
   image: gitlab.library.upenn.edu/docker/hvas:master
-  stage: deploy:staging
   cache: []
-  variables:
-    DEPLOY_ENVIRONMENT: staging
   before_script:
     # Create onetime key pair
     - ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -P ""
@@ -441,17 +438,36 @@ deploy_staging:
 
     # Run ansible playbook
     - ansible-playbook --vault-id=${DEPLOY_ENVIRONMENT}@/tmp/.vault_pass -e "ansible_host=${DEPLOY_HOST}" -e "image_tag=${CI_COMMIT_SHORT_SHA}" -i ansible/inventories/${DEPLOY_ENVIRONMENT} ansible/site.yml
-  environment:
-    name: staging
-    url: https://pacscl-staging.library.upenn.edu/
   needs:
     - push_prod_app_image_to_registry
     - push_solr_image_to_registry
-  only:
-    - main
   tags:
     - deploy
-# -- End - deploy staging
+
+# Deploy staging
+deploy_staging:
+  <<: *deploy
+  stage: deploy
+  variables:
+    DEPLOY_ENVIRONMENT: staging
+  environment:
+    name: staging
+    url: https://pacscl-staging.library.upenn.edu/
+  only:
+    - main
+
+# Deploy production
+deploy_production:
+  <<: *deploy
+  stage: deploy
+  variables:
+    DEPLOY_ENVIRONMENT: production
+  environment:
+    name: production
+    url: https://findingaids.library.upenn.edu/
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_TAG != null
+# -- End - deployment
 
 # -- Start - remove images passed through pipeline
 remove_tmp_base_app_image_from_host:
