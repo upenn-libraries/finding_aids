@@ -9,6 +9,7 @@
     - [Notification](#notifications)
     - [Status](#status)
 - [Local Development Environment](#local-development-environment)
+  - [Interacting with the Application](#interacting-with-the-application)
   - [Harvesting Sample Endpoints](#harvesting-sample-endpoints)
   - [Running Test Suite](#running-test-suite)
 - [Rubocop](#rubocop)
@@ -67,7 +68,7 @@ The Rails application will be available at, [https://finding-aid-discovery-dev.l
 
 The Solr admin console will be available at, [https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/](https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/).
 
-### Interacting with Application
+### Interacting with the Application
 
 Once your local development environment is set up you can ssh into the vagrant box to interact with the application:
 
@@ -81,12 +82,8 @@ Once your local development environment is set up you can ssh into the vagrant b
 
 To harvest some of the endpoints in a local development environment:
 
-1. Enter the Vagrant VM by running `vagrant ssh` in the `/vagrant` directory
-2. Start a shell in the `finding_aid_discovery` container:
-```bash
-  docker exec -it fad_finding_aid_discovery.1.{whatever} sh
-```
-3. Run rake tasks:
+1. Start a shell in the finding aids discovery app, see [interacting-with-the-application](#interacting-with-the-application)
+2. Run rake tasks:
 ```bash
 bundle exec rake tools:sync_endpoints
 bundle exec rake tools:harvest_from endpoints=ISM,WFIS,ANSP,LCP,CCHS,PCA
@@ -96,12 +93,8 @@ bundle exec rake tools:harvest_from endpoints=ISM,WFIS,ANSP,LCP,CCHS,PCA
 
 In order to run the test suite (currently):
 
-1. Enter the Vagrant VM with `vagrant ssh`
-2. Start a shell in the `finding_aid_discovery` container:
-```bash
-  docker exec -it fad_finding_aid_discovery.1.{whatever} sh
-```
-3. Run `rspec` command: `RAILS_ENV=test bundle exec rspec`
+1. Start a shell in the finding aids discovery app, see [interacting-with-the-application](#interacting-with-the-application)
+2. Run `rspec` command: `RAILS_ENV=test bundle exec rspec`
 
 ## Rubocop
 
