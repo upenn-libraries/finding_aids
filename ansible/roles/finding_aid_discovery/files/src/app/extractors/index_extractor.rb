@@ -47,34 +47,34 @@ class IndexExtractor < BaseExtractor
 
   private
 
-  # Extract all xml urls present at the URL given.
+  # Extract all xml urls present at the URL given. If URL is redirected, uses new redirected URL when creating
+  # absolute URLs from relative URLs.
   #
   # @param [String] url
   # @return [Array[<XMLFile>]]
   def extract_xml_urls(url)
-    # what if this redirects? we should log a message or raise an alert if this redirs and we join with the
-    # original URL in #note_to_url the new derived URLs might not redirect to the XML files as expected
-    # TODO: raise HB notice on redirect? auto-update Endpoint.url? save redirected URL for use in #node_to_uri?
-    doc = Nokogiri::HTML.parse(DownloadService.fetch(url))
+    # Getting response and storing it in a variable in order to use additional methods provided by OpenURI::Meta.
+    # Specifically we are using the #base_uri method in order to generate accurate full URI's in case of redirection.
+    response = DownloadService.fetch(url)
+    doc = Nokogiri::HTML.parse(response)
 
     # Extract list of XML URLs
     doc.xpath('//a/@href')
-       .filter_map { |node| node_to_uri node }
+       .filter_map { |node| full_url node.value, response.base_uri }
        .select { |uri| uri.path&.ends_with? '.xml' }
        .map { |uri| XMLFile.new(url: uri.to_s) }
   end
 
-  # @param [Nokogiri::XML::Attr] href_link
+  # Converts link into full url. If link is a relative link, it prepends the base uri to create a full url. If the link
+  # is already a full url, it isn't changed.
+  #
+  # @param [URI::HTTPS] base_uri used to create full urls for relative links
+  # @param [String] link
   # @return [NilClass, URI::HTTP, URI::Generic]
-  def node_to_uri(href_link)
-    val = href_link.value
-    uri = URI.parse val
-    if uri.is_a? URI::HTTP
-      uri
-    else
-      normalized_endpoint_url = @endpoint.url.ends_with?('/') ? @endpoint.url : "#{@endpoint.url}/"
-      URI.join(normalized_endpoint_url, val)
-    end
+  def full_url(link, base_uri)
+    base_uri = "#{base_uri}/" unless base_uri.to_s.ends_with?('/')
+    uri = URI.parse link
+    uri.is_a?(URI::HTTP) ? uri : URI.join(base_uri, link)
   rescue URI::InvalidURIError => _e # if its a malformed URL, ignore
     nil
   end
