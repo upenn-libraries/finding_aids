@@ -19,7 +19,7 @@
         <%= content %>
         <div id="overview">
           <h3 class="bs4-visually-hidden">Notifications</h3>
-          <%= location_message %>
+          <%= location_message(with_address: true) %>
           <%= access_clarification_message %>
           <h3 class="bs4-visually-hidden">Overview and metadata sections</h3>
           <%= render CollapsableMetadataSection.new(title: t('sections.collection_overview'), open: true) do %>

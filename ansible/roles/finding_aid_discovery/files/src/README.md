@@ -26,5 +26,5 @@ Endpoint information is stored as CSV in `data/index_endpoints.csv` and `data/pe
 3. Run rake tasks:
 ```bash
 bundle exec rake tools:sync_endpoints
-bundle exec rake tools:harvest_from endpoints=ism,wfis,ansp,lcp,cchs,pca
+bundle exec rake tools:harvest_from endpoints=ISM,WFIS,ANSP,LCP,CCHS,PCA
 ```

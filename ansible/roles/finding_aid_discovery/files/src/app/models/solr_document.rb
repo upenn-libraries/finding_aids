@@ -57,6 +57,11 @@ class SolrDocument
     fetch(:repository_ssi, '')
   end
 
+  # @return [String]
+  def repository_address
+    fetch(:repository_address_ssi, nil)
+  end
+
   def penn_item?
     fetch(:repository_name_component_1_ssi) == 'University of Pennsylvania'
   end
@@ -65,7 +70,7 @@ class SolrDocument
     fetch(:repository_ssi, nil).in? REQUESTABLE_REPOSITORIES
   end
 
-  def correction_email
+  def contact_email
     fetch(:contact_emails_ssm).first
   end
 

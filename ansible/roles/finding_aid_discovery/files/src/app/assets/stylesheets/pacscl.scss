@@ -518,6 +518,10 @@ header h1.index_title.document-title-heading {
     background-repeat: no-repeat;
     background-size: 25px 25px;
     padding-left: 3.7rem;
+    span.repository-location {
+      font-size: 1.4rem;
+      display: block;
+    }
     &.upenn {
       background-image: image-url("upenn-shield.svg");
     }

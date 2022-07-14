@@ -73,6 +73,10 @@ describe EadParser do
       it 'has expected years' do
         expect(hash[:years_iim]).to match_array 1826..1937
       end
+
+      it 'has the right repository address' do
+        expect(hash[:repository_address_ssi]).to eql('500 College Avenue, Swarthmore, Pennsylvania 19081')
+      end
     end
 
     context 'when parsing sample Penn Museum EAD' do
@@ -181,6 +185,10 @@ describe EadParser do
 
       it 'has the right repository name component 3' do
         expect(hash[:repository_name_component_3_ssi]).to be_nil
+      end
+
+      it 'has the right repository address' do
+        expect(hash[:repository_address_ssi]).to eql('3260 South Street, Philadelphia, Pennsylvania, 19104-6324')
       end
 
       it 'has the right preferred citation' do
