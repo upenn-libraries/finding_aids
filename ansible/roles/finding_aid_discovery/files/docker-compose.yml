@@ -3,7 +3,7 @@ version: "3.8"
 services:
   finding_aid_discovery:
     image: ${FINDING_AID_DISCOVERY_IMAGE_NAME}:${FINDING_AID_DISCOVERY_IMAGE_TAG}
-    command: ["bin/rails", "server", "-b", "0.0.0.0", "-p", "${FINDING_AID_DISCOVERY_PORT}"]
+    command: ["bundle", "exec", "puma", "-b", "tcp://0.0.0.0:${FINDING_AID_DISCOVERY_PORT}"]
     deploy:
       placement:
         constraints:
