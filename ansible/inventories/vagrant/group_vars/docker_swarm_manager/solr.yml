@@ -8,4 +8,8 @@ solr:
     name: "solr"
     registry: "gitlab.library.upenn.edu/pacscl/finding-aid-discovery/solr"
     tag: "main"
+  java:
+    memory:
+      min: "512m"
+      max: "512m"
   replicas: 1

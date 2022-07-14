@@ -14,6 +14,7 @@ services:
     environment:
       CONFIG_LOCATION: ${SOLR_CONFIG_LOCATION}
       CORE_NAME: ${SOLR_CORE_NAME}
+      SOLR_JAVA_MEM: "-Xms${SOLR_JAVA_MEMORY_MIN} -Xmx${SOLR_JAVA_MEMORY_MAX}"
     healthcheck:
       test:
         [
