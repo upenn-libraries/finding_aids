@@ -12,7 +12,8 @@ class DocumentComponent < Blacklight::DocumentComponent
     content_tag :p, class: 'repository-info' do
       t('messages.location_html',
         repository: @document.repository,
-        contact_email: @document[:contact_emails_ssm].first)
+        contact_email: @document[:contact_emails_ssm].first) +
+        content_tag(:span, @document.repository_address, class: 'repository-location')
     end
   end
 

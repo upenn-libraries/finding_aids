@@ -179,13 +179,38 @@ class EadParser
   end
 
   # @param [Nokogiri::XML::Document] doc
-  # @return [Array]
+  # @return [String]
   def repository(doc)
     if doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).present?
       doc.at_xpath('/ead/archdesc/did/repository/corpname').try(:text).try(:strip)
     else
       doc.at_xpath('/ead/archdesc/did/repository').try(:text).try(:strip)
     end
+  end
+
+  # Returns repository address provided, which often times includes phone number, email addresses and urls. For now,
+  # we are removing additional information, but in future we could include it.
+  #
+  # @param [Nokogiri::XML::Document] doc
+  # @return [String]
+  def repository_address(doc)
+    # Attempt to extract repository address, if not found, try to extract publisher address if
+    # publisher and repository are the same.
+    repository_addresslines = doc.xpath('/ead/archdesc/did/repository/address/addressline')
+    publisher_name = doc.at_xpath('/ead/eadheader/filedesc/publicationstmt/publisher').try(:text).try(:strip)
+
+    addresslines = if repository_addresslines.present?
+                     repository_addresslines
+                   elsif publisher_name.eql?(repository(doc))
+                     doc.xpath('/ead/eadheader/filedesc/publicationstmt/address/addressline')
+                   end
+
+    return if addresslines.blank?
+
+    # Remove emails, URLs and phone numbers from address.
+    addresslines = addresslines.map { |a| a.try(:text).try(:strip) }
+                               .delete_if { |a| a.match?(/\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}|@|URL|http/) }
+    addresslines.blank? ? nil : addresslines.join(', ')
   end
 
   # https://www.loc.gov/ead/tglib/elements/origination.html
@@ -315,6 +340,7 @@ class EadParser
       abstract_scope_contents_tsi: abstract_scope_contents(doc),
       preferred_citation_ss: preferred_citation(doc),
       repository_ssi: repository(doc),
+      repository_address_ssi: repository_address(doc),
       creators_ssim: creators(doc),
       people_ssim: people(doc),
       places_ssim: places(doc),
