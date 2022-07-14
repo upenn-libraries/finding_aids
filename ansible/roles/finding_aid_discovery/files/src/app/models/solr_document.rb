@@ -70,7 +70,7 @@ class SolrDocument
     fetch(:repository_ssi, nil).in? REQUESTABLE_REPOSITORIES
   end
 
-  def correction_email
+  def contact_email
     fetch(:contact_emails_ssm).first
   end
 
