@@ -1,26 +1,89 @@
-# PACSCL Finding Aid Discovery site
+# Finding Aid Discovery Site
 
-## Setup
+- [Overview](#overview)
+  - [Endpoints](#endpoints)
+  - [Generating Unique Identifiers](#generating-unique-identifiers)
+  - [Harvesting](#harvesting)
+    - [IndexExtractor](#indexextractor)
+    - [PennASpaceExtractor](#pennaspaceextractor)
+    - [Notification](#notifications)
+    - [Status](#status)
+- [Local Development Environment](#local-development-environment)
+  - [Harvesting Sample Endpoints](#harvesting-sample-endpoints)
+  - [Running Test Suite](#running-test-suite)
+- [Rubocop](#rubocop)
 
-- clone repo
-- `bundle install`
-- `rails s` -> yields DB error - adjust `config/database.yml` as needed
+## Overview
+This application enables discovery of archival materials available in Philadelphia area. PACSCL members, Penn units and other regional archives make available EAD files which are then harvested and indexed by this application. Records can be harvested from a web page or from Penn Libraries' ArchivesSpace instance. Blacklight is used to facilitate discovery and display of archival information. EAD XML metadata is parsed at index and display time using a custom EAD parser. A shallow integration with Aeon facilitates requesting for certain Penn Libraries collections.
 
-## Loading data
+### Endpoints
+Each organization providing records has a corresponding `Endpoint`. All stored information (slug, harvest config, contacts) about these endpoints is contained in the [endpoints CSV file](/ansible/roles/finding_aid_discovery/files/src/data/endpoints.csv).
 
-### Sample Solr data (temporary)
+When a new organization wishes to have their EADs indexed into the application they must provide:
+- an endpoint slug, which can include uppercase letters and underscores
+- technical contact, email
+- public contact, email
+- index url, if indexing from a webpage
+- repository id, if indexing from the Penn ArchiveSpace instance
 
-```bash
-bundle exec rake tools:index_sample_data
+### Generating Unique Identifiers
+Identifiers for each EAD are generated from the endpoint slug and unit id. The unit ids provided in each EAD should be unique for that repository. If they are not this is a problem the partner needs to rectify.
+
+We generate the id by extracting the unit_id from `/ead/archdesc/did/unitid[not(@audience='internal')]`, removing any characters that aren't letters, numbers, period or dashes, uppercasing the value and then prefixing it with the endpoint slug followed by an underscore. The code looks something like:
+
+```ruby
+endpoint_slug = 'EXAMPLE'
+unit_id = xml.at_path('/ead/archdesc/did/unitid[not(@audience='internal')]').text
+"#{endpoint_slug}_#{unit_id}.gsub(/[^A-Za-z0-9.-]/, '').upcase"
 ```
 
-### Harvesting sample endpoints
+### Harvesting
 
-Endpoint information is stored as CSV in `data/index_endpoints.csv` and `data/penn_aspace_endpoints.csv`. To harvest some of the endpoints in a local development environment:
+Background jobs exist to queue up and perform the harvesting operations. [`PartnerHarvestEnququeJob`](/ansible/roles/finding_aid_discovery/files/src/app/jobs/partner_harvest_enqueue_job.rb) will first synchronize the `Endpoints` stored in the application with the contents of the [endpoints CSV file](/ansible/roles/finding_aid_discovery/files/src/data/endpoints.csv), then enqueue a [`PartnerHarvestJob`](/ansible/roles/finding_aid_discovery/files/src/app/jobs/partner_harvest_job.rb) for each endpoint.
 
-1. Enter the Vagrant VM with `vagrant ssh`
+Currently two means of harvesting are supported. The means used is configured as part of the endpoint's configuration. Harvesting behavior is represented in `Extractor` classes.
+
+#### IndexExtractor
+
+This means of harvesting supports the legacy application style of basic HTML pages containing an index of links to EAD XML files. This extractor will parse a HTML document and pull out any `href`s that point to `.xml` files.
+
+#### PennASpaceExtractor
+
+Endpoints that correspond to a repository in the Penn libraries ArchivesSpace environment can have records harvested directly from ASpace via the ASpace API. Penn Libraries ASpace is hosted by Atlas Systems. API access is performed with the `pacscl_api` ASpace user.
+
+It is important to note that all Resources in a Repository will be harvested where `publish` is set to `true` in ASpace.
+
+#### Notifications
+Email notifications are sent to the technical contact and the product owner, Holly Mengel, when there is a partial or failed harvest. 
+
+#### Status
+The status of harvesting operation can be viewed at `/admin/endpoints` - including specific information about individual files.
+
+## Local Development Environment
+
+Our local development environment uses vagrant in order to set up a consistent environment with the required services. Please see the [root README for instructions](../../../../../README.md#development)  on how to set up this environment.
+
+The Rails application will be available at, [https://finding-aid-discovery-dev.library.upenn.edu](https://finding-aid-discovery-dev.library.upenn.edu).
+
+The Solr admin console will be available at, [https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/](https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/).
+
+### Interacting with Application
+
+Once your local development environment is set up you can ssh into the vagrant box to interact with the application:
+
+1. Enter the Vagrant VM by running `vagrant ssh` in the `/vagrant` directory
 2. Start a shell in the `finding_aid_discovery` container:
 ```
+  docker exec -it fad_finding_aid_discovery.1.{whatever} sh
+```
+
+### Harvesting Sample Endpoints
+
+To harvest some of the endpoints in a local development environment:
+
+1. Enter the Vagrant VM by running `vagrant ssh` in the `/vagrant` directory
+2. Start a shell in the `finding_aid_discovery` container:
+```bash
   docker exec -it fad_finding_aid_discovery.1.{whatever} sh
 ```
 3. Run rake tasks:
@@ -28,3 +91,27 @@ Endpoint information is stored as CSV in `data/index_endpoints.csv` and `data/pe
 bundle exec rake tools:sync_endpoints
 bundle exec rake tools:harvest_from endpoints=ISM,WFIS,ANSP,LCP,CCHS,PCA
 ```
+
+### Running Test Suite
+
+In order to run the test suite (currently):
+
+1. Enter the Vagrant VM with `vagrant ssh`
+2. Start a shell in the `finding_aid_discovery` container:
+```bash
+  docker exec -it fad_finding_aid_discovery.1.{whatever} sh
+```
+3. Run `rspec` command: `RAILS_ENV=test bundle exec rspec`
+
+## Rubocop
+
+This application uses Rubocop to enforce Ruby and Rails style guidelines. We centralize our UPenn specific configuration in 
+[upennlib-rubocop](https://gitlab.library.upenn.edu/digital-library-development-team/upennlib-rubocop).
+
+If there are rubocop offenses that you are not able to fix please do not edit the rubocop configuration instead regenerate the `rubocop_todo.yml` using the following command:
+
+```bash
+rubocop --auto-gen-config  --auto-gen-only-exclude --exclude-limit 10000
+```
+
+To change our default Rubocop config please open an MR in the `upennlib-rubocop` project.
