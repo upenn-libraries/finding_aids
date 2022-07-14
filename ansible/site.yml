@@ -66,3 +66,10 @@
       file:
         path: "{{ project_root }}"
         state: absent
+    - name: Prune images that are older than 2+ hours
+      docker_prune:
+        images: yes
+        images_filters:
+          dangling: false
+          until: 2h
+      when: not is_development | default (false) == true
