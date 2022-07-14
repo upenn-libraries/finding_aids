@@ -1,5 +1,5 @@
 # Finding Aid Discovery
----
+
 - [Overview](#overview)
 - [Development](#development)
   - [Starting](#starting)
