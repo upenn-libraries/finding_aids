@@ -1,22 +1,36 @@
-## Finding Aid Discovery
----
+# Finding Aid Discovery
 
+- [Overview](#overview)
 - [Development](#development)
   - [Starting](#starting)
   - [Stopping](#stopping)
   - [Destroying](#destroying)
   - [SSH](#ssh)
   - [Traefik](#traefik)
+  - [Rails Application](#rails-application)
   - [Solr Admin](#solr-admin)
+- [Deployment](#deployment)
+  - [Staging](#staging)
+  - [Production](#production)
+- [Harvesting](#harvesting)
+
+## Overview
+This repository includes the infrastructure and application code that supports the PACSCL/Penn Libraries Finding Aids discovery site. Development occurs within a robust vagrant environment. Setup and initialization of this environment, as well as information about the deployed staging and production environments, is contained here. Information about the Rails app can be found [here](/ansible/roles/finding_aid_discovery/files/src/README.md).
 
 ## Development
 
 > Caveat: the vagrant development environment has only been tested in Linux.
 
-In order to use the integrated development environment you will need to install [VirtualBox](https://www.virtualbox.org/wiki/Linux_Downloads) and [Vagrant](https://www.vagrantup.com/docs/installation), and the following Vagrant plugins: vagrant-vbguest, and vagrant-hostsupdater:
+In order to use the integrated development environment you will need to install [VirtualBox](https://www.virtualbox.org/wiki/Linux_Downloads) and [Vagrant](https://www.vagrantup.com/docs/installation) [do *not* use the Vagrant version that may be available for your distro repository - explicitly follow instructions at the Vagrant homepage], and the following Vagrant plugins: `vagrant-vbguest`, `vagrant-hostsupdater` and `vault`:
 
 ```
-vagrant plugin install vagrant-vbguest vagrant-hostsupdater
+vagrant plugin install vagrant-vbguest vagrant-hostsupdater vault
+```
+
+You may need to update the VirtualBox configuration for the creation of a host-only network. This can be done by creating a file `/etc/vbox/networks.conf` containing:
+
+```
+* 10.0.0.0/8
 ```
 
 #### Starting
@@ -57,18 +71,34 @@ vagrant ssh
 
 When running the development environment you can access the traefik web ui by navigating to: [https://finding-aid-discovery-dev.library.upenn.edu:8080/#](https://finding-aid-discovery-dev.library.upenn.edu:8080/#). The username and password are located in [ansible/inventories/vagrant/group_vars/docker_swarm_manager/traefik.yml](ansible/inventories/vagrant/group_vars/docker_swarm_manager/traefik.yml)
 
-#### Running Spec Suite
 
-In order to run the test suite (currently):
-
-1. Enter the Vagrant VM with `vagrant ssh`
-2. Start a shell in the `finding_aid_discovery` container: 
-```
-  docker exec -it fad_finding_aid_discovery.1.{whatever} sh
-```
-3. Run `rspec` command: `RAILS_ENV=test bundle exec rspec`
+#### Rails Application
+For information about the Rails application, see the [README](/ansible/roles/finding_aid_discovery/files/src/README.md) in the Rails application root. This includes information about running the test suite, performing harvesting, development styleguide and general application information.
 
 #### Solr Admin
 
 To access the Solr admin when running a development environment navigate to:
 [https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/](https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/)
+
+## Deployment
+Gitlab automatically deploys to both our staging and production environment under certain conditions.
+
+### Staging
+Gitlab deploys to our staging server every time new code gets merged into `main`. The staging site is available at [https://pacscl-staging.library.upenn.edu/](https://pacscl-staging.library.upenn.edu/).
+
+Code cannot be pushed directly onto `main`, new code must be merged via a merge request.
+
+### Production
+Deployments are triggered when a new git tag is created that matches [semantic versioning](https://semver.org/), (e.g., v1.0.0). Git tags should be created via the creation of a new Release in Gitlab.
+
+In order to deploy to production:
+1. Go to [https://gitlab.library.upenn.edu/pacscl/finding-aid-discovery/-/releases/new](https://gitlab.library.upenn.edu/pacscl/finding-aid-discovery/-/releases/new)
+2. Create a new tag that follows semantic versioning. Please use the next tag in the sequence.
+3. Relate a milestone to the release if there is one.
+4. Add a release title that is the same as the tag name.
+5. Submit by clicking "Create Release".
+
+The production site is available at [https://findingaids.library.upenn.edu/](https://findingaids.library.upenn.edu/).
+
+## Harvesting
+In our production and staging environments we schedule harvesting jobs via [sidekiq-cron](https://github.com/ondrejbartas/sidekiq-cron). All endpoints are harvested on Monday, Wednesday, Friday at 5am.

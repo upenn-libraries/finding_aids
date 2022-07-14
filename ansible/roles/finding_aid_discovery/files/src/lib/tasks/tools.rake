@@ -3,12 +3,6 @@
 require 'csv'
 
 namespace :tools do
-  desc 'Index sample data'
-  task index_sample_data: :environment do
-    status = Open3.capture2e "curl -sX POST '#{ENV.fetch('SOLR_URL')}/update/json?commit=true' --data-binary @data/solr_json/sample.json -H 'Content-type:application/json'"
-    puts status.join
-  end
-
   desc 'Harvest selected endpoints'
   task harvest_from: :environment do
     abort(Rainbow('Incorrect arguments. Pass endpoints=first,second,third').red) if ENV['endpoints'].blank?

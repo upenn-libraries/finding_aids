@@ -1,5 +1,4 @@
-## Finding Aid Discovery - Ansible
----
+# Finding Aid Discovery - Ansible
 
 - [Vault Files](#vault-files)
 
