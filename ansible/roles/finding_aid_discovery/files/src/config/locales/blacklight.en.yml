@@ -1,5 +1,5 @@
 en:
   blacklight:
-    application_name: 'PAARP'
+    application_name: 'Philadelphia Area Archives'
     repositories:
       page_title: 'Repositories - %{application_name}'
