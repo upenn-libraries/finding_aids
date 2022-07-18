@@ -97,7 +97,7 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 EXPOSE 3000
 VOLUME ${PROJECT_ROOT}
 
-CMD ["bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+CMD ["bundle", "exec", "puma", "-b", "tcp://0.0.0.0:3000"]
 
 
 # Production Stage -----------------------------------
@@ -148,4 +148,4 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 EXPOSE 3000
 VOLUME ${PROJECT_ROOT}
 
-CMD ["bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+CMD ["bundle", "exec", "puma", "-b", "tcp://0.0.0.0:3000"]
