@@ -72,10 +72,23 @@ class IndexExtractor < BaseExtractor
   # @param [String] link
   # @return [NilClass, URI::HTTP, URI::Generic]
   def full_url(link, base_uri)
-    base_uri = "#{base_uri}/" unless base_uri.to_s.ends_with?('/')
     uri = URI.parse link
-    uri.is_a?(URI::HTTP) ? uri : URI.join(base_uri, link)
+    uri.is_a?(URI::HTTP) ? uri : URI.join(endpoint_url_dir(base_uri), link)
   rescue URI::InvalidURIError => _e # if its a malformed URL, ignore
     nil
+  end
+
+  # Prepare an endpoint index URI for concatenation with xml file name
+  # @param [URI] base_uri
+  # @return [String]
+  def endpoint_url_dir(base_uri)
+    uri = base_uri.to_s
+    if uri.ends_with?('/')
+      uri.to_s
+    elsif uri.ends_with?('.htm') || uri.ends_with?('.html')
+      uri.gsub(/(\w)+.htm(l)?$/, '')
+    else
+      "#{uri}/"
+    end
   end
 end
