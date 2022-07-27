@@ -70,7 +70,7 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def unit_id(doc)
-    doc.at_xpath("/ead/archdesc/did/unitid[not(@audience='internal')]").try(:text).try(:strip)
+    doc.at_xpath("/ead/archdesc/did/unitid[not(@audience='internal' or @type='aspace_uri')]").try(:text).try(:strip)
   end
 
   # @param [Nokogiri::XML::Document] doc

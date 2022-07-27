@@ -111,7 +111,7 @@ class CollectionComponent < ViewComponent::Base
   end
 
   def unitid
-    node.at_xpath('did/unitid[not(@audience=\'internal\')]').try(:text)
+    node.at_xpath("did/unitid[not(@audience='internal' or @type='aspace_uri')]").try(:text)
   end
 
   def unittitle_node
