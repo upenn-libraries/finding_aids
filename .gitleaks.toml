@@ -162,7 +162,9 @@ title = "gitlab gitleaks config"
             '''SecretsService\.lookup''',
             '''auth\:\s1''',
             '''\:\s+\"password\"''',
-            '''(external|penn)_auth'''
+            '''(external|penn)_auth''',
+            '''(?i)vault_token\s?=\s?(.*vault_token|getpass\.getpass)''',
+            '''vault_token:\s?str'''
         ]
 
 [[rules]]
