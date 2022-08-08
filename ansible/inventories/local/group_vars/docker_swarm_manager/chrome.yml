@@ -1,0 +1,6 @@
+---
+chrome:
+  image:
+    name: "browserless/chrome"
+    tag: "1.31-chrome-stable"
+  port: 3333

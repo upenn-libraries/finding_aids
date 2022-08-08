@@ -6,4 +6,4 @@ services:
       APP_UID: ${UID:-1000}
       APP_GID: ${GID:-1000}
     volumes:
-      - /finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/:/home/app
+      - ${FINDING_AID_DISCOVERY_DEV_VOLUME_PATH}:/home/app

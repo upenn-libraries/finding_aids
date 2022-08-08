@@ -64,6 +64,7 @@
     DATABASE_NAME: "{{ postgres.database }}"
     DATABASE_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
     DATABASE_USER: "{{ postgres.user }}"
+    FINDING_AID_DISCOVERY_DEV_VOLUME_PATH: "{{ finding_aid_discovery.dev.volume_path }}"
     FINDING_AID_DISCOVERY_HONEYBADGER_API_KEY: "{{ 'finding_aid_discovery_honeybadger_api_key_v' ~ finding_aid_discovery.versioned_secrets.honeybadger_api_key.version }}"
     FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.name }}"
     FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"

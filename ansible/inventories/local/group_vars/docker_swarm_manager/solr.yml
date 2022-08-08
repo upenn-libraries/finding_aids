@@ -5,8 +5,8 @@ solr:
   config_location: "/finding_aid_discovery_configs"
   core_name: "finding-aid-discovery-core"
   dev:
-    build_path: "/finding_aid_discovery/ansible/roles/solr/files/src/"
-    volume_path: "/finding_aid_discovery/ansible/roles/solr/files/src/"
+    build_path: "/app/roles/solr/files/src"
+    volume_path: "{{ lookup('ansible.builtin.env', 'BASE_DIR') }}/ansible/roles/solr/files/src/"
   image:
     name: "solr"
     registry: "gitlab.library.upenn.edu/pacscl/finding-aid-discovery/solr"

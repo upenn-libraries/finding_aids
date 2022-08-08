@@ -1,0 +1,12 @@
+---
+docker_swarm_addr: "{{ ansible_host }}"
+
+# Docker swarm setup vars
+skip_repo: false
+skip_containerd: true
+skip_engine: false
+skip_cli: true
+skip_swarm: false
+skip_group: true
+skip_docker_py: false
+skip_docker_compose: true

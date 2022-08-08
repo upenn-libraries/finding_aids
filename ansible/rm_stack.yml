@@ -1,0 +1,33 @@
+---
+- name: "Provision Docker Swarm Cluster"
+  hosts: all
+  become: true
+  tasks:
+    - ansible.builtin.import_tasks: "provision_docker.yml"
+
+- name: "Remove Stack/s"
+  hosts: docker_swarm_manager
+  become: true
+  gather_facts: true
+  tasks:
+    - name: "Remove fad stack"
+      community.docker.docker_stack:
+        name: "fad"
+        state: absent
+
+    - name: "Remove labels"
+      community.docker.docker_node:
+        hostname: "{{ ansible_hostname }}"
+        labels_to_remove: "{{ swarm_labels }}"
+      changed_when: false
+      delegate_to: "{{ groups['docker_swarm_manager'][0] }}"
+      delegate_facts: true
+
+    # - name: "Remove docker secret"
+    #   community.docker.docker_secret:
+    #     name: "{{ 'traefik_middlewares_users_v' ~ traefik.middlewares_auth.version }}"
+    #     state: absent
+    #   loop:
+    #     - "{{ finding_aid_discovery.versioned_secrets }}"
+    #     - "{{ postgres.secrets }}"
+

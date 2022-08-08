@@ -51,6 +51,7 @@
     SOLR_ADMIN_PORT: "{{ solr.admin_port }}"
     SOLR_CONFIG_LOCATION: "{{ solr.config_location }}"
     SOLR_CORE_NAME: "{{ solr.core_name }}"
+    SOLR_DEV_VOLUME_PATH: "{{ solr.dev.volume_path }}"
     SOLR_IMAGE_NAME: "{{ solr.image.name }}"
     SOLR_IMAGE_TAG: "{{ solr.image.tag }}"
     SOLR_JAVA_MEMORY_MIN: "{{ solr.java.memory.min }}"

@@ -2,7 +2,7 @@
 - name: Create custom docker image
   docker_image:
     build:
-      path: "/finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/"
+      path: "{{ finding_aid_discovery.dev.build_path }}"
       pull: yes
       target: development
     force_tag: yes

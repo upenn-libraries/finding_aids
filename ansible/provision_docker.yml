@@ -1,0 +1,15 @@
+---
+- name: "Install deps"
+  ansible.builtin.import_tasks: "install_deps.yml"
+  tags: deps
+
+- name: "Set dev variables passed from env"
+  ansible.builtin.set_fact:
+    ansible_hostname: "{{ lookup('ansible.builtin.env', 'HOST_HOSTNAME') }}"
+    docker_swarm_addr: "{{ lookup('ansible.builtin.env', 'HOST_ADDRESS') }}"
+    docker_swarm_interface: "{{ lookup('ansible.builtin.env', 'HOST_INTERFACE') }}"
+  when: is_development | default (false, true)
+
+- name: "Provision Docker Swarm Cluster"
+  ansible.builtin.import_role:
+    name: atosatto.docker-swarm

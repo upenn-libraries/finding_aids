@@ -5,7 +5,7 @@
       args:
         CONFIG_LOCATION: "{{ solr.config_location }}"
         CORE_NAME: "{{ solr.core_name }}"
-      path: "/finding_aid_discovery/ansible/roles/solr/files/src"
+      path: "{{ solr.dev.build_path }}"
       pull: yes
     force_tag: yes
     force_source: yes

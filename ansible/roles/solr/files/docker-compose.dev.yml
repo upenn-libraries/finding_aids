@@ -13,8 +13,8 @@ services:
     networks:
       - traefik
     volumes:
-      - /finding_aid_discovery/ansible/roles/solr/files/src/conf:${SOLR_CONFIG_LOCATION}/conf
-      - /finding_aid_discovery/ansible/roles/solr/files/src/scripts:/docker-entrypoint-initdb.d
+      - ${SOLR_DEV_VOLUME_PATH}/conf:${SOLR_CONFIG_LOCATION}/conf
+      - ${SOLR_DEV_VOLUME_PATH}/scripts:/docker-entrypoint-initdb.d
 
 networks:
   traefik:
