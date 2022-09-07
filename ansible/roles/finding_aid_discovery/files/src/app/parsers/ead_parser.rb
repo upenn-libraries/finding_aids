@@ -97,7 +97,7 @@ class EadParser
   def extent(doc)
     raw1 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[1]').try :text
     raw2 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[2]').try :text
-    raw1.gsub!('.0', '')
+
     return raw1.downcase if raw2.blank?
 
     "#{raw1} (#{raw2})".downcase
