@@ -24,7 +24,8 @@ This repository includes the infrastructure and application code that supports t
 In order to use the integrated development environment you will need to install [VirtualBox](https://www.virtualbox.org/wiki/Linux_Downloads) and [Vagrant](https://www.vagrantup.com/docs/installation) [do *not* use the Vagrant version that may be available for your distro repository - explicitly follow instructions at the Vagrant homepage], and the following Vagrant plugins: `vagrant-vbguest`, `vagrant-hostsupdater` and `vault`:
 
 ```
-vagrant plugin install vagrant-vbguest vagrant-hostsupdater vault
+vagrant plugin install vagrant-vbguest vagrant-hostsupdater
+vagrant plugin install vault --plugin-version 0.16.0
 ```
 
 You may need to update the VirtualBox configuration for the creation of a host-only network. This can be done by creating a file `/etc/vbox/networks.conf` containing:
