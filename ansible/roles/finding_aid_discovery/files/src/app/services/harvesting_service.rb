@@ -86,13 +86,14 @@ class HarvestingService
   def validate_identifier(ead, id)
     return unless id.in?(document_ids)
 
-    raise StandardError, "Generated ID is not unique for #{ead.source_id}. Please ensure each file has a unique id."
+    raise IdentifierUniquenessError, "Generated ID is not unique for #{ead.source_id}. Please ensure each file has a unique id."
   end
 
   # @param [BaseEadFile] ead_file
   # @param [Exception] exception
   def log_error_from(ead_file, exception)
     Rails.logger.error "Problem parsing #{ead_file.source_id}: #{exception.message}"
+    push_notification_for(ead_file, exception)
     @file_results << { id: ead_file.source_id, status: :failed,
                        errors: ["Problem downloading file: #{exception.message}"] }
   end
@@ -117,6 +118,16 @@ class HarvestingService
     Rails.logger.error "Fatal error during harvesting: #{errors.join(', ')}"
     @endpoint.update!(
       last_harvest_results: { date: DateTime.current, files: [], errors: }
+    )
+  end
+
+  # @param [Exception] exception
+  # @param [EadFile] ead
+  def push_notification_for(ead, exception)
+    Honeybadger.notify(
+      "A problem occurred during harvesting of #{@endpoint.slug} EAD: #{ead.source_id}",
+      error_message: exception.message, error_class: exception.class.name, backtrace: exception.backtrace,
+      tags: 'harvesting, rescued'
     )
   end
 end
