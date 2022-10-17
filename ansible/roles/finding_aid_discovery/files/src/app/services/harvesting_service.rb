@@ -67,7 +67,7 @@ class HarvestingService
 
   def save_outcomes
     @endpoint.update!(
-      last_harvest_results: { date: DateTime.current, files: @file_results }
+      last_harvest_results: { date: DateTime.current, files: safe_file_results }
     )
   end
 
@@ -118,5 +118,19 @@ class HarvestingService
     @endpoint.update!(
       last_harvest_results: { date: DateTime.current, files: [], errors: }
     )
+  end
+
+  # ensure we aren't trying to save a ridiculous amount of data with file results and hitting
+  # the Postgres JSONB limit (~250 MB). since we can only know the size of the field after it
+  # has been converted to JSON, we can't do a simple truncation. since the case we are prote-
+  # -cting from here is a mass failure of an endpoint harvest (and potentially backtraces for
+  # every file error) I think a 50% sample of the file results array will do to limit things.
+  # @return [Array]
+  def safe_file_results
+    if @file_results.to_json.bytesize > 100_000_000
+      @file_results.sample(@file_results.size / 2)
+    else
+      @file_results
+    end
   end
 end
