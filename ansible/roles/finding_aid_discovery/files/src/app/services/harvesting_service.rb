@@ -120,17 +120,21 @@ class HarvestingService
     )
   end
 
-  # ensure we aren't trying to save a ridiculous amount of data with file results and hitting
-  # the Postgres JSONB limit (~250 MB). since we can only know the size of the field after it
-  # has been converted to JSON, we can't do a simple truncation. since the case we are prote-
-  # -cting from here is a mass failure of an endpoint harvest (and potentially backtraces for
-  # every file error) I think a 50% sample of the file results array will do to limit things.
+  # massage the @file_results array in case its JSON representation is too large
+  # Postgres' limit for JSONB fields is ~250MB
   # @return [Array]
   def safe_file_results
-    if @file_results.to_json.bytesize > 100_000_000
-      @file_results.sample(@file_results.size / 2)
-    else
-      @file_results
+    truncate_file_results_errors while @file_results.to_json.bytesize > 100_000_000
+    @file_results
+  end
+
+  # iterates through file_results array, truncating the error field values by half
+  def truncate_file_results_errors
+    @file_results.each do |entry|
+      next unless entry.key? :errors
+
+      length = entry[:errors].try(:first).try(:length) # for a file error, errors is always single-valued
+      entry[:errors] = Array.wrap(entry[:errors].try(:first).try(:truncate, length / 2))
     end
   end
 end
