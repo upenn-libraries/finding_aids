@@ -22,3 +22,6 @@ finding_aid_discovery:
     rails_master_key:
       value: "{{ finding_aid_discovery_vault.versioned_secrets.rails_master_key.value }}"
       version: 1
+    slack_notification_email_address:
+      value: "{{ finding_aid_discovery_vault.versioned_secrets.slack_notification_email_address.value }}"
+      version: 1

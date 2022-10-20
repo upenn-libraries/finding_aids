@@ -46,6 +46,7 @@ services:
       - penn_aspace_api_password
       - penn_aspace_api_username
       - redis_sidekiq_password
+      - slack_notification_email_address
 networks:
   database:
     external: true
@@ -70,3 +71,6 @@ secrets:
   redis_sidekiq_password:
     external: true
     name: ${REDIS_SIDEKIQ_PASSWORD}
+  slack_notification_email_address:
+    external: true
+    name: ${SLACK_NOTIFICATION_EMAIL_ADDRESS}

@@ -17,6 +17,7 @@ class HarvestNotificationMailer < ApplicationMailer
   end
 
   def failed_harvest_notification
-    mail(subject: "Harvest of #{@endpoint.slug} failed")
+    mail(cc: [FRIENDLY_PENN_PACSCL_CONTACT, SecretsService.lookup(key: :slack_notification_email_address)],
+         subject: "Harvest of #{@endpoint.slug} failed")
   end
 end

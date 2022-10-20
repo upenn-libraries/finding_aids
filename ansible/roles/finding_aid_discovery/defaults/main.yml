@@ -10,6 +10,9 @@ finding_aid_discovery:
   replicas: 1
   url: "finding-aid-discovery-dev.library.upenn.edu"
   versioned_secrets:
+    slack_notification_email_address:
+      value: "sample-slack@upennlts.slack.com"
+      version: 1
     honeybadger_api_key:
       value: "123456"
       version: 1
