@@ -80,7 +80,7 @@ class SolrDocument
   end
 
   class ParsedEad
-    ADMIN_INFO_SECTIONS = %w[publisher author sponsor accessrestrict userestrict].freeze
+    ADMIN_INFO_SECTIONS = %w[publisher author date sponsor accessrestrict userestrict].freeze
     OTHER_SECTIONS = %w[bioghist scopecontent arrangement relatedmaterials bibliography odd accruals
                         custodhist altformavail originalsloc fileplan acqinfo otherfindaid phystech
                         processinfo relatedmaterial separatedmaterial appraisal].freeze
@@ -109,6 +109,11 @@ class SolrDocument
     # @return [Nokogiri::XML::Element]
     def publisher
       @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt/publisher')
+    end
+
+    # @return [Nokogiri::XML::Element]
+    def date
+      @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt//date')
     end
 
     # @param [String, Symbol] name
