@@ -86,7 +86,7 @@ class HarvestingService
   def validate_identifier(ead, id)
     return unless id.in?(document_ids)
 
-    raise IdentifierUniquenessError, "Generated ID is not unique for #{ead.source_id}. Please ensure each file has a unique id."
+    raise StandardError, "Generated ID is not unique for #{ead.source_id}. Please ensure each file has a unique id."
   end
 
   # @param [BaseEadFile] ead_file
