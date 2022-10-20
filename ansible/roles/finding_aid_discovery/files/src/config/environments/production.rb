@@ -103,4 +103,6 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.credentials.key_path = '/run/secrets/rails_master_key'
+
+  config.default_host = 'https://findingaids.library.upenn.edu'
 end

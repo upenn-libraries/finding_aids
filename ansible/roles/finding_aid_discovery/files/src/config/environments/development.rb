@@ -85,4 +85,6 @@ Rails.application.configure do
   config.hosts << ENV.fetch('FINDING_AID_DISCOVERY_URL')
 
   config.credentials.key_path = '/run/secrets/rails_master_key'
+
+  config.default_host = 'https://finding-aid-discovery-dev.library.upenn.edu'
 end

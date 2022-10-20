@@ -14,4 +14,6 @@ Rails.application.configure do
   config.active_job.queue_adapter = :sidekiq
 
   config.credentials.key_path = '/run/secrets/rails_master_key'
+
+  config.default_host = 'https://pacscl-staging.library.upenn.edu'
 end

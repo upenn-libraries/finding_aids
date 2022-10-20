@@ -27,6 +27,7 @@
 !/storage/.keep
 
 /public/assets
+/public/sitemap*
 .byebug_history
 .ash_history
 
