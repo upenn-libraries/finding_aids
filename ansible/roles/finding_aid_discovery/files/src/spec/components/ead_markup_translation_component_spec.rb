@@ -166,7 +166,7 @@ XML
             <item>
               <list type="deflist">
                 <defitem>
-                  <label>Nested Label</item>
+                  <label>Nested Label</label>
                   <item>Nested Item</item>
                 </defitem>
               </list>
@@ -180,6 +180,23 @@ XML
         expect(page).to have_xpath '//ol/li[1]/dl/dt', count: 1, text: /Label/
         expect(page).to have_xpath '//ol/li', count: 2, text: /Item/
       end
+    end
+  end
+
+  context 'with extref tags' do
+    let(:xml) do
+      <<XML
+        <item>
+          <extref>This is a extref with no href</extref>
+          <extref actuate="onRequest" show="new" title="EAD2 tag" href="https://www.extref.old">
+          This is a link</extref> in EAD2 spec.
+        </item>
+XML
+    end
+
+    it 'converts them to HTML <a> tags with href attribute' do
+      expect(page).to have_xpath '//a[@href="https://www.extref.old" and @rel="noopener"]',
+                                 text: 'This is a link'
     end
   end
 end
