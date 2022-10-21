@@ -103,7 +103,7 @@ class SolrDocument
 
     # @return [Nokogiri::XML::Element]
     def author
-      @nodes.at_xpath('/ead/eadheader/filedesc/author')
+      @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt/author')
     end
 
     # @return [Nokogiri::XML::Element]
