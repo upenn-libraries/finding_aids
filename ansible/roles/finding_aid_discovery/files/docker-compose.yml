@@ -73,4 +73,4 @@ secrets:
     name: ${FINDING_AID_DISCOVERY_RAILS_MASTER_KEY}
   slack_notification_email_address:
     external: true
-    name: ${SLACK_NOTIFICATION_EMAIL_ADDRESS}
+    name: ${FINDING_AID_DISCOVERY_SLACK_NOTIFICATION_EMAIL_ADDRESS}

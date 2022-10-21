@@ -45,12 +45,20 @@ describe HarvestingService do
         expect(endpoint.last_harvest.errors.first).to include('404 Not Found')
       end
 
-      it 'sends failure notification to tech contacts' do
+      it 'sends failure notification' do
         expect(ActionMailer::Base.deliveries.count).to be 1
-        expect(ActionMailer::Base.deliveries.last.to).to match_array(endpoint.tech_contacts)
         expect(ActionMailer::Base.deliveries.last.from).to match_array('no-reply@library.upenn.edu')
         expect(ActionMailer::Base.deliveries.last.subject).to eq "Harvest of #{endpoint.slug} failed"
         expect(ActionMailer::Base.deliveries.last.body.to_s).to match('404 Not Found')
+      end
+
+      it 'sends failure notification to endpoint tech contacts' do
+        expect(ActionMailer::Base.deliveries.last.to).to match_array(endpoint.tech_contacts)
+      end
+
+      it 'CCs failure notification to local contact and slack email' do
+        expect(ActionMailer::Base.deliveries.last.cc).to include HarvestNotificationMailer::FRIENDLY_PENN_PACSCL_CONTACT
+        expect(ActionMailer::Base.deliveries.last.cc).to include /upennlts.slack.com/
       end
     end
 
