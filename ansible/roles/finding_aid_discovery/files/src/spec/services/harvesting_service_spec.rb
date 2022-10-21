@@ -56,9 +56,8 @@ describe HarvestingService do
         expect(ActionMailer::Base.deliveries.last.to).to match_array(endpoint.tech_contacts)
       end
 
-      it 'CCs failure notification to local contact and slack email' do
+      it 'CCs failure notification to local contact' do
         expect(ActionMailer::Base.deliveries.last.cc).to include HarvestNotificationMailer::FRIENDLY_PENN_PACSCL_CONTACT
-        expect(ActionMailer::Base.deliveries.last.cc).to include /upennlts.slack.com/
       end
     end
 
