@@ -5,6 +5,11 @@ harvest_all:
   class: "PartnerHarvestEnqueueJob"
   description: "Enqueues PartnerHarvestJobs for all Endpoints sorted by oldest updated_at value"
   active_job: true
+build_sitemap:
+  cron: "0 9 * * 1,3,5" # 9AM MWF
+  class: "BuildSitemapJob"
+  description: "Rebuilds sitemap after harvest"
+  active_job: true
 delete_searches:
   cron: "0 1 * * *" # Daily
   class: "DeleteSearchesJob"

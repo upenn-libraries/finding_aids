@@ -26,6 +26,7 @@ if [ "$1" = "bundle" -a "$2" = "exec" -a "$3" = "puma" ] || [ "$1" = "bundle" -a
     # run db migrations on finding_aid_discovery container
     if [ "$1" = "bundle" -a "$2" = "exec" -a "$3" = "puma" ]; then
         bundle exec rake db:migrate
+        bundle exec rake sitemap:create
     fi
 
     # run the application as the app user
