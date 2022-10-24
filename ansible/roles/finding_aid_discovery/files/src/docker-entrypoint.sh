@@ -27,6 +27,7 @@ if [ "$1" = "bundle" -a "$2" = "exec" -a "$3" = "puma" ] || [ "$1" = "bundle" -a
     if [ "$1" = "bundle" -a "$2" = "exec" -a "$3" = "puma" ]; then
         bundle exec rake db:migrate
         bundle exec rake sitemap:create
+        bundle exec rake tools:robotstxt
     fi
 
     # run the application as the app user

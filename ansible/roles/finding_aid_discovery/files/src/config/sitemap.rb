@@ -2,7 +2,6 @@
 
 # Configuration to generate sitemap.
 SitemapGenerator::Sitemap.default_host = Rails.application.config.default_host
-SitemapGenerator.verbose = false
 
 SitemapGenerator::Sitemap.create do
   # Add repositories page
