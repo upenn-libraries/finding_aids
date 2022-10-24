@@ -61,8 +61,8 @@ namespace :tools do
       Disallow: /
     NONPROD
 
-    robotstxt = (Rails.env.production?) ? prod_robots : non_prod_robots
+    robotstxt = Rails.env.production? ? prod_robots : non_prod_robots
 
-    File.write(Rails.root.join('public/robots.txt'), robotstxt)
+    File.write(Rails.public_path.join('robots.txt'), robotstxt)
   end
 end
