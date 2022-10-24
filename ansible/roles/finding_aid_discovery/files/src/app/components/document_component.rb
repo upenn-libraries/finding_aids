@@ -10,7 +10,7 @@ class DocumentComponent < Blacklight::DocumentComponent
 
   # @param [TrueClass, FalseClass] with_address
   # @param [String] url
-  def location_message(with_address: false, url:)
+  def location_message(url:, with_address: false)
     inner_html = t('messages.location_html', repository: @document.repository,
                                              email_link: contact_us_email_link(url))
     inner_html += content_tag(:span, @document.repository_address, class: 'repository-location') if with_address
