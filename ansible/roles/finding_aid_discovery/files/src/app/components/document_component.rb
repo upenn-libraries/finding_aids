@@ -38,7 +38,7 @@ class DocumentComponent < Blacklight::DocumentComponent
   # @return [ActiveSupport::SafeBuffer]
   def contact_us_email_link(page_url)
     mail_to @document.contact_email, t('document.links.contact_us'),
-            subject: "Correction to #{@document.title} finding aid",
+            subject: "Question about #{@document.title} finding aid",
             body: "\n\nFrom: #{page_url}"
   end
 
