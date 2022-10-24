@@ -8,8 +8,11 @@ class DocumentComponent < Blacklight::DocumentComponent
   # Slots for collapsable metadata sections
   renders_many :collapsable_metadata_sections, 'CollapsableMetadataSection'
 
-  def location_message(with_address: false)
-    inner_html = t('messages.location_html', repository: @document.repository, contact_email: @document.contact_email)
+  # @param [TrueClass, FalseClass] with_address
+  # @param [String] url
+  def location_message(with_address: false, url:)
+    inner_html = t('messages.location_html', repository: @document.repository,
+                                             email_link: contact_us_email_link(url))
     inner_html += content_tag(:span, @document.repository_address, class: 'repository-location') if with_address
 
     content_tag :p, inner_html, class: 'repository-info'
@@ -23,8 +26,18 @@ class DocumentComponent < Blacklight::DocumentComponent
     end
   end
 
+  # @param [String] page_url
+  # @return [ActiveSupport::SafeBuffer]
   def correction_email_link(page_url)
     mail_to @document.contact_email, t('document.links.submit_correction'),
+            subject: "Correction to #{@document.title} finding aid",
+            body: "\n\nFrom: #{page_url}"
+  end
+
+  # @param [String] page_url
+  # @return [ActiveSupport::SafeBuffer]
+  def contact_us_email_link(page_url)
+    mail_to @document.contact_email, t('document.links.contact_us'),
             subject: "Correction to #{@document.title} finding aid",
             body: "\n\nFrom: #{page_url}"
   end
