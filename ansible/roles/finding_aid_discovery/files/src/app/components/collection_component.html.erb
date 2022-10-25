@@ -46,9 +46,9 @@
         <%= render EadMarkupTranslationComponent.new(node: description) %>
       <% end %>
 
-      <% if physdesc %>
-        <% if physdesc[:label] %><strong><%= physdesc[:label] %></strong><% end %>
-        <p class="physdesc"><%= physdesc[:text] %></p>
+      <% identification_data.each do |identification| %>
+        <strong><%= identification[:label] %></strong>
+        <p class="physdesc"><%= identification[:text] %></p>
       <% end %>
 
       <%= render CollectionsComponent.new(node: node, level: level + 1, parent_id: id, requestable: @requestable) %>

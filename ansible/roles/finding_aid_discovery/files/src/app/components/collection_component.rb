@@ -2,8 +2,9 @@
 
 # Renders data for one collection.
 class CollectionComponent < ViewComponent::Base
+  IDENTIFICATION_DATA_SECTIONS = %w[physdesc materialspec physloc].freeze
   DESCRIPTIVE_DATA_SECTIONS = %w[arrangement scopecontent odd relatedmaterial
-                                 userestrict].freeze
+                                 userestrict altformavail].freeze
   NO_TITLE = '(No Title)'
 
   attr_reader :node, :level, :index, :id
@@ -25,11 +26,16 @@ class CollectionComponent < ViewComponent::Base
   end
 
   def descriptive_data
-    node.xpath(DESCRIPTIVE_DATA_SECTIONS.join('|'))
+    node.xpath(DESCRIPTIVE_DATA_SECTIONS.join(' | '))
   end
 
-  def physdesc
-    @physdesc ||= compute_physdesc
+  def identification_data
+    IDENTIFICATION_DATA_SECTIONS.filter_map do |section|
+      if (n = node.at_xpath("did/#{section}"))
+        { text: render(EadMarkupTranslationComponent.new(node: n)),
+          label: n.at_xpath('@label') || t("inventory.sections.#{section}") }
+      end
+    end
   end
 
   # Checks that the item is supposed to be requestable and that there is container information. Without container
@@ -93,15 +99,6 @@ class CollectionComponent < ViewComponent::Base
     node.xpath('did/container').map do |container|
       { type: container.attr(:type).titlecase, text: container.try(:text) }
     end
-  end
-
-  # @return [Hash{Symbol->String}]
-  def compute_physdesc
-    physdesc_node = node.at_xpath('did/physdesc')
-    return nil unless physdesc_node
-
-    { text: render(EadMarkupTranslationComponent.new(node: physdesc_node)),
-      label: physdesc_node.at_xpath('@label') }
   end
 
   # Attempt to quickly and easily generate a unique string for this collection for usage as HTML ID attr
