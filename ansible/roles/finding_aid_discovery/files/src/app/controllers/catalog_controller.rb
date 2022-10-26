@@ -77,6 +77,10 @@ class CatalogController < ApplicationController
       upenn: { label: 'University of Pennsylvania', fq: 'upenn_record_bsi:true' },
       non_upenn: { label: 'Other PACSCL Partners', fq: 'upenn_record_bsi:false' }
     }
+    config.add_facet_field 'online_content', label: I18n.t('fields.online_content'), query: {
+      yes: { label: 'Has Online Content', fq: 'online_content_bsi:true' },
+      no: { label: 'Not Available', fq: 'online_content_bsi:false' }
+    }
     config.add_facet_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), limit: true
     config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.topics.corpnames'), limit: true
     config.add_facet_field 'people_ssim', label: I18n.t('fields.topics.people'), limit: true

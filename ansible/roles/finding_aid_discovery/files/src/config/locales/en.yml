@@ -57,6 +57,7 @@ en:
     endpoint: 'Endpoint'
     repository: 'Repository'
     record_source: 'Record Source'
+    online_content: 'Online Content'
     title: 'Title'
     extent: 'Extent'
     date: 'Date'
