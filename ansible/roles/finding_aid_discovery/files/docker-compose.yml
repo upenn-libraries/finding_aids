@@ -38,6 +38,8 @@ services:
       - database
       - finding_aid_discovery
       - solr
+    volumes:
+      - sitemap:/home/app/public/sitemap
     secrets:
       - database_password
       - honeybadger_api_key
@@ -70,3 +72,6 @@ secrets:
   rails_master_key:
     external: true
     name: ${FINDING_AID_DISCOVERY_RAILS_MASTER_KEY}
+
+volumes:
+  sitemap:

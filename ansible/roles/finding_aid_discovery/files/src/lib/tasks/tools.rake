@@ -53,7 +53,7 @@ namespace :tools do
       User-agent: *
       Disallow: /admin
       Disallow: /records/facet/
-      Sitemap: https://findingaids.library.upenn.edu/sitemap.xml.gz
+      Sitemap: https://findingaids.library.upenn.edu/sitemap/sitemap.xml.gz
     PROD
 
     non_prod_robots = <<~NONPROD
@@ -64,5 +64,12 @@ namespace :tools do
     robotstxt = Rails.env.production? ? prod_robots : non_prod_robots
 
     File.write(Rails.public_path.join('robots.txt'), robotstxt)
+  end
+
+  desc 'Generate a sitemap if its missing'
+  task ensure_sitemap: :environment do
+    unless File.exists?(Rails.public_path.join('sitemap/sitemap.xml.gz'))
+      Rake::Task['sitemap:create'].invoke
+    end
   end
 end
