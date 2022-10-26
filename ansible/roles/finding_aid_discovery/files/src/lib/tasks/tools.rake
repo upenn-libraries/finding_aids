@@ -68,8 +68,7 @@ namespace :tools do
 
   desc 'Generate a sitemap if its missing'
   task ensure_sitemap: :environment do
-    unless File.exists?(Rails.public_path.join('sitemap/sitemap.xml.gz'))
-      Rake::Task['sitemap:create'].invoke
-    end
+    sitemap_path = Rails.public_path.join('sitemap/sitemap.xml.gz')
+    Rake::Task['sitemap:create'].invoke unless File.exist?(sitemap_path)
   end
 end

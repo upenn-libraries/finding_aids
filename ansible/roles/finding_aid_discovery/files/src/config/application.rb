@@ -28,9 +28,9 @@ module FindingAidDiscovery
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Set hostname for urls generated within emails
-    config.action_mailer.default_url_options = { host: ENV['FINDING_AID_DISCOVERY_URL'] }
+    config.action_mailer.default_url_options = { host: ENV.fetch('FINDING_AID_DISCOVERY_URL') }
 
     # Default hostname used for sitemap generation.
-    config.default_host = URI::HTTPS.build(host: ENV['FINDING_AID_DISCOVERY_URL']).to_s
+    config.default_host = URI::HTTPS.build host: ENV.fetch('FINDING_AID_DISCOVERY_URL').to_s
   end
 end
