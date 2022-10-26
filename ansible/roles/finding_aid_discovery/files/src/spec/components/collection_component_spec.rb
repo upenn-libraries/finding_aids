@@ -66,7 +66,7 @@ XML
     end
   end
 
-  context 'with digital objects' do
+  context 'with digital objects in EAD v3 style' do
     # NOTE: `xlink` namespaces used in dao nodes will be stripped when EAD is stored in Solr, is it is in EadParser
     let(:xml) do
       <<XML
@@ -83,8 +83,6 @@ XML
         <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/81431-p3v11w05n" show="new" title="Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)&#10;" type="simple">
           <daodesc><p>Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)</p></daodesc>
         </dao>
-        <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/81431-p3q81561w" show="new" title="Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 3)&#10;" type="simple">
-          <daodesc><p>Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 3)</p></daodesc></dao>
       </did>
     </c>
 XML
@@ -92,6 +90,31 @@ XML
 
     it { is_expected.to have_link 'Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 1)' }
     it { is_expected.to have_link 'Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)' }
-    it { is_expected.to have_link 'Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 3)' }
+  end
+
+  context 'with digital objects in EAD v2 style' do
+    # NOTE: `xlink` namespaces used in dao nodes will be stripped when EAD is stored in Solr, is it is in EadParser
+    let(:xml) do
+      <<XML
+    <c>
+      <did>
+        <unittitle>Collection with DOs</unittitle>
+        <unitid audience="internal" identifier="250031">250031</unitid>
+        <unitdate datechar="creation">undated</unitdate>
+        <container label="Mixed Materials" type="box">2</container>
+        <container type="Folder">4-7</container>
+      </did>
+      <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/81431-p3zs2ks92" show="new" title="Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 1)&#10;" type="simple">
+        <daodesc><p>Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 1)</p></daodesc>
+      </dao>
+      <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/81431-p3v11w05n" show="new" title="Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)&#10;" type="simple">
+        <daodesc><p>Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)</p></daodesc>
+      </dao>
+    </c>
+XML
+    end
+
+    it { is_expected.to have_link 'Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 1)' }
+    it { is_expected.to have_link 'Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)' }
   end
 end
