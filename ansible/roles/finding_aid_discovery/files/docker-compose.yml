@@ -42,6 +42,7 @@ services:
       - sitemap:/home/app/public/sitemap
     secrets:
       - database_password
+      - slack_notification_email_address
       - honeybadger_api_key
       - penn_aspace_api_password
       - penn_aspace_api_username
@@ -72,6 +73,9 @@ secrets:
   rails_master_key:
     external: true
     name: ${FINDING_AID_DISCOVERY_RAILS_MASTER_KEY}
+  slack_notification_email_address:
+    external: true
+    name: ${FINDING_AID_DISCOVERY_SLACK_NOTIFICATION_EMAIL_ADDRESS}
 
 volumes:
   sitemap:

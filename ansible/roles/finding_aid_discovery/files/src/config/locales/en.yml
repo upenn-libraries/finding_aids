@@ -99,6 +99,7 @@ en:
     separatedmaterial: 'Separated Material'
     appraisal: 'Appraisal'
     sponsor: 'Sponsor'
+    date: 'Finding Aid Date'
     author: 'Finding Aid Author'
     publisher: 'Publisher'
     topics: 'Name and Subject Headings'
@@ -110,4 +111,5 @@ en:
     year_asc: 'Year (ascending)'
   messages:
     access_clarification_html: "This is a finding aid. It is a description of archival material held at the <b>%{repository}</b>. Unless otherwise noted, the materials described below are physically available in their reading room, and not digitally available through the web."
-    location_html: "Held at: %{repository} <a href=mailto:\"%{contact_email}\">[Contact Us]</a>"
+    location_html: "Held at: %{repository} [%{email_link}]"
+    contact_us: "Contact Us"

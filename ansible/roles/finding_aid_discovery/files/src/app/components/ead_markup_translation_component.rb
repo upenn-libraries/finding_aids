@@ -16,8 +16,12 @@ class EadMarkupTranslationComponent < ViewComponent::Base
     node.present?
   end
 
+  # Note: `sanitize` here strips "unsafe" tags and attributes. See
+  # ActionView::Base.sanitized_allowed_attributes and ActionView::Base.sanitized_allowed_tags
+  # for preserved attributes and tags
   def call
-    sanitize convert_to_html
+    sanitize convert_to_html,
+             attributes: preserved_attributes
   end
 
   # Apply transformations from ead syntax to html syntax
@@ -28,13 +32,29 @@ class EadMarkupTranslationComponent < ViewComponent::Base
     end
 
     convert_lists
+    convert_extrefs
 
     node.xpath('.//lb').each { |l| l.name = 'br' }
     node.xpath('.//blockquote').each { |b| b.set_attribute('class', 'blockquote mx-5') }
 
     convert_formatting_markup
-
     node.children.to_html
+  end
+
+  # Converts EAD2-spec 'extref' nodes to <a> tags. EAD3 removed <extref>. Note that
+  # attributes on these nodes are namespaced with 'xlink:' but out removal of namespaces
+  # gets rid of those.
+  def convert_extrefs
+    node.xpath('.//extref').each do |link|
+      url = link.attr('href')
+      next unless url
+
+      link.xpath('.//@*').remove
+      link.name = 'a'
+      link.set_attribute('href', url)
+      link.set_attribute('target', '_blank')
+      link.set_attribute('rel', 'noopener')
+    end
   end
 
   def convert_lists
@@ -54,7 +74,7 @@ class EadMarkupTranslationComponent < ViewComponent::Base
           end
           defitem.remove
         end
-      when 'unordered'
+      when 'unordered', 'marked'
         list.name = 'ul'
         list.xpath('./item').each { |i| i.name = 'li' }
       when 'ordered'
@@ -114,5 +134,10 @@ class EadMarkupTranslationComponent < ViewComponent::Base
     node.set_attribute('class', css_class) if css_class
     node.wrap(wrap) if wrap
     node.content = content if content
+  end
+
+  # @return [Array]
+  def preserved_attributes
+    ActionView::Base.sanitized_allowed_attributes + %w[target rel]
   end
 end

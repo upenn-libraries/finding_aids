@@ -67,7 +67,7 @@ class HarvestingService
 
   def save_outcomes
     @endpoint.update!(
-      last_harvest_results: { date: DateTime.current, files: @file_results }
+      last_harvest_results: { date: DateTime.current, files: safe_file_results }
     )
   end
 
@@ -118,5 +118,23 @@ class HarvestingService
     @endpoint.update!(
       last_harvest_results: { date: DateTime.current, files: [], errors: }
     )
+  end
+
+  # massage the @file_results array in case its JSON representation is too large
+  # Postgres' limit for JSONB fields is ~250MB
+  # @return [Array]
+  def safe_file_results
+    truncate_file_results_errors while @file_results.to_json.bytesize > 100_000_000
+    @file_results
+  end
+
+  # iterates through file_results array, truncating the error field values by half
+  def truncate_file_results_errors
+    @file_results.each do |entry|
+      next unless entry.key? :errors
+
+      length = entry[:errors].try(:first).try(:length) # for a file error, errors is always single-valued
+      entry[:errors] = Array.wrap(entry[:errors].try(:first).try(:truncate, length / 2))
+    end
   end
 end

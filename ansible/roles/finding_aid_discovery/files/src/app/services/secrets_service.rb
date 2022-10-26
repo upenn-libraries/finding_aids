@@ -7,6 +7,7 @@ class SecretsService
     penn_aspace_api_password
     honeybadger_api_key
     redis_sidekiq_password
+    slack_notification_email_address
   ].freeze
   SECRET_STORE_PATH = '/run/secrets'
 
@@ -22,7 +23,7 @@ class SecretsService
     if File.exist? secret_file_path
       File.read(secret_file_path).strip
     else
-      ENV.fetch key, default # TODO: raise exception if secret not found in ENV?
+      ENV.fetch key.to_s, default # TODO: raise exception if secret not found in ENV?
     end
   end
 end
