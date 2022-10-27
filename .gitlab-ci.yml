@@ -135,6 +135,7 @@ rspec_app_test:
     DATABASE_PASSWORD: "rspec_test"
     DATABASE_USER: "rspec_test"
     FF_NETWORK_PER_BUILD: "true"
+    FINDING_AID_DISCOVERY_URL: "findingaids.test.com"
     POSTGRES_DB: "finding_aid_discovery"
     POSTGRES_PASSWORD: "rspec_test"
     POSTGRES_USER: "rspec_test"
