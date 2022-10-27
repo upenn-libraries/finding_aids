@@ -67,7 +67,7 @@ XML
   end
 
   context 'with digital objects in EAD v3 style' do
-    # NOTE: `xlink` namespaces used in dao nodes will be stripped when EAD is stored in Solr, is it is in EadParser
+    # NOTE: `xlink` namespaces used in dao nodes will be stripped when EAD is stored in Solr, as it is in EadParser
     let(:xml) do
       <<XML
     <c>
@@ -93,7 +93,7 @@ XML
   end
 
   context 'with digital objects in EAD v2 style' do
-    # NOTE: `xlink` namespaces used in dao nodes will be stripped when EAD is stored in Solr, is it is in EadParser
+    # NOTE: `xlink` namespaces used in dao nodes will be stripped when EAD is stored in Solr, as it is in EadParser
     let(:xml) do
       <<XML
     <c>
