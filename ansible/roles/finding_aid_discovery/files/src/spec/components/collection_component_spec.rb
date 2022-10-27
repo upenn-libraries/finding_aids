@@ -77,19 +77,19 @@ XML
         <unitdate datechar="creation">undated</unitdate>
         <container label="Mixed Materials" type="box">2</container>
         <container type="Folder">4-7</container>
-        <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/81431-p3zs2ks92" show="new" title="Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 1)&#10;" type="simple">
-          <daodesc><p>Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 1)</p></daodesc>
+        <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/a" show="new" title="Notebook A" type="simple">
+          <daodesc><p>Notebook A</p></daodesc>
         </dao>
-        <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/81431-p3v11w05n" show="new" title="Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)&#10;" type="simple">
-          <daodesc><p>Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)</p></daodesc>
+        <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/b" show="new" title="Notebook B" type="simple">
+          <daodesc><p>Notebook B</p></daodesc>
         </dao>
       </did>
     </c>
 XML
     end
 
-    it { is_expected.to have_link 'Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 1)' }
-    it { is_expected.to have_link 'Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)' }
+    it { is_expected.to have_link 'Notebook A', href: 'https://colenda.library.upenn.edu/catalog/a' }
+    it { is_expected.to have_link 'Notebook B', href: 'https://colenda.library.upenn.edu/catalog/b' }
   end
 
   context 'with digital objects in EAD v2 style' do
@@ -104,17 +104,17 @@ XML
         <container label="Mixed Materials" type="box">2</container>
         <container type="Folder">4-7</container>
       </did>
-      <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/81431-p3zs2ks92" show="new" title="Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 1)&#10;" type="simple">
-        <daodesc><p>Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 1)</p></daodesc>
+      <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/a" show="new" title="Notebook A" type="simple">
+        <daodesc><p>Notebook A</p></daodesc>
       </dao>
-      <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/81431-p3v11w05n" show="new" title="Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)&#10;" type="simple">
-        <daodesc><p>Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)</p></daodesc>
+      <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/b" show="new" title="Notebook B" type="simple">
+        <daodesc><p>Notebook B</p></daodesc>
       </dao>
     </c>
 XML
     end
 
-    it { is_expected.to have_link 'Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 1)' }
-    it { is_expected.to have_link 'Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)' }
+    it { is_expected.to have_link 'Notebook A', href: 'https://colenda.library.upenn.edu/catalog/a' }
+    it { is_expected.to have_link 'Notebook B', href: 'https://colenda.library.upenn.edu/catalog/b' }
   end
 end
