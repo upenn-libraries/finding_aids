@@ -15,7 +15,18 @@ class DocumentComponent < Blacklight::DocumentComponent
                                              email_link: contact_us_email_link(url))
     inner_html += content_tag(:span, @document.repository_address, class: 'repository-location') if with_address
 
-    content_tag :p, inner_html, class: 'repository-info'
+    content_tag :p, inner_html, class: location_classes
+  end
+
+  # @return [Array<String (frozen)>]
+  def location_classes
+    classes = ['repository-info']
+    if @document.penn_item?
+      classes << 'upenn'
+    elsif @document.princeton_item?
+      classes << 'princeton'
+    end
+    classes
   end
 
   def access_clarification_message
@@ -41,7 +52,7 @@ class DocumentComponent < Blacklight::DocumentComponent
             subject: "Question about #{@document.title} finding aid",
             body: "\n\nFrom: #{page_url}"
   end
-
+  
   # Component for a collapsable metadata section
   class CollapsableMetadataSection < ViewComponent::Base
     attr_reader :title, :open
