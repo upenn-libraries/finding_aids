@@ -66,6 +66,10 @@ class SolrDocument
     fetch(:repository_name_component_1_ssi) == 'University of Pennsylvania'
   end
 
+  def princeton_item?
+    fetch(:repository_name_component_1_ssi, '').include? 'Princeton'
+  end
+
   def requestable?
     fetch(:repository_ssi, nil).in? REQUESTABLE_REPOSITORIES
   end
