@@ -52,7 +52,7 @@ class DocumentComponent < Blacklight::DocumentComponent
             subject: "Question about #{@document.title} finding aid",
             body: "\n\nFrom: #{page_url}"
   end
-  
+
   # Component for a collapsable metadata section
   class CollapsableMetadataSection < ViewComponent::Base
     attr_reader :title, :open

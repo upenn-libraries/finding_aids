@@ -67,7 +67,7 @@ class SolrDocument
   end
 
   def princeton_item?
-    fetch(:repository_name_component_1_ssi) =~ /Princeton/
+    fetch(:repository_name_component_1_ssi, '').include? 'Princeton'
   end
 
   def requestable?
