@@ -14,6 +14,7 @@ en:
     links:
       print: 'Print the finding aid'
       submit_correction: 'Suggest a correction'
+      contact_us: "Contact Us"
   footer:
     links:
       members: 'PACSCL Members'
@@ -113,7 +114,6 @@ en:
   messages:
     access_clarification_html: "This is a finding aid. It is a description of archival material held at the <b>%{repository}</b>. Unless otherwise noted, the materials described below are physically available in their reading room, and not digitally available through the web."
     location_html: "Held at: %{repository} [%{email_link}]"
-    contact_us: "Contact Us"
   inventory:
     sections:
       physdesc: 'Physical Description'
