@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd"><eadheader countryencoding="iso3166-1" dateencoding="iso8601" langencoding="iso639-2b" repositoryencoding="iso15511"><eadid></eadid><filedesc><titlestmt><titleproper>Benjamin Rush lecture notes <num>PUSp.Ms. Coll. 225</num></titleproper><author>Rive Cadwallader</author></titlestmt><publicationstmt><publisher>University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts</publisher><p><date>July 25, 2017</date></p><address><addressline>3420 Walnut Street</addressline><addressline>Philadelphia, PA 19104-6206</addressline><addressline>rbml@pobox.upenn.edu</addressline><addressline>URL: <extptr xlink:href="http://www.library.upenn.edu/rbm/" xlink:show="new" xlink:title="http://www.library.upenn.edu/rbm/" xlink:type="simple"/></addressline></address></publicationstmt></filedesc><profiledesc><creation>This finding aid was produced using ArchivesSpace on <date>2022-10-25 15:41:49 -0400</date>.</creation><langusage>English</langusage><descrules>Describing Archives: A Content Standard</descrules></profiledesc></eadheader><archdesc level="collection">
+  <did>
+    <repository>
+      <corpname>University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts</corpname>
+    </repository>
+    <unittitle>Benjamin Rush lecture notes</unittitle>
+    <origination label="Creator">
+      <persname source="naf">Bartram, Moses</persname>
+    </origination>
+    <origination label="Creator">
+      <persname source="naf">Kuhn, Adam</persname>
+    </origination>
+    <origination label="Creator">
+      <persname source="naf">Rush, Benjamin</persname>
+    </origination>
+    <origination label="Creator">
+      <persname rules="dacs" source="local">Curtin, Constans</persname>
+    </origination>
+    <origination label="Creator">
+      <persname rules="dacs" source="local">Heydrick, Christopher</persname>
+    </origination>
+    <origination label="Creator">
+      <persname source="naf">Hare, Robert</persname>
+    </origination>
+    <origination label="Creator">
+      <persname rules="dacs" source="local">Simonton, William</persname>
+    </origination>
+    <origination label="Creator">
+      <persname source="naf">Overton, James, Jr.</persname>
+    </origination>
+    <unitid>PUSp.Ms. Coll. 225</unitid>
+    <unitid audience="internal" identifier="842" type="Archivists Toolkit Database::RESOURCE">842</unitid>
+    <physdesc altrender="whole">
+      <extent altrender="materialtype spaceoccupied">4.2 Linear Feet</extent>
+      <extent altrender="carrier">5 boxes</extent>
+    </physdesc>
+    <unitdate datechar="creation" normal="0/0" type="inclusive">1783-1810, undated</unitdate>
+    <abstract id="aspace_8b3e179624b3551da6e229a9ce85f1cb">The Benjamin Rush lecture notes consist of 34 notebooks kept by medical students at the University of Pennsylvania, which record the content of academic lectures delivered by Dr. Benjamin Rush (1745-1813). Rush, a socially and politically prominent physician who lived and practiced in Philadelphia, served as a professor at the University of Pennsylvania School of Medicine from 1769 to 1813. The handwritten lecture notes in this collection (recorded between 1783 and 1810) present the era's conventional medical wisdom on the causes, symptoms and cures of a range of diseases and disorders.</abstract>
+    <langmaterial>
+      <language langcode="eng">English</language>
+      .    </langmaterial>
+  </did>
+  <bioghist id="aspace_d33b2531aa8775d971c86ea20df9710d">
+    <head>Biographical / Historical</head>
+    <p>Dr. Benjamin Rush (1745-1813) was a socially and politically prominent physician who lived and practiced in Philadelphia. Born in Byberry Township, Pennsylvania, Rush was educated at the University of Edinburgh, and travelled in England and France before returning to Philadelphia in 1769. Rush played an active role in the American Revolution, signing the Declaration of Independence and serving briefly as Surgeon General of the Middle Department of the Continental Army and as a physician with the Philadelphia militia. </p><p>Although most prominent Philadelphians left the city for healthier environments during the catastrophic Yellow Fever epidemics that hit Philadelphia in the 1790s, Rush remained in the city to treat the sick; though he may be equally or better remembered today for his strong advocacy of bloodletting as a therapeutic method for the disease. </p><p>Rush served as a professor of Chemistry at the University of Pennsylvania School of Medicine (previously the College of Philadelphia) from 1769 to 1789 and as a professor of the "Institutes of Medicine and Clinical Practice" from 1791 to 1813. Rush also taught courses in the "Theory and Practice of Medicine" from 1789 to 1791, and again from 1796 to 1813. </p>  </bioghist>
+  <accessrestrict id="aspace_d70b7a3fcb04bb440c6672fb2c01326c">
+    <head>Conditions Governing Access</head>
+    <p>This collection is open for research use.</p>  </accessrestrict>
+  <userestrict id="aspace_b28f7a7ca01b25c251d7a40e91bfcf3d">
+    <head>Conditions Governing Use</head>
+    <p>Copyright restrictions may exist. For most library holdings, the Trustees of the University of Pennsylvania do not hold copyright. It is the responsibility of the requester to seek permission from the holder of the copyright to reproduce material from the Kislak Center for Special Collections, Rare Books and Manuscripts.</p>  </userestrict>
+  <relatedmaterial id="aspace_167ed2fe76a3f8c8f1ac500311eeab05">
+    <head>Related Materials</head>
+    <p>At the American Philosophical Society: </p><p><extref xlink:actuate="onRequest" xlink:href="http://www.amphilsoc.org/collections/view?docId=ead/Mss.B.H22-ead.xml;query=robert%20hare;brand=default" xlink:show="replace" xlink:title="Robert Hare papers, 1764-1859">Robert Hare papers, 1764-1859</extref> and <extref xlink:actuate="onRequest" xlink:href="http://www.amphilsoc.org/collections/view?docId=ead/Mss.Ms.Coll.104-ead.xml;query=robert%20hare;brand=default" xlink:show="replace" xlink:title="Hare-Willing Family Papers,1724-1965">Hare-Willing Family Papers,1724-1965</extref></p><p>At Duke University Libraries:</p><p><extref xlink:actuate="onRequest" xlink:href="http://library.duke.edu/rubenstein/findingaids/trent-harerobertpapers/" xlink:show="replace" xlink:title="Robert Hare papers, Philadelphia. 1825-1858"> Robert Hare papers, Philadelphia. 1825-1858</extref></p><p>At the Kislak Center for Special Collections, Rare Books and Manuscripts at the University of Pennsylvania:</p><p><extref xlink:actuate="onRequest" xlink:href="http://hdl.library.upenn.edu/1017/d/ead/upenn_rbml_PUSpMsColl74" xlink:show="replace" xlink:title="Robert Hare correspondence, 1793-1858, Ms. Coll. 74 ">Robert Hare correspondence, 1793-1858, Ms. Coll. 74 </extref></p><p>At the Library Company of Philadelphia: </p><p><extref xlink:actuate="onRequest" xlink:href="http://hdl.library.upenn.edu/1017/d/pacscl/LCP_LCPRush" xlink:show="replace" xlink:title="Rush family papers, 1748-1876">Rush family papers, 1748-1876</extref></p>  </relatedmaterial>
+  <scopecontent id="aspace_c57f034a81f0260fdd3c5514996047f0">
+    <head>Scope and Contents</head>
+    <p>The Benjamin Rush lecture notes consist of 34 notebooks kept by a number of medical students at the University of Pennsylvania, which record the content of academic lectures delivered by Dr. Benjamin Rush. Many of the notebooks are undated, but those which have been inscribed with dates range from 1783 to 1810 (Rush was a professor at the University from 1769 until his death in 1813). All of the notes are handwritten, and some are unsigned or of uncertain authorship. All but two sets of notes are bound; however, those that were rebound at some point since they were created are quite fragile. The notes seem to be verbatim transcriptions of Rush's lectures, and are written in full sentences. Many of the volumes of notes have indices at the front or back, which list diseases alphabetically along with the page on which the condition is described. </p><p>Rush taught courses in Chemistry, the "Institutes of Medicine and Clinical Practice" and the "Theory and Practice of Medicine." The content and format of his lectures seem to have remained fairly consistent across the nearly three decades represented in this collection. Chemistry lectures (recorded by students Moses Bartram (item 3), D. Gilder (item 12), Jacob Graham (item 13), and an unidentified student (item 16)) describe particular elements and compounds, as well as broad classes of substances such as "vinegars," salts, earths, metals, and airs, some of which groups are divided into subcategories. Interspersed with this content is information about the medical applications of particular chemical substances, and their effects upon the human body. </p><p>Researchers will find lectures on the "Institutes." In the first lecture recorded by an unidentified student in item 7, Rush explains that "the Institutes are divided into four parts, Physiology, Hygiene, Pathology &amp; Therapeutics." The notebooks that correspond to Rush's lectures on the Institutes generally treat the topics of anatomy, sensation, perception, cognition, the psyche, mental and physical differences between men and women, epidemiology, prognosis, diagnosis, convalescence, the effects of the environment upon the body, and some of the social and cultural factors that can influence health. Rush dedicates a number of lectures to the topics of psychology and psychological disorders, including discussions of the symptoms and cures of "passions" (which he usually defines as fear, love, anger and grief) and of mania. Notes on the Institutes tend also to include fairly long discourses on diet, the preparation and qualities of different foods and beverages, especially bread, beer, wine and alcoholic spirits, and the influences of each upon the body. </p><p>The lectures on the Theory and Practice of Medicine focus heavily on fevers, their theoretical categorizations and various symptomatic presentations. A wide range of non-febrile diseases (acute, chronic, infectious, non-communicable, venereal, psychological, etc.) are also profiled, with detailed descriptions of their symptoms and of viable therapeutic approaches to each. Other lectures specifically outline the diseases and health problems especially common among women, "negroes," children, and the elderly. The notes on the practice of medicine contain some short case studies, and all of Rush's lectures are very referential to other doctors, scientists and medical experts. </p><p>The medical students whose names appear on the volumes of notes in this collection are Moses Bartram (1767-1791), Russel Clark, Constans Curtin (1783-1842),  D. Gilder, Jacob Graham (possibly), Thomas Hamilton, Robert Hare (1781-1858) (possibly), Christopher Heydrick (1770-1856), William Jackson, Robert G. Maxwell, James Overton (1785-1865), William Simonton (1788-1846), and John Spangler.  The four volumes attributed to David Hayes Agnew (1818-1892) (item 8) were probably created by his father, Dr. Robert Agnew (1785-1858). One other dating anomaly: the Thomas Hamilton notebook (Item 2) which is dated January 7, 1814 (a year after Rush's death) possibly signifies the conclusion of Hamilton's studies. </p><p>While the vast majority of the materials within this collection contain lecture notes, the first volume created by  Moses Bartram (Item 3, volume 1) appears to be less a record of lecture material than a collection of excerpts from scientific and medical treatises, and is thus described in the finding aid as a commonplace book. Researchers will find a few lectures delivered by Dr. Adam Kuhn (1741-1817) in notebooks by both John Spangler (Item 4, volume 1) and D. Gilder's notebook (Item 12).  D. Gilder's notebook also includes some notes from lectures by Dr. William Shippen (1736-1808). </p><p>In addition to the lecture notes, researchers will find a "List of Domestic Medicine which ought to be Kept in the Shops of American Physicians" and  a transcription of his class's valedictory address in Russel Clark's notebook (item 11, volume 3); a "Table of Fever," which seemingly correlates body temperature to a type of febrile disease,  within the notebooks of Robert G. Maxwell (item 14) and an unidentified student (item 18); and several pages of "Questions in Natural Philosophy" and a short section on the government of Pennsylvania in an unbound set of notes by an unidentified student (item 15).</p><p>Prior to processing in 2017, item numbers were assigned to notebooks.  These item numbers have been retained.</p>  </scopecontent>
+  <prefercite id="aspace_fd4af8ec6d1ce0fcdb5a853696fdeab5">
+    <head>Preferred Citation</head>
+    <p>Benjamin Rush lecture notes, 1783-1810, undated, Ms. Coll. 225, Kislak Center for Special Collections, Rare Books and Manuscripts, University of Pennsylvania</p>  </prefercite>
+  <controlaccess>
+    <genreform source="lcgft">Notebooks</genreform>
+    <genreform source="aat">Lecture notes</genreform>
+    <subject source="lcsh">Medicine</subject>
+    <subject source="lcsh">Medicine -- Study and teaching</subject>
+    <subject source="lcsh">Chemistry -- Study and teaching</subject>
+    <corpname source="naf">University of Pennsylvania</corpname>
+    <corpname source="naf">University of Pennsylvania. School of Medicine</corpname>
+  </controlaccess>
+  <dsc>
+    <c id="aspace_ref13_ioj" level="file">
+      <did>
+        <unittitle>Collection with DOs</unittitle>
+        <unitid audience="internal" identifier="250031" type="Archivists Toolkit Database::RESOURCE_COMPONENT">250031</unitid>
+        <unitdate datechar="creation">undated</unitdate>
+        <container id="aspace_c0395ba250601cd7848f1f8e52a716d9" label="Mixed Materials" type="box">2</container>
+        <container id="aspace_4494607739e1220943ce2f55c498249d" parent="aspace_c0395ba250601cd7848f1f8e52a716d9" type="Folder">4-7</container>
+      </did>
+      <dao audience="internal" xlink:actuate="onRequest" xlink:href="https://colenda.library.upenn.edu/catalog/81431-p3zs2ks92" xlink:show="new" xlink:title="Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 1)&#10;" xlink:type="simple">
+        <daodesc><p>Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 1)</p></daodesc>
+      </dao>
+      <dao audience="internal" xlink:actuate="onRequest" xlink:href="https://colenda.library.upenn.edu/catalog/81431-p3v11w05n" xlink:show="new" xlink:title="Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)&#10;" xlink:type="simple">
+        <daodesc><p>Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 2)</p></daodesc>
+      </dao>
+      <dao audience="internal" xlink:actuate="onRequest" xlink:href="https://colenda.library.upenn.edu/catalog/81431-p3q81561w" xlink:show="new" xlink:title="Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 3)&#10;" xlink:type="simple">
+        <daodesc><p>Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 3)</p></daodesc></dao>
+      <dao audience="internal" xlink:actuate="onRequest" xlink:href="https://colenda.library.upenn.edu/catalog/81431-p3kk94s0h" xlink:show="new" xlink:title="Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 4)&#10;" xlink:type="simple">
+        <daodesc><p>Robert Agnew (possibly) notebook, approximately 1783-1810 (Volume 4)</p></daodesc></dao>
+    </c>
+    <c id="aspace_ref1_z2v" level="file">
+      <did>
+        <unittitle>Collection with no DOs</unittitle>
+        <unitid audience="internal" identifier="250018" type="Archivists Toolkit Database::RESOURCE_COMPONENT">250018</unitid>
+        <unitdate datechar="creation">before 1791</unitdate>
+        <container id="aspace_4b529a6c7cc513dcf6b3517812cf6a9c" label="Mixed Materials" type="box">1</container>
+        <container id="aspace_28652d3cdb83844a7bc14b2a872d4d50" parent="aspace_4b529a6c7cc513dcf6b3517812cf6a9c" type="Folder">3</container>
+      </did>
+    </c>
+  </dsc>
+</archdesc>
+</ead>

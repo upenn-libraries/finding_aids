@@ -51,6 +51,17 @@
         <p class="physdesc"><%= identification[:text] %></p>
       <% end %>
 
+      <% if digital_object_links.any? %>
+        <div class="online-content mt-2">
+          <strong>Materials Viewable Online</strong>
+          <ol>
+            <% digital_object_links.each do |link| %>
+              <li><%= link %></li>
+            <% end %>
+          </ol>
+        </div>
+      <% end %>
+
       <%= render CollectionsComponent.new(node: node, level: level + 1, parent_id: id, requestable: @requestable) %>
     </div>
   </div>

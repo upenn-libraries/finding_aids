@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe CollectionComponent, type: :component do
+  subject { page }
+
   let(:fragment) { Nokogiri::XML.fragment(xml) }
 
   before do
@@ -62,5 +64,57 @@ XML
     it 'shows a checkbox with the expected name value' do
       expect(page).to have_field 'c[Drawer_1][Box_1][Folder_1]'
     end
+  end
+
+  context 'with digital objects in EAD v3 style' do
+    # NOTE: `xlink` namespaces used in dao nodes will be stripped when EAD is stored in Solr, as it is in EadParser
+    let(:xml) do
+      <<XML
+    <c>
+      <did>
+        <unittitle>Collection with DOs</unittitle>
+        <unitid audience="internal" identifier="250031">250031</unitid>
+        <unitdate datechar="creation">undated</unitdate>
+        <container label="Mixed Materials" type="box">2</container>
+        <container type="Folder">4-7</container>
+        <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/a" show="new" title="Notebook A" type="simple">
+          <daodesc><p>Notebook A</p></daodesc>
+        </dao>
+        <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/b" show="new" title="Notebook B" type="simple">
+          <daodesc><p>Notebook B</p></daodesc>
+        </dao>
+      </did>
+    </c>
+XML
+    end
+
+    it { is_expected.to have_link 'Notebook A', href: 'https://colenda.library.upenn.edu/catalog/a' }
+    it { is_expected.to have_link 'Notebook B', href: 'https://colenda.library.upenn.edu/catalog/b' }
+  end
+
+  context 'with digital objects in EAD v2 style' do
+    # NOTE: `xlink` namespaces used in dao nodes will be stripped when EAD is stored in Solr, as it is in EadParser
+    let(:xml) do
+      <<XML
+    <c>
+      <did>
+        <unittitle>Collection with DOs</unittitle>
+        <unitid audience="internal" identifier="250031">250031</unitid>
+        <unitdate datechar="creation">undated</unitdate>
+        <container label="Mixed Materials" type="box">2</container>
+        <container type="Folder">4-7</container>
+      </did>
+      <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/a" show="new" title="Notebook A" type="simple">
+        <daodesc><p>Notebook A</p></daodesc>
+      </dao>
+      <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/b" show="new" title="Notebook B" type="simple">
+        <daodesc><p>Notebook B</p></daodesc>
+      </dao>
+    </c>
+XML
+    end
+
+    it { is_expected.to have_link 'Notebook A', href: 'https://colenda.library.upenn.edu/catalog/a' }
+    it { is_expected.to have_link 'Notebook B', href: 'https://colenda.library.upenn.edu/catalog/b' }
   end
 end

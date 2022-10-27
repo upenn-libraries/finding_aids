@@ -17,6 +17,17 @@ class CollectionComponent < ViewComponent::Base
     @requestable = requestable
   end
 
+  # @return [Array]
+  def digital_object_links
+    @digital_object_links ||= @node.xpath('./did/dao | ./dao').filter_map do |dao|
+      href = dao.attr('href')
+      next unless href
+
+      link_to dao.attr('title') || 'Online Resource', href,
+              class: 'digital-object-link', target: '_blank', rel: 'noopener'
+    end
+  end
+
   def title
     @title ||= compute_title
   end

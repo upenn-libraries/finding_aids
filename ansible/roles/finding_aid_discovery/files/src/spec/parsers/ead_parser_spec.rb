@@ -7,8 +7,6 @@ describe EadParser do
   let(:parser) { described_class.new endpoint }
 
   describe '#to_years_array' do
-    let(:parser) { described_class.new(endpoint) }
-
     it 'handles @normal attribute range' do
       expect(parser.to_years_array('1875/1900')).to match_array 1875..1900
     end
@@ -225,6 +223,26 @@ describe EadParser do
             'Vaillant, George C., b.1901-d.1945'
           ]
         )
+      end
+
+      it 'has a online_content_bsi of "F"' do
+        expect(hash[:online_content_bsi]).to eq 'F'
+      end
+    end
+
+    context 'with digital object info in v3 spec' do
+      let(:xml) { file_fixture('ead/dao_ead_v3.xml') }
+
+      it 'has a online_content_bsi of "T"' do
+        expect(hash[:online_content_bsi]).to eq 'T'
+      end
+    end
+
+    context 'with digital object info in v2 spec' do
+      let(:xml) { file_fixture('ead/dao_ead_v2.xml') }
+
+      it 'has a online_content_bsi of "T"' do
+        expect(hash[:online_content_bsi]).to eq 'T'
       end
     end
   end
