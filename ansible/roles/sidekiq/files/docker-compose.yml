@@ -40,8 +40,6 @@ services:
       - database
       - redis
       - solr
-    volumes:
-      - sitemap:/home/app/public/sitemap
     secrets:
       - database_password
       - honeybadger_api_key
@@ -76,7 +74,3 @@ secrets:
   slack_notification_email_address:
     external: true
     name: ${FINDING_AID_DISCOVERY_SLACK_NOTIFICATION_EMAIL_ADDRESS}
-
-volumes:
-  sitemap:
-    external: true

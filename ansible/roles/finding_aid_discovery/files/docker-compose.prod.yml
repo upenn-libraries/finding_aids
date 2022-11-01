@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  finding_aid_discovery:
+    volumes:
+      - sitemap:/home/app/public/sitemap
+
+volumes:
+  sitemap:
