@@ -32,6 +32,7 @@
     FINDING_AID_DISCOVERY_PENN_ASPACE_API_PASSWORD: "{{ 'finding_aid_discovery_penn_aspace_api_password_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_password.version }}"
     FINDING_AID_DISCOVERY_PENN_ASPACE_API_USERNAME: "{{ 'finding_aid_discovery_penn_aspace_api_username_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_username.version }}"
     FINDING_AID_DISCOVERY_RAILS_ENV: "{{ finding_aid_discovery.rails_env }}"
+    FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
     FINDING_AID_DISCOVERY_SLACK_NOTIFICATION_EMAIL_ADDRESS: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery.versioned_secrets.slack_notification_email_address.version }}"
     REDIS_SIDEKIQ_USER: "sidekiq"
     REDIS_SIDEKIQ_PASSWORD: "{{ 'redis_sidekiq_password_v' ~ redis.versioned_configs.users_acl.users | selectattr('name', 'equalto', 'sidekiq') | map(attribute='version')  | join('') }}"
@@ -45,15 +46,19 @@
 # Execute staging/production steps
 - name: Copy docker-compose file
   copy:
-    src: "../files/docker-compose.yml"
+    src: "../files/{{ item }}"
     dest: "{{ project_root ~ '/sidekiq/' }}"
   when: not is_development | default (false) == true
+  loop:
+    - "docker-compose.yml"
+    - "docker-compose.prod.yml"
 
 - name: Deploy Sidekiq
   docker_stack:
     name: "fad"
     compose:
       - "{{ project_root ~ '/sidekiq/docker-compose.yml' }}"
+      - "{{ project_root ~ '/sidekiq/docker-compose.prod.yml' }}"
     state: present
   changed_when: false
   environment:
@@ -66,6 +71,7 @@
     FINDING_AID_DISCOVERY_PENN_ASPACE_API_PASSWORD: "{{ 'finding_aid_discovery_penn_aspace_api_password_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_password.version }}"
     FINDING_AID_DISCOVERY_PENN_ASPACE_API_USERNAME: "{{ 'finding_aid_discovery_penn_aspace_api_username_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_username.version }}"
     FINDING_AID_DISCOVERY_RAILS_ENV: "{{ finding_aid_discovery.rails_env }}"
+    FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
     FINDING_AID_DISCOVERY_SLACK_NOTIFICATION_EMAIL_ADDRESS: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery.versioned_secrets.slack_notification_email_address.version }}"
     REDIS_SIDEKIQ_USER: "sidekiq"
     REDIS_SIDEKIQ_PASSWORD: "{{ 'redis_sidekiq_password_v' ~ redis.versioned_configs.users_acl.users | selectattr('name', 'equalto', 'sidekiq') | map(attribute='version')  | join('') }}"

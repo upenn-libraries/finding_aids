@@ -39,9 +39,6 @@ Rails.application.configure do
   # The :file delivery method saves the emails in tmp/mails
   config.action_mailer.delivery_method = :file
 
-  # Set hostname for urls generated within emails
-  config.action_mailer.default_url_options = { host: 'finding-aid-discovery-dev.library.upenn.edu' }
-
   # config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.perform_caching = false

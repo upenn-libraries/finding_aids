@@ -64,9 +64,6 @@ Rails.application.configure do
     from: 'noreply@library.upenn.edu'
   }
 
-  # Set hostname for urls generated within emails
-  config.action_mailer.default_url_options = { host: 'findingaids.library.upenn.edu' }
-
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.

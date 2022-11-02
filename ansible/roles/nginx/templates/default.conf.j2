@@ -39,7 +39,7 @@ server {
     }
 
     # block access to files with extensions
-    location ~ /([^/])+\.(sh|pl|py|lua|inc|phar|php|log|ini|md|sql|conf|rb|yml|zip|tar|.+gz)$ {
+    location ~ /([^/])+\.(sh|pl|py|lua|inc|phar|php|log|ini|md|sql|conf|rb|yml|zip|tar|.+gz(?<!sitemap\.xml\.gz))$ {
         deny all;
     }
 

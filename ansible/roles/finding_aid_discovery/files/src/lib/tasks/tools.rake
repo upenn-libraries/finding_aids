@@ -46,4 +46,29 @@ namespace :tools do
   task sync_endpoints: :environment do
     Endpoint.sync_from_csv(Rails.root.join('data/endpoints.csv'))
   end
+
+  desc 'Create appropriate robots.txt for the environment'
+  task robotstxt: :environment do
+    prod_robots = <<~PROD
+      User-agent: *
+      Disallow: /admin
+      Disallow: /records/facet/
+      Sitemap: https://findingaids.library.upenn.edu/sitemap/sitemap.xml.gz
+    PROD
+
+    non_prod_robots = <<~NONPROD
+      User-agent: *
+      Disallow: /
+    NONPROD
+
+    robotstxt = Rails.env.production? ? prod_robots : non_prod_robots
+
+    File.write(Rails.public_path.join('robots.txt'), robotstxt)
+  end
+
+  desc 'Generate a sitemap if its missing'
+  task ensure_sitemap: :environment do
+    sitemap_path = Rails.public_path.join('sitemap/sitemap.xml.gz')
+    Rake::Task['sitemap:create'].invoke unless File.exist?(sitemap_path)
+  end
 end

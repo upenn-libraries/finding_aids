@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  sidekiq:
+    volumes:
+      - sitemap:/home/app/public/sitemap
+
+volumes:
+  sitemap:
+    external: true

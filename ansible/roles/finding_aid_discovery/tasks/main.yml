@@ -83,15 +83,19 @@
 # Execute staging/production steps
 - name: Copy docker-compose file
   copy:
-    src: "../files/docker-compose.yml"
+    src: "../files/{{ item }}"
     dest: "{{ project_root ~ '/finding_aid_discovery/' }}"
   when: not is_development | default (false) == true
+  loop:
+    - "docker-compose.yml"
+    - "docker-compose.prod.yml"
 
 - name: Deploy Finding Aid
   docker_stack:
     name: "fad"
     compose:
       - "{{ project_root ~ '/finding_aid_discovery/docker-compose.yml' }}"
+      - "{{ project_root ~ '/finding_aid_discovery/docker-compose.prod.yml' }}"
     state: present
   changed_when: false
   environment:

@@ -137,7 +137,7 @@ RUN apk add --no-cache \
         yarn && \
     chmod +x /usr/local/bin/docker-entrypoint.sh && \
     addgroup -S app && adduser -S app -G app -h ${PROJECT_ROOT} -s /bin/ash && \
-    SECRET_KEY_BASE=x rails assets:precompile && \
+    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x rails assets:precompile && \
     mkdir -p ${PROJECT_ROOT}/tmp/pids && \
     find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
