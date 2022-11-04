@@ -28,6 +28,8 @@ if [ "$1" = "bundle" -a "$2" = "exec" -a "$3" = "puma" ] || [ "$1" = "bundle" -a
         bundle exec rake db:migrate
         bundle exec rake tools:ensure_sitemap
         bundle exec rake tools:robotstxt
+
+        chown -R app:app .
     fi
 
     # run the application as the app user
