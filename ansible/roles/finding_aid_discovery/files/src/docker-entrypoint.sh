@@ -14,8 +14,6 @@ if [ "$1" = "bundle" -a "$2" = "exec" -a "$3" = "puma" ] || [ "$1" = "bundle" -a
         
         # since we are running a dev env we remove node_modules and install our dependencies
         su - app -c $(rm -rf node_modules && yarn install --no-bin-links)
-
-        chown -R app:app .
     fi
 
     # remove puma server.pid
@@ -28,9 +26,9 @@ if [ "$1" = "bundle" -a "$2" = "exec" -a "$3" = "puma" ] || [ "$1" = "bundle" -a
         bundle exec rake db:migrate
         bundle exec rake tools:ensure_sitemap
         bundle exec rake tools:robotstxt
-
-        chown -R app:app .
     fi
+
+    chown -R app:app .
 
     # run the application as the app user
     exec su-exec app "$@"
