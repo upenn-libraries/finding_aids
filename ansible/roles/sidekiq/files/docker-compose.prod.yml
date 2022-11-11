@@ -3,8 +3,8 @@ version: "3.8"
 services:
   sidekiq:
     volumes:
-      - sitemap:/home/app/public/sitemap
+      - fad_sitemap:/home/app/public/sitemap
 
 volumes:
-  sitemap:
+  fad_sitemap:
     external: true
