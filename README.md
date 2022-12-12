@@ -21,11 +21,7 @@ This repository includes the infrastructure and application code that supports t
 
 > Caveat: the vagrant development environment has only been tested in Linux.
 
-In order to use the integrated development environment you will need to install [VirtualBox](https://www.virtualbox.org/wiki/Linux_Downloads) and [Vagrant](https://www.vagrantup.com/docs/installation) [do *not* use the Vagrant version that may be available for your distro repository - explicitly follow instructions at the Vagrant homepage], and the following Vagrant plugins: `vagrant-vbguest`, `vagrant-hostsupdater` and `vault`:
-
-```
-vagrant plugin install vagrant-vbguest vagrant-hostsupdater vault
-```
+In order to use the integrated development environment you will need to install [VirtualBox](https://www.virtualbox.org/wiki/Linux_Downloads) and [Vagrant](https://www.vagrantup.com/docs/installation) [do *not* use the Vagrant version that may be available for your distro repository - explicitly follow instructions at the Vagrant homepage].
 
 You may need to update the VirtualBox configuration for the creation of a host-only network. This can be done by creating a file `/etc/vbox/networks.conf` containing:
 
@@ -35,10 +31,16 @@ You may need to update the VirtualBox configuration for the creation of a host-o
 
 #### Starting
 
-From the `vagrant` directory run (the ansible vault password for the vagrant inventory is `password`):
+From the [vagrant](vagrant) directory run:
 
 ```
 vagrant up --provision
+```
+
+To specify a provider run the command with the `provider` flag (e.g. for parallels):
+
+```
+vagrant up --provider=parallels --provision
 ```
 
 This will run the [vagrant/Vagrantfile](vagrant/Vagrantfile) which will bring up an Ubuntu VM and run the Ansible script which will provision a single node Docker Swarm behind nginx with a self-signed certificate to mimic a load balancer. Your hosts file will be modified; the domain `finding-aid-discovery-dev.library.upenn.edu` will be added and mapped to the Ubuntu VM. Once the Ansible script has completed and the Docker Swarm is deployed you can access the application by navigating to [https://finding-aid-discovery-dev.library.upenn.edu](https://finding-aid-discovery-dev.library.upenn.edu).
