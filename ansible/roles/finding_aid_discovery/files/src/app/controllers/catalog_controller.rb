@@ -72,7 +72,7 @@ class CatalogController < ApplicationController
     # :index_range can be an array or range of prefixes that will be used to create the navigation
     #              (note: It is case sensitive when searching values)
 
-    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true
+    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true, component: true
     config.add_facet_field 'record_source', label: I18n.t('fields.record_source'), query: {
       upenn: { label: 'University of Pennsylvania', fq: 'upenn_record_bsi:true' },
       non_upenn: { label: 'Other PACSCL Partners', fq: 'upenn_record_bsi:false' }
@@ -139,13 +139,13 @@ class CatalogController < ApplicationController
   end
 
   def repositories
-    @facet = blacklight_config.facet_fields['repository_ssi']
-    raise ActionController::RoutingError, 'Not Found' unless @facet
+    @facet_config = blacklight_config.facet_fields['repository_ssi']
+    raise ActionController::RoutingError, 'Not Found' unless @facet_config
 
-    @response = search_service.facet_field_response(@facet.key, { 'f.repository_ssi.facet.limit' => -1 })
-    @display_facet = @response.aggregations[@facet.field]
+    @response = search_service.facet_field_response(@facet_config.key, { 'f.repository_ssi.facet.limit' => -1 })
+    @display_facet = @response.aggregations[@facet_config.field]
 
-    @presenter = @facet.presenter.new(@facet, @display_facet, view_context)
+    @presenter = @facet_config.presenter.new(@facet_config, @display_facet, view_context)
     @pagination = @presenter.paginator
   end
 
