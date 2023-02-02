@@ -87,8 +87,8 @@ GEM
       ostruct (>= 0.3.2)
       rails (>= 5.1, < 7.1)
       view_component (~> 2.66)
-    blacklight_range_limit (8.2.1)
-      blacklight (>= 7.22.2, < 9)
+    blacklight_range_limit (8.2.3)
+      blacklight (>= 7.25.2, < 9)
     bootsnap (1.11.1)
       msgpack (~> 1.2)
     bootstrap (4.6.1)
@@ -382,8 +382,8 @@ PLATFORMS
 
 DEPENDENCIES
   archivesspace-client
-  blacklight (~> 7)
-  blacklight_range_limit
+  blacklight (~> 7.33)
+  blacklight_range_limit (~> 8.2)
   bootsnap (>= 1.4.4)
   bootstrap (~> 4.0)
   bootstrap_form (~> 4.0)
