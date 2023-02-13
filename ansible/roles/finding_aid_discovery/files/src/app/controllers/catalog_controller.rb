@@ -9,7 +9,7 @@ class CatalogController < ApplicationController
     # enable search state field filtering - it will be default in BL8
     config.filter_search_state_fields = true
     # explicitly permit our requesting-related fields
-    config.search_state_fields +=  [:id, :authenticity_token, :c, :call_num, :repository, :title]
+    config.search_state_fields += %i[id authenticity_token c call_num repository title]
 
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository
