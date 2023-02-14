@@ -245,5 +245,13 @@ describe EadParser do
         expect(hash[:online_content_bsi]).to eq 'T'
       end
     end
+
+    context 'with digital object info in deeply nested <c> nodes' do
+      let(:xml) { file_fixture('ead/upenn_ms_coll_200.xml') }
+
+      it 'has an online_content_bsi of "T"' do
+        expect(hash[:online_content_bsi]).to eq 'T'
+      end
+    end
   end
 end

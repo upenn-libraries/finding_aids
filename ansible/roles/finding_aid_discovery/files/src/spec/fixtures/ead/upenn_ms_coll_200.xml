@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd">
+  <eadheader countryencoding="iso3166-1" dateencoding="iso8601" langencoding="iso639-2b" repositoryencoding="iso15511">
+    <eadid>ms. coll. 200</eadid>
+    <filedesc>
+      <titlestmt>
+        <titleproper>Marian Anderson papers, circa 1900-1993 <num>PUSp.Ms. Coll. 200</num></titleproper>
+        <author>Margaret Kruesi</author>
+        <sponsor>The processing of the Marian Anderson Papers and the preparation of this register were made possible in part by a grant from the National Endowment for the Humanities.</sponsor>
+      </titlestmt>
+      <publicationstmt>
+        <publisher>University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts</publisher><p><date>1998</date></p><address><addressline>3420 Walnut Street</addressline><addressline>Philadelphia, PA 19104-6206</addressline><addressline>rbml@pobox.upenn.edu</addressline><addressline>URL: <extptr xlink:href="http://www.library.upenn.edu/rbm/" xlink:show="new" xlink:title="http://www.library.upenn.edu/rbm/" xlink:type="simple"/></addressline></address></publicationstmt>
+    </filedesc>
+    <profiledesc>
+      <creation>This finding aid was produced using ArchivesSpace on <date>2023-02-13 17:26:26 -0500</date>.</creation><langusage>Description is written in: <language langcode="eng" scriptcode="Latn">English, Latin script</language>.</langusage>
+    </profiledesc>
+  </eadheader>
+  <archdesc level="collection">
+    <did>
+      <repository>
+        <corpname>University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts</corpname>
+      </repository>
+      <unittitle>Marian Anderson papers</unittitle>
+      <origination label="Creator">
+        <persname source="naf">Anderson, Marian</persname>
+      </origination>
+      <unitid>PUSp.Ms. Coll. 200</unitid>
+      <physdesc altrender="whole">
+        <extent altrender="materialtype spaceoccupied">450 boxes</extent>
+      </physdesc>
+      <unitdate datechar="creation" normal="1900/1993" type="inclusive">circa 1900-1993</unitdate>
+      <abstract id="aspace_8094579fd910000c2c36e1ee6fbfb770">The Marian Anderson Papers are comprised of correspondence; business records and contracts; manuscript and typescript biographical materials; notes, journals, calendars, and financial documents; programs and publicity materials; awards and honorary degrees; clippings; scrapbooks; memorabilia; and some materials belonging to her sisters Alyse Anderson and Ethel De Preist, her mother Anna D. Anderson, and her husband, Orpheus H. Fisher. As a result of a Council on Library and Information Resources (CLIR) project, "<extref xlink:actuate="onRequest" xlink:href="https://mariananderson.exhibits.library.upenn.edu/home" xlink:show="replace" xlink:title="Discovering Marian Anderson">Discovering Marian Anderson</extref>," selections of material from this and other Marian Anderson collections may be viewed <extref xlink:actuate="onRequest" xlink:href="https://colenda.library.upenn.edu/?_=1579728553878&amp;f%5Bcollection_sim%5D%5B%5D=Marian+Anderson+Papers+%28University+of+Pennsylvania%29" xlink:show="replace" xlink:title="online">online</extref>.</abstract>
+      <langmaterial id="aspace_cf430e2ac1aed747746d4afb92595f6e">Materials primarily in English, with some correspondence in Danish, German, Finnish, French, Italian, Norwegian, Polish, Russian, Spanish and Swedish.</langmaterial>
+    </did>
+    <dsc>
+      <c id="aspace_ref10_8di" level="series">
+        <did>
+          <unittitle>Correspondence</unittitle>
+          <unitid>I</unitid>
+        </did>
+        <c id="aspace_ref1921_rfo" level="subseries">
+          <did>
+            <unittitle>Scrapbooks -- Marion Anderson</unittitle>
+            <unitid>2</unitid>
+          </did>
+          <c id="aspace_ref1922_ybq" level="file">
+            <did>
+              <unittitle>Scrapbook of reviews, Warsaw, Poland</unittitle>
+              <unitdate datechar="creation" normal="1935/1935" type="inclusive">1935</unitdate>
+              <container id="aspace_61e2ff41224898a24ad7de499f7812a4" label="Mixed Materials" type="box">404</container>
+              <dao xlink:actuate="onRequest" xlink:href="https://colenda.library.upenn.edu/catalog/81431-p3930nx6p" xlink:show="new" xlink:title="Scrapbook of reviews, Warsaw, Poland, 1935." xlink:type="simple">
+                <daodesc><p>Scrapbook of reviews, Warsaw, Poland, 1935.</p></daodesc>
+              </dao>
+            </did>
+          </c>
+        </c>
+      </c>
+    </dsc>
+  </archdesc>
+</ead>

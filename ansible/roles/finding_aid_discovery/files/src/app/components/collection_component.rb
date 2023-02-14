@@ -19,7 +19,7 @@ class CollectionComponent < ViewComponent::Base
 
   # @return [Array]
   def digital_object_links
-    @digital_object_links ||= @node.xpath('./did/dao | ./dao').filter_map do |dao|
+    @digital_object_links ||= node.xpath('./did/dao | ./dao').filter_map do |dao|
       href = dao.attr('href')
       next unless href
 
