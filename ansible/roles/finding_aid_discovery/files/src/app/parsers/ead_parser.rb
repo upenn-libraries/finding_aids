@@ -319,10 +319,8 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def online_content(doc)
-    doc.xpath('/ead/archdesc/dsc//dao').try(:any?) ? 'T' : 'F'
-
     # T if dao node found anywhere in dsc - this handles deep nesting of <c*> nodes
-    dsc&.xpath('//dao').try(:any?) ? 'T' : 'F'
+    doc.xpath('/ead/archdesc/dsc//dao').try(:any?) ? 'T' : 'F'
   end
 
   # usage: { solr_field_name: value, ... }
