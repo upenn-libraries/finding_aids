@@ -316,17 +316,11 @@ class EadParser
   end
 
   # Determine if we will show any "Online Content" links
-  # this should match the XPath in CollectionComponent#digital_object_links
   # @param [Nokogiri::XML::Document] doc
   # @return [String]
   def online_content(doc)
-    dsc = doc.at_xpath('/ead/archdesc/dsc')
-    return 'F' unless dsc
-
-    dsc.xpath('c | c01 | c02 | c03 | c04 | c05 | c06 | c07 | c08 | c09 | c10 | c11 | c12').each do |c|
-      return 'T' if c.xpath('./did/dao | ./dao').any?
-    end
-    'F'
+    # T if dao node found anywhere in dsc - this handles deep nesting of <c*> nodes
+    doc.xpath('/ead/archdesc/dsc//dao').try(:any?) ? 'T' : 'F'
   end
 
   # usage: { solr_field_name: value, ... }
