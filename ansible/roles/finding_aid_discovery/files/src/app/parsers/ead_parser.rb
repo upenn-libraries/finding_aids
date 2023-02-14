@@ -322,7 +322,7 @@ class EadParser
     dsc = doc.at_xpath('/ead/archdesc/dsc')
 
     # T if dao node found anywhere in dsc - this handles deep nesting of <c*> nodes
-    dsc&.xpath('//dao').any? ? 'T' : 'F'
+    dsc&.xpath('//dao').try(:any?) ? 'T' : 'F'
   end
 
   # usage: { solr_field_name: value, ... }
