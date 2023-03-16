@@ -9,6 +9,6 @@ solr:
     tag: "{{ image_tag }}"
   java:
     memory:
-      min: "1g"
-      max: "1g"
+      min: "2g"
+      max: "2g"
   replicas: 1
