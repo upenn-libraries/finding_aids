@@ -2,7 +2,11 @@
 
 class SolrDocument
   XML_FIELD_NAME = :xml_ss
-  REQUESTABLE_REPOSITORIES = [AeonRequest::KISLAK_REPOSITORY_NAME, AeonRequest::KATZ_REPOSITORY_NAME].freeze
+  REQUESTABLE_REPOSITORIES = [
+    AeonRequest::ARCHIVES_REPOSITORY_NAME,
+    AeonRequest::KATZ_REPOSITORY_NAME,
+    AeonRequest::KISLAK_REPOSITORY_NAME
+  ].freeze
 
   include Blacklight::Solr::Document
 
@@ -80,7 +84,7 @@ class SolrDocument
 
   # @return [Hash{Symbol->Unknown}]
   def requesting_info
-    { title:, call_num:, repository: }
+    { title: title, call_num: call_num, repository: repository }
   end
 
   class ParsedEad

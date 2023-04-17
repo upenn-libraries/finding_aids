@@ -45,6 +45,7 @@ en:
         save_for_later: 'Save request to submit later?'
         submit: 'Submit Request'
       messages:
+        missing_container: 'Please select at least one container for requesting'
         auth_help_html: "You must be logged in to your Special Collections Reference Account before submitting a request. Please %{aeon_link} and confirm your account type."
   page_titles:
     repositories_list: 'PACSCL Repositories'

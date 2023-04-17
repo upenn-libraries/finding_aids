@@ -136,7 +136,7 @@ class EadParser
     matches = val.scan YEARS_REGEX
     return [] if matches.empty?
 
-    matches.sum([]) do |years|
+    matches.sum([]) { |years|
       if years.compact.length == 1
         [years[0].to_i]
       elsif years[1] == '9999'
@@ -144,7 +144,7 @@ class EadParser
       else
         (years[0]..years[1]).to_a.map(&:to_i)
       end
-    end.uniq
+    }.uniq
   end
 
   # https://www.loc.gov/ead/tglib/elements/abstract.html
@@ -237,69 +237,69 @@ class EadParser
   #       and if this is still warranted
   def names(doc)
     doc.xpath(".//controlaccess/persname | .//controlaccess/famname |
-               .//controlaccess/corpname | //origination[@label='creator' or @label='Creator']").map do |node|
+               .//controlaccess/corpname | //origination[@label='creator' or @label='Creator']").map { |node|
       node.text.try(:strip)
-    end.uniq
+    }.uniq
   end
 
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def people(doc)
-    doc.xpath('.//controlaccess/persname | .//controlaccess/famname').map do |node|
-      node.text.try(:strip)
-    end.uniq
+    doc.xpath('.//controlaccess/persname | .//controlaccess/famname')
+       .map { |node| node.text.try(:strip) }
+       .uniq
   end
 
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def corp_names(doc)
-    doc.xpath('.//controlaccess/corpname').map do |node|
-      node.text.try(:strip)
-    end.uniq
+    doc.xpath('.//controlaccess/corpname')
+       .map { |node| node.text.try(:strip) }
+       .uniq
   end
 
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def subjects(doc)
-    doc.xpath('.//controlaccess/subject').map do |node|
-      node.text.strip.gsub(/\s*\.\s*$/, '')
-    end.uniq
+    doc.xpath('.//controlaccess/subject')
+       .map { |node| node.text.strip.gsub(/\s*\.\s*$/, '') }
+       .uniq
   end
 
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def places(doc)
-    doc.xpath('.//controlaccess/geogname').map do |node|
-      node.text.try(:strip)
-    end.uniq
+    doc.xpath('.//controlaccess/geogname')
+       .map { |node| node.text.try(:strip) }
+       .uniq
   end
 
   # https://www.loc.gov/ead/tglib/elements/language.html
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def languages(doc)
-    doc.xpath('/ead/archdesc/did/langmaterial/language/@langcode').map do |node|
+    doc.xpath('/ead/archdesc/did/langmaterial/language/@langcode').map { |node|
       code = node.text.try(:strip).try(:downcase)
       iso_entry = ISO_639.find_by_code code
       iso_entry&.english_name || code
-    end.uniq
+    }.uniq
   end
 
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def donor(doc)
-    doc.xpath(".//controlaccess/persname[@role='Donor (dnr)']").map do |node|
-      node.text.try(:strip)
-    end.uniq
+    doc.xpath(".//controlaccess/persname[@role='Donor (dnr)']")
+       .map { |node| node.text.try(:strip) }
+       .uniq
   end
 
   # https://www.loc.gov/ead/tglib/elements/genreform.html
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def genre_form(doc)
-    doc.xpath('.//controlaccess/genreform').map do |node|
-      node.text.try(:strip)
-    end.uniq
+    doc.xpath('.//controlaccess/genreform')
+       .map { |node| node.text.try(:strip) }
+       .uniq
   end
 
   # @param [Nokogiri::XML::Document] doc

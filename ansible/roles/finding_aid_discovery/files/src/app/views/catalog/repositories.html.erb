@@ -22,6 +22,10 @@
   <% component.title { t('labels.titles.repositories_list') } %>
 
   <div class="facet-extended-list">
-    <%= render_facet_limit(@display_facet, layout: false) %>
+    <%= render Blacklight::FacetComponent.new(
+      display_facet: @display_facet,
+      field_config: @facet_config,
+      layout: false
+    ) %>
   </div>
 <% end %>

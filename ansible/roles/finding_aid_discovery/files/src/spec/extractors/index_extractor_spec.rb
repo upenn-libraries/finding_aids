@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 describe IndexExtractor do
-  let(:endpoint) { build :endpoint, :index_harvest }
+  let(:endpoint) { build(:endpoint, :index_harvest) }
   let(:html) { file_fixture('xml_listing.html').read }
-  let(:extractor) { described_class.new(endpoint:) }
+  let(:extractor) { described_class.new(endpoint: endpoint) }
 
   describe '#files' do
     subject(:files) { extractor.files }

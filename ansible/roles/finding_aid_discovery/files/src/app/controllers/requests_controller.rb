@@ -19,6 +19,6 @@ class RequestsController < ApplicationController
     return if params[:c].present?
 
     redirect_back(fallback_location: root_path,
-                  alert: 'Please select at least one container for requesting')
+                  alert: I18n.t('requests.form.messages.missing_container'))
   end
 end

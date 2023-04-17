@@ -1,8 +1,8 @@
 <%#
-  Overriding Blacklight v7.19.2 template in order to remove search context links and buttons.
+  Overriding Blacklight v7 template in order to remove search context links and buttons.
 %>
 
-<%= render_document_main_content_partial %>
+<%= render 'show_main_content' %>
 
 <% content_for(:sidebar) do %>
   <%= render_document_sidebar_partial @document %>
