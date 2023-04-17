@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe EadParser do
-  let(:endpoint) { build :endpoint, :index_harvest }
+  let(:endpoint) { build(:endpoint, :index_harvest) }
   let(:parser) { described_class.new endpoint }
 
   describe '#to_years_array' do
@@ -44,7 +44,7 @@ describe EadParser do
       let(:xml) { file_fixture('ead/ead1.xml') }
 
       it 'returns a hash' do
-        expect(hash).to be_a_kind_of Hash
+        expect(hash).to be_a Hash
       end
 
       it 'has expected value for the id suffix' do

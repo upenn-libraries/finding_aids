@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe PennArchivesSpaceExtractor do
-  let(:endpoint) { build :endpoint, :penn_aspace_harvest }
-  let(:extractor) { described_class.new(endpoint:, api: api_client) }
+  let(:endpoint) { build(:endpoint, :penn_aspace_harvest) }
+  let(:extractor) { described_class.new(endpoint: endpoint, api: api_client) }
   let(:api_client) do
     client = instance_double(PennAspaceService)
     allow(client).to receive(:all_resource_ids).and_return(['test'])

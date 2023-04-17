@@ -10,7 +10,7 @@ class PennArchivesSpaceExtractor < BaseExtractor
   # @param [ArchivesSpaceExtractor::ArchivesSpaceApi] api
   def initialize(endpoint:, api: nil)
     @api = api || PennAspaceService.new(endpoint.harvest_config['repository_id'])
-    super endpoint:
+    super endpoint: endpoint
   end
 
   # return iterable of ArchivesSpaceFiles

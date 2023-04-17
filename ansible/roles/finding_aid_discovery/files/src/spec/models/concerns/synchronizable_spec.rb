@@ -95,7 +95,7 @@ shared_examples_for 'synchronizable' do
 
         before do
           allow(solr).to receive(:delete_by_endpoint).with('haverford')
-          described_class.sync_from_csv(remove_csv_file, solr:)
+          described_class.sync_from_csv(remove_csv_file, solr: solr)
         end
 
         it 'removes haverford' do

@@ -99,7 +99,7 @@ describe Endpoint do
       end
 
       it 'lists expected errors' do
-        expect(endpoint.last_harvest.errors).to match_array ['Problem extracting xml ead links from endpoint']
+        expect(endpoint.last_harvest.errors).to contain_exactly('Problem extracting xml ead links from endpoint')
       end
     end
 
@@ -116,9 +116,9 @@ describe Endpoint do
       it 'lists expected problem files' do
         expect(
           endpoint.last_harvest.problem_files
-        ).to match_array([
-                           { 'id' => 'test-failed-id', 'status' => 'failed', 'errors' => ['Problem downloading file'] }
-                         ])
+        ).to contain_exactly(
+          { 'id' => 'test-failed-id', 'status' => 'failed', 'errors' => ['Problem downloading file'] }
+        )
       end
     end
 

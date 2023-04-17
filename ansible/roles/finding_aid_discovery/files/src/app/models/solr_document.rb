@@ -84,7 +84,7 @@ class SolrDocument
 
   # @return [Hash{Symbol->Unknown}]
   def requesting_info
-    { title:, call_num:, repository: }
+    { title: title, call_num: call_num, repository: repository }
   end
 
   class ParsedEad

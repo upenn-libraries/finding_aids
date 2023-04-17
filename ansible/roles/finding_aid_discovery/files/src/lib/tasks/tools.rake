@@ -63,7 +63,7 @@ namespace :tools do
 
     robotstxt = Rails.env.production? ? prod_robots : non_prod_robots
 
-    File.write(Rails.public_path.join('robots.txt'), robotstxt)
+    Rails.public_path.join('robots.txt').write(robotstxt)
   end
 
   desc 'Generate a sitemap if its missing'
