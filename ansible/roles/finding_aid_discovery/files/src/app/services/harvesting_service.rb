@@ -59,7 +59,7 @@ class HarvestingService
   end
 
   def index_documents(documents)
-    @solr.add_many(documents:)
+    @solr.add_many(documents: documents)
     Rails.logger.info "Indexed #{documents.length} documents"
   rescue StandardError => e
     fatal_error e.message
@@ -107,7 +107,7 @@ class HarvestingService
   def log_documents_removed(ids)
     Rails.logger.info "Deleting records for #{@endpoint.slug} not present in latest harvest: #{ids.join(', ')}"
     ids.each do |id|
-      @file_results << { id:, status: :removed }
+      @file_results << { id: id, status: :removed }
     end
   end
 
@@ -116,7 +116,7 @@ class HarvestingService
     errors = Array.wrap(errors)
     Rails.logger.error "Fatal error during harvesting: #{errors.join(', ')}"
     @endpoint.update!(
-      last_harvest_results: { date: DateTime.current, files: [], errors: }
+      last_harvest_results: { date: DateTime.current, files: [], errors: errors }
     )
   end
 

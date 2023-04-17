@@ -15,7 +15,7 @@ describe 'Blacklight search results' do
 
   context 'with a record' do
     let(:solr) { SolrService.new }
-    let(:document_hash) { attributes_for :solr_document, :with_collection_data }
+    let(:document_hash) { attributes_for(:solr_document, :with_collection_data) }
     let(:document_title) { document_hash[:title_tsi] }
 
     before do

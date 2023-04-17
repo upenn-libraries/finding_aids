@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe HarvestingService do
-  let(:endpoint) { create :endpoint, :index_harvest }
+  let(:endpoint) { create(:endpoint, :index_harvest) }
 
   describe '#process_deletes' do
     let(:solr_service) { instance_double SolrService }
@@ -75,7 +75,7 @@ describe HarvestingService do
 
     context 'when EAD cannot not be retrieved because of a HTTP error' do
       let(:url) { 'https://www.test.com/not_here.xml' }
-      let(:xml_file) { IndexExtractor::XMLFile.new(url:) }
+      let(:xml_file) { IndexExtractor::XMLFile.new(url: url) }
       let(:expected_file_error_hash) do
         [{
           'id' => 'not_here.xml',

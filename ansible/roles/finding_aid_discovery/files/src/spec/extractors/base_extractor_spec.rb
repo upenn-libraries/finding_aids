@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 describe BaseExtractor do
-  let(:endpoint) { build :endpoint }
+  let(:endpoint) { build(:endpoint) }
 
   describe '.initialize' do
     it 'requires an Endpoint' do
-      expect do
+      expect {
         described_class.new endpoint: 'Not an Endpoint'
-      end.to raise_error StandardError
+      }.to raise_error StandardError
     end
 
     it 'sets #endpoint' do

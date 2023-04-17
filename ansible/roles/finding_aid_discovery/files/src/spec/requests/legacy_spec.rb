@@ -12,7 +12,7 @@ describe 'Legacy identifier redirection' do
 
   context 'with the identifier in the index' do
     let(:solr) { SolrService.new }
-    let(:document_hash) { attributes_for :solr_document }
+    let(:document_hash) { attributes_for(:solr_document) }
 
     before do
       solr.add_many documents: [document_hash]

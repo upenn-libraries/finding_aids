@@ -38,7 +38,7 @@ class AeonRequest
   def build_items
     @params['item'].map.with_index do |item, i|
       volume, issue = item.split(':').map(&:strip)
-      container_info = { volume:, issue: }
+      container_info = { volume: volume, issue: issue }
       Item.new i, container_info, self
     end
   end

@@ -41,7 +41,7 @@ describe SolrService do
   end
 
   describe '#find_id_by_legacy_id' do
-    let(:doc) { attributes_for :solr_document }
+    let(:doc) { attributes_for(:solr_document) }
 
     before do
       solr.add_many(documents: [doc])

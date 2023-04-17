@@ -4,7 +4,7 @@ require 'system_helper'
 
 describe 'Requests form' do
   let(:solr) { SolrService.new }
-  let(:document_hash) { attributes_for :solr_document, :requestable, :with_collection_data }
+  let(:document_hash) { attributes_for(:solr_document, :requestable, :with_collection_data) }
   let(:document_title) { document_hash[:title_tsi] }
 
   # Index a requestale record
