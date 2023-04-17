@@ -3,7 +3,7 @@ UPENN_RBML, penn_archives_space, hmengel@pobox.upenn.edu, rbml@pobox.upenn.edu,,
 UPENN_CAJS, penn_archives_space, cajs@pobox.upenn.edu, cajs@pobox.upenn.edu,, 5
 UPENN_BIDDLE, penn_archives_space, loneil@law.upenn.edu, biddlearchives@law.upenn.edu,, 7
 UPENN_MUSEUM, index, archives@museum.upenn.edu, archives@museum.upenn.edu, https://www.penn.museum/collections/archives/finding-aids/,
-ISM, index, lblanchard_pacscl@yahoo.com, library@phillyseaport.org, http://archive.pacscl.org/phillyseaport/production/,
+ISM, index, director@pacscl.org, library@phillyseaport.org, http://archive.pacscl.org/phillyseaport/production/,
 DU, index, mgraham@drexelmed.edu, archives@drexel.edu, https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/drexel_university_archives/,
 DUCOM, index, mgraham@drexelmed.edu, archives@drexelmed.edu, https://drexel.edu/legacy-center/ead_harvest/ead_production/,
 HAVERFORD, index, shorowitz@haverford.edu, hc-special@haverford.edu, https://web.tricolib.brynmawr.edu/paarp/haverford/production/,
@@ -11,7 +11,7 @@ HSP, index, mshoemaker@hsp.org, library@hsp.org, http://www2.hsp.org/collections
 WFIS, index, LynnD@wagnerfreeinstitute.org, lynnd@wagnerfreeinstitute.org, https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/wagner/,
 BMC, index, rappel@brynmawr.edu, SpecColl@brynmawr.edu, https://web.tricolib.brynmawr.edu/paarp/brynmawr/production/,
 CPP, index, abrogan@collegeofphysicians.org, library@collphyphil.org, https://eadxml.cpparchives.org/manuscripts/,
-ANSP, index, lblanchard_pacscl@yahoo.com, archives@ansp.org, http://archive.pacscl.org/acnatsci/production/,
+ANSP, index, director@pacscl.org, archives@ansp.org, http://archive.pacscl.org/acnatsci/production/,
 PMA, index, skanderson@philamuseum.org, Archives@philamuseum.org, https://legacyweb.philamuseum.org/pma_archives/pacscl/index.html,
 GSP, index, librarian@germansociety.org, librarian@germansociety.org, https://www.germansociety.org/LibraryFindingAidsforHarvesting/,
 LCP, index, reference@librarycompany.org, reference@librarycompany.org, http://3.139.231.97/LCP_EAD-main/,
