@@ -48,6 +48,9 @@
               <unittitle>Scrapbook of reviews, Warsaw, Poland</unittitle>
               <unitdate datechar="creation" normal="1935/1935" type="inclusive">1935</unitdate>
               <container id="aspace_61e2ff41224898a24ad7de499f7812a4" label="Mixed Materials" type="box">404</container>
+              <origination label="Creator">
+                <persname source="naf">Creator, Another</persname>
+              </origination>
               <dao xlink:actuate="onRequest" xlink:href="https://colenda.library.upenn.edu/catalog/81431-p3930nx6p" xlink:show="new" xlink:title="Scrapbook of reviews, Warsaw, Poland, 1935." xlink:type="simple">
                 <daodesc><p>Scrapbook of reviews, Warsaw, Poland, 1935.</p></daodesc>
               </dao>

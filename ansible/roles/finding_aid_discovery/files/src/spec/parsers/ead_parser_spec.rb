@@ -230,6 +230,21 @@ describe EadParser do
       end
     end
 
+    context 'when parsing an EAD from ASpace' do
+      let(:xml) { file_fixture('ead/upenn_ms_coll_200.xml') }
+
+      it 'gets Creator values from all parts of the document regardless of XML attribute case' do
+        expect(hash[:creators_ssim]).to eq(
+          ['Anderson, Marian', 'Creator, Another']
+        )
+      end
+
+      # ensure online content flag is set when digital object info is deeply nested in a <c> node
+      it 'has an online_content_bsi of "T"' do
+        expect(hash[:online_content_bsi]).to eq 'T'
+      end
+    end
+
     context 'with digital object info in v3 spec' do
       let(:xml) { file_fixture('ead/dao_ead_v3.xml') }
 
@@ -242,14 +257,6 @@ describe EadParser do
       let(:xml) { file_fixture('ead/dao_ead_v2.xml') }
 
       it 'has a online_content_bsi of "T"' do
-        expect(hash[:online_content_bsi]).to eq 'T'
-      end
-    end
-
-    context 'with digital object info in deeply nested <c> nodes' do
-      let(:xml) { file_fixture('ead/upenn_ms_coll_200.xml') }
-
-      it 'has an online_content_bsi of "T"' do
         expect(hash[:online_content_bsi]).to eq 'T'
       end
     end
