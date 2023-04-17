@@ -10,10 +10,15 @@ class AeonRequest
     'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
   KATZ_REPOSITORY_NAME =
     'University of Pennsylvania: Archives at the Library of the Katz Center for Advanced Judaic Studies'
+  ARCHIVES_REPOSITORY_NAME =
+    'University of Pennsylvania: University Archives and Records Center'
+
   REPOSITORY_ATTRIBUTE_MAP = {
-    KISLAK_REPOSITORY_NAME => { site: 'KISLAK', location: 'scmss', sublocation: 'Manuscripts' },
-    KATZ_REPOSITORY_NAME => { site: 'KATZ', location: 'cjsarcms', sublocation: 'Arc Room Ms.' }
+    ARCHIVES_REPOSITORY_NAME => { site: 'UARCHIVES', location: 'uarcmss', sublocation: 'Reading Rm' },
+    KATZ_REPOSITORY_NAME => { site: 'KATZ', location: 'cjsarcms', sublocation: 'Arc Room Ms.' },
+    KISLAK_REPOSITORY_NAME => { site: 'KISLAK', location: 'scmss', sublocation: 'Manuscripts' }
   }.freeze
+
   AUTH_INFO_MAP = {
     penn: { url: 'https://aeon.library.upenn.edu/aeon/aeon.dll', param: '1' },
     external: { url: 'https://aeon.library.upenn.edu/nonshib/aeon.dll', param: '2' }
