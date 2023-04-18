@@ -44,8 +44,12 @@
       <langmaterial>
         <language langcode="eng"/>
       </langmaterial>
-      <physdesc>
-        <extent>2.5 Linear feet</extent>
+      <physdesc altrender="part">
+        <extent altrender="materialtype spaceoccupied">2.46 Linear Feet</extent>
+        <extent altrender="carrier">7 boxes</extent>
+      </physdesc>
+      <physdesc altrender="part">
+        <extent altrender="materialtype spaceoccupied">1.85 Gigabytes</extent>
       </physdesc>
       <unitdate normal="1935/1943" type="inclusive">1935-1943</unitdate>
       <unitdate normal="1940" type="bulk">Bulk, 1940</unitdate>

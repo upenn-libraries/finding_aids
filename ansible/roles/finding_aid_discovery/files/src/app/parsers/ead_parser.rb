@@ -93,14 +93,13 @@ class EadParser
 
   # https://www.loc.gov/ead/tglib/elements/extent.html
   # @param [Nokogiri::XML::Document] doc
-  # @return [String]
+  # @return [Array<String>]
   def extent(doc)
-    raw1 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[1]').try :text
-    raw2 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[2]').try :text
-
-    return raw1.downcase if raw2.blank?
-
-    "#{raw1} (#{raw2})".downcase
+    doc.xpath('/ead/archdesc/did/physdesc').map do |node|
+      raw1 = node.at_xpath('./extent[1]').try :text
+      raw2 = node.at_xpath('./extent[2]').try :text
+      raw1.downcase if raw2.blank? ? raw1.downcase : "#{raw1} (#{raw2})".downcase
+    end
   end
 
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
