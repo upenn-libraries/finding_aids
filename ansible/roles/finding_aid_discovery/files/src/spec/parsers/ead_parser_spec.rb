@@ -245,7 +245,7 @@ describe EadParser do
       end
     end
 
-    context 'with digital object info in v3 spec' do
+    context 'with digital object info in EAD v3 spec' do
       let(:xml) { file_fixture('ead/dao_ead_v3.xml') }
 
       it 'has a online_content_bsi of "T"' do
@@ -253,7 +253,7 @@ describe EadParser do
       end
     end
 
-    context 'with digital object info in v2 spec' do
+    context 'with digital object info in EAD v2 spec' do
       let(:xml) { file_fixture('ead/dao_ead_v2.xml') }
 
       it 'has a online_content_bsi of "T"' do
