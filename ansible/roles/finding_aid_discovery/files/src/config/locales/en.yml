@@ -77,6 +77,7 @@ en:
       corpnames: 'Organization'
       subjects: 'Subject'
       places: 'Place'
+      occupations: 'Occupation'
       people: 'People'
   sections:
     collection_inventory: 'Collection Inventory'

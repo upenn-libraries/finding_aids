@@ -274,6 +274,14 @@ class EadParser
        .uniq
   end
 
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def occupations(doc)
+    doc.xpath('.//controlaccess/occupation')
+       .map { |node| node.text.try(:strip) }
+       .uniq
+  end
+
   # https://www.loc.gov/ead/tglib/elements/language.html
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
@@ -353,6 +361,7 @@ class EadParser
       creators_ssim: creators(doc),
       people_ssim: people(doc),
       places_ssim: places(doc),
+      occupations_ssim: occupations(doc),
       corpnames_ssim: corp_names(doc),
       subjects_ssim: subjects(doc),
       upenn_record_bsi: upenn_record(doc),

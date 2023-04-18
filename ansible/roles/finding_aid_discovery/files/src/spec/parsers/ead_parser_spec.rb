@@ -152,6 +152,10 @@ describe EadParser do
         )
       end
 
+      it 'has the right occupations' do
+        expect(hash[:occupations_ssim]).to eq(['Administrators'])
+      end
+
       it 'has the right corpnames' do
         expect(hash[:corpnames_ssim]).to eq(
           [

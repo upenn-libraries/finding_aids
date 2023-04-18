@@ -32,7 +32,8 @@ class SolrDocument
       people_ssim: fetch(:people_ssim, []),
       corpnames_ssim: fetch(:corpnames_ssim, []),
       subjects_ssim: fetch(:subjects_ssim, []),
-      places_ssim: fetch(:places_ssim, [])
+      places_ssim: fetch(:places_ssim, []),
+      occupations_ssim: fetch(:occupations_ssim, [])
     }
   end
 

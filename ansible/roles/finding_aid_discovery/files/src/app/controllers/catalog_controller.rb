@@ -88,6 +88,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.topics.corpnames'), limit: true
     config.add_facet_field 'people_ssim', label: I18n.t('fields.topics.people'), limit: true
     config.add_facet_field 'places_ssim', label: I18n.t('fields.topics.places'), limit: true
+    config.add_facet_field 'occupations_ssim', label: I18n.t('fields.topics.occupations'), limit: true
     config.add_facet_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), limit: true
     config.add_facet_field 'creators_ssim', label: I18n.t('fields.creators'), limit: true
     config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors'), limit: true
