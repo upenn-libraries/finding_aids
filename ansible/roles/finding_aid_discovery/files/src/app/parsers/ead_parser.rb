@@ -218,25 +218,26 @@ class EadParser
   # @return [Array]
   # @param [TrueClass, FalseClass] show_role
   def creators(doc, show_role: false)
-    doc.xpath("/ead/archdesc/did/origination[@label='creator']/persname |
-               /ead/archdesc/did/origination[@label='creator']/corpname |
-               /ead/archdesc/did/origination[@label='creator']/famname").map { |node|
-      raw_name = node.text.try(:strip)
-      raw_role = node.at_xpath('./@role').try(:text).try(:strip)
-      if raw_role && show_role
-        role = raw_role.gsub(/\(.*$/, '').strip
-        "#{raw_name} (#{role})"
-      else
-        raw_name
-      end
-    }.uniq
+    doc.xpath(".//did/origination[@label='creator' or @label='Creator']/persname |
+               .//did/origination[@label='creator' or @label='Creator']/corpname |
+               .//did/origination[@label='creator' or @label='Creator']/famname")
+       .map { |node|
+         raw_name = node.text.try(:strip)
+         raw_role = node.at_xpath('./@role').try(:text).try(:strip)
+         if raw_role && show_role
+           role = raw_role.gsub(/\(.*$/, '').strip
+           "#{raw_name} (#{role})"
+         else
+           raw_name
+         end
+       }.uniq
   end
 
   # TODO: determine what distinguishes this from the people/corp_names fields, functionally
   #       and if this is still warranted
   def names(doc)
     doc.xpath(".//controlaccess/persname | .//controlaccess/famname |
-               .//controlaccess/corpname | //origination[@label='creator']").map { |node|
+               .//controlaccess/corpname | //origination[@label='creator' or @label='Creator']").map { |node|
       node.text.try(:strip)
     }.uniq
   end
