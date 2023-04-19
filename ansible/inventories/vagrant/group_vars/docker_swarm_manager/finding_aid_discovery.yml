@@ -24,4 +24,4 @@ finding_aid_discovery:
       version: 1
     slack_notification_email_address:
       value: "{{ finding_aid_discovery_vault.versioned_secrets.slack_notification_email_address.value }}"
-      version: 1
+      version: 2
