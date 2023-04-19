@@ -2,6 +2,7 @@
 
 # Renders data for one collection.
 class CollectionComponent < ViewComponent::Base
+  IIIF_MAINFEST_ROLE_ATTRIBUTE = 'https://iiif.io/api/presentation/2.1/'
   IDENTIFICATION_DATA_SECTIONS = %w[physdesc materialspec physloc].freeze
   DESCRIPTIVE_DATA_SECTIONS = %w[arrangement scopecontent odd relatedmaterial
                                  userestrict altformavail].freeze
@@ -20,11 +21,13 @@ class CollectionComponent < ViewComponent::Base
   # @return [Array]
   def digital_object_links
     @digital_object_links ||= node.xpath('./did/dao | ./dao').filter_map do |dao|
+      classes = ['digital-object-link']
+      classes << 'iiif-manifest-link' if dao.attr('role') == IIIF_MAINFEST_ROLE_ATTRIBUTE
       href = dao.attr('href')
       next unless href
 
       link_to dao.attr('title') || 'Online Resource', href,
-              class: 'digital-object-link', target: '_blank', rel: 'noopener'
+              class: classes, target: '_blank', rel: 'noopener'
     end
   end
 
