@@ -343,7 +343,7 @@ class EadParser
       pretty_unit_id_ss: pretty_unit_id(doc),
       contact_emails_ssm: contact_emails,
       title_tsi: title(doc),
-      extent_ssi: extent(doc),
+      extent_ssim: extent(doc),
       display_date_ssim: display_date(doc),
       years_iim: years(doc),
       date_added_ss: date_added(doc),

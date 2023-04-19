@@ -65,7 +65,7 @@ describe EadParser do
       end
 
       it 'has the right extent (a single value)' do
-        expect(hash[:extent_ssi]).to eq ['.02 linear feet (5 folders)']
+        expect(hash[:extent_ssim]).to eq ['.02 linear feet (5 folders)']
       end
 
       it 'has the right value for upenn record flag' do
@@ -123,7 +123,7 @@ describe EadParser do
       end
 
       it 'has the right extent (multiple values, properly formatted)' do
-        expect(hash[:extent_ssi]).to eq ['2.46 linear feet (7 boxes)', '1.85 gigabytes']
+        expect(hash[:extent_ssim]).to eq ['2.46 linear feet (7 boxes)', '1.85 gigabytes']
       end
 
       it 'has the right abstract-scope-contents' do
