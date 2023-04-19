@@ -46,9 +46,10 @@
       <unitid>SFHL.SC.289</unitid>
       <physdesc altrender="whole">
         <extent altrender="materialtype spaceoccupied">.02 Linear Feet</extent>
-        <extent altrender="carrier">5 folders</extent>
+        <extent altrender="carrier">5 folders</extent>c
         <physfacet>5 notebooks and loose clippings</physfacet>
       </physdesc>
+      <physdesc></physdesc>
       <unitdate normal="1826/1937" type="inclusive">1826-1937</unitdate>
       <abstract id="aspace_124f4bdd06e723fa2f9c33a84c5aceb4">This small collection is composed of notebooks containing announcements and records of births, death, marriage of individuals living within the area of Philadelphia Yearly Meeting, many living in Bucks County, Pennsylvania.  Not all were members of the Society of Friends, and the sources are not included.</abstract>
       <langmaterial>

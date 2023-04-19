@@ -91,15 +91,19 @@ class EadParser
     doc.at_xpath('/ead/archdesc/did/unittitle').try :text
   end
 
+  # TODO: extent nested in physdesc is EAD2002 spec, but invalid EAD v3 spec, do we need to accommodate?
+  # see: https://eadiva.com/physdesc/
   # https://www.loc.gov/ead/tglib/elements/extent.html
   # @param [Nokogiri::XML::Document] doc
   # @return [Array<String>]
   def extent(doc)
-    doc.xpath('/ead/archdesc/did/physdesc').map do |node|
+    doc.xpath('/ead/archdesc/did/physdesc').map { |node|
       raw1 = node.at_xpath('./extent[1]').try :text
       raw2 = node.at_xpath('./extent[2]').try :text
-      raw1.downcase if raw2.blank? ? raw1.downcase : "#{raw1} (#{raw2})".downcase
-    end
+      next unless raw1 # handle physdesc with no extent
+
+      raw2.blank? ? raw1.downcase : "#{raw1} (#{raw2})".downcase
+    }.compact
   end
 
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
