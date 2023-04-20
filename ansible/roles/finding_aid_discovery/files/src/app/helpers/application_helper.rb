@@ -11,11 +11,17 @@ module ApplicationHelper
   end
 
   # @param [Hash] options
+  def extent_display(options)
+    options[:value].one? ? options[:value].first : unordered_list(options)
+  end
+
+  # @param [Hash] options
   # @return [ActiveSupport::SafeBuffer]
   def unordered_list(options)
-    list_items = options[:value].map do |item|
-      content_tag :li, item
+    content_tag :ul do
+      options[:value].map do |item|
+        concat content_tag(:li, item)
+      end
     end
-    content_tag :ul, list_items.join.html_safe
   end
 end

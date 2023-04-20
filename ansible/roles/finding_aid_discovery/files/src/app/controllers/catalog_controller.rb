@@ -109,7 +109,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'pretty_unit_id_ss', label: I18n.t('fields.pretty_unit_id')
     config.add_show_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
     config.add_show_field 'url_ss', label: 'Original URL'
-    config.add_show_field 'extent_ssim', label: I18n.t('fields.extent'), helper_method: :unordered_list
+    config.add_show_field 'extent_ssim', label: I18n.t('fields.extent'), helper_method: :extent_display
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
     config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation')
     config.add_show_field 'display_date_ssim', label: I18n.t('fields.date')
