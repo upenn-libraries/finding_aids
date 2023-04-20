@@ -744,6 +744,14 @@ label.custom-control-label.request-checkbox-label {
 }
 
 #inventory {
+  .digital-object-link {
+    &.iiif-manifest-link {
+      background-repeat: no-repeat;
+      background-size: 20px 20px;
+      padding: .2rem 0 0 3.5rem;
+      background-image: image-url("iiif-logo.svg");;
+    }
+  }
   .card.collection-inventory-card.level-1.end-collection {
       padding: 0!important;
       border: solid 2px $bright-blue!important;
