@@ -390,7 +390,7 @@ footer {
         dt.col-md-3 {
           text-align: left;
           @include visually-hidden;
-          &.blacklight-extent_ssi {
+          &.blacklight-extent_ssim {
             @include visually-hidden-off;
             @include inline-block;
             width: 5.5rem;
@@ -408,7 +408,7 @@ footer {
           padding-left: 0;
           margin-top: .5rem;
         }
-        dd.col-md-9.blacklight-extent_ssi {
+        dd.col-md-9.blacklight-extent_ssim {
           margin-top: .5rem;
           @include inline-block;
           display: inline-block !important;

@@ -91,16 +91,19 @@ class EadParser
     doc.at_xpath('/ead/archdesc/did/unittitle').try :text
   end
 
+  # TODO: extent nested in physdesc is EAD2002 spec, but invalid EAD v3 spec, do we need to accommodate?
+  # see: https://eadiva.com/physdesc/
   # https://www.loc.gov/ead/tglib/elements/extent.html
   # @param [Nokogiri::XML::Document] doc
-  # @return [String]
+  # @return [Array<String>]
   def extent(doc)
-    raw1 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[1]').try :text
-    raw2 = doc.at_xpath('/ead/archdesc/did/physdesc[1]/extent[2]').try :text
+    doc.xpath('/ead/archdesc/did/physdesc').filter_map do |node|
+      raw1 = node.at_xpath('./extent[1]').try :text
+      raw2 = node.at_xpath('./extent[2]').try :text
+      next unless raw1 # handle physdesc with no extent
 
-    return raw1.downcase if raw2.blank?
-
-    "#{raw1} (#{raw2})".downcase
+      raw2.blank? ? raw1.downcase : "#{raw1} (#{raw2})".downcase
+    end
   end
 
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
@@ -349,7 +352,7 @@ class EadParser
       pretty_unit_id_ss: pretty_unit_id(doc),
       contact_emails_ssm: contact_emails,
       title_tsi: title(doc),
-      extent_ssi: extent(doc),
+      extent_ssim: extent(doc),
       display_date_ssim: display_date(doc),
       years_iim: years(doc),
       date_added_ss: date_added(doc),

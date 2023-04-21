@@ -12,7 +12,7 @@ FactoryBot.define do
     pretty_unit_id_ss { '1234' }
     contact_emails_ssm { [Faker::Internet.email] }
     title_tsi { Faker::Book.title }
-    extent_ssi { '1 bushel' }
+    extent_ssim { ['1 bushel'] }
     display_date_ssim { '1800' }
     years_iim { [1800] }
     date_added_ss { '' }
