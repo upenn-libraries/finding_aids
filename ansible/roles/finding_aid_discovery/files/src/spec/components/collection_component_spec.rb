@@ -80,7 +80,7 @@ XML
         <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/a" show="new" title="Notebook A" type="simple">
           <daodesc><p>Notebook A</p></daodesc>
         </dao>
-        <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/b" show="new" title="Notebook B" type="simple">
+        <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/b" show="new" title="Notebook B" type="simple" role="https://iiif.io/api/presentation/2.1/">
           <daodesc><p>Notebook B</p></daodesc>
         </dao>
       </did>
@@ -89,7 +89,7 @@ XML
     end
 
     it { is_expected.to have_link 'Notebook A', href: 'https://colenda.library.upenn.edu/catalog/a' }
-    it { is_expected.to have_link 'Notebook B', href: 'https://colenda.library.upenn.edu/catalog/b' }
+    it { is_expected.to have_link 'Notebook B', href: 'https://colenda.library.upenn.edu/catalog/b', class: 'iiif-manifest-link' }
   end
 
   context 'with digital objects in EAD v2 style' do
@@ -107,7 +107,7 @@ XML
       <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/a" show="new" title="Notebook A" type="simple">
         <daodesc><p>Notebook A</p></daodesc>
       </dao>
-      <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/b" show="new" title="Notebook B" type="simple">
+      <dao audience="internal" actuate="onRequest" href="https://colenda.library.upenn.edu/catalog/b" show="new" title="Notebook B" type="simple" role="https://iiif.io/api/presentation/2.1/">
         <daodesc><p>Notebook B</p></daodesc>
       </dao>
     </c>
@@ -115,6 +115,6 @@ XML
     end
 
     it { is_expected.to have_link 'Notebook A', href: 'https://colenda.library.upenn.edu/catalog/a' }
-    it { is_expected.to have_link 'Notebook B', href: 'https://colenda.library.upenn.edu/catalog/b' }
+    it { is_expected.to have_link 'Notebook B', href: 'https://colenda.library.upenn.edu/catalog/b', class: 'iiif-manifest-link' }
   end
 end
