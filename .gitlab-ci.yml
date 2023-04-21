@@ -319,7 +319,7 @@ remove_tmp_base_app_image_from_registry:
 
 remove_tmp_container_registry:
   stage: remove:tmp_images_from_registry
-  image: bash
+  image: bash:alpine3.16
   before_script:
     - apk add --no-cache curl jq
   script:
