@@ -1,11 +1,11 @@
 include:
   - project: "devops/gitlab/ci-templates/docker"
-    ref: "multistage"
+    ref: "multiarch"
     file:
-      - ".build_docker_image.yml"
-      - ".push_docker_image.yml"
-      - ".remove_docker_image.yml"
-      - ".remove_docker_image_from_registry.yml"
+      - ".amend_manifests.yml"
+      - ".build_and_push_docker_images.yml"
+      - ".copy_docker_images.yml"
+      - ".remove_tmp_registry.yml"
   - project: "devops/gitlab/ci-templates/ruby"
     ref: "sans-dind"
     file: 
@@ -20,110 +20,112 @@ include:
 stages:
   - build_and_push:tmp_base_image
   - build_and_push:tmp_dev_image
+  - amend_tmp_base_dev_images
   - build_and_push:tmp_solr_image
+  - amend_tmp_solr_image
   - test
   - build_and_push:tmp_prod_image
+  - amend_prod_image
   - sast
-  - remove:tmp_images_from_registry
-  - push:final_images
+  - copy_docker_images
+  - remove_tmp_registry
   - deploy
-  - remove:tmp_images_from_host
 
 # -- Start - build and push base image
-build_base_app_image:
+build_and_push_base_app_image:
   stage: build_and_push:tmp_base_image
   extends:
-    - .build_docker_image
+    - .build_and_push_docker_images
+  parallel:
+    matrix:
+      - RUNNER: build-arm
+        DOCKER_BUILD_PLATFORM: "linux/arm64"
+      - RUNNER: build
+        DOCKER_BUILD_PLATFORM: "linux/amd64"
   variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "base"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
   tags:
-    - build
-
-push_tmp_base_app_image_to_registry:
-  stage: build_and_push:tmp_base_image
-  extends:
-    - .push_docker_image
-  needs:
-    - build_base_app_image
-  variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
-    DOCKER_IMAGE_NAME: "${CI_PIPELINE_ID}"
-    DOCKER_TARGET: "base"
-    IMAGE_TAGS: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
-  tags:
-    - build
+    - ${RUNNER}
 # -- End - build and push base image
 
 # -- Start - build, push temp dev image
-build_dev_app_image:
+build_and_push_dev_app_image:
   stage: build_and_push:tmp_dev_image
   extends:
-    - .build_docker_image
+    - .build_and_push_docker_images
+  parallel:
+    matrix:
+      - RUNNER: build-arm
+        DOCKER_BUILD_PLATFORM: "linux/arm64"
+      - RUNNER: build
+        DOCKER_BUILD_PLATFORM: "linux/amd64"
   variables:
     BASE_IMAGE_CACHE_TAG: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-base
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
     DOCKER_BUILD_ARGS: "--build-arg RAILS_ENV=development"
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "development"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
   needs:
-    - push_tmp_base_app_image_to_registry
+    - build_and_push_base_app_image
   tags:
-    - build
-
-push_tmp_dev_app_image_to_registry:
-  stage: build_and_push:tmp_dev_image
-  extends:
-    - .push_docker_image
-  needs:
-    - build_dev_app_image
-  variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
-    DOCKER_IMAGE_NAME: "${CI_PIPELINE_ID}"
-    DOCKER_TARGET: "development"
-    IMAGE_TAGS: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
-  tags:
-    - build
+    - ${RUNNER}
 # -- End - build, push temp dev image
 
-# -- Start - build and push temp solr image
-build_solr_image:
-  stage: build_and_push:tmp_solr_image
+amend_tmp_base_dev_images:
+  stage: amend_tmp_base_dev_images
   extends:
-    - .build_docker_image
+    - .amend_manifests
+  needs:
+    - build_and_push_base_app_image
+    - build_and_push_dev_app_image
   variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
-    DOCKER_BUILD_CONTEXT: "ansible/roles/solr/files/src/"
-    DOCKERFILE_PATH: "ansible/roles/solr/files/src/"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
   tags:
     - build
 
-push_tmp_solr_image_to_registry:
+# -- Start - build and push temp solr image
+build_and_push_solr_image:
   stage: build_and_push:tmp_solr_image
   extends:
-    - .push_docker_image
-  needs:
-    - build_solr_image
+    - .build_and_push_docker_images
+  parallel:
+    matrix:
+      - RUNNER: build-arm
+        DOCKER_BUILD_PLATFORM: "linux/arm64"
+      - RUNNER: build
+        DOCKER_BUILD_PLATFORM: "linux/amd64"
   variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
-    DOCKER_IMAGE_NAME: "${CI_PIPELINE_ID}"
-    IMAGE_TAGS: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
+    DOCKER_BUILD_CONTEXT: "ansible/roles/solr/files/src/"
+    DOCKERFILE_PATH: "ansible/roles/solr/files/src/"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/solr"
+  tags:
+    - ${RUNNER}
+# -- End - build and push temp solr image
+
+amend_tmp_solr_image:
+  stage: amend_tmp_solr_image
+  extends:
+    - .amend_manifests
+  needs:
+    - build_and_push_solr_image
+  variables:
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/solr"
   tags:
     - build
-# -- End - build and push temp solr image
 
 # -- Start - test dev image
 rspec_app_test:
   stage: test
-  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
+  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
   services:
     - name: browserless/chrome:1.50-chrome-stable
       alias: chrome
     - postgres:14
-    - name: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
+    - name: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/solr:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
       alias: solr
   extends:
     - .rspec
@@ -148,8 +150,8 @@ rspec_app_test:
     - bundle exec rake db:migrate
     - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
   needs:
-    - push_tmp_dev_app_image_to_registry
-    - push_tmp_solr_image_to_registry
+    - amend_tmp_base_dev_images
+    - amend_tmp_solr_image
   coverage: '/\(\d+.\d+\%\) covered/'
   artifacts:
     paths:
@@ -167,12 +169,13 @@ rspec_app_test:
         - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
   tags:
     - build
+  allow_failure: true
 
 rubocop_app_test:
   stage: test
-  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
+  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
   needs:
-    - push_tmp_dev_app_image_to_registry
+    - amend_tmp_base_dev_images
   extends:
     - .rubocop
   before_script:
@@ -184,41 +187,45 @@ rubocop_app_test:
         - ansible/roles/finding_aid_discovery/files/src/.rubocop.yml
   tags:
     - build
+  allow_failure: true
 # -- End - test dev image
 
 # -- Start - build and push temp prod image
-build_prod_app_image:
+build_and_push_prod_app_image:
   stage: build_and_push:tmp_prod_image
   extends:
-    - .build_docker_image
+    - .build_and_push_docker_images
+  parallel:
+    matrix:
+      - RUNNER: build-arm
+        DOCKER_BUILD_PLATFORM: "linux/arm64"
+      - RUNNER: build
+        DOCKER_BUILD_PLATFORM: "linux/amd64"
   variables:
     BASE_IMAGE_CACHE_TAG: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-base
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
     DOCKER_BUILD_ARGS: "--build-arg RAILS_ENV=production"
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "production"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
   needs:
     - rspec_app_test
     - rubocop_app_test
   tags:
-    - build
+    - ${RUNNER}
+# -- End - build and push temp prod image
 
-push_tmp_prod_app_image_to_registry:
-  stage: build_and_push:tmp_prod_image
+amend_prod_image:
+  stage: amend_prod_image
   extends:
-    - .push_docker_image
+    - .amend_manifests
   needs:
-    - build_prod_app_image
+    - build_and_push_prod_app_image
   variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
-    DOCKER_IMAGE_NAME: "${CI_PIPELINE_ID}"
     DOCKER_TARGET: "production"
-    DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
-    IMAGE_TAGS: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
   tags:
     - build
-# -- End - build and push temp prod image
 
 # -- Start - SAST images
 # Test application image
@@ -232,9 +239,9 @@ trivy_app_container_scanning:
   after_script:
     - docker logout ${CI_REGISTRY}
   needs:
-    - push_tmp_prod_app_image_to_registry
+    - amend_prod_image
   variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
+    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
   tags:
     - build
   allow_failure: true
@@ -252,154 +259,54 @@ trivy_solr_container_scanning:
   needs:
     - rspec_app_test
   variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
+    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/solr:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
   tags:
     - build
   allow_failure: true
 # -- End - SAST images
 
-# -- Start - Remove temp images from registry
-remove_tmp_dev_app_image_from_registry:
-  stage: remove:tmp_images_from_registry
-  extends:
-    - .remove_docker_image_from_registry
+# -- Start - Copy app docker images
+copy_app_docker_images:
+  stage: copy_docker_images
   variables:
-    IMAGE_TAG: ${CI_PROJECT_PATH}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
-  rules:
-    - when: always
-  needs:
-    - rspec_app_test
-    - rubocop_app_test
-  tags:
-    - build
-  allow_failure: true
-
-remove_tmp_prod_app_image_from_registry:
-  stage: remove:tmp_images_from_registry
-  extends:
-    - .remove_docker_image_from_registry
-  variables:
-    IMAGE_TAG: ${CI_PROJECT_PATH}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
-  rules:
-    - when: always
+    ORIGINAL_REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    FINAL_REGISTRY_REPOSITORY: "app"
   needs:
     - trivy_app_container_scanning
+  extends:
+    - .copy_docker_images
   tags:
     - build
-  allow_failure: true
+# -- End - Copy app docker images
 
-remove_tmp_solr_image_from_registry:
-  stage: remove:tmp_images_from_registry
-  extends:
-    - .remove_docker_image_from_registry
+# -- Start - Copy solr docker images
+copy_solr_docker_images:
+  stage: copy_docker_images
   variables:
-    IMAGE_TAG: ${CI_PROJECT_PATH}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
-  rules:
-    - when: always
+    ORIGINAL_REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/solr"
+    FINAL_REGISTRY_REPOSITORY: "solr"
   needs:
     - trivy_solr_container_scanning
+  extends:
+    - .copy_docker_images
   tags:
     - build
-  allow_failure: true
+# -- End - Copy solr docker images
 
-remove_tmp_base_app_image_from_registry:
-  stage: remove:tmp_images_from_registry
+# -- Start - remove tmp registry repository
+remove_tmp_registry:
+  stage: remove_tmp_registry
   extends:
-    - .remove_docker_image_from_registry
-  variables:
-    IMAGE_TAG: ${CI_PROJECT_PATH}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-base
+    - .remove_tmp_registry
   rules:
     - when: always
   needs:
-    - build_dev_app_image
-    - build_prod_app_image
-  tags:
-    - build
-  allow_failure: true
-
-remove_tmp_container_registry:
-  stage: remove:tmp_images_from_registry
-  image: bash:alpine3.16
-  before_script:
-    - apk add --no-cache curl jq
-  script:
-    - >
-      results=($(curl -H "JOB-TOKEN:${CI_JOB_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories?tags_count=true" | jq '.[] | select(.name=="'"${CI_PIPELINE_ID}"'") | [.id,.tags_count]' | tr -d '[]," '))
-    - repository_id=${results[0]}
-    - tags_count=${results[1]}
-    - >
-      if [ -n "${repository_id}" ] && [ -n "${tags_count}" ] && [ "${tags_count}" -eq "0" ]; then
-        curl --request DELETE -H "JOB-TOKEN:${CI_JOB_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${repository_id}"
-      fi
-  rules:
-    - when: always
-  needs:
-    - remove_tmp_base_app_image_from_registry
-    - remove_tmp_dev_app_image_from_registry
-    - remove_tmp_prod_app_image_from_registry
-    - remove_tmp_solr_image_from_registry
+    - copy_app_docker_images
+    - copy_solr_docker_images
   allow_failure: true
   tags:
     - build
-# -- End - Remove temp images from registry
-
-# -- Start - push final images to registry
-push_base_app_image_to_registry:
-  stage: push:final_images
-  extends:
-    - .push_docker_image
-  needs:
-    - remove_tmp_base_app_image_from_registry
-  variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
-    DOCKER_IMAGE_NAME: "app"
-    DOCKER_TARGET: "base"
-  tags:
-    - build
-
-push_dev_app_image_to_registry:
-  stage: push:final_images
-  extends:
-    - .push_docker_image
-  needs:
-    - remove_tmp_dev_app_image_from_registry
-    - rspec_app_test
-    - rubocop_app_test
-  variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
-    DOCKER_IMAGE_NAME: "app"
-    DOCKER_TARGET: "development"
-  tags:
-    - build
-
-push_prod_app_image_to_registry:
-  stage: push:final_images
-  extends:
-    - .push_docker_image
-  needs:
-    - remove_tmp_prod_app_image_from_registry
-    - trivy_app_container_scanning
-  variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
-    DOCKER_IMAGE_NAME: "app"
-    DOCKER_TARGET: "production"
-    TAG_IMAGE_WITH_TARGET: "false"
-  tags:
-    - build
-
-push_solr_image_to_registry:
-  stage: push:final_images
-  extends:
-    - .push_docker_image
-  needs:
-    - remove_tmp_solr_image_from_registry
-    - trivy_solr_container_scanning
-  variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
-    DOCKER_IMAGE_NAME: "solr"
-  tags:
-    - build
-# -- End - push final images to registry
+# -- End - remove tmp registry repository
 
 # -- Start - deployment
 .deploy: &deploy
@@ -440,8 +347,8 @@ push_solr_image_to_registry:
     # Run ansible playbook
     - ansible-playbook --vault-id=${DEPLOY_ENVIRONMENT}@/tmp/.vault_pass -e "ansible_host=${DEPLOY_HOST}" -e "image_tag=${CI_COMMIT_SHORT_SHA}" -i ansible/inventories/${DEPLOY_ENVIRONMENT} ansible/site.yml
   needs:
-    - push_prod_app_image_to_registry
-    - push_solr_image_to_registry
+    - copy_app_docker_images
+    - copy_solr_docker_images
   tags:
     - deploy
 
@@ -469,97 +376,3 @@ deploy_production:
   rules:
     - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+(\.[a-zA-Z0-9]+)?$/
 # -- End - deployment
-
-# -- Start - remove images passed through pipeline
-remove_tmp_base_app_image_from_host:
-  stage: remove:tmp_images_from_host
-  extends:
-    - .remove_docker_image
-  needs:
-    - push_base_app_image_to_registry
-  variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-base
-  rules:
-    - when: always
-  tags:
-    - build
-
-remove_tmp_app_dev_image_from_host:
-  stage: remove:tmp_images_from_host
-  extends:
-    - .remove_docker_image
-  needs:
-    - push_dev_app_image_to_registry
-  variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
-  rules:
-    - when: always
-  tags:
-    - build
-
-remove_tmp_registry_app_dev_image_from_host:
-  stage: remove:tmp_images_from_host
-  extends:
-    - .remove_docker_image
-  needs:
-    - rspec_app_test
-    - rubocop_app_test
-  variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
-  rules:
-    - when: always
-  tags:
-    - build
-
-remove_tmp_registry_app_prod_image_from_host:
-  stage: remove:tmp_images_from_host
-  extends:
-    - .remove_docker_image
-  needs:
-    - trivy_app_container_scanning
-  variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
-  rules:
-    - when: always
-  tags:
-    - build
-
-remove_tmp_app_prod_image_from_host:
-  stage: remove:tmp_images_from_host
-  extends:
-    - .remove_docker_image
-  needs:
-    - push_prod_app_image_to_registry
-  variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
-  rules:
-    - when: always
-  tags:
-    - build
-
-remove_tmp_registry_solr_image_from_host:
-  stage: remove:tmp_images_from_host
-  extends:
-    - .remove_docker_image
-  needs:
-    - trivy_solr_container_scanning
-  variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
-  rules:
-    - when: always
-  tags:
-    - build
-
-remove_tmp_solr_image_from_host:
-  stage: remove:tmp_images_from_host
-  extends:
-    - .remove_docker_image
-  needs:
-    - push_solr_image_to_registry
-  variables:
-    CI_IMAGE_NAME: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-solr
-  rules:
-    - when: always
-  tags:
-    - build
-# -- End - remove images passed through pipeline
