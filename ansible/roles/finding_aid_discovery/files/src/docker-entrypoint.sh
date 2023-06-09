@@ -10,9 +10,8 @@ if [ "$1" = "bundle" -a "$2" = "exec" -a "$3" = "puma" ] || [ "$1" = "bundle" -a
     if [ "${RAILS_ENV}" = "development" ]; then
         bundle config --local path ${PROJECT_ROOT}/vendor/bundle
         bundle config set --local with 'development:test:assets'
-        bundle config set force_ruby_platform true
         bundle install -j$(nproc) --retry 3
-        
+
         # since we are running a dev env we remove node_modules and install our dependencies
         su - app -c $(rm -rf node_modules && yarn install --no-bin-links)
     fi
