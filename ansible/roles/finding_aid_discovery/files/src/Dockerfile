@@ -42,7 +42,6 @@ RUN apk add --no-cache --virtual build-dependencies \
     else \
     bundle config set without "development:test:assets"; \
     fi && \
-    bundle config set force_ruby_platform true && \
     bundle install -j$(nproc) --retry 3 && \
     rm -rf ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/cache/*.gem && \
     find ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/gems/ \( -name "*.c" -o -name "*.o" \) -delete && \
@@ -79,6 +78,7 @@ RUN apk add --no-cache \
         build-base \
         curl \
         git \
+        libc6-compat \
         nodejs \
         postgresql-dev \
         shadow \
@@ -130,6 +130,7 @@ COPY --from=base ${PROJECT_ROOT} ${PROJECT_ROOT}
 
 RUN apk add --no-cache \
         curl \
+        libc6-compat \
         nodejs \
         postgresql-dev \
         shadow \

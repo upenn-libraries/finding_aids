@@ -63,7 +63,7 @@ build_and_push_dev_app_image:
       - RUNNER: build
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   variables:
-    BASE_IMAGE_CACHE_TAG: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-base
+    BASE_IMAGE_CACHE_TAG: ${CI_COMMIT_SHORT_SHA}-base
     DOCKER_BUILD_ARGS: "--build-arg RAILS_ENV=development"
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "development"
@@ -120,12 +120,12 @@ amend_tmp_solr_image:
 # -- Start - test dev image
 rspec_app_test:
   stage: test
-  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
+  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-development
   services:
     - name: browserless/chrome:1.50-chrome-stable
       alias: chrome
     - postgres:14
-    - name: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/solr:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
+    - name: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/solr:${CI_COMMIT_SHORT_SHA}
       alias: solr
   extends:
     - .rspec
@@ -173,7 +173,7 @@ rspec_app_test:
 
 rubocop_app_test:
   stage: test
-  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-development
+  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-development
   needs:
     - amend_tmp_base_dev_images
   extends:
@@ -202,7 +202,7 @@ build_and_push_prod_app_image:
       - RUNNER: build
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   variables:
-    BASE_IMAGE_CACHE_TAG: ${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-base
+    BASE_IMAGE_CACHE_TAG: ${CI_COMMIT_SHORT_SHA}-base
     DOCKER_BUILD_ARGS: "--build-arg RAILS_ENV=production"
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "production"
@@ -241,7 +241,7 @@ trivy_app_container_scanning:
   needs:
     - amend_prod_image
   variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}-production
+    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-production
   tags:
     - build
   allow_failure: true
@@ -259,7 +259,7 @@ trivy_solr_container_scanning:
   needs:
     - rspec_app_test
   variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/solr:${CI_COMMIT_SHORT_SHA}-${CI_PIPELINE_ID}
+    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/solr:${CI_COMMIT_SHORT_SHA}
   tags:
     - build
   allow_failure: true

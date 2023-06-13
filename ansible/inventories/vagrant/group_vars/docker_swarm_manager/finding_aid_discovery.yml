@@ -1,6 +1,6 @@
 ---
 finding_aid_discovery:
-  build_docker_image: false
+  build_docker_image: true
   image:
     name: "finding_aid_discovery"
     registry: "gitlab.library.upenn.edu/pacscl/finding-aid-discovery/app"
