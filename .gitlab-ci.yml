@@ -208,6 +208,7 @@ build_and_push_prod_app_image:
     DOCKER_TARGET: "production"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    TAG_IMAGE_WITH_TARGET: "false"
   needs:
     - rspec_app_test
     - rubocop_app_test
@@ -241,7 +242,7 @@ trivy_app_container_scanning:
   needs:
     - amend_prod_image
   variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-production
+    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}
   tags:
     - build
   allow_failure: true
