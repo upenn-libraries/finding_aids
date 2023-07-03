@@ -25,10 +25,6 @@ server {
 
     location / {
         #if ($bad_client) { return 444; }
-        #if ($allowed_country = no) { return 403; }
-
-        modsecurity off;
-        modsecurity_rules_file /etc/nginx/modsec/main.conf;
 
         set $skip_cache 1;
 
