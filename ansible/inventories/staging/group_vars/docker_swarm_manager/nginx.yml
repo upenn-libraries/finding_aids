@@ -11,7 +11,7 @@ nginx:
   versioned_configs:
     default_conf:
       filename: "default.conf.j2"
-      version: 5
+      version: 6
     nginx_conf:
       filename: "nginx.conf.j2"
-      version: 2
+      version: 3
