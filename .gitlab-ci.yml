@@ -224,6 +224,7 @@ amend_prod_image:
   variables:
     DOCKER_TARGET: "production"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    TAG_WITH_DOCKER_TARGET: "false"
   tags:
     - build
 
@@ -345,7 +346,7 @@ remove_tmp_registry:
     - ansible-galaxy install -g -f -r ansible/roles/requirements.yml
 
     # Run ansible playbook
-    - ansible-playbook --vault-id=${DEPLOY_ENVIRONMENT}@/tmp/.vault_pass -e "ansible_host=${DEPLOY_HOST}" -e "image_tag=${CI_COMMIT_SHORT_SHA}-production" -i ansible/inventories/${DEPLOY_ENVIRONMENT} ansible/site.yml
+    - ansible-playbook --vault-id=${DEPLOY_ENVIRONMENT}@/tmp/.vault_pass -e "ansible_host=${DEPLOY_HOST}" -e "image_tag=${CI_COMMIT_SHORT_SHA}" -i ansible/inventories/${DEPLOY_ENVIRONMENT} ansible/site.yml
   needs:
     - copy_app_docker_images
     - copy_solr_docker_images
