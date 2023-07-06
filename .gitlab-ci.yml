@@ -46,6 +46,7 @@ build_and_push_base_app_image:
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "base"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
+    IMAGE_CACHE_TAG: "app"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
   tags:
     - ${RUNNER}
@@ -63,11 +64,11 @@ build_and_push_dev_app_image:
       - RUNNER: build
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   variables:
-    BASE_IMAGE_CACHE_TAG: ${CI_COMMIT_SHORT_SHA}-base
     DOCKER_BUILD_ARGS: "--build-arg RAILS_ENV=development"
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "development"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
+    IMAGE_CACHE_TAG: "app"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
   needs:
     - build_and_push_base_app_image
@@ -101,6 +102,7 @@ build_and_push_solr_image:
   variables:
     DOCKER_BUILD_CONTEXT: "ansible/roles/solr/files/src/"
     DOCKERFILE_PATH: "ansible/roles/solr/files/src/"
+    IMAGE_CACHE_TAG: "solr"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/solr"
   tags:
     - ${RUNNER}
@@ -202,11 +204,11 @@ build_and_push_prod_app_image:
       - RUNNER: build
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   variables:
-    BASE_IMAGE_CACHE_TAG: ${CI_COMMIT_SHORT_SHA}-base
     DOCKER_BUILD_ARGS: "--build-arg RAILS_ENV=production"
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "production"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
+    IMAGE_CACHE_TAG: "app"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
   needs:
     - rspec_app_test
@@ -224,6 +226,7 @@ amend_prod_image:
   variables:
     DOCKER_TARGET: "production"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    TAG_WITH_DOCKER_TARGET: "false"
   tags:
     - build
 
@@ -345,7 +348,7 @@ remove_tmp_registry:
     - ansible-galaxy install -g -f -r ansible/roles/requirements.yml
 
     # Run ansible playbook
-    - ansible-playbook --vault-id=${DEPLOY_ENVIRONMENT}@/tmp/.vault_pass -e "ansible_host=${DEPLOY_HOST}" -e "image_tag=${CI_COMMIT_SHORT_SHA}-production" -i ansible/inventories/${DEPLOY_ENVIRONMENT} ansible/site.yml
+    - ansible-playbook --vault-id=${DEPLOY_ENVIRONMENT}@/tmp/.vault_pass -e "ansible_host=${DEPLOY_HOST}" -e "image_tag=${CI_COMMIT_SHORT_SHA}" -i ansible/inventories/${DEPLOY_ENVIRONMENT} ansible/site.yml
   needs:
     - copy_app_docker_images
     - copy_solr_docker_images
