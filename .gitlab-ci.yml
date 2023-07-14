@@ -124,7 +124,7 @@ rspec_app_test:
   stage: test
   image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-development
   services:
-    - name: browserless/chrome:1.50-chrome-stable
+    - name: browserless/chrome:1.59-puppeteer-1.20.0
       alias: chrome
     - postgres:14
     - name: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/solr:${CI_COMMIT_SHORT_SHA}
