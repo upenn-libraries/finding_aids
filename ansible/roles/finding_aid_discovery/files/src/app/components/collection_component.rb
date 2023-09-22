@@ -111,7 +111,8 @@ class CollectionComponent < ViewComponent::Base
   # @return [Array]
   def compute_container_info
     node.xpath('did/container').map do |container|
-      { type: container.attr(:type).titlecase, text: container.try(:text) }
+      type = container.attr(:type) || container.attr(:localtype)
+      { type: type.try(:titlecase), text: container.try(:text) }
     end
   end
 
