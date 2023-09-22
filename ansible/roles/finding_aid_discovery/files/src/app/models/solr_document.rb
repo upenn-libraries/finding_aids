@@ -42,19 +42,19 @@ class SolrDocument
     @parsed_ead ||= ParsedEad.new(fetch(XML_FIELD_NAME))
   end
 
-  # @return [String (frozen)]
+  # @return [Array<String> (frozen)]
   def display_dates
-    fetch(:display_date_ssim, '')
+    fetch(:display_date_ssim, [])
   end
 
   # @return [String (frozen)]
   def title
-    fetch('title_tsi', '')
+    fetch(:title_tsi, '')
   end
 
   # @return [String (frozen)]
   def call_num
-    fetch('pretty_unit_id_ss', '')
+    fetch(:pretty_unit_id_ss, '')
   end
 
   # @return [String (frozen)]
