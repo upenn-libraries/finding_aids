@@ -2,24 +2,35 @@
 <h2 class="bs4-visually-hidden">Main content</h2>
 <div class="hpcontent">
   <p>
-  This Philadelphia Area Archives site, formerly the Philadelphia Area Archives Research Portal (PAARP) and
-  <%= link_to 'PACSCL', 'https://pacscl.org', class: 'ext' %> Finding Aids Site, provides access
-  to descriptions of more than 5,000 collections from over 200 regional institutions documenting the region's vital
-  role in our collective history, from colonization to the present day, from the everyday citizen to some of America's
-  best known thinkers and celebrated citizens. On this site, researchers will find catalog descriptions, or "finding
-  aids," to collections relating to local, national, and world history; the natural and social sciences; medicine;
-  literature; religion; art and architecture; business and industry; the performing arts; and other topics.
-</p>
+    This Philadelphia Area Archives site, formerly the Philadelphia Area Archives Research Portal (PAARP) and
+    <%= link_to 'PACSCL', 'https://pacscl.org', class: 'ext' %> Finding Aids Site, provides access
+    to descriptions of more than 5,000 collections from over 200 regional institutions documenting the region's vital
+    role in our collective history, from colonization to the present day, from the everyday citizen to some of America's
+    best known thinkers and celebrated citizens. On this site, researchers will find catalog descriptions, or "finding
+    aids," to collections relating to local, national, and world history; the natural and social sciences; medicine;
+    literature; religion; art and architecture; business and industry; the performing arts; and other topics.
+  </p>
 
-<p>
-  Searchable by creator, topic, repository, and keyword, this diverse and ever-growing group of finding aids is an
-  ideal starting point for researchers to discover related collections across more than 200 regional repositories,
-  large and small.
-</p>
+  <p>
+    Searchable by creator, topic, repository, and keyword, this diverse and ever-growing group of finding aids is an
+    ideal starting point for researchers to discover related collections across more than 200 regional repositories,
+    large and small.
+  </p>
+
+  <p>
+    When describing archival collections, staff at archival repositories make choices about what language to use when
+    describing not just the papers and records, but also the people and organizations who created or who are
+    represented in them, including those from historically marginalized groups. For a variety of reasons, researchers
+    may encounter offensive or harmful language in the finding aids of PACSCL member institutions. For more
+    information, see the
+    <%= link_to t('common.links.statement'),
+                'https://pacscl.org/what-we-believe/statement-on-archival-description-and-harmful-language/',
+                class: 'ext' %>.
+  </p>
 </div>
 
 <ul class="hplinks no-list-style clearfix">
-   <li class="how-to"><%= link_to t('common.links.how_to'), "https://old.library.upenn.edu/finding-aids/how-to-use" %></li>
-   <li class="browse-rep"><%= link_to t('common.links.browse_repositories'), repositories_path %></li>
-   <li class="all"><%= link_to t('homepage.links.see_all'), search_catalog_path(search_field: 'all_fields', q: '') %></li>
+  <li class="how-to"><%= link_to t('common.links.how_to'), "https://old.library.upenn.edu/finding-aids/how-to-use" %></li>
+  <li class="browse-rep"><%= link_to t('common.links.browse_repositories'), repositories_path %></li>
+  <li class="all"><%= link_to t('homepage.links.see_all'), search_catalog_path(search_field: 'all_fields', q: '') %></li>
 </ul>
