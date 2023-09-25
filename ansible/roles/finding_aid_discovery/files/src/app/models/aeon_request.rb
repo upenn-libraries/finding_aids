@@ -9,7 +9,7 @@ class AeonRequest
   KISLAK_REPOSITORY_NAME =
     'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
   KATZ_REPOSITORY_NAME =
-    'University of Pennsylvania: Archives at the Library of the Katz Center for Advanced Judaic Studies'
+    'University of Pennsylvania: Library at the Herbert D. Katz Center for Advanced Judaic Studies'
   ARCHIVES_REPOSITORY_NAME =
     'University of Pennsylvania: University Archives and Records Center'
 
