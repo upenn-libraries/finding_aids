@@ -28,7 +28,6 @@ Rails.application.routes.draw do
   end
 
   get 'repositories', to: 'catalog#repositories'
-
   get 'about', to: 'static_pages#about'
   get 'how-to-use', to: 'static_pages#how_to_use'
 
