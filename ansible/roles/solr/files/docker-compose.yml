@@ -33,7 +33,7 @@ services:
     networks:
       - solr
     volumes:
-      - solr_data:/var/solr/data
+      - solr_data:/var/solr
 
 networks:
   solr:
