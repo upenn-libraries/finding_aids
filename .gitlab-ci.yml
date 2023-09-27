@@ -171,7 +171,6 @@ rspec_app_test:
         - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
   tags:
     - build
-  allow_failure: true
 
 rubocop_app_test:
   stage: test
@@ -189,7 +188,6 @@ rubocop_app_test:
         - ansible/roles/finding_aid_discovery/files/src/.rubocop.yml
   tags:
     - build
-  allow_failure: true
 # -- End - test dev image
 
 # -- Start - build and push temp prod image
