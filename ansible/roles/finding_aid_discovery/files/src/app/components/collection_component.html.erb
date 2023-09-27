@@ -23,9 +23,10 @@
               <% if requestable? %>
                 <div class="col-auto">
                   <%= requesting_checkbox %>
+                  <span  class="sr-only bs4-visually-hidden" id=<%="#{id}-details" %>  aria-hidden="true">Add to requests</span>
                 </div>
               <% end %>
-              <div class="col">
+              <div id=<%="#{id}-title" %> class="col">
                 <%= sanitize(title) %>
               </div>
               <div class="col-sm-3 col-md-2">
