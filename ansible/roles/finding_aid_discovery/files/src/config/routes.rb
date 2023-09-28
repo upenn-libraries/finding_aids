@@ -29,5 +29,6 @@ Rails.application.routes.draw do
 
   get 'repositories', to: 'catalog#repositories'
   get 'login', to: 'login#index'
+  match 'auth/:provider/callback', to: 'omniauth_callbacks#developer', via: %i[get post]
   root to: 'catalog#index'
 end
