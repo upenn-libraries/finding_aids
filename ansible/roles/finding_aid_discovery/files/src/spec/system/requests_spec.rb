@@ -20,22 +20,15 @@ describe 'Requests form' do
   end
 
   context 'with a single container available' do
-    let(:collection_form_params) do
-      {
-        c: { 'Box_1' => { 'Album_2' => '1' } },
-        call_num: 'Ms. Coll. 12345',
-        repository: AeonRequest::KISLAK_REPOSITORY_NAME,
-        title: 'Test Title'
-      }
-    end
-
     it 'the page includes a request checkbox' do
-      expect(page).to have_field 'c[Box_1]', visible: :hidden
+      expect(page).to have_field 'c[Box_1_111111111]', visible: :hidden
+      expect(page).to have_field 'c[Box_2_222222222]', visible: :hidden
     end
 
     context 'when confirming the request' do
       before do
-        check 'c[Box_1]', visible: false
+        check 'c[Box_1_111111111]', visible: false
+        check 'c[Box_2_222222222]', visible: false
         click_button 'Request'
       end
 

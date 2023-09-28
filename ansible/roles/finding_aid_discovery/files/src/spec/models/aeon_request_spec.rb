@@ -18,7 +18,8 @@ describe AeonRequest do
           'retrieval_date(1i)': '2023',
           save_for_later: true,
           auth_type: 'penn',
-          item: ['Month January: Page 6', 'Month December: Plate 40'] }
+          item: ['Month January: Page 6', 'Month December: Plate 40'],
+          item_barcode: %w[111111111 222222222] }
       )
     end
 
@@ -27,6 +28,7 @@ describe AeonRequest do
         { 'CallNumber_0' => 'test-call-num',
           'ItemTitle_0' => 'Some old thing',
           'ItemAuthor_0' => '',
+          'ItemBarcode_0' => '111111111',
           'Site_0' => 'KISLAK',
           'SubLocation_0' => 'Manuscripts',
           'Location_0' => 'scmss',

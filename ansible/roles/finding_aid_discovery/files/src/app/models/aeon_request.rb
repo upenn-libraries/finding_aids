@@ -38,7 +38,8 @@ class AeonRequest
   def build_items
     @params['item'].map.with_index do |item, i|
       volume, issue = item.split(':').map(&:strip)
-      container_info = { volume: volume, issue: issue }
+      barcode = @params['item_barcode'][i]
+      container_info = { volume: volume, issue: issue, barcode: barcode }
       Item.new i, container_info, self
     end
   end
@@ -117,9 +118,9 @@ class AeonRequest
 
   # Represent a single Item (checked box in the site) in the context of the request
   class Item
+    # @param [String] number
     # @param [Hash] container
     # @param [AeonRequest] request
-    # @param [String] number
     def initialize(number, container, request)
       @number = number
       @container = container
@@ -130,7 +131,7 @@ class AeonRequest
       { 'CallNumber' => @request.call_number, 'ItemTitle' => @request.title, 'ItemAuthor' => '',
         'Site' => @request.repository[:site], 'SubLocation' => @request.repository[:sublocation],
         'Location' => @request.repository[:location], 'ItemVolume' => @container[:volume],
-        'ItemIssue' => @container[:issue], 'Request' => @number }
+        'ItemIssue' => @container[:issue], 'Request' => @number, 'ItemBarcode' => @container[:barcode] }
         .transform_keys { |key| key + "_#{@number}" }
     end
   end

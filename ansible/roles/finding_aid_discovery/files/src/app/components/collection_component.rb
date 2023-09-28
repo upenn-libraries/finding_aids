@@ -63,15 +63,21 @@ class CollectionComponent < ViewComponent::Base
     name = "c#{container_info_for_checkbox}"
     id = unique_id_for_collection
     content_tag :div, class: 'custom-control custom-checkbox request-checkbox-area' do
-      safe_join([check_box_tag(name, 1, false, id: id, class: 'custom-control-input request-checkbox-input'),
-                 label_tag(id, 'Toggle request', class: 'custom-control-label request-checkbox-label')])
+      safe_join([
+                  check_box_tag(name, 1, false, id: id, class: 'custom-control-input request-checkbox-input'),
+                  label_tag(id, 'Toggle request', class: 'custom-control-label request-checkbox-label')
+                ])
     end
   end
 
   # encode all container information in a way that is HTML form safe and can be extracted after submission
   def container_info_for_checkbox
     containers = container_info.map do |container_element|
-      "[#{container_element[:type]}_#{container_element[:text]}]"
+      if container_element[:barcode].present?
+        "[#{container_element[:type]}_#{container_element[:text]}_#{container_element[:barcode]}]"
+      else
+        "[#{container_element[:type]}_#{container_element[:text]}]"
+      end
     end
     containers.join
   end
@@ -112,7 +118,7 @@ class CollectionComponent < ViewComponent::Base
   def compute_container_info
     node.xpath('did/container').map do |container|
       type = container.attr(:type) || container.attr(:localtype)
-      { type: type.try(:titlecase), text: container.try(:text) }
+      { type: type.try(:titlecase), text: container.try(:text), barcode: barcode_from(container) }
     end
   end
 
@@ -148,5 +154,13 @@ class CollectionComponent < ViewComponent::Base
   def extent
     extent = node.at_xpath('did/physdesc/extent').try(:text)
     extent ? " #{extent.gsub(/(\d+)\.0/, '\1')}." : ''
+  end
+
+  # @return [nil, String]
+  def barcode_from(container)
+    label = container.attr(:label)
+    return unless label.present?
+
+    label.match(/\[(.*?)\]/).try(:[], 1)
   end
 end
