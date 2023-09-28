@@ -20,6 +20,7 @@
       <%= form.static_control 'item[]', value: c, label: t('requests.form.fields.container') %>
     <% end %>
   <% end  %>
+  <%= form.select :request_type, [['Reprographic (Scan)', 'repro'], ['In Person Viewing', 'in_person']], label: t('requests.form.fields.request_type') %>
   <%= form.text_area :special_request, label: t('requests.form.fields.special_request') %>
   <%= form.text_area :notes, label: t('requests.form.fields.notes') %>
   <%= form.date_select :retrieval_date, label: t('requests.form.fields.retrieval_date') %>

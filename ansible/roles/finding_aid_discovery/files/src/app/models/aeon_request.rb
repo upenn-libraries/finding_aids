@@ -23,7 +23,7 @@ class AeonRequest
     penn: { url: 'https://aeon.library.upenn.edu/aeon/aeon.dll', param: '1' },
     external: { url: 'https://aeon.library.upenn.edu/nonshib/aeon.dll', param: '2' }
   }.freeze
-  BASE_PARAMS = { AeonForm: 'EADRequest', WebRequestForm: 'DefaultRequest', SubmitButton: 'Submit Request' }.freeze
+  BASE_PARAMS = { SubmitButton: 'Submit Request' }.freeze
 
   attr_reader :items, :repository
 
@@ -32,6 +32,7 @@ class AeonRequest
     @repository = repository_info params[:repository].to_s
     @params = params
     @items = build_items
+    @reprographic = @params[:request_type] == 'in_person'
   end
 
   # @return [Array[AeonRequest::Item]]
@@ -72,6 +73,15 @@ class AeonRequest
       'ScheduledDate' => formatted_retrieval_date }
   end
 
+  # @return [Hash{Symbol->String (frozen)}]
+  def request_type_fields
+    if @reprographic
+      { AeonForm: 'EADRequest', WebRequestForm: 'DefaultRequest' }
+    else
+      { AeonForm: 'PhotoduplicationRequest', RequestType: 'Copy', DocumentType: 'Photoduplication', Format: 'PDF' }
+    end
+  end
+
   # @return [String]
   def formatted_retrieval_date
     day = @params['retrieval_date(3i)'].to_i
@@ -99,11 +109,12 @@ class AeonRequest
   def to_h
     item_fields = {}
     @items.each do |i|
-      i.to_h.each do |k, v|
+      i.to_h(numbered_keys: @reprographic).each do |k, v|
         item_fields[k] = v
       end
     end
-    BASE_PARAMS.merge(note_fields)
+    BASE_PARAMS.merge(request_type_fields)
+               .merge(note_fields)
                .merge(auth_param)
                .merge(fulfillment_fields)
                .merge(item_fields)
@@ -126,12 +137,12 @@ class AeonRequest
       @request = request
     end
 
-    def to_h
-      { 'CallNumber' => @request.call_number, 'ItemTitle' => @request.title, 'ItemAuthor' => '',
+    def to_h(numbered_keys: true)
+      hash = { 'CallNumber' => @request.call_number, 'ItemTitle' => @request.title, 'ItemAuthor' => '',
         'Site' => @request.repository[:site], 'SubLocation' => @request.repository[:sublocation],
         'Location' => @request.repository[:location], 'ItemVolume' => @container[:volume],
         'ItemIssue' => @container[:issue], 'Request' => @number }
-        .transform_keys { |key| key + "_#{@number}" }
+      numbered_keys ? hash.transform_keys { |key| key + "_#{@number}" } : hash
     end
   end
 end

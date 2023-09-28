@@ -39,6 +39,7 @@ en:
         containers: 'Items requested'
         container: 'Container: '
         special_request: 'Special request details'
+        request_type: 'Request Type'
         notes: 'Notes'
         retrieval_date: 'Retrieval date'
         auth_types: 'Login status'
