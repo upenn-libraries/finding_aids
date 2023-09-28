@@ -14,7 +14,7 @@ describe Endpoint do
 
   it 'has functioning JSON accessor methods' do
     expect(index_endpoint.url).to eq 'https://www.test.com/pacscl'
-    expect(index_endpoint.type).to eq 'index'
+    expect(index_endpoint.source_type).to eq 'index'
   end
 
   describe '#slug' do
@@ -44,16 +44,16 @@ describe Endpoint do
     let(:endpoint) { build(:endpoint) }
 
     it 'must include valid type' do
-      endpoint.harvest_config = { url: 'https://example.com', type: 'gopher' }
+      endpoint.source_type = 'gopher'
       expect(endpoint.valid?).to be false
-      expect(endpoint.errors[:type]).to include 'is not included in the list'
+      expect(endpoint.errors[:source_type]).to include 'is not included in the list'
     end
 
     context 'with index type' do
       it 'must have a URL' do
-        endpoint.harvest_config = { type: 'index', url: nil }
+        endpoint.source_type = 'index'
         expect(endpoint.valid?).to be false
-        expect(endpoint.errors[:harvest_config]).to include 'must have a URL provided'
+        expect(endpoint.errors[:url]).to include 'must have a URL provided'
       end
     end
 
