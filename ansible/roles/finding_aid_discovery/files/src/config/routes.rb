@@ -28,5 +28,6 @@ Rails.application.routes.draw do
   end
 
   get 'repositories', to: 'catalog#repositories'
+  get 'login', to: 'login#index'
   root to: 'catalog#index'
 end
