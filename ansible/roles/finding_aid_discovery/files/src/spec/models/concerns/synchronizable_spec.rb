@@ -34,7 +34,7 @@ shared_examples_for 'synchronizable' do
       let(:csv_file) { file_fixture('endpoint_csv/invalid_type.csv') }
 
       it 'raises error' do
-        expect { sync }.to raise_error ActiveRecord::RecordInvalid, /Type is not included in the list/
+        expect { sync }.to raise_error ActiveRecord::RecordInvalid, /Source type is not included in the list/
       end
     end
 
@@ -47,7 +47,10 @@ shared_examples_for 'synchronizable' do
         expect(Endpoint.find_by(slug: 'upenn_rbml')).to have_attributes(
           public_contacts: ['rbml@pobox.upenn.edu'],
           tech_contacts: ['hmengel@pobox.upenn.edu'],
-          harvest_config: { 'type' => 'penn_archives_space', 'repository_id' => '4' }
+          source_type: 'penn_archives_space',
+          url: 'https://upennstaff.as.atlas-sys.com',
+          aspace_id: 4
+          # harvest_config: { 'type' => 'penn_archives_space', 'repository_id' => '4' }
         )
       end
 
@@ -55,7 +58,9 @@ shared_examples_for 'synchronizable' do
         expect(Endpoint.find_by(slug: 'haverford')).to have_attributes(
           public_contacts: ['hc-special@haverford.edu'],
           tech_contacts: ['shorowitz@haverford.edu'],
-          harvest_config: { 'type' => 'index', 'url' => 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/' }
+          source_type: 'index',
+          url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/'
+          # harvest_config: { 'type' => 'index', 'url' => 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/' }
         )
       end
 
@@ -68,7 +73,9 @@ shared_examples_for 'synchronizable' do
           expect(Endpoint.find_by(slug: 'upenn_rbml')).to have_attributes(
             public_contacts: ['rbml@pobox.upenn.edu'],
             tech_contacts: ['hmengel@pobox.upenn.edu'],
-            harvest_config: { 'type' => 'index', 'url' => 'http://127.0.0.1:8080/ead/manuscripts' }
+            source_type: 'index',
+            url: 'http://127.0.0.1:8080/ead/manuscripts'
+            # harvest_config: { 'type' => 'index', 'url' => 'http://127.0.0.1:8080/ead/manuscripts' }
           )
         end
 
@@ -76,7 +83,9 @@ shared_examples_for 'synchronizable' do
           expect(Endpoint.find_by(slug: 'haverford')).to have_attributes(
             public_contacts: ['public@haverford.edu'],
             tech_contacts: ['example@haverford.edu'],
-            harvest_config: { 'type' => 'index', 'url' => 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/new' }
+            source_type: 'index',
+            url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/new'
+            # harvest_config: { 'type' => 'index', 'url' => 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/new' }
           )
         end
 
@@ -84,7 +93,10 @@ shared_examples_for 'synchronizable' do
           expect(Endpoint.find_by(slug: 'upenn_cajs')).to have_attributes(
             public_contacts: ['cajs@pobox.upenn.edu'],
             tech_contacts: ['cajs@pobox.upenn.edu'],
-            harvest_config: { 'type' => 'penn_archives_space', 'repository_id' => '5' }
+            source_type: 'penn_archives_space',
+            url: 'https://upennstaff.as.atlas-sys.com',
+            aspace_id: 5
+            # harvest_config: { 'type' => 'penn_archives_space', 'repository_id' => '5' }
           )
         end
       end
