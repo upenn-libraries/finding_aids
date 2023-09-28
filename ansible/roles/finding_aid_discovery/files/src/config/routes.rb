@@ -6,8 +6,9 @@ Rails.application.routes.draw do
     post 'sign_out', to: 'devise/sessions#destroy', as: 'destroy_user_session'
   end
   get 'login', to: 'login#index'
+  get 'admin', to: 'admin#index', as: 'admin'
   authenticated do
-    root to: 'admin#index', as: 'authenticated_root'
+    root to: 'catalog#index', as: 'authenticated_root'
   end
 
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
