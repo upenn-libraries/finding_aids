@@ -53,15 +53,16 @@ describe Endpoint do
       it 'must have a URL' do
         endpoint.source_type = 'index'
         expect(endpoint.valid?).to be false
-        expect(endpoint.errors[:url]).to include 'must have a URL provided'
+        expect(endpoint.errors[:url]).to include "can't be blank"
       end
     end
 
     context 'with penn_archives_space type' do
       it 'must have a repository id' do
-        endpoint.harvest_config = { type: 'penn_archives_space', repository_id: nil }
+        endpoint.source_type = 'penn_archives_space'
+        endpoint.aspace_id = nil
         expect(endpoint.valid?).to be false
-        expect(endpoint.errors[:harvest_config]).to include 'must have a Repository ID provided'
+        expect(endpoint.errors[:aspace_id]).to include "can't be blank"
       end
     end
   end
