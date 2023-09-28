@@ -361,6 +361,14 @@ footer {
   border-bottom: none;
   padding-bottom: 0;
 }
+
+/* Set font size for search-widget dropdown items and child screen reader-only elements */
+.sort-dropdown, .per_page-dropdown {
+  .dropdown-item {
+    font-size: 1.6rem;
+  }
+}
+
 #documents.documents-list {
   article.document {
     border-top: 1px dashed #999;
