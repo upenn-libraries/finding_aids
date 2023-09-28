@@ -76,6 +76,7 @@ GEM
     ast (2.4.2)
     autoprefixer-rails (10.4.7.0)
       execjs (~> 2)
+    bcrypt (3.1.19)
     bindex (0.8.1)
     blacklight (7.33.0)
       deprecation
@@ -121,6 +122,12 @@ GEM
     date (3.3.3)
     deprecation (1.1.0)
       activesupport
+    devise (4.9.2)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0)
+      responders
+      warden (~> 1.2.3)
     diff-lcs (1.5.0)
     docile (1.4.0)
     dry-cli (0.7.0)
@@ -224,6 +231,7 @@ GEM
     omniauth-saml (2.1.0)
       omniauth (~> 2.0)
       ruby-saml (~> 1.12)
+    orm_adapter (0.5.0)
     ostruct (0.5.5)
     parallel (1.22.1)
     parser (3.2.2.0)
@@ -275,6 +283,9 @@ GEM
       ffi (~> 1.0)
     redis (4.6.0)
     regexp_parser (2.8.0)
+    responders (3.1.0)
+      actionpack (>= 5.2)
+      railties (>= 5.2)
     retryable (3.0.5)
     rexml (3.2.5)
     rsolr (2.5.0)
@@ -384,6 +395,8 @@ GEM
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
+    warden (1.2.9)
+      rack (>= 2.0.9)
     web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -414,6 +427,7 @@ DEPENDENCIES
   byebug
   capybara
   cuprite
+  devise
   factory_bot_rails
   faker
   honeybadger
