@@ -159,7 +159,7 @@ class CollectionComponent < ViewComponent::Base
   # @return [nil, String]
   def barcode_from(container)
     label = container.attr(:label)
-    return unless label.present?
+    return if label.blank?
 
     label.match(/\[(.*?)\]/).try(:[], 1)
   end

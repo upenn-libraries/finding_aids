@@ -13,11 +13,8 @@ module RequestsHelper
       parts = k.split('_')
       barcode = parts.count == 3 ? parts[2] : nil
       volume = parts[0..1].join(' ')
-      value = if v == '1' # if v is 1 that is the input value and indicates the presence of only 1 container
-                volume
-              else
-                "#{volume}: #{issues_from_param(v)}"
-              end
+      # if v is 1 that is the input value and indicates the presence of only 1 container
+      value = v == '1' ? volume : "#{volume}: #{issues_from_param(v)}"
       { value: value, barcode: barcode }
     end
   end
