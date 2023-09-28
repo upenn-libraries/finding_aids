@@ -7,13 +7,13 @@ FactoryBot.define do
     tech_contacts { ['tech@test.org'] }
 
     trait :index_harvest do
-      type { 'index' }
+      source_type { 'index' }
       url { 'https://www.test.com/pacscl' }
       harvest_config {{}}
     end
 
     trait :penn_aspace_harvest do
-      type { 'penn_archives_space' }
+      source_type { 'penn_archives_space' }
       url { 'https://www.test.com/pacscl' }
       aspace_id { '1' }
       harvest_config {{}}
