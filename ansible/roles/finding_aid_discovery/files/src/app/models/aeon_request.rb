@@ -39,7 +39,8 @@ class AeonRequest
     @params['item'].map.with_index do |item, i|
       volume, issue = item.split(':').map(&:strip)
       barcode = @params['item_barcode'][i]
-      container_info = { volume: volume, issue: issue, barcode: barcode }
+      volume += " [#{barcode}]" if barcode.present?
+      container_info = { volume: volume, issue: issue }
       Item.new i, container_info, self
     end
   end
@@ -131,7 +132,7 @@ class AeonRequest
       { 'CallNumber' => @request.call_number, 'ItemTitle' => @request.title, 'ItemAuthor' => '',
         'Site' => @request.repository[:site], 'SubLocation' => @request.repository[:sublocation],
         'Location' => @request.repository[:location], 'ItemVolume' => @container[:volume],
-        'ItemIssue' => @container[:issue], 'Request' => @number, 'ItemBarcode' => @container[:barcode] }
+        'ItemIssue' => @container[:issue], 'Request' => @number }
         .transform_keys { |key| key + "_#{@number}" }
     end
   end
