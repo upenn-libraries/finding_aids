@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_scope :user do
+    post 'sign_out', to: 'devise/sessions#destroy', as: 'destroy_user_session'
+  end
+  get 'login', to: 'login#index'
+  authenticated do
+    root to: 'admin#index', as: 'authenticated_root'
+  end
+
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   mount Blacklight::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new
@@ -28,7 +37,5 @@ Rails.application.routes.draw do
   end
 
   get 'repositories', to: 'catalog#repositories'
-  get 'login', to: 'login#index'
-  match 'auth/:provider/callback', to: 'omniauth_callbacks#developer', via: %i[get post]
   root to: 'catalog#index'
 end
