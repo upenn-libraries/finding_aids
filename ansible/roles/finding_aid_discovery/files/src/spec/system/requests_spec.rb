@@ -7,7 +7,7 @@ describe 'Requests form' do
   let(:document_hash) { attributes_for(:solr_document, :requestable, :with_collection_data) }
   let(:document_title) { document_hash[:title_tsi] }
 
-  # Index a requestale record
+  # Index a requestable record
   before do
     solr.add_many documents: [document_hash]
     solr.commit

@@ -171,7 +171,6 @@ rspec_app_test:
         - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
   tags:
     - build
-  allow_failure: true
 
 rubocop_app_test:
   stage: test
@@ -189,7 +188,6 @@ rubocop_app_test:
         - ansible/roles/finding_aid_discovery/files/src/.rubocop.yml
   tags:
     - build
-  allow_failure: true
 # -- End - test dev image
 
 # -- Start - build and push temp prod image
@@ -244,7 +242,7 @@ trivy_app_container_scanning:
   needs:
     - amend_prod_image
   variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-production
+    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}
   tags:
     - build
   allow_failure: true

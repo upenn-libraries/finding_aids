@@ -63,10 +63,10 @@ class CollectionComponent < ViewComponent::Base
     name = "c#{container_info_for_checkbox}"
     id = unique_id_for_collection
     content_tag :div, class: 'custom-control custom-checkbox request-checkbox-area' do
-      safe_join([
-                  check_box_tag(name, 1, false, id: id, class: 'custom-control-input request-checkbox-input'),
-                  label_tag(id, 'Toggle request', class: 'custom-control-label request-checkbox-label')
-                ])
+      safe_join([check_box_tag(name, 1, false, id: id, class: 'custom-control-input request-checkbox-input',
+                                               'aria-labelledby': " #{@id}-details #{@id}-title"),
+                 label_tag(id, 'Toggle request', class: 'custom-control-label request-checkbox-label',
+                                                 'aria-hidden': true)])
     end
   end
 
