@@ -7,15 +7,16 @@ FactoryBot.define do
     tech_contacts { ['tech@test.org'] }
 
     trait :index_harvest do
-      harvest_config do
-        { type: 'index', url: 'https://www.test.com/pacscl' }
-      end
+      type { 'index' }
+      url { 'https://www.test.com/pacscl' }
+      harvest_config {{}}
     end
 
     trait :penn_aspace_harvest do
-      harvest_config do
-        { type: 'penn_archives_space', repository_id: '1' }
-      end
+      type { 'penn_archives_space' }
+      url { 'https://www.test.com/pacscl' }
+      aspace_id { '1' }
+      harvest_config {{}}
     end
 
     trait :failed_harvest do
