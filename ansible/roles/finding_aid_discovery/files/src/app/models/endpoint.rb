@@ -10,20 +10,11 @@ class Endpoint < ApplicationRecord
 
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[A-Za-z_]+\z/ }
   validates :type, presence: true, inclusion: TYPES
-  validate :valid_harvest_config
+  validates :url, presence: true
+  validates :aspace_id, presence: true, if: :penn_aspace_type?
 
-  scope :index_type, -> { where('harvest_config @> ?', { type: 'index' }.to_json) }
-  scope :penn_aspace_type, -> { where('harvest_config @> ?', { type: 'penn_archives_space' }.to_json) }
-
-  # @return [String]
-  def url
-    harvest_config['url']
-  end
-
-  # @return [String]
-  def type
-    harvest_config['type']
-  end
+  scope :index_type, -> { where(type: 'index') }
+  scope :penn_aspace_type, -> { where(type: 'penn_archives_space') }
 
   def penn_aspace_type?
     type == PENN_ASPACE_TYPE
@@ -35,9 +26,9 @@ class Endpoint < ApplicationRecord
 
   # Wrapper for last_harvest_results providing accessor and helper methods.
   class LastHarvest
-    PARTIAL  = 'partial'
+    PARTIAL = 'partial'
     COMPLETE = 'complete'
-    FAILED   = 'failed'
+    FAILED = 'failed'
     STATUSES = [PARTIAL, COMPLETE, FAILED].freeze
 
     attr_reader :results
@@ -155,24 +146,5 @@ class Endpoint < ApplicationRecord
   def reload
     @last_harvest = nil # Resetting last_harvest so the object is re-instantiated with fresh data.
     super
-  end
-
-  private
-
-  def valid_harvest_config
-    case type
-    when INDEX_TYPE
-      validate_index_type
-    when PENN_ASPACE_TYPE
-      validate_penn_aspace_type
-    end
-  end
-
-  def validate_index_type
-    errors.add(:harvest_config, 'must have a URL provided') if harvest_config['url'].blank?
-  end
-
-  def validate_penn_aspace_type
-    errors.add(:harvest_config, 'must have a Repository ID provided') if harvest_config['repository_id'].blank?
   end
 end
