@@ -9,14 +9,14 @@ FactoryBot.define do
     trait :index_harvest do
       source_type { 'index' }
       url { 'https://www.test.com/pacscl' }
-      harvest_config {{}}
+      harvest_config { {} }
     end
 
     trait :penn_aspace_harvest do
       source_type { 'penn_archives_space' }
       url { 'https://www.test.com/pacscl' }
       aspace_id { '1' }
-      harvest_config {{}}
+      harvest_config { {} }
     end
 
     trait :failed_harvest do

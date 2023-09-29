@@ -24,7 +24,7 @@ module Synchronizable
         endpoint.source_type = attr['type']
         endpoint.url = attr['index_url']
         endpoint.aspace_id = attr['aspace_id']
-        endpoint.harvest_config = { }
+        endpoint.harvest_config = {}
         endpoint
       end
 
