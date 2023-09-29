@@ -125,7 +125,7 @@ class Endpoint < ApplicationRecord
 
   # Return Class for extracting XML File URLs from a source
   def extractor_class
-    "#{type.camelize}Extractor".constantize
+    "#{source_type.camelize}Extractor".constantize
   end
 
   # @return [Object]
