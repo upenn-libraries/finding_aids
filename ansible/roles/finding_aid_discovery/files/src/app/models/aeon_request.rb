@@ -139,9 +139,9 @@ class AeonRequest
 
     def to_h(numbered_keys: true)
       hash = { 'CallNumber' => @request.call_number, 'ItemTitle' => @request.title, 'ItemAuthor' => '',
-        'Site' => @request.repository[:site], 'SubLocation' => @request.repository[:sublocation],
-        'Location' => @request.repository[:location], 'ItemVolume' => @container[:volume],
-        'ItemIssue' => @container[:issue], 'Request' => @number }
+               'Site' => @request.repository[:site], 'SubLocation' => @request.repository[:sublocation],
+               'Location' => @request.repository[:location], 'ItemVolume' => @container[:volume],
+               'ItemIssue' => @container[:issue], 'Request' => @number }
       numbered_keys ? hash.transform_keys { |key| key + "_#{@number}" } : hash
     end
   end
