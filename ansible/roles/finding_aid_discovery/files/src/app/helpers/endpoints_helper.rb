@@ -15,7 +15,7 @@ module EndpointsHelper
   def error_message_for(endpoint, file)
     if endpoint.penn_aspace_type?
       aspace_link = link_to_penn_aspace_record(
-        endpoint.harvest_config['repository_id'], file['id']
+        endpoint.aspace_id, file['id']
       )
       "#{aspace_link}: #{file['errors'].join(', ')}"
     else
