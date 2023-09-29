@@ -49,7 +49,7 @@ shared_examples_for 'synchronizable' do
           tech_contacts: ['hmengel@pobox.upenn.edu'],
           source_type: 'penn_archives_space',
           url: 'https://upennstaff.as.atlas-sys.com',
-          aspace_id: 4,
+          aspace_id: 4
         )
       end
 

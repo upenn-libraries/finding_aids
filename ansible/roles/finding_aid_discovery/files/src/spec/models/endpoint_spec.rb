@@ -67,7 +67,7 @@ describe Endpoint do
   end
 
   describe '#aspace_id' do
-    let (:endpoint) { build(:endpoint) }
+    let(:endpoint) { build(:endpoint) }
 
     context 'with penn_archives_space source_type' do
       it 'must be present' do
