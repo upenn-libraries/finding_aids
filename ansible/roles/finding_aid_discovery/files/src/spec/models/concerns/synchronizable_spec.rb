@@ -49,8 +49,7 @@ shared_examples_for 'synchronizable' do
           tech_contacts: ['hmengel@pobox.upenn.edu'],
           source_type: 'penn_archives_space',
           url: 'https://upennstaff.as.atlas-sys.com',
-          aspace_id: 4
-          # harvest_config: { 'type' => 'penn_archives_space', 'repository_id' => '4' }
+          aspace_id: 4,
         )
       end
 
@@ -60,7 +59,6 @@ shared_examples_for 'synchronizable' do
           tech_contacts: ['shorowitz@haverford.edu'],
           source_type: 'index',
           url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/'
-          # harvest_config: { 'type' => 'index', 'url' => 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/' }
         )
       end
 
@@ -75,7 +73,6 @@ shared_examples_for 'synchronizable' do
             tech_contacts: ['hmengel@pobox.upenn.edu'],
             source_type: 'index',
             url: 'http://127.0.0.1:8080/ead/manuscripts'
-            # harvest_config: { 'type' => 'index', 'url' => 'http://127.0.0.1:8080/ead/manuscripts' }
           )
         end
 
@@ -85,7 +82,6 @@ shared_examples_for 'synchronizable' do
             tech_contacts: ['example@haverford.edu'],
             source_type: 'index',
             url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/new'
-            # harvest_config: { 'type' => 'index', 'url' => 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/new' }
           )
         end
 
@@ -96,7 +92,6 @@ shared_examples_for 'synchronizable' do
             source_type: 'penn_archives_space',
             url: 'https://upennstaff.as.atlas-sys.com',
             aspace_id: 5
-            # harvest_config: { 'type' => 'penn_archives_space', 'repository_id' => '5' }
           )
         end
       end

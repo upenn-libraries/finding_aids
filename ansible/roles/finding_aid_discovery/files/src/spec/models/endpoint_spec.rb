@@ -40,25 +40,37 @@ describe Endpoint do
     end
   end
 
-  describe '#harvest_config' do
+  describe '#source_type' do
     let(:endpoint) { build(:endpoint) }
 
-    it 'must include valid type' do
+    it 'must be present' do
+      endpoint.source_type = nil
+      expect(endpoint.valid?).to be false
+      expect(endpoint.errors[:source_type]).to include('can\'t be blank')
+    end
+
+    it 'must be valid source type' do
       endpoint.source_type = 'gopher'
       expect(endpoint.valid?).to be false
       expect(endpoint.errors[:source_type]).to include 'is not included in the list'
     end
+  end
 
-    context 'with index type' do
-      it 'must have a URL' do
-        endpoint.source_type = 'index'
-        expect(endpoint.valid?).to be false
-        expect(endpoint.errors[:url]).to include "can't be blank"
-      end
+  describe '#url' do
+    let(:endpoint) { build(:endpoint) }
+
+    it 'must be present' do
+      endpoint.source_type = 'index'
+      expect(endpoint.valid?).to be false
+      expect(endpoint.errors[:url]).to include "can't be blank"
     end
+  end
 
-    context 'with penn_archives_space type' do
-      it 'must have a repository id' do
+  describe '#aspace_id' do
+    let (:endpoint) { build(:endpoint) }
+
+    context 'with penn_archives_space source_type' do
+      it 'must be present' do
         endpoint.source_type = 'penn_archives_space'
         endpoint.aspace_id = nil
         expect(endpoint.valid?).to be false
