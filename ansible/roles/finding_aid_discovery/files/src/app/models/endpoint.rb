@@ -136,6 +136,7 @@ class Endpoint < ApplicationRecord
   # Return Class for parsing xml_urls for this Endpoint, using
   # 'parser' value in harvest_config, if present
   def parser_class
+    # TODO: harvest config will be removed, what to do here?
     if harvest_config.dig('parser', nil).present?
       "#{harvest_config['parser']}Parser".constantize
     else
