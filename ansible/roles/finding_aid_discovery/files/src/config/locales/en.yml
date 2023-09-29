@@ -16,6 +16,12 @@ en:
       print: 'Print the finding aid'
       submit_correction: 'Suggest a correction'
       contact_us: "Contact Us"
+  about:
+    page_title: 'About'
+    header: 'About the Philadelphia Area Archives Site'
+  how_to_use:
+    page_title: 'How to Use'
+    header: 'How to Use the Philadelphia Area Archives Site'
   footer:
     links:
       members: 'PACSCL Members'
