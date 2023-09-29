@@ -133,15 +133,12 @@ class Endpoint < ApplicationRecord
     @parser ||= parser_class.new(self)
   end
 
-  # Return Class for parsing xml_urls for this Endpoint, using
-  # 'parser' value in harvest_config, if present
+  # Return Class for parsing xml_urls for this Endpoint
+  # @note This function was originally written to extract the "parser" value from the harvest_config with the idea
+  #   that we may need different parser classes for different records. The method will stay in place in case we
+  #   need this functionality down the road.
   def parser_class
-    # TODO: harvest config will be removed, what to do here?
-    if harvest_config.dig('parser', nil).present?
-      "#{harvest_config['parser']}Parser".constantize
-    else
-      EadParser
-    end
+    EadParser
   end
 
   def reload
