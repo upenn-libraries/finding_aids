@@ -24,7 +24,7 @@ class CollectionComponent < ViewComponent::Base
       classes = ['digital-object-link']
       classes << 'iiif-manifest-link' if dao.attr('role') == IIIF_MAINFEST_ROLE_ATTRIBUTE
       href = dao.attr('href')
-      next unless href
+      next unless href&.include?('http') # rough check to ensure the value is link-like
 
       link_to dao.attr('title') || 'Online Resource', href,
               class: classes, target: '_blank', rel: 'noopener'
