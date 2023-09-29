@@ -113,10 +113,8 @@ class AeonRequest
         item_fields[k] = v
       end
     end
-    BASE_PARAMS.merge(request_type_fields)
-               .merge(note_fields)
-               .merge(auth_param)
-               .merge(fulfillment_fields)
+    BASE_PARAMS.merge(request_type_fields).merge(note_fields)
+               .merge(auth_param).merge(fulfillment_fields)
                .merge(item_fields)
   end
 
