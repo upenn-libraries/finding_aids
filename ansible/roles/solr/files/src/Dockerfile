@@ -8,7 +8,7 @@ ARG CORE_NAME=finding-aid-discovery-core
 ARG IMAGE_NAME=solr
 
 # Image tag
-ARG IMAGE_TAG=9.2
+ARG IMAGE_TAG=9.3
 
 
 FROM ${IMAGE_NAME}:${IMAGE_TAG}
