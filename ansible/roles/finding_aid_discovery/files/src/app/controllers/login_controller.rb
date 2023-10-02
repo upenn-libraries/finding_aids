@@ -3,10 +3,10 @@
 # handles requests from user login entrypoint
 class LoginController < ApplicationController
   def index
-    if Rails.env.production?
-      head :not_found
+    if Rails.env.development?
+       render :index
     else
-      render :index
+      head :not_found
     end
   end
 end
