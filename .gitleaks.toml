@@ -162,7 +162,9 @@ title = "gitlab gitleaks config"
             '''SecretsService\.lookup''',
             '''auth\:\s1''',
             '''\:\s+\"password\"''',
-            '''(external|penn)_auth'''
+            '''(external|penn)_auth''',
+            '''(?i)vault_token\s?=\s?(.*vault_token|getpass\.getpass)''',
+            '''vault_token:\s?str'''
         ]
 
 [[rules]]
@@ -171,7 +173,8 @@ title = "gitlab gitleaks config"
     [rules.allowlist]
         description = "ignore false positive - files with possible keys and credentials"
         paths = [
-            '''ansible/vault_passwd-client.py'''
+            '''ansible/vault_passwd-client.py''',
+            '''ansible/roles/finding_aid_discovery/files/src/config/initializers/devise.rb'''
         ]
 
 [[rules]]
@@ -192,7 +195,10 @@ title = "gitlab gitleaks config"
         '''6165f8da733ad3f8e02210f13ab55a7ac8395568''',
         '''82f26315dc6add518e54904be6eacde0d15524fb''',
         '''5867da3ef0065d30beb9afd742dfa8abc567bb7b''',
-        '''d612f2915a82083dd5bbe6a089411f8f27992e6c'''
+        '''d612f2915a82083dd5bbe6a089411f8f27992e6c''',
+        '''67f0e95346e26120b89ccd9d112fda39e2e5caf6''',
+        '''269281cead4ff1dbc401831b4a859d08faaab9d2''',
+        '''f7f2345bddc467e77ff80f8b286730d0cc46c679'''
 
     ]
     files = [
