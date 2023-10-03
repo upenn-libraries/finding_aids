@@ -136,7 +136,15 @@ class CollectionComponent < ViewComponent::Base
     node.at_xpath('did/origination').try(:text)
   end
 
+  # extract date, preferring unitdate over unitdatestructured
+  # @return [String]
   def date
+    date_unstructured || date_structured
+  end
+
+  # extract bulk and non bulk dates from unitdate element
+  # @return [String]
+  def date_unstructured
     return if node.xpath('did/unitdate').blank?
 
     non_bulk_date = node.at_xpath('did/unitdate[not(@type=\'bulk\')]').try(:text)
@@ -145,6 +153,50 @@ class CollectionComponent < ViewComponent::Base
     bulk_date = "(#{bulk_date})" if bulk_date
 
     [non_bulk_date, bulk_date].compact_blank.join(' ')
+  end
+
+  # extract bulk and non bulk dates from ead3 unitdatestructured element
+  # @return [String]
+  def date_structured
+    return if node.xpath('did/unitdatestructured').blank?
+
+    non_bulk_date = format_date_structured
+    bulk_date = format_date_structured(bulk: true)
+
+    [non_bulk_date, bulk_date].compact_blank.join(' ')
+  end
+
+  # format structured date depending on the unitdatestructured type
+  # @param [Boolean] bulk
+  # @return [String,nil]
+  def format_date_structured(bulk: false)
+    predicate = bulk ? '[@type=\'bulk\']' : '[not(@type=\'bulk\')]'
+    date_node = node.at_xpath("did/unitdatestructured#{predicate}")
+
+    return if date_node.blank?
+
+    # prefer date range
+    date = date_range(date_node) || date_node.at_xpath('.//datesingle').try(:text)
+
+    return if date.blank?
+
+    bulk ? "(#{date})" : date
+  end
+
+  # extract range from ead3 daterange element
+  # @param [[Nokogiri::XML::Node] node
+  # @return [String,nil]
+  def date_range(node)
+    date_range = node.at_xpath('.//daterange')
+
+    return if date_range.blank?
+
+    from_date = date_range.at_xpath('./fromdate').try(:text)
+    to_date = date_range.at_xpath('./todate').try(:text)
+
+    return if from_date.blank? && to_date.blank?
+
+    "#{from_date}-#{to_date}"
   end
 
   def extent
