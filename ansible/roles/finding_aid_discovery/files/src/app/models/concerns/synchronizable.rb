@@ -21,11 +21,10 @@ module Synchronizable
         endpoint = find_or_initialize_by(slug: attr['slug'])
         endpoint.public_contacts = Array.wrap(attr['public_contact'])
         endpoint.tech_contacts = Array.wrap(attr['tech_contact'])
-        endpoint.harvest_config = {
-          type: attr['type'],
-          repository_id: attr['aspace_id'],
-          url: attr['index_url']
-        }.compact_blank
+        endpoint.source_type = attr['type']
+        endpoint.url = attr['index_url']
+        endpoint.aspace_id = attr['aspace_id']
+        endpoint.harvest_config = {}
         endpoint
       end
 

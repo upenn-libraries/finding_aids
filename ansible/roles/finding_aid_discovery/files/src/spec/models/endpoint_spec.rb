@@ -14,7 +14,7 @@ describe Endpoint do
 
   it 'has functioning JSON accessor methods' do
     expect(index_endpoint.url).to eq 'https://www.test.com/pacscl'
-    expect(index_endpoint.type).to eq 'index'
+    expect(index_endpoint.source_type).to eq 'index'
   end
 
   describe '#slug' do
@@ -40,28 +40,41 @@ describe Endpoint do
     end
   end
 
-  describe '#harvest_config' do
+  describe '#source_type' do
     let(:endpoint) { build(:endpoint) }
 
-    it 'must include valid type' do
-      endpoint.harvest_config = { url: 'https://example.com', type: 'gopher' }
+    it 'must be present' do
+      endpoint.source_type = nil
       expect(endpoint.valid?).to be false
-      expect(endpoint.errors[:type]).to include 'is not included in the list'
+      expect(endpoint.errors[:source_type]).to include('can\'t be blank')
     end
 
-    context 'with index type' do
-      it 'must have a URL' do
-        endpoint.harvest_config = { type: 'index', url: nil }
-        expect(endpoint.valid?).to be false
-        expect(endpoint.errors[:harvest_config]).to include 'must have a URL provided'
-      end
+    it 'must be valid source type' do
+      endpoint.source_type = 'gopher'
+      expect(endpoint.valid?).to be false
+      expect(endpoint.errors[:source_type]).to include 'is not included in the list'
     end
+  end
 
-    context 'with penn_archives_space type' do
-      it 'must have a repository id' do
-        endpoint.harvest_config = { type: 'penn_archives_space', repository_id: nil }
+  describe '#url' do
+    let(:endpoint) { build(:endpoint) }
+
+    it 'must be present' do
+      endpoint.source_type = 'index'
+      expect(endpoint.valid?).to be false
+      expect(endpoint.errors[:url]).to include "can't be blank"
+    end
+  end
+
+  describe '#aspace_id' do
+    let(:endpoint) { build(:endpoint) }
+
+    context 'with penn_archives_space source_type' do
+      it 'must be present' do
+        endpoint.source_type = 'penn_archives_space'
+        endpoint.aspace_id = nil
         expect(endpoint.valid?).to be false
-        expect(endpoint.errors[:harvest_config]).to include 'must have a Repository ID provided'
+        expect(endpoint.errors[:aspace_id]).to include "can't be blank"
       end
     end
   end

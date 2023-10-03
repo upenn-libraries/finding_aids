@@ -34,58 +34,80 @@ shared_examples_for 'synchronizable' do
       let(:csv_file) { file_fixture('endpoint_csv/invalid_type.csv') }
 
       it 'raises error' do
-        expect { sync }.to raise_error ActiveRecord::RecordInvalid, /Type is not included in the list/
+        expect { sync }.to raise_error ActiveRecord::RecordInvalid, /Source type is not included in the list/
       end
     end
 
     context 'when adding new aspace and index endpoint' do
       let(:csv_file) { file_fixture('endpoint_csv/new_endpoints.csv') }
+      let(:rbml_attributes) do
+        {
+          public_contacts: ['rbml@pobox.upenn.edu'],
+          tech_contacts: ['hmengel@pobox.upenn.edu'],
+          source_type: 'penn_archives_space',
+          url: 'https://upennstaff.as.atlas-sys.com',
+          aspace_id: 4
+        }
+      end
+      let(:haverford_attributes) do
+        {
+          public_contacts: ['hc-special@haverford.edu'],
+          tech_contacts: ['shorowitz@haverford.edu'],
+          source_type: 'index',
+          url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/'
+        }
+      end
 
       before { described_class.sync_from_csv(csv_file) }
 
       it 'creates upenn_rbml endpoint' do
-        expect(Endpoint.find_by(slug: 'upenn_rbml')).to have_attributes(
-          public_contacts: ['rbml@pobox.upenn.edu'],
-          tech_contacts: ['hmengel@pobox.upenn.edu'],
-          harvest_config: { 'type' => 'penn_archives_space', 'repository_id' => '4' }
-        )
+        expect(Endpoint.find_by(slug: 'upenn_rbml')).to have_attributes(rbml_attributes)
       end
 
       it 'creates haverford endpoint' do
-        expect(Endpoint.find_by(slug: 'haverford')).to have_attributes(
-          public_contacts: ['hc-special@haverford.edu'],
-          tech_contacts: ['shorowitz@haverford.edu'],
-          harvest_config: { 'type' => 'index', 'url' => 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/' }
-        )
+        expect(Endpoint.find_by(slug: 'haverford')).to have_attributes(haverford_attributes)
       end
 
       context 'when updating endpoints' do
         let(:update_csv_file) { file_fixture('endpoint_csv/update_endpoints.csv') }
+        let(:rbml_attributes) do
+          {
+            public_contacts: ['rbml@pobox.upenn.edu'],
+            tech_contacts: ['hmengel@pobox.upenn.edu'],
+            source_type: 'index',
+            url: 'http://127.0.0.1:8080/ead/manuscripts'
+          }
+        end
+        let(:haverford_attributes) do
+          {
+            public_contacts: ['public@haverford.edu'],
+            tech_contacts: ['example@haverford.edu'],
+            source_type: 'index',
+            url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/new'
+          }
+        end
+        let(:cajs_attributes) do
+          {
+            public_contacts: ['cajs@pobox.upenn.edu'],
+            tech_contacts: ['cajs@pobox.upenn.edu'],
+            source_type: 'penn_archives_space',
+            url: 'https://upennstaff.as.atlas-sys.com',
+            aspace_id: 5
+          }
+        end
 
         before { described_class.sync_from_csv(update_csv_file) }
 
         it 'updates upenn_rbml endpoint' do
-          expect(Endpoint.find_by(slug: 'upenn_rbml')).to have_attributes(
-            public_contacts: ['rbml@pobox.upenn.edu'],
-            tech_contacts: ['hmengel@pobox.upenn.edu'],
-            harvest_config: { 'type' => 'index', 'url' => 'http://127.0.0.1:8080/ead/manuscripts' }
-          )
+          expect(Endpoint.find_by(slug: 'upenn_rbml')).to have_attributes(rbml_attributes)
         end
 
         it 'updates haverford endpoint' do
-          expect(Endpoint.find_by(slug: 'haverford')).to have_attributes(
-            public_contacts: ['public@haverford.edu'],
-            tech_contacts: ['example@haverford.edu'],
-            harvest_config: { 'type' => 'index', 'url' => 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/new' }
-          )
+          expect(Endpoint.find_by(slug: 'haverford')).to have_attributes(haverford_attributes)
         end
 
         it 'adds upenn_cajs endpoint' do
-          expect(Endpoint.find_by(slug: 'upenn_cajs')).to have_attributes(
-            public_contacts: ['cajs@pobox.upenn.edu'],
-            tech_contacts: ['cajs@pobox.upenn.edu'],
-            harvest_config: { 'type' => 'penn_archives_space', 'repository_id' => '5' }
-          )
+          expect(Endpoint.find_by(slug: 'upenn_cajs')).to have_attributes(cajs_attributes)
         end
       end
 
