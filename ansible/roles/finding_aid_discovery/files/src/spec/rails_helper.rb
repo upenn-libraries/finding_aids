@@ -50,6 +50,10 @@ RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.file_fixture_path = Rails.root.join('spec/fixtures')
 
+  # Rspec Devise helpers
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :system
+
   # Include helpers for ViewComponent specs
   config.include ViewComponent::TestHelpers, type: :component
   config.include Capybara::RSpecMatchers, type: :component

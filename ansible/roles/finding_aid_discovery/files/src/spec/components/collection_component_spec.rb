@@ -117,4 +117,29 @@ XML
     it { is_expected.to have_link 'Notebook A', href: 'https://colenda.library.upenn.edu/catalog/a' }
     it { is_expected.to have_link 'Notebook B', href: 'https://colenda.library.upenn.edu/catalog/b', class: 'iiif-manifest-link' }
   end
+
+  context 'with digital objects containing invalid href values' do
+    let(:xml) do
+      <<XML
+    <c>
+      <did>
+        <unittitle>Collection with DOs</unittitle>
+        <unitid audience="internal" identifier="250031">250031</unitid>
+        <unitdate datechar="creation">undated</unitdate>
+        <container label="Mixed Materials" type="box">2</container>
+        <container type="Folder">4-7</container>
+      </did>
+      <dao audience="internal" actuate="onRequest" href="123456789" show="new" title="Notebook A" type="simple">
+        <daodesc><p>Notebook A</p></daodesc>
+      </dao>
+      <dao audience="internal" actuate="onRequest" href="/path/to/something" show="new" title="Notebook B" type="simple">
+        <daodesc><p>Notebook B</p></daodesc>
+      </dao>
+    </c>
+XML
+    end
+
+    it { is_expected.not_to have_link 'Notebook A' }
+    it { is_expected.not_to have_link 'Notebook B' }
+  end
 end
