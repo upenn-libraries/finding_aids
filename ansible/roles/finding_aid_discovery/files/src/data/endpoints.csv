@@ -1,9 +1,9 @@
 slug,type,tech_contact,public_contact,index_url,aspace_id
-UPENN_RBML, penn_archives_space, hmengel@pobox.upenn.edu, rbml@pobox.upenn.edu,, 4
-UPENN_CAJS, penn_archives_space, cajs@pobox.upenn.edu, cajs@pobox.upenn.edu,, 5
-UPENN_BIDDLE, penn_archives_space, loneil@law.upenn.edu, biddlearchives@law.upenn.edu,, 7
+UPENN_RBML, penn_archives_space, hmengel@pobox.upenn.edu, rbml@pobox.upenn.edu, https://upennstaff.as.atlas-sys.com, 4
+UPENN_CAJS, penn_archives_space, cajs@pobox.upenn.edu, cajs@pobox.upenn.edu, https://upennstaff.as.atlas-sys.com, 5
+UPENN_BIDDLE, penn_archives_space, loneil@law.upenn.edu, biddlearchives@law.upenn.edu, https://upennstaff.as.atlas-sys.com, 7
 UPENN_MUSEUM, index, archives@pennmuseum.org, archives@pennmuseum.org, https://www.penn.museum/collections/archives/finding-aids/,
-ISM, index, director@pacscl.org, library@phillyseaport.org, https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/seaport_museum/,
+ISM, index, director@pacscl.org, library@phillyseaport.org, http://archive.pacscl.org/phillyseaport/production/,
 DU, index, mgraham@drexelmed.edu, archives@drexel.edu, https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/drexel_university_archives/,
 DUCOM, index, mgraham@drexelmed.edu, archives@drexelmed.edu, https://drexel.edu/legacy-center/ead_harvest/ead_production/,
 HAVERFORD, index, shorowitz@haverford.edu, hc-special@haverford.edu, https://web.tricolib.brynmawr.edu/paarp/haverford/production/,
@@ -41,4 +41,4 @@ QuakMeet, index, ccauste1@swarthmore.edu, ccauste1@swarthmore.edu, https://web.t
 SJU, index, mgraham@drexelmed.edu, dlenert@sju.edu, https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/stjoseph_university/,
 FLP, index, NorrisLA@freelibrary.org, ErefRBD@freelibrary.org, https://libwww.freelibrary.org/ead/pacscl/production,
 UPENN_AAUP, index, hisbell@upenn.edu, hisbell@upenn.edu, https://archive.pennweitzman.org/ead/,
-UPENN_ARCHIVES, penn_archives_space, jmduffin@pobox.upenn.edu, uarc@lists.isc.upenn.edu,,16
+UPENN_ARCHIVES, penn_archives_space, jmduffin@pobox.upenn.edu, uarc@lists.isc.upenn.edu, https://upennstaff.as.atlas-sys.com, 16

@@ -6,27 +6,18 @@ class Endpoint < ApplicationRecord
 
   INDEX_TYPE = 'index'
   PENN_ASPACE_TYPE = 'penn_archives_space'
-  TYPES = [INDEX_TYPE, PENN_ASPACE_TYPE].freeze
+  SOURCE_TYPES = [INDEX_TYPE, PENN_ASPACE_TYPE].freeze
 
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[A-Za-z_]+\z/ }
-  validates :type, presence: true, inclusion: TYPES
-  validate :valid_harvest_config
+  validates :source_type, presence: true, inclusion: SOURCE_TYPES
+  validates :url, presence: true
+  validates :aspace_id, presence: true, if: :penn_aspace_type?
 
-  scope :index_type, -> { where('harvest_config @> ?', { type: 'index' }.to_json) }
-  scope :penn_aspace_type, -> { where('harvest_config @> ?', { type: 'penn_archives_space' }.to_json) }
-
-  # @return [String]
-  def url
-    harvest_config['url']
-  end
-
-  # @return [String]
-  def type
-    harvest_config['type']
-  end
+  scope :index_type, -> { where(source_type: 'index') }
+  scope :penn_aspace_type, -> { where(source_type: 'penn_archives_space') }
 
   def penn_aspace_type?
-    type == PENN_ASPACE_TYPE
+    source_type == PENN_ASPACE_TYPE
   end
 
   def last_harvest
@@ -35,9 +26,9 @@ class Endpoint < ApplicationRecord
 
   # Wrapper for last_harvest_results providing accessor and helper methods.
   class LastHarvest
-    PARTIAL  = 'partial'
+    PARTIAL = 'partial'
     COMPLETE = 'complete'
-    FAILED   = 'failed'
+    FAILED = 'failed'
     STATUSES = [PARTIAL, COMPLETE, FAILED].freeze
 
     attr_reader :results
@@ -134,7 +125,7 @@ class Endpoint < ApplicationRecord
 
   # Return Class for extracting XML File URLs from a source
   def extractor_class
-    "#{type.camelize}Extractor".constantize
+    "#{source_type.camelize}Extractor".constantize
   end
 
   # @return [Object]
@@ -142,37 +133,16 @@ class Endpoint < ApplicationRecord
     @parser ||= parser_class.new(self)
   end
 
-  # Return Class for parsing xml_urls for this Endpoint, using
-  # 'parser' value in harvest_config, if present
+  # Return Class for parsing xml_urls for this Endpoint
+  # @note This function was originally written to extract the "parser" value from the harvest_config with the idea
+  #   that we may need different parser classes for different records. The method will stay in place in case we
+  #   need this functionality down the road.
   def parser_class
-    if harvest_config.dig('parser', nil).present?
-      "#{harvest_config['parser']}Parser".constantize
-    else
-      EadParser
-    end
+    EadParser
   end
 
   def reload
     @last_harvest = nil # Resetting last_harvest so the object is re-instantiated with fresh data.
     super
-  end
-
-  private
-
-  def valid_harvest_config
-    case type
-    when INDEX_TYPE
-      validate_index_type
-    when PENN_ASPACE_TYPE
-      validate_penn_aspace_type
-    end
-  end
-
-  def validate_index_type
-    errors.add(:harvest_config, 'must have a URL provided') if harvest_config['url'].blank?
-  end
-
-  def validate_penn_aspace_type
-    errors.add(:harvest_config, 'must have a Repository ID provided') if harvest_config['repository_id'].blank?
   end
 end

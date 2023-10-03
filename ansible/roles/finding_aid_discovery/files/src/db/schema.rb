@@ -34,6 +34,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_145533) do
     t.jsonb "last_harvest_results", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "source_type"
+    t.text "url"
+    t.integer "aspace_id"
     t.index ["slug"], name: "index_endpoints_on_slug", unique: true
   end
 
