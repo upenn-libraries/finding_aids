@@ -133,6 +133,7 @@ rspec_app_test:
     - .rspec
   variables:
     CHROME_URL: "http://chrome:3000"
+    CONNECTION_TIMEOUT: -1
     CONFIG_LOCATION: "/finding_aid_discovery_configs"
     CORE_NAME: "finding-aid-discovery-core"
     DATABASE_NAME: "finding_aid_discovery"
@@ -140,11 +141,9 @@ rspec_app_test:
     DATABASE_USER: "rspec_test"
     FF_NETWORK_PER_BUILD: "true"
     FINDING_AID_DISCOVERY_URL: "findingaids.test.com"
-    KEEP_ALIVE: "true"
     POSTGRES_DB: "finding_aid_discovery"
     POSTGRES_PASSWORD: "rspec_test"
     POSTGRES_USER: "rspec_test"
-    PREBOOT_CHROME: "true"
     RAILS_ENV: "test"
     RAILS_SYSTEM_TESTING_SCREENSHOT_HTML: "1"
     SOLR_URL: "http://solr:8983/solr/finding-aid-discovery-core"
