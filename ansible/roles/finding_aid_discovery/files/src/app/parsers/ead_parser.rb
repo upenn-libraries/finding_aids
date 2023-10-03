@@ -106,30 +106,23 @@ class EadParser
     end
   end
 
+  # extract dates for display from unitdate and unitdatestructured elements
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
+  # https://www.loc.gov/ead/EAD3taglib/index.html#elem-unitdatestructured
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def display_date(doc)
-    doc.xpath('/ead/archdesc/did/unitdate').map do |node|
-      value = node.text.try(:strip)
-      if node.attr(:type).present?
-        value = value.downcase.gsub(/^bulk,?/, '').strip
-        "#{value} (#{node.attr(:type)})"
-      else
-        value
-      end
-    end
+    display_date_from_datesingle(doc) + display_date_from_daterange(doc) + dislay_date_from_unitdate(doc)
   end
 
+  # extract range of years from unitdate and unitdatestructured elements
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
+  # https://www.loc.gov/ead/EAD3taglib/index.html#elem-unitdatestructured
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def years(doc)
-    years = doc.xpath('/ead/archdesc/did/unitdate')&.sum([]) do |node|
-      val = node.attr('normal') || node.text
-      to_years_array val&.strip
-    end
-    (years || []).uniq.sort
+    years = years_from_unitdate(doc) + years_from_datesingle(doc) + years_from_daterange(doc)
+    years.uniq.sort
   end
 
   # extract years from val based on range and date finding regex YEARS_REGEX
@@ -376,5 +369,107 @@ class EadParser
       genre_form_ssim: genre_form(doc),
       names_ssim: names(doc)
     }
+  end
+
+  private
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def years_from_unitdate(doc)
+    years = doc.xpath('/ead/archdesc/did/unitdate')&.sum([]) do |node|
+      val = node.attr('normal') || node.text
+      to_years_array val&.strip
+    end
+    (years || []).uniq.sort
+  end
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def years_from_datesingle(doc)
+    years = doc.xpath('/ead/archdesc/did/unitdatestructured//datesingle')&.sum([]) do |node|
+      val = node.attr('standarddate') || node.text
+      to_years_array(val&.strip)
+    end
+    (years || []).uniq.sort
+  end
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def years_from_daterange(doc)
+    years = []
+
+    doc.xpath('/ead/archdesc/did/unitdatestructured//daterange')&.each do |node|
+      from = node.at_xpath('./fromdate').attr('standarddate') || node.text.try(:strip)
+      to = node.at_xpath('./todate').attr('standarddate') || node.text.try(:strip)
+
+      next if from.blank? && to.blank?
+
+      date_range = "#{from}-#{to}"
+      years.concat(to_years_array(date_range))
+    end
+
+    years.flatten.uniq.sort
+  end
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def dislay_date_from_unitdate(doc)
+    doc.xpath('/ead/archdesc/did/unitdate')&.filter_map do |node|
+      value = node.text.try(:strip)
+
+      next if value.blank?
+
+      type = date_type(node)
+      format_display_date_value(value, type)
+    end
+  end
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def display_date_from_datesingle(doc)
+    doc.xpath('ead/archdesc/did/unitdatestructured//datesingle')&.filter_map do |node|
+      value = node.attr('standarddate') || node.text.try(:strip)
+
+      next if value.blank?
+
+      type = date_type(node)
+      format_display_date_value(value, type)
+    end
+  end
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def display_date_from_daterange(doc)
+    doc.xpath('ead/archdesc/did/unitdatestructured//daterange')&.filter_map do |node|
+      from = node.at_xpath('./fromdate')&.text
+      to = node.at_xpath('./todate')&.text
+
+      next if from.blank? && to.blank?
+
+      value = "#{from}-#{to}".strip
+      type = date_type(node)
+      format_display_date_value(value, type)
+    end
+  end
+
+  # retrieve type attribute from unitdate or unitdatestructured element
+  # @param [Nokogiri::XML:Node] node
+  # @return [String,nil]
+  def date_type(node)
+    if node.name == 'unitdate'
+      node.attr(:type)
+    else
+      node.at_xpath('ancestor::unitdatestructured')&.attr(:type)
+    end
+  end
+
+  # @param [String] value
+  # @param [String,nil] type
+  # @return [String]
+  def format_display_date_value(value, type)
+    return value if type.blank?
+
+    formatted_value = value.downcase.gsub(/^bulk,?/, '').strip
+    "#{formatted_value} (#{type})"
   end
 end
