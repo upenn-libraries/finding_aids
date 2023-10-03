@@ -77,4 +77,55 @@ FactoryBot.define do
       </ead>'
     end
   end
+
+  trait :with_ead3_collection_data do
+    xml_ss do
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+      <ead xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd"
+           xmlns:ns2="http://www.w3.org/1999/xlink" xmlns="urn:isbn:1-931666-22-9"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <eadheader findaidstatus="Under_revision" repositoryencoding="iso15511" countryencoding="iso3166-1"
+                   dateencoding="iso8601" langencoding="iso639-2b">
+          <eadid url="https://www.test.com"></eadid>
+        </eadheader>
+        <archdesc level="collection">
+          <did></did>
+          <scopecontent id="ref177"></scopecontent>
+          <bioghist id="ref176"></bioghist>
+          <controlaccess></controlaccess>
+          <dsc>
+            <c id="ref1" level="series">
+              <did>
+                <unittitle>Test Collection</unittitle>
+                <langmaterial>
+                  <language langcode="eng"/>
+                </langmaterial>
+                <unitdatestructured>
+                  <dateset>
+                  <daterange>
+                  <fromdate>2000</fromdate>
+                  <todate>2010</todate>
+                  <datesingle>2005</datesingle>
+                  </daterange>
+                  </dateset>
+                </unitdatestructured>
+              </did>
+              <c id="ref2" level="file">
+                <did>
+                  <unittitle>Something Really Distinctive</unittitle>
+                  <langmaterial>
+                    <language langcode="eng"/>
+                  </langmaterial>
+                  <container type="Box">1</container>
+                  <unitdatestructured type="bulk">
+                    <datesingle>2001</datesingle>
+                  </unitdatestructured>
+                </did>
+              </c>
+            </c>
+          </dsc>
+        </archdesc>
+      </ead>'
+    end
+  end
 end

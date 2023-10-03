@@ -51,4 +51,22 @@ describe 'Requests form' do
       end
     end
   end
+
+  context 'with collection encoded with supported ead3 tags' do
+    let(:document_hash) { attributes_for(:solr_document, :requestable, :with_ead3_collection_data) }
+
+    it 'includes the date in the collection title' do
+      expect(page).to have_text('Test Collection, 2000-2010.')
+    end
+
+    it 'prefers <daterange> over <singledate>' do
+      expect(page).not_to have_text('2005')
+    end
+
+    it 'formats bulk dates correctly' do
+      within '#collection-1-1-title' do
+        expect(page).to have_text('Something Really Distinctive, (2001).')
+      end
+    end
+  end
 end
