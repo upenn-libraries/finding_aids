@@ -45,6 +45,7 @@ services:
       - honeybadger_api_key
       - penn_aspace_api_password
       - penn_aspace_api_username
+      - rails_master_key
       - redis_sidekiq_password
       - slack_notification_email_address
 networks:
