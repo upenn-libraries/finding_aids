@@ -268,5 +268,18 @@ describe EadParser do
         expect(hash[:online_content_bsi]).to eq 'T'
       end
     end
+
+    context 'when parsing unitdatestructured' do
+      let(:xml) { file_fixture('ead/ead3.xml') }
+
+      it 'parses expected display_date' do
+        expect(hash[:display_date_ssim]).to contain_exactly('1936 (bulk)', '1789-1996 (inclusive)',
+                                                            '1900-1981 (bulk)')
+      end
+
+      it 'parses expected years' do
+        expect(hash[:years_iim]).to match_array 1789..1996
+      end
+    end
   end
 end
