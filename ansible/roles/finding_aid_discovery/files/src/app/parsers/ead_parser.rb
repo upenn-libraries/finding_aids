@@ -418,16 +418,14 @@ class EadParser
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def years_from_daterange(doc)
-    years = []
-
-    doc.xpath('/ead/archdesc/did/unitdatestructured//daterange')&.each do |node|
-      from = node.at_xpath('./fromdate').attr('standarddate') || node.text.try(:strip)
-      to = node.at_xpath('./todate').attr('standarddate') || node.text.try(:strip)
+    years = doc.xpath('/ead/archdesc/did/unitdatestructured//daterange')&.filter_map do |node|
+      from = node.at_xpath('./fromdate').attr('standarddate') || node.at_xpath('./fromdate').text.try(:strip)
+      to = node.at_xpath('./todate').attr('standarddate') ||  node.at_xpath('./todate').text.try(:strip)
 
       next if from.blank? && to.blank?
 
       date_range = "#{from}-#{to}"
-      years.concat(to_years_array(date_range))
+      to_years_array(date_range)
     end
 
     years.flatten.uniq.sort
