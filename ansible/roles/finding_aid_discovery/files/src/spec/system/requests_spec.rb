@@ -68,5 +68,13 @@ describe 'Requests form' do
         expect(page).to have_text('Something Really Distinctive, (2001).')
       end
     end
+
+    it 'appends the structured extent to the title' do
+      expect(page).to have_text('Test Collection, 2000-2010. 143 electronic files.')
+    end
+
+    it 'only appends the first structured extent to the title' do
+      expect(page).not_to have_text('6 compact discs')
+    end
   end
 end

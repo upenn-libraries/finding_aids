@@ -109,6 +109,16 @@ FactoryBot.define do
                   </daterange>
                   </dateset>
                 </unitdatestructured>
+                <physdescset>
+                <physdescstructured coverage="part" physdescstructuredtype="materialtype">
+                  <quantity>143</quantity>
+                  <unittype>electronic files</unittype>
+                  </physdescstructured>
+                <physdescstructured coverage="part" physdescstructuredtype="materialtype">
+                  <quantity>6</quantity>
+                  <unittype>compact discs</unittype>
+                </physdescstructured>
+                </physdescset>
               </did>
               <c id="ref2" level="file">
                 <did>
