@@ -65,7 +65,7 @@
       <unitdatestructured type="inclusive"> <!-- Optional EAD3 element, added to comply with DACS requirement for 'Date Element' -->
         <daterange>
           <fromdate standarddate="1789">1789</fromdate>
-          <todate standarddate="1996">1996</todate>
+          <todate standarddate="1996">Ninety-Six</todate>
         </daterange>
       </unitdatestructured>
       <unitdatestructured type="bulk">
@@ -76,7 +76,7 @@
       </unitdatestructured>
       <unitdatestructured type="bulk">
         <dateset>
-          <datesingle standarddate="1936">2000</datesingle>
+          <datesingle standarddate="1788">Seventeen Eighty-Eight</datesingle>
         </dateset>
       </unitdatestructured>
       <physdescset> <!-- Optional EAD3 element, added to comply with DACS requirement for 'Extent Element' -->
