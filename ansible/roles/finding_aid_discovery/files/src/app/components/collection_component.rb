@@ -212,7 +212,7 @@ class CollectionComponent < ViewComponent::Base
 
   # @return [String]
   def extent_structured
-    structured_node = node.at_xpath('/ead/archdesc/did//physdescstructured')
+    structured_node = node.at_xpath('did//physdescstructured')
 
     return '' unless structured_node
 
