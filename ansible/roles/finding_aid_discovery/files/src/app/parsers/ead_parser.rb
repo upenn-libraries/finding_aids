@@ -92,33 +92,44 @@ class EadParser
   end
 
   # TODO: extent nested in physdesc is EAD2002 spec, but invalid EAD v3 spec, do we need to accommodate?
-  # extract extent of the material described, preferring the use of ead2002 extent for now
+  # extract extent of the material described, supports EAD v3 structured spec if unstructured extent is not present
   # see: https://eadiva.com/physdesc/
   # https://www.loc.gov/ead/tglib/elements/extent.html
   # https://www.loc.gov/ead/EAD3taglib/index.html#elem-physdescstructured
   # @param [Nokogiri::XML::Document] doc
   # @return [Array<String>]
   def extent(doc)
-    extent_unstructured(doc) || extent_structured(doc)
+    extent = extent_unstructured(doc)
+
+    return extent if extent.present?
+
+    extent_structured(doc)
   end
 
-  # extract dates for display from unitdate and unitdatestructured elements
+  # extract dates for display, supports EAD v3 structured dates if unstructured dates are not present
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
   # https://www.loc.gov/ead/EAD3taglib/index.html#elem-unitdatestructured
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def display_date(doc)
-    display_date_from_datesingle(doc) + display_date_from_daterange(doc) + dislay_date_from_unitdate(doc)
+    display_date = display_date_unstructured(doc)
+
+    return display_date if display_date.present?
+
+    display_date_structured(doc)
   end
 
-  # extract range of years from unitdate and unitdatestructured elements
+  # extract range of years, supports EAD v3 structured dates if unstructured dates are not present
   # https://www.loc.gov/ead/tglib/elements/unitdate.html
   # https://www.loc.gov/ead/EAD3taglib/index.html#elem-unitdatestructured
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def years(doc)
-    years = years_from_unitdate(doc) + years_from_datesingle(doc) + years_from_daterange(doc)
-    years.uniq.sort
+    years = years_unstructured(doc)
+
+    return years if years.present?
+
+    years_structured(doc)
   end
 
   # extract years from val based on range and date finding regex YEARS_REGEX
@@ -383,7 +394,7 @@ class EadParser
     end
   end
 
-  # extract quantity and unit type values from ead3 physdescstructured element
+  # extract quantity and unit type values from EAD v3 physdescstructured element
   # https://www.loc.gov/ead/EAD3taglib/index.html#elem-physdescstructured
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
@@ -395,9 +406,11 @@ class EadParser
     end
   end
 
+  # extract ordered range of years from unstructured date elements
+  # https://www.loc.gov/ead/tglib/elements/unitdate.html
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
-  def years_from_unitdate(doc)
+  def years_unstructured(doc)
     years = doc.xpath('/ead/archdesc/did/unitdate')&.sum([]) do |node|
       val = node.attr('normal') || node.text
       to_years_array val&.strip
@@ -405,6 +418,17 @@ class EadParser
     (years || []).uniq.sort
   end
 
+  # extract ordered range of years from EAD v3 structured date elements
+  # https://www.loc.gov/ead/EAD3taglib/index.html#elem-unitdatestructured
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def years_structured(doc)
+    years = years_from_datesingle(doc) + years_from_daterange(doc)
+    years.uniq.sort
+  end
+
+  #  extract range from EAD v3 datesingle element
+  #  https://www.loc.gov/ead/EAD3taglib/index.html#elem-datesingle
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def years_from_datesingle(doc)
@@ -415,6 +439,8 @@ class EadParser
     (years || []).uniq.sort
   end
 
+  #  extract range of years from EAD v3 daterange element
+  #  https://www.loc.gov/ead/EAD3taglib/index.html#elem-daterange
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def years_from_daterange(doc)
@@ -431,9 +457,11 @@ class EadParser
     years.flatten.uniq.sort
   end
 
+  # https://www.loc.gov/ead/tglib/elements/unitdate.html
+  # extract unstructured unitdate element for display
   # @param [Nokogiri::XML::Document] doc
-  # @return [Array]
-  def dislay_date_from_unitdate(doc)
+  # @return [Array]ead unitdate
+  def display_date_unstructured(doc)
     doc.xpath('/ead/archdesc/did/unitdate')&.filter_map do |node|
       value = node.text.try(:strip)
 
@@ -444,6 +472,14 @@ class EadParser
     end
   end
 
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def display_date_structured(doc)
+    display_date_from_daterange(doc) + display_date_from_datesingle(doc)
+  end
+
+  # extract EAD v3 datesingle element for display
+  # https://www.loc.gov/ead/EAD3taglib/index.html#elem-datesingle
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def display_date_from_datesingle(doc)
@@ -457,6 +493,8 @@ class EadParser
     end
   end
 
+  # extract EAD v3 daterange element for display
+  # https://www.loc.gov/ead/EAD3taglib/index.html#elem-daterange
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
   def display_date_from_daterange(doc)
@@ -472,7 +510,7 @@ class EadParser
     end
   end
 
-  # retrieve type attribute from unitdate or unitdatestructured element
+  # retrieve type attribute from structured and unstructured date elements
   # @param [Nokogiri::XML:Node] node
   # @return [String,nil]
   def date_type(node)
