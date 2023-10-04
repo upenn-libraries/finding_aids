@@ -5,11 +5,7 @@ require 'rails_helper'
 describe RequestsHelper do
   describe '.containers_from_params' do
     let(:params) { ActionController::Parameters.new(params_hash) }
-    let(:result) do
-      obj = Object.new
-      obj.extend(described_class)
-      helper.containers_from_params(params)
-    end
+    let(:result) { helper.containers_from_params(params) }
 
     context 'with one container' do
       let(:params_hash) do
