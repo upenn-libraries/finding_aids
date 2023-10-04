@@ -9,7 +9,6 @@ module RequestsHelper
     return [] if params[:c].blank?
 
     params[:c].to_unsafe_h.map do |k, v|
-      # byebug
       parts = k.split('_')
       barcode = parts.count == 3 ? parts[2] : nil
       volume = parts[0..1].join(' ')
