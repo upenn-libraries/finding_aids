@@ -201,7 +201,9 @@ class CollectionComponent < ViewComponent::Base
 
   # @return [String]
   def extent
-    extent_unstructured || extent_structured
+    return extent_unstructured if extent_unstructured.present?
+
+    extent_structured
   end
 
   # @return [String]
