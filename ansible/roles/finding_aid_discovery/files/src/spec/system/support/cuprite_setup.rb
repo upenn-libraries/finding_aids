@@ -78,7 +78,7 @@ Capybara.register_driver(:better_cuprite) do |app|
       inspector: true,
       js_errors: true,
       logger: FerrumLogger.new,
-      timeout: 10
+      timeout: 30
     }.merge(remote_options)
   )
 end
