@@ -139,11 +139,15 @@ class CollectionComponent < ViewComponent::Base
   # extract date, preferring unitdate over unitdatestructured
   # @return [String]
   def date
-    date_unstructured || date_structured
+    date = date_unstructured
+
+    return date if date.present?
+
+    [date_structured].compact_blank.join
   end
 
   # extract bulk and non bulk dates from unitdate element
-  # @return [String]
+  # @return [String, nil]
   def date_unstructured
     return if node.xpath('did/unitdate').blank?
 
@@ -156,7 +160,7 @@ class CollectionComponent < ViewComponent::Base
   end
 
   # extract bulk and non bulk dates from ead3 unitdatestructured element
-  # @return [String]
+  # @return [String, nil]
   def date_structured
     return if node.xpath('did/unitdatestructured').blank?
 
