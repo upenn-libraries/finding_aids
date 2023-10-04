@@ -92,18 +92,14 @@ class EadParser
   end
 
   # TODO: extent nested in physdesc is EAD2002 spec, but invalid EAD v3 spec, do we need to accommodate?
+  # extract extent of the material described, preferring the use of ead2002 extent for now
   # see: https://eadiva.com/physdesc/
   # https://www.loc.gov/ead/tglib/elements/extent.html
+  # https://www.loc.gov/ead/EAD3taglib/index.html#elem-physdescstructured
   # @param [Nokogiri::XML::Document] doc
   # @return [Array<String>]
   def extent(doc)
-    doc.xpath('/ead/archdesc/did/physdesc').filter_map do |node|
-      raw1 = node.at_xpath('./extent[1]').try :text
-      raw2 = node.at_xpath('./extent[2]').try :text
-      next unless raw1 # handle physdesc with no extent
-
-      raw2.blank? ? raw1.downcase : "#{raw1} (#{raw2})".downcase
-    end
+    extent_unstructured(doc) || extent_structured(doc)
   end
 
   # extract dates for display from unitdate and unitdatestructured elements
@@ -372,6 +368,32 @@ class EadParser
   end
 
   private
+
+  # see: https://eadiva.com/physdesc/
+  # https://www.loc.gov/ead/tglib/elements/extent.html
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array<String>]
+  def extent_unstructured(doc)
+    doc.xpath('/ead/archdesc/did/physdesc').filter_map do |node|
+      raw1 = node.at_xpath('./extent[1]').try :text
+      raw2 = node.at_xpath('./extent[2]').try :text
+      next unless raw1 # handle physdesc with no extent
+
+      raw2.blank? ? raw1.downcase : "#{raw1} (#{raw2})".downcase
+    end
+  end
+
+  # extract quantity and unit type values from ead3 physdescstructured element
+  # https://www.loc.gov/ead/EAD3taglib/index.html#elem-physdescstructured
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array]
+  def extent_structured(doc)
+    doc.xpath('/ead/archdesc/did//physdescstructured')&.filter_map do |node|
+      quantity = node.at_xpath('./quantity').try(:text)
+      unit_type = node.at_xpath('./unittype').try(:text)
+      "#{quantity} #{unit_type}".downcase
+    end
+  end
 
   # @param [Nokogiri::XML::Document] doc
   # @return [Array]
