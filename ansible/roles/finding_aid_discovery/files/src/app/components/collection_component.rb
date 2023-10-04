@@ -199,8 +199,29 @@ class CollectionComponent < ViewComponent::Base
     "#{from_date}-#{to_date}"
   end
 
+  # @return [String]
   def extent
+    extent_unstructured || extent_structured
+  end
+
+  # @return [String]
+  def extent_unstructured
     extent = node.at_xpath('did/physdesc/extent').try(:text)
     extent ? " #{extent.gsub(/(\d+)\.0/, '\1')}." : ''
+  end
+
+  # @return [String]
+  def extent_structured
+    structured_node = node.at_xpath('/ead/archdesc/did//physdescstructured')
+
+    return '' unless structured_node
+
+    quantity = structured_node.at_xpath('./quantity')&.text
+    unit_type = structured_node.at_xpath('./unittype')&.text
+
+    return '' unless quantity && unit_type
+
+    extent = [quantity, unit_type].join(' ').downcase
+    " #{extent.gsub(/(\d+)\.0/, '\1')}."
   end
 end
