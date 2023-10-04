@@ -499,8 +499,8 @@ class EadParser
   # @return [Array]
   def display_date_from_daterange(doc)
     doc.xpath('ead/archdesc/did/unitdatestructured//daterange')&.filter_map do |node|
-      from = node.at_xpath('./fromdate')&.text
-      to = node.at_xpath('./todate')&.text
+      from = node.at_xpath('./fromdate').attr('standarddate') || node.at_xpath('./fromdate').text.try(:strip)
+      to = node.at_xpath('./todate').attr('standarddate') ||  node.at_xpath('./todate').text.try(:strip)
 
       next if from.blank? && to.blank?
 
