@@ -184,7 +184,7 @@ class CollectionComponent < ViewComponent::Base
   end
 
   # extract range from ead3 daterange element
-  # @param [[Nokogiri::XML::Node] node
+  # @param [[Nokogiri::XML::Node] node that's an ancestor to a daterange element
   # @return [String,nil]
   def date_range(node)
     date_range = node.at_xpath('.//daterange')
