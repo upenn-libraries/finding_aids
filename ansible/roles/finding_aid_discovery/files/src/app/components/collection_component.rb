@@ -73,7 +73,11 @@ class CollectionComponent < ViewComponent::Base
   # encode all container information in a way that is HTML form safe and can be extracted after submission
   def container_info_for_checkbox
     containers = container_info.map do |container_element|
-      "[#{container_element[:type]}_#{container_element[:text]}]"
+      if container_element[:barcode].present?
+        "[#{container_element[:type]}_#{container_element[:text]}_#{container_element[:barcode]}]"
+      else
+        "[#{container_element[:type]}_#{container_element[:text]}]"
+      end
     end
     containers.join
   end
@@ -114,7 +118,7 @@ class CollectionComponent < ViewComponent::Base
   def compute_container_info
     node.xpath('did/container').map do |container|
       type = container.attr(:type) || container.attr(:localtype)
-      { type: type.try(:titlecase), text: container.try(:text) }
+      { type: type.try(:titlecase), text: container.try(:text), barcode: barcode_from(container) }
     end
   end
 
@@ -150,5 +154,13 @@ class CollectionComponent < ViewComponent::Base
   def extent
     extent = node.at_xpath('did/physdesc/extent').try(:text)
     extent ? " #{extent.gsub(/(\d+)\.0/, '\1')}." : ''
+  end
+
+  # @return [nil, String]
+  def barcode_from(container)
+    label = container.attr(:label)
+    return if label.blank?
+
+    label.match(/\[(.*?)\]/).try(:[], 1)
   end
 end

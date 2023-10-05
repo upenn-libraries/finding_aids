@@ -17,7 +17,8 @@
   <%= form.static_control :title, value: params[:title], label: t('requests.form.fields.title') %>
   <%= form.form_group :containers_requested, label: { text: t('requests.form.fields.containers') } do %>
     <% containers_from_params(params).each do |c| %>
-      <%= form.static_control 'item[]', value: c, label: t('requests.form.fields.container') %>
+      <%= form.static_control 'item[]', value: c[:value], label: t('requests.form.fields.container') %>
+      <%= form.hidden_field 'item_barcode[]', value: c[:barcode] %>
     <% end %>
   <% end  %>
   <%= form.text_area :special_request, label: t('requests.form.fields.special_request') %>

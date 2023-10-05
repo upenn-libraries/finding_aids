@@ -62,13 +62,22 @@ FactoryBot.define do
                 </langmaterial>
                 <unitdate normal="1900/1950" type="inclusive">1900-1950</unitdate>
               </did>
-              <c id="ref2" level="file">
+              <c id="ref1" level="file">
                 <did>
                   <unittitle>Something Really Distinctive</unittitle>
                   <langmaterial>
                     <language langcode="eng"/>
                   </langmaterial>
-                  <container type="Box">1</container>
+                  <container type="Box" label="Mixed Materials [111111111]">1</container>
+                </did>
+              </c>
+              <c id="ref2" level="file">
+                <did>
+                  <unittitle>Another Really Distinctive Thing</unittitle>
+                  <langmaterial>
+                    <language langcode="eng"/>
+                  </langmaterial>
+                  <container type="Box" label="Mixed Materials [222222222]">2</container>
                 </did>
               </c>
             </c>

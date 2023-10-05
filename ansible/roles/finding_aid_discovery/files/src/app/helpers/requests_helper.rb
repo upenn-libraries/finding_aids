@@ -8,15 +8,14 @@ module RequestsHelper
   def containers_from_params(params)
     return [] if params[:c].blank?
 
-    containers = params[:c].to_unsafe_h.map do |k, v|
-      volume = k.tr('_', ' ')
-      if v == '1' # if v is 1 that is the input value and indicates the presence of only 1 container
-        volume
-      else
-        "#{volume}: #{issues_from_param(v)}"
-      end
+    params[:c].to_unsafe_h.map do |k, v|
+      parts = k.split('_')
+      barcode = parts.count == 3 ? parts[2] : nil
+      volume = parts[0..1].join(' ')
+      # if v is 1 that is the input value and indicates the presence of only 1 container
+      value = v == '1' ? volume : "#{volume}: #{issues_from_param(v)}"
+      { value: value, barcode: barcode }
     end
-    Array.wrap(containers)
   end
 
   # Turn a hash of requests from a volume into a human-friendly string

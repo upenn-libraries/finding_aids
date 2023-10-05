@@ -38,6 +38,8 @@ class AeonRequest
   def build_items
     @params['item'].map.with_index do |item, i|
       volume, issue = item.split(':').map(&:strip)
+      barcode = @params['item_barcode'][i]
+      volume += " [#{barcode}]" if barcode.present?
       container_info = { volume: volume, issue: issue }
       Item.new i, container_info, self
     end
@@ -117,9 +119,9 @@ class AeonRequest
 
   # Represent a single Item (checked box in the site) in the context of the request
   class Item
+    # @param [String] number
     # @param [Hash] container
     # @param [AeonRequest] request
-    # @param [String] number
     def initialize(number, container, request)
       @number = number
       @container = container
