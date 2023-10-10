@@ -53,6 +53,8 @@ namespace :tools do
       User-agent: *
       Disallow: /admin
       Disallow: /records/facet/
+      Disallow: /records*f%5B
+      Disallow: /records*f[
       Sitemap: https://findingaids.library.upenn.edu/sitemap/sitemap.xml.gz
     PROD
 
