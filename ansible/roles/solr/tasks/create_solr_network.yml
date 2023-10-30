@@ -1,5 +1,0 @@
----
-- name: Create the solr network
-  docker_network:
-    driver: overlay
-    name: solr
