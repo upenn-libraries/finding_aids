@@ -1,7 +1,8 @@
 ---
 - name: "Install python3 and deps"
   hosts: all
-  become: yes
+  become: true
+  gather_facts: true
   vars:
     ansible_python_interpreter: "/usr/bin/python2"
   pre_tasks:
@@ -16,13 +17,14 @@
 
 - name: "Provision Docker Swarm Cluster"
   hosts: all
-  become: yes
+  become: true
+  gather_facts: true
   roles:
     - { role: atosatto.docker-swarm }
 
 - name: "Deploy application"
   hosts: docker_swarm_manager
-  become: yes
+  become: true
   gather_facts: true
   pre_tasks:
     - name: Install deps
@@ -39,9 +41,13 @@
     - import_role:
         name: postgres
       tags: postgres
-    - name: Create solr network
-      include_tasks: "roles/solr/tasks/create_solr_network.yml"
-      tags: solr
+    - import_role:
+        name: zookeeper
+      tags: zookeeper
+    - import_role:
+        name: zoonavigator
+      tags: zoonavigator
+      when: not is_development | default (false, true)
     - import_role:
         name: solr
       tags: solr
@@ -68,7 +74,7 @@
         state: absent
     - name: Prune images that are older than 2+ hours
       docker_prune:
-        images: yes
+        images: true
         images_filters:
           dangling: false
           until: 2h
