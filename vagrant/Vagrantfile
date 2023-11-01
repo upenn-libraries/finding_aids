@@ -47,7 +47,8 @@ Vagrant.configure("2") do |config|
   # Add domains to hosts file
   config.hostsupdater.aliases = {
     "10.10.2.206" => [
-      "finding-aid-discovery-dev.library.upenn.edu"
+      "finding-aid-discovery-dev.library.upenn.edu",
+      "finding-aid-discovery-dev.library.upenn.int"
     ]
   }
 
@@ -93,7 +94,7 @@ Vagrant.configure("2") do |config|
           }
           ansible.install_mode = "pip3"
           ansible.inventory_path = "/finding_aid_discovery/ansible/inventories/vagrant"
-          ansible.galaxy_role_file = "/finding_aid_discovery/ansible/roles/requirements.dev.yml"
+          ansible.galaxy_role_file = "/finding_aid_discovery/ansible/roles/requirements.yml"
           ansible.galaxy_roles_path = "/finding_aid_discovery/ansible/roles"
           ansible.galaxy_command = "ansible-galaxy install -r %{role_file} --force"
           ansible.limit = "all"

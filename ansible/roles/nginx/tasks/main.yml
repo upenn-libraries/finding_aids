@@ -1,14 +1,4 @@
 ---
-- name: Create nginx dir
-  file:
-    path: "{{ project_root ~ '/nginx' }}"
-    state: directory
-
-- name: Copy docker-compose file
-  copy:
-    src: "../files/docker-compose.yml"
-    dest: "{{ project_root ~ '/nginx/' }}"
-
 - name: Create template configs
   docker_config:
     name: "{{ 'nginx_' ~ item.key ~ '_v' ~ item.value.version }}"
@@ -23,19 +13,12 @@
   set_fact:
     application_urls: "{{ nginx.urls | map('regex_replace', '^(.*)$', 'Host(`\\1`)') | join(' || ') }}"
 
-- name: Deploy Nginx development environment
-  docker_stack:
+# Deploy nginx
+- name: Deploy nginx
+  community.docker.docker_stack:
     name: "fad"
     compose:
-      - "{{ project_root ~ '/nginx/docker-compose.yml' }}"
+      - "{{ lookup('template', 'docker-compose.yml.j2' ) | from_yaml }}"
     state: present
   changed_when: false
-  environment:
-    NGINX_DEFAULT_CONF: "{{ 'nginx_default_conf_v' ~ nginx.versioned_configs.default_conf.version }}"
-    NGINX_CONF: "{{ 'nginx_nginx_conf_v' ~ nginx.versioned_configs.nginx_conf.version }}"
-    NGINX_IMAGE_NAME: "{{ nginx.image.name }}"
-    NGINX_IMAGE_TAG: "{{ nginx.image.tag }}"
-    NGINX_PORT: "{{ nginx.port }}"
-    NGINX_URLS: "{{ application_urls }}"
-    REPLICAS: "{{ nginx.replicas }}"
-  no_log: true
+  no_log: false
