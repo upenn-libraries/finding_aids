@@ -20,7 +20,7 @@ services:
       RAILS_ENV: ${FINDING_AID_DISCOVERY_RAILS_ENV}
       REDIS_SIDEKIQ_USER: ${REDIS_SIDEKIQ_USER}
       REDIS_URL: "redis://redis:${REDIS_PORT}/0"
-      SOLR_URL: "http://solr:8983/solr/${SOLR_CORE_NAME}"
+      SOLR_URL: "${FINDING_AID_DISCOVERY_SOLR_URL}"
     healthcheck:
       test:
         [
@@ -39,7 +39,7 @@ services:
     networks:
       - database
       - redis
-      - solr
+      - traefik
     secrets:
       - database_password
       - honeybadger_api_key
@@ -48,12 +48,13 @@ services:
       - rails_master_key
       - redis_sidekiq_password
       - slack_notification_email_address
+
 networks:
   database:
     external: true
   redis:
     external: true
-  solr:
+  traefik:
     external: true
 
 secrets:

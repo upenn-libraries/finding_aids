@@ -35,11 +35,11 @@
     FINDING_AID_DISCOVERY_RAILS_MASTER_KEY: "{{ 'finding_aid_discovery_rails_master_key_v' ~ finding_aid_discovery.versioned_secrets.rails_master_key.version }}"
     FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
     FINDING_AID_DISCOVERY_SLACK_NOTIFICATION_EMAIL_ADDRESS: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery.versioned_secrets.slack_notification_email_address.version }}"
+    FINDING_AID_DISCOVERY_SOLR_URL: "{{ finding_aid_discovery.solr_url }}"
     REDIS_SIDEKIQ_USER: "sidekiq"
     REDIS_SIDEKIQ_PASSWORD: "{{ 'redis_sidekiq_password_v' ~ redis.versioned_configs.users_acl.users | selectattr('name', 'equalto', 'sidekiq') | map(attribute='version')  | join('') }}"
     REDIS_PORT: "{{ redis.port }}"
     REPLICAS: "{{ sidekiq.replicas }}"
-    SOLR_CORE_NAME: "{{ solr.core_name }}"
   no_log: true
   when: is_development | default (false) == true
   tags: dev_environment
@@ -75,10 +75,10 @@
     FINDING_AID_DISCOVERY_RAILS_MASTER_KEY: "{{ 'finding_aid_discovery_rails_master_key_v' ~ finding_aid_discovery.versioned_secrets.rails_master_key.version }}"
     FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
     FINDING_AID_DISCOVERY_SLACK_NOTIFICATION_EMAIL_ADDRESS: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery.versioned_secrets.slack_notification_email_address.version }}"
+    FINDING_AID_DISCOVERY_SOLR_URL: "{{ finding_aid_discovery.solr_url }}"
     REDIS_SIDEKIQ_USER: "sidekiq"
     REDIS_SIDEKIQ_PASSWORD: "{{ 'redis_sidekiq_password_v' ~ redis.versioned_configs.users_acl.users | selectattr('name', 'equalto', 'sidekiq') | map(attribute='version')  | join('') }}"
     REDIS_PORT: "{{ redis.port }}"
     REPLICAS: "{{ sidekiq.replicas }}"
-    SOLR_CORE_NAME: "{{ solr.core_name }}"
   no_log: true
   when: not is_development | default (false) == true
