@@ -151,7 +151,8 @@ title = "gitlab gitleaks config"
             '''(?i)(Vagrantfile)'''
         ]
         paths = [
-            '''ansible/vault_passwd-client.py'''
+            '''ansible/vault_passwd-client.py''',
+            '''ansible/roles/finding_aid_discovery/files/src/config/initializers/devise.rb'''
         ]
         regexes = [
             '''\:\s+\"\{\{''',
