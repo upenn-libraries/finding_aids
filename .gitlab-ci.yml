@@ -109,8 +109,6 @@ rspec_app_test:
   variables:
     CHROME_URL: "http://chrome:3000"
     CONNECTION_TIMEOUT: -1
-    CONFIG_LOCATION: "/finding_aid_discovery_configs"
-    CORE_NAME: "finding-aid-discovery-core"
     DATABASE_NAME: "finding_aid_discovery"
     DATABASE_PASSWORD: "rspec_test"
     DATABASE_USER: "rspec_test"
@@ -123,12 +121,14 @@ rspec_app_test:
     RAILS_SYSTEM_TESTING_SCREENSHOT_HTML: "1"
     SOLR_URL: "http://solr:8983/solr/finding-aid-discovery-test"
   script:
-    - apt-get update && apt-get -y install zip
+    - apk add --no-cache zip
     - cd ${CI_PROJECT_DIR}/ansible/roles/finding_aid_discovery/files/src/
     - bundle add rspec_junit_formatter
     - bundle exec rake db:migrate
     - >
-      for ((i = 0; i <= 9; i += 1)); do
+      i=0
+      while [ $i -le 9 ]; do
+        i=$((i+1))
         curl --silent "http://solr:8983/api/" "-H" "'Content-type:application/json'" && break
         echo "Waiting for solr api to be ready"
         sleep "30s"
