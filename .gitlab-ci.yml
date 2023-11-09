@@ -125,10 +125,9 @@ rspec_app_test:
     - cd ${CI_PROJECT_DIR}/ansible/roles/finding_aid_discovery/files/src/
     - bundle add rspec_junit_formatter
     - bundle exec rake db:migrate
+    - i=0
     - >
-      i=0
-      while [ $i -le 9 ]
-      do
+      while [ $i -le 9 ]; do
         i=$((i+1))
         curl --silent "http://solr:8983/api/" "-H" "'Content-type:application/json'" && break
         echo "Waiting for solr api to be ready"
