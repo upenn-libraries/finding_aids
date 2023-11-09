@@ -29,6 +29,9 @@ stages:
   - remove_tmp_registry
   - deploy
 
+variables:
+  CI_DEBUG_SERVICES: "true"
+
 # -- Start - build and push base image
 build_and_push_base_app_image:
   stage: build_and_push:tmp_base_image
