@@ -124,12 +124,13 @@ rspec_app_test:
     POSTGRES_USER: "rspec_test"
     RAILS_ENV: "test"
     RAILS_SYSTEM_TESTING_SCREENSHOT_HTML: "1"
-    SOLR_URL: "http://solr:8983/solr/finding-aid-discovery-test"
+    SOLR_URL: "http://admin:password@solr:8983/solr/finding-aid-discovery-test"
   script:
     - apk add --no-cache zip
     - cd ${CI_PROJECT_DIR}/ansible/roles/finding_aid_discovery/files/src/
     - bundle add rspec_junit_formatter
     - bundle exec rake db:migrate
+    - sleep 600
     - i=0
     - >
       while [ $i -le 9 ]; do
