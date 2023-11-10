@@ -100,6 +100,8 @@ rspec_app_test:
     - name: bitnami/solr:9.3.0
       alias: solr
       variables:
+        SOLR_ADMIN_USERNAME: "admin"
+        SOLR_ADMIN_PASSWORD: "password"
         SOLR_CLOUD_BOOTSTRAP: "yes"
         SOLR_ENABLE_AUTHENTICATION: "yes"
         SOLR_HOST: "solr"
@@ -137,8 +139,8 @@ rspec_app_test:
         sleep "30s"
       done
     - (cd ./solr/conf && zip -r - *) > configset.zip
-    - curl -X POST --user "admin:Bitnami" --header "Content-Type:application/octet-stream" --data-binary @configset.zip "http://solr:8983/solr/admin/configs?action=UPLOAD&name=finding-aid-discovery"
-    - curl -v --user "admin:Bitnami" "http://solr:8983/solr/admin/collections?action=CREATE&name=finding-aid-discovery-test&collection.configName=finding-aid-discovery&numShards=1"
+    - curl -X POST --user "admin:password" --header "Content-Type:application/octet-stream" --data-binary @configset.zip "http://solr:8983/solr/admin/configs?action=UPLOAD&name=finding-aid-discovery"
+    - curl -v --user "admin:password" "http://solr:8983/solr/admin/collections?action=CREATE&name=finding-aid-discovery-test&collection.configName=finding-aid-discovery&numShards=1"
     - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
   needs:
     - amend_tmp_base_dev_images
