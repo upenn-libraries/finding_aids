@@ -102,7 +102,9 @@ rspec_app_test:
       variables:
         SOLR_ADMIN_USERNAME: "admin"
         SOLR_ADMIN_PASSWORD: "password"
+        SOLR_COLLECTION: "finding-aid-discovery-test"
         SOLR_CLOUD_BOOTSTRAP: "yes"
+        SOLR_CORE_CONF_DIR: "/builds/${CI_PROJECT_PATH}/ansible/roles/finding_aid_discovery/files/src/solr/conf/"
         SOLR_ENABLE_AUTHENTICATION: "yes"
         SOLR_HOST: "solr"
         SOLR_JAVA_MEM: "-Xms4g -Xmx4g"
