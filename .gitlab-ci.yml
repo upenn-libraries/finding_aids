@@ -163,7 +163,6 @@ rspec_app_test:
     - exists:
         - ansible/roles/finding_aid_discovery/files/src/spec/**.rb
         - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
-  allow_failure: true
   tags:
     - build
 
@@ -240,7 +239,6 @@ trivy_app_container_scanning:
     CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}
   tags:
     - build
-  allow_failure: true
 
 # -- Start - Copy app docker images
 copy_app_docker_images:
