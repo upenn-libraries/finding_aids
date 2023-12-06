@@ -24,7 +24,7 @@ module EndpointsHelper
   end
 
   # return a URL to a record in ASpace based on environment
-  # see: https://gitlab.library.upenn.edu/pacscl/finding-aid-discovery/-/issues/93
+  # see: https://gitlab.library.upenn.edu/dld/finding-aids/-/issues/93
   def link_to_penn_aspace_record(endpoint_aspace_id, record_id)
     return '' if record_id.blank? || endpoint_aspace_id.blank?
 
