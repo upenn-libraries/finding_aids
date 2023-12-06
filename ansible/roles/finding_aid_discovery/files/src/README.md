@@ -110,7 +110,7 @@ In order to run the test suite (currently):
 ## Rubocop
 
 This application uses Rubocop to enforce Ruby and Rails style guidelines. We centralize our UPenn specific configuration in 
-[upennlib-rubocop](https://gitlab.library.upenn.edu/digital-library-development-team/upennlib-rubocop).
+[upennlib-rubocop](https://gitlab.library.upenn.edu/dld/upennlib-rubocop).
 
 If there are rubocop offenses that you are not able to fix please do not edit the rubocop configuration instead regenerate the `rubocop_todo.yml` using the following command:
 
