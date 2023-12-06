@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   finding_aid_discovery:
-    image: gitlab.library.upenn.edu/pacscl/finding-aid-discovery
+    image: gitlab.library.upenn.edu/dld/finding-aids
     build:
       args:
         PROJECT_ENV: production

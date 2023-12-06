@@ -6,7 +6,7 @@ solr:
   core_name: "finding-aid-discovery-core"
   image:
     name: "solr"
-    registry: "gitlab.library.upenn.edu/pacscl/finding-aid-discovery/solr"
+    registry: "gitlab.library.upenn.edu/dld/finding-aids/solr"
     tag: "main"
   java:
     memory:
