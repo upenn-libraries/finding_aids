@@ -80,8 +80,9 @@ For information about the Rails application, see the [README](/ansible/roles/fin
 
 #### Solr Admin
 
-To access the Solr admin when running a development environment navigate to:
-[https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/](https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/)
+Solr is running in [CloudMode](https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode) which uses Apache Zookeeper to provide centralized cluster management. Additionally, [ZooNavigator](https://github.com/elkozmon/zoonavigator) is used to manage the Zookeeper cluster in deployed environments.
+
+To access the Solr Admin UI, navigate to [http://finding-aid-discovery-dev.library.upenn.int/solr1/#/](http://finding-aid-discovery-dev.library.upenn.int/solr1/#/).
 
 ## Deployment
 Gitlab automatically deploys to both our staging and production environment under certain conditions.
