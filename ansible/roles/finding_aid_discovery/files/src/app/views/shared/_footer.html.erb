@@ -10,19 +10,13 @@
     <h3 class="bs4-visually-hidden">Site info</h3>
     <ul class="no-list-style vlist info">
       <li><%= link_to t('common.links.home'), root_path %></li>
+      <li><%= link_to t('common.links.browse_repositories'), repositories_path %></li>
       <li><%= link_to t('common.links.about'), about_path, class: "ext" %></li>
       <li><%= link_to t('common.links.how_to'), how_to_use_path, class: "ext" %></li>
-    </ul>
-    <h3 class="bs4-visually-hidden">Repositories</h3>
-    <ul class="no-list-style vlist repos">
-      <li><%= link_to t('footer.links.members'), "https://old.library.upenn.edu/finding-aids/participating-repositories", class: "ext" %></li>
-      <li><%= link_to t('footer.links.other_repositories'), "https://old.library.upenn.edu/finding-aids/hidden-collections", class: "ext" %></li>
-      <li class="browse-rep"><%= link_to t('common.links.browse_repositories'), repositories_path %></li>
     </ul>
     <h3 class="bs4-visually-hidden">PACSCL</h3>
     <ul class="no-list-style vlist pacscl">
       <li><%= link_to t('footer.links.pacscl'), "https://www.pacscl.org/", class: "ext" %></li>
-      <li><%= link_to t('footer.links.clir_grant'), "https://old.library.upenn.edu/finding-aids/clir-hidden-collections-grant", class: "ext" %></li>
       <li><%= link_to t('footer.links.hidden_coll_init'), "https://hsp.org/hcipsar", class: "ext" %></li>
     </ul>
   </div>
