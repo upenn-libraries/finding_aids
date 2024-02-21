@@ -6,7 +6,6 @@ nginx:
   port: 80
   replicas: 2
   urls:
-    - "pacsclprod01.library.upenn.int"
     - "findingaids.library.upenn.edu"
   versioned_configs:
     default_conf:

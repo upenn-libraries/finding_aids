@@ -1,14 +1,14 @@
 ---
-solr:
-  build_docker_image: false
-  config_location: "/finding_aid_discovery_configs"
-  core_name: "finding-aid-discovery-core"
-  image:
-    name: "solr"
-    registry: "gitlab.library.upenn.edu/dld/finding-aids/solr"
-    tag: "{{ image_tag }}"
-  java:
-    memory:
-      min: "2g"
-      max: "2g"
-  replicas: 1
+solr_collections:
+  - name: finding-aid-discovery
+    configset: finding-aid-discovery
+    replicas: 3
+    shards: 1
+
+solr_configsets:
+  - name: "finding-aid-discovery"
+    path: "roles/finding_aid_discovery/files/src/solr/conf/"
+
+solr_docker_image_tag: 9.3.0
+
+solr_proxy_host: "finaid-prod01.library.upenn.int"
