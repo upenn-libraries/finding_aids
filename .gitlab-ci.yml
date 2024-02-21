@@ -46,8 +46,7 @@ build_and_push_base_app_image:
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "base"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
-    IMAGE_CACHE_TAG: "app"
-    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   tags:
     - ${RUNNER}
 # -- End - build and push base image
@@ -68,8 +67,7 @@ build_and_push_dev_app_image:
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "development"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
-    IMAGE_CACHE_TAG: "app"
-    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   needs:
     - build_and_push_base_app_image
   tags:
@@ -84,14 +82,14 @@ amend_tmp_base_dev_images:
     - build_and_push_base_app_image
     - build_and_push_dev_app_image
   variables:
-    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   tags:
     - build
 
 # -- Start - test dev image
 rspec_app_test:
   stage: test
-  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-development
+  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-development
   services:
     - name: browserless/chrome:1.59-puppeteer-1.20.0
       alias: chrome
@@ -170,7 +168,7 @@ rspec_app_test:
 
 rubocop_app_test:
   stage: test
-  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-development
+  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-development
   needs:
     - amend_tmp_base_dev_images
   extends:
@@ -202,8 +200,7 @@ build_and_push_prod_app_image:
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "production"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
-    IMAGE_CACHE_TAG: "app"
-    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   needs:
     - rspec_app_test
     - rubocop_app_test
@@ -219,7 +216,7 @@ amend_prod_image:
     - build_and_push_prod_app_image
   variables:
     DOCKER_TARGET: "production"
-    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
     TAG_WITH_DOCKER_TARGET: "false"
   tags:
     - build
@@ -238,7 +235,7 @@ trivy_app_container_scanning:
   needs:
     - amend_prod_image
   variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}
+    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}
   tags:
     - build
 
@@ -246,8 +243,7 @@ trivy_app_container_scanning:
 copy_app_docker_images:
   stage: copy_docker_images
   variables:
-    ORIGINAL_REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
-    FINAL_REGISTRY_REPOSITORY: "app"
+    ORIGINAL_REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   needs:
     - trivy_app_container_scanning
   extends:
