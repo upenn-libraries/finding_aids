@@ -1,6 +1,4 @@
 ---
-docker_swarm_addr: "{{ ansible_host }}"
-
 # Docker swarm setup vars
 skip_repo: false
 skip_containerd: false
@@ -10,3 +8,10 @@ skip_swarm: false
 skip_group: false
 skip_docker_py: false
 skip_docker_compose: false
+
+docker_daemon_config:
+  default-ulimits:
+    nofile:
+      Name: "nofile"
+      Hard: 1048576
+      Soft: 1048576
