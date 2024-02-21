@@ -8,7 +8,8 @@ finding_aid_discovery:
   port: 4567
   rails_env: "staging"
   replicas: 2
-  url: "pacscl-staging.library.upenn.edu"
+  solr_url: "http://finaid-stg01.library.upenn.int/solr/finding-aid-discovery"
+  url: "findingaids-staging.library.upenn.edu"
   versioned_secrets:
     honeybadger_api_key:
       value: "{{ finding_aid_discovery_vault.versioned_secrets.honeybadger_api_key.value }}"

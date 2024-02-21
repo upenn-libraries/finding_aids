@@ -2,4 +2,4 @@
 is_development: false
 
 project_root: "/opt/devops"
-url: "pacscl-staging.library.upenn.edu"
+url: "findingaids-staging.library.upenn.edu"
