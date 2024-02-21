@@ -3,7 +3,7 @@ finding_aid_discovery:
   build_docker_image: true
   image:
     name: "finding_aid_discovery"
-    registry: "gitlab.library.upenn.edu/dld/finding-aids/app"
+    registry: "gitlab.library.upenn.edu/dld/finding-aids"
     tag: "main-development"
   port: 4567
   rails_env: "development"
