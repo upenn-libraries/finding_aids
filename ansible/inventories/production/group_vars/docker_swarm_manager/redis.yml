@@ -15,14 +15,14 @@ redis:
         {
           name: "sidekiq",
           acl_rules: "+@all ~*",
-          password: "{{ vault_redis.versioned_configs.users_acl.users.sidekiq.password }}",
-          version: 1
+          password: "{{ finaids_vault_values.secret.redis_sidekiq_password }}",
+          version: "{{ finaids_vault_values.metadata.version }}"
         },
         {
           name: "default",
           acl_rules: "+@all ~*",
-          password: "{{ vault_redis.versioned_configs.users_acl.users.default.password }}",
-          version: 1
+          password: "{{ finaids_vault_values.secret.redis_default_password }}",
+          version: "{{ finaids_vault_values.metadata.version }}"
         }
       ]
-      version: 1
+      version: "{{ finaids_vault_values.metadata.version }}"

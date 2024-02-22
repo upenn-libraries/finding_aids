@@ -11,6 +11,6 @@ postgres:
   replicas: 1
   secrets:
     password:
-      value: "{{ vault_postgres.password.value }}"
-      version: 1
+      value: "{{ finaids_vault_values.secret.database_password }}"
+      version: "{{ finaids_vault_values.metadata.version }}"
   user: "finding_aid_discovery"

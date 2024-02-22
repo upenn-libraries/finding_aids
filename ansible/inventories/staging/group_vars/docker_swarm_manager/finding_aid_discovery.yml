@@ -12,17 +12,17 @@ finding_aid_discovery:
   url: "findingaids-staging.library.upenn.edu"
   versioned_secrets:
     honeybadger_api_key:
-      value: "{{ finding_aid_discovery_vault.versioned_secrets.honeybadger_api_key.value }}"
-      version: 2
+      value: "{{ finaids_vault_values.secret.honeybadger_api_key }}"
+      version: "{{ finaids_vault_values.metadata.version }}"
     penn_aspace_api_username:
-      value: "{{ finding_aid_discovery_vault.versioned_secrets.penn_aspace_api_username.value }}"
-      version: 1
+      value: "{{ finaids_vault_values.secret.penn_aspace_api_username }}"
+      version: "{{ finaids_vault_values.metadata.version }}"
     penn_aspace_api_password:
-      value: "{{ finding_aid_discovery_vault.versioned_secrets.penn_aspace_api_password.value }}"
-      version: 2
+      value: "{{ finaids_vault_values.secret.penn_aspace_api_password }}"
+      version: "{{ finaids_vault_values.metadata.version }}"
     rails_master_key:
-      value: "{{ finding_aid_discovery_vault.versioned_secrets.rails_master_key.value }}"
-      version: 1
+      value: "{{ finaids_vault_values.secret.rails_master_key }}"
+      version: "{{ finaids_vault_values.metadata.version }}"
     slack_notification_email_address:
-      value: "{{ finding_aid_discovery_vault.versioned_secrets.slack_notification_email_address.value }}"
-      version: 2
+      value: "{{ finaids_vault_values.secret.slack_notification_email_address }}"
+      version: "{{ finaids_vault_values.metadata.version }}"
