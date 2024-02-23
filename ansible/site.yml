@@ -1,75 +1,56 @@
 ---
-- name: "Install python3 and deps"
-  hosts: all
-  become: yes
-  vars:
-    ansible_python_interpreter: "/usr/bin/python2"
-  pre_tasks:
-    - name: Install python3-pip
-      package:
-        name: python3-pip
-        state: present
-    - name: Install deps
-      pip:
-        name:
-          - jmespath
-
 - name: "Provision Docker Swarm Cluster"
-  hosts: all
-  become: yes
-  roles:
-    - { role: atosatto.docker-swarm }
+  hosts: docker_swarm_manager
+  become: true
+  tasks:
+    - ansible.builtin.import_tasks: "provision_docker.yml"
 
 - name: "Deploy application"
   hosts: docker_swarm_manager
-  become: yes
+  become: true
   gather_facts: true
-  pre_tasks:
-    - name: Install deps
-      pip:
-        name:
-          - jsondiff
-          - passlib
-          - pyyaml
-      tags: deps
   tasks:
-    - import_role:
+    - ansible.builtin.import_role:
         name: traefik
       tags: traefik
-    - import_role:
+    - ansible.builtin.import_role:
         name: postgres
       tags: postgres
-    - name: Create solr network
-      include_tasks: "roles/solr/tasks/create_solr_network.yml"
-      tags: solr
-    - import_role:
+    - ansible.builtin.import_role:
+        name: zookeeper
+      tags: zookeeper
+    - ansible.builtin.import_role:
+        name: zoonavigator
+      tags: zoonavigator
+      when: not is_development | default (false, true)
+    - ansible.builtin.import_role:
         name: solr
       tags: solr
-    - import_role:
+    - ansible.builtin.import_role:
         name: finding_aid_discovery
       tags: finding_aid_discovery
-    - import_role:
+    - ansible.builtin.import_role:
         name: redis
       tags: redis
-    - import_role:
+    - ansible.builtin.import_role:
         name: sidekiq
       tags: sidekiq
-    - import_role:
+    - ansible.builtin.import_role:
         name: nginx
       tags: nginx
-    - import_role:
+    - ansible.builtin.import_role:
         name: chrome
       tags: chrome
       when: is_development | default (false) == true
   post_tasks:
     - name: Recursively remove project directory
-      file:
+      ansible.builtin.file:
         path: "{{ project_root }}"
         state: absent
     - name: Prune images that are older than 2+ hours
-      docker_prune:
-        images: yes
+      community.docker.docker_prune:
+        images: true
         images_filters:
           dangling: false
           until: 2h
-      when: not is_development | default (false) == true
+      when: not is_development | default (false, true)

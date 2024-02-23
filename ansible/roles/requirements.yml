@@ -5,3 +5,13 @@ roles:
     src: https://gitlab.library.upenn.edu/devops/ansible/ansible-dockerswarm
     scm: git
     version: master
+
+  - name: solr
+    src: https://gitlab.library.upenn.edu/devops/ansible/roles/solr.git
+    scm: git
+    version: 1.2.0
+
+  - name: zoonavigator
+    src: https://gitlab.library.upenn.edu/devops/ansible/roles/zoonavigator.git
+    scm: git
+    version: main

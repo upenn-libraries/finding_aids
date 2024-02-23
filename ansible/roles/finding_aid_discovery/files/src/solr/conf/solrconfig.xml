@@ -14,7 +14,7 @@
   <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
 
   <indexConfig>
-    <lockType>simple</lockType>
+    <lockType>native</lockType>
   </indexConfig>
 
   <updateHandler class="solr.DirectUpdateHandler2">
@@ -33,8 +33,8 @@
   </updateHandler>
 
   <!-- solr lib dirs -->
-  <lib dir="${solr.install.dir:../../../..}/contrib/analysis-extras/lib" />
-<!--  <lib dir="${solr.install.dir:../../../..}/contrib/analysis-extras/lucene-libs" />-->
+  <lib dir="${solr.install.dir:../../../..}/modules/analysis-extras/lib" />
+<!--  <lib dir="${solr.install.dir:../../../..}/modules/analysis-extras/lucene-libs" />-->
 
   <dataDir>${solr.data.dir:}</dataDir>
 

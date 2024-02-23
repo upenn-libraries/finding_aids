@@ -18,12 +18,13 @@ services:
       DATABASE_USER: ${DATABASE_USER}
       FINDING_AID_DISCOVERY_URL: ${FINDING_AID_DISCOVERY_URL}
       RAILS_ENV: ${FINDING_AID_DISCOVERY_RAILS_ENV}
-      SOLR_URL: "http://solr:8983/solr/${SOLR_CORE_NAME}"
+      RAILS_LOG_TO_STDOUT: "true"
+      SOLR_URL: "${FINDING_AID_DISCOVERY_SOLR_URL}"
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "curl -fsSL localhost:${FINDING_AID_DISCOVERY_PORT} || exit 1",
+          "curl -fsSL localhost:${FINDING_AID_DISCOVERY_PORT}/about || exit 1",
         ]
       interval: 30s
       retries: 6
@@ -37,7 +38,7 @@ services:
     networks:
       - database
       - finding_aid_discovery
-      - solr
+      - traefik
     secrets:
       - database_password
       - slack_notification_email_address
@@ -45,6 +46,7 @@ services:
       - penn_aspace_api_password
       - penn_aspace_api_username
       - rails_master_key
+
 networks:
   database:
     external: true
@@ -52,7 +54,7 @@ networks:
     driver: overlay
     name: finding_aid_discovery
     attachable: true
-  solr:
+  traefik:
     external: true
 
 secrets:

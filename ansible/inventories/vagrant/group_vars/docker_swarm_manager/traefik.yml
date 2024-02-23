@@ -1,14 +1,4 @@
 ---
-traefik:
-  dashboard:
-    enable: true
-    port: 8080
-  image:
-    name: "traefik"
-    tag: "2.5"
-  log_level: "DEBUG"
-  middlewares_auth:
-    salt: "{{ vault_traefik.middlewares_auth.salt }}"
-    users: "{{ vault_traefik.middlewares_auth.users }}"
-    version: "{{ vault_traefik.middlewares_auth.version }}"
-  url: "finding-aid-discovery-dev.library.upenn.edu"
+traefik_dashboard_enable: true
+
+traefik_debug: true

@@ -6,8 +6,7 @@ nginx:
   port: 80
   replicas: 2
   urls:
-    - "pacscl01.library.upenn.int"
-    - "pacscl-staging.library.upenn.edu"
+    - "findingaids-staging.library.upenn.edu"
   versioned_configs:
     default_conf:
       filename: "default.conf.j2"

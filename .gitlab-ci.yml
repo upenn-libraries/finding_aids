@@ -23,8 +23,6 @@ stages:
   - build_and_push:tmp_base_image
   - build_and_push:tmp_dev_image
   - amend_tmp_base_dev_images
-  - build_and_push:tmp_solr_image
-  - amend_tmp_solr_image
   - test
   - build_and_push:tmp_prod_image
   - amend_prod_image
@@ -48,8 +46,7 @@ build_and_push_base_app_image:
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "base"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
-    IMAGE_CACHE_TAG: "app"
-    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   tags:
     - ${RUNNER}
 # -- End - build and push base image
@@ -70,8 +67,7 @@ build_and_push_dev_app_image:
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "development"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
-    IMAGE_CACHE_TAG: "app"
-    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   needs:
     - build_and_push_base_app_image
   tags:
@@ -86,77 +82,72 @@ amend_tmp_base_dev_images:
     - build_and_push_base_app_image
     - build_and_push_dev_app_image
   variables:
-    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
-  tags:
-    - build
-
-# -- Start - build and push temp solr image
-build_and_push_solr_image:
-  stage: build_and_push:tmp_solr_image
-  extends:
-    - .build_and_push_docker_images
-  parallel:
-    matrix:
-      - RUNNER: build-arm
-        DOCKER_BUILD_PLATFORM: "linux/arm64"
-      - RUNNER: build
-        DOCKER_BUILD_PLATFORM: "linux/amd64"
-  variables:
-    DOCKER_BUILD_CONTEXT: "ansible/roles/solr/files/src/"
-    DOCKERFILE_PATH: "ansible/roles/solr/files/src/"
-    IMAGE_CACHE_TAG: "solr"
-    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/solr"
-  tags:
-    - ${RUNNER}
-# -- End - build and push temp solr image
-
-amend_tmp_solr_image:
-  stage: amend_tmp_solr_image
-  extends:
-    - .amend_manifests
-  needs:
-    - build_and_push_solr_image
-  variables:
-    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/solr"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   tags:
     - build
 
 # -- Start - test dev image
 rspec_app_test:
   stage: test
-  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-development
+  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-development
   services:
     - name: browserless/chrome:1.59-puppeteer-1.20.0
       alias: chrome
-    - postgres:14
-    - name: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/solr:${CI_COMMIT_SHORT_SHA}
+    - name: postgres:14
+      variables:
+        POSTGRES_DB: "${DATABASE_NAME}"
+        POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
+        POSTGRES_USER: "${DATABASE_USER}"
+    - name: bitnami/solr:9.3.0
       alias: solr
+      command:
+        - /bin/bash
+        - -c
+        - |
+          source /opt/bitnami/scripts/libsolr.sh;solr_start_bg &&
+          /opt/bitnami/solr/bin/solr auth enable -type basicAuth -credentials ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} -z 127.0.0.1:9983 &&
+          /opt/bitnami/solr/bin/solr zk upconfig -n finding-aid-discovery -d ${CI_PROJECT_DIR}/ansible/roles/finding_aid_discovery/files/src/solr/conf/ -z 127.0.0.1:9983 &&
+          /opt/bitnami/solr/bin/solr create_collection -c finding-aid-discovery -n finding-aid-discovery &&
+          source /opt/bitnami/scripts/libsolr.sh;solr_stop &&
+          /opt/bitnami/scripts/solr/run.sh
+      variables:
+        SOLR_CLOUD_BOOTSTRAP: "yes"
+        SOLR_HOST: "solr"
+        SOLR_JAVA_MEM: "-Xms4g -Xmx4g"
+        SOLR_MODE: "solrcloud"
+        SOLR_ENABLE_AUTHENTICATION: "yes"
+        SOLR_AUTHENTICATION_OPTS: "-Dbasicauth=${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}"
+        SOLR_AUTH_TYPE: "basic"
   extends:
     - .rspec
   variables:
     CHROME_URL: "http://chrome:3000"
     CONNECTION_TIMEOUT: -1
-    CONFIG_LOCATION: "/finding_aid_discovery_configs"
-    CORE_NAME: "finding-aid-discovery-core"
     DATABASE_NAME: "finding_aid_discovery"
     DATABASE_PASSWORD: "rspec_test"
     DATABASE_USER: "rspec_test"
     FF_NETWORK_PER_BUILD: "true"
     FINDING_AID_DISCOVERY_URL: "findingaids.test.com"
-    POSTGRES_DB: "finding_aid_discovery"
-    POSTGRES_PASSWORD: "rspec_test"
-    POSTGRES_USER: "rspec_test"
     RAILS_ENV: "test"
     RAILS_SYSTEM_TESTING_SCREENSHOT_HTML: "1"
-    SOLR_URL: "http://solr:8983/solr/finding-aid-discovery-core"
+    SOLR_ADMIN_USERNAME: admin
+    SOLR_ADMIN_PASSWORD: password
+    SOLR_URL: "http://${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}@solr:8983/solr/finding-aid-discovery"
   script:
     - cd ${CI_PROJECT_DIR}/ansible/roles/finding_aid_discovery/files/src/
     - bundle add rspec_junit_formatter
     - bundle exec rake db:migrate
+    - i=0
+    - >
+      while [ $i -le 9 ]; do
+        i=$((i+1))
+        curl --silent --user ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} "http://solr:8983/api/" "-H" "'Content-type:application/json'" && break
+        echo "Waiting for solr api to be ready"
+        sleep "30s"
+      done
     - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
   needs:
     - amend_tmp_base_dev_images
-    - amend_tmp_solr_image
   coverage: '/\(\d+.\d+\%\) covered/'
   artifacts:
     paths:
@@ -177,7 +168,7 @@ rspec_app_test:
 
 rubocop_app_test:
   stage: test
-  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}-development
+  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-development
   needs:
     - amend_tmp_base_dev_images
   extends:
@@ -209,8 +200,7 @@ build_and_push_prod_app_image:
     DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
     DOCKER_TARGET: "production"
     DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
-    IMAGE_CACHE_TAG: "app"
-    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   needs:
     - rspec_app_test
     - rubocop_app_test
@@ -226,7 +216,7 @@ amend_prod_image:
     - build_and_push_prod_app_image
   variables:
     DOCKER_TARGET: "production"
-    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
+    REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
     TAG_WITH_DOCKER_TARGET: "false"
   tags:
     - build
@@ -245,36 +235,15 @@ trivy_app_container_scanning:
   needs:
     - amend_prod_image
   variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/app:${CI_COMMIT_SHORT_SHA}
+    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}
   tags:
     - build
-  allow_failure: true
-
-# Test solr image
-trivy_solr_container_scanning:
-  stage: sast
-  extends:
-    - .trivy_container_scanning
-  before_script:
-    - apk add --no-cache docker
-    - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
-  after_script:
-    - docker logout ${CI_REGISTRY}
-  needs:
-    - rspec_app_test
-  variables:
-    CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}/solr:${CI_COMMIT_SHORT_SHA}
-  tags:
-    - build
-  allow_failure: true
-# -- End - SAST images
 
 # -- Start - Copy app docker images
 copy_app_docker_images:
   stage: copy_docker_images
   variables:
-    ORIGINAL_REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/app"
-    FINAL_REGISTRY_REPOSITORY: "app"
+    ORIGINAL_REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   needs:
     - trivy_app_container_scanning
   extends:
@@ -282,20 +251,6 @@ copy_app_docker_images:
   tags:
     - build
 # -- End - Copy app docker images
-
-# -- Start - Copy solr docker images
-copy_solr_docker_images:
-  stage: copy_docker_images
-  variables:
-    ORIGINAL_REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}/solr"
-    FINAL_REGISTRY_REPOSITORY: "solr"
-  needs:
-    - trivy_solr_container_scanning
-  extends:
-    - .copy_docker_images
-  tags:
-    - build
-# -- End - Copy solr docker images
 
 # -- Start - remove tmp registry repository
 remove_tmp_registry:
@@ -306,7 +261,6 @@ remove_tmp_registry:
     - when: always
   needs:
     - copy_app_docker_images
-    - copy_solr_docker_images
   allow_failure: true
   tags:
     - build
@@ -324,7 +278,6 @@ deploy_staging:
     url: https://pacscl-staging.library.upenn.edu/
   needs:
     - copy_app_docker_images
-    - copy_solr_docker_images
   only:
     - main
   tags:
@@ -342,7 +295,6 @@ deploy_production:
     url: https://findingaids.library.upenn.edu/
   needs:
     - copy_app_docker_images
-    - copy_solr_docker_images
   rules:
     - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+(\.[a-zA-Z0-9]+)?$/
   tags:
