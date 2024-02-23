@@ -82,13 +82,13 @@ For information about the Rails application, see the [README](/ansible/roles/fin
 
 Solr is running in [CloudMode](https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode) which uses Apache Zookeeper to provide centralized cluster management. Additionally, [ZooNavigator](https://github.com/elkozmon/zoonavigator) is used to manage the Zookeeper cluster in deployed environments.
 
-To access the Solr Admin UI, navigate to [http://finding-aid-discovery-dev.library.upenn.int/solr1/#/](http://finding-aid-discovery-dev.library.upenn.int/solr1/#/).
+To access the Solr Admin UI, navigate to [http://finding-aid-discovery-dev.library.upenn.int/solr/#/](http://finding-aid-discovery-dev.library.upenn.int/solr/#/).
 
 ## Deployment
 Gitlab automatically deploys to both our staging and production environment under certain conditions.
 
 ### Staging
-Gitlab deploys to our staging server every time new code gets merged into `main`. The staging site is available at [https://pacscl-staging.library.upenn.edu/](https://pacscl-staging.library.upenn.edu/).
+Gitlab deploys to our staging server every time new code gets merged into `main`. The staging site is available at [https://findingaids-staging.library.upenn.edu/](https://findingaids-staging.library.upenn.edu/).
 
 Code cannot be pushed directly onto `main`, new code must be merged via a merge request.
 

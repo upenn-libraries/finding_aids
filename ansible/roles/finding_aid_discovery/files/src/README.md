@@ -77,7 +77,7 @@ Our local development environment uses vagrant in order to set up a consistent e
 
 The Rails application will be available at, [https://finding-aid-discovery-dev.library.upenn.edu](https://finding-aid-discovery-dev.library.upenn.edu).
 
-The Solr admin console will be available at, [https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/](https://finding-aid-discovery-dev.library.upenn.edu:8983/solr/#/).
+The Solr admin console will be available at, [http://finding-aid-discovery-dev.library.upenn.int/solr/#/](http://finding-aid-discovery-dev.library.upenn.int/solr/#/).
 
 ### Interacting with the Application
 
