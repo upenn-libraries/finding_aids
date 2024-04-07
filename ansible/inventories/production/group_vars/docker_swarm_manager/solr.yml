@@ -11,4 +11,10 @@ solr_configsets:
 
 solr_docker_image_tag: 9.3.0
 
+solr_limits_mem: "4G"
+
 solr_proxy_host: "finaid-prod01.library.upenn.int"
+
+solr_custom_env_variables:
+  SOLR_HEAP: "1G"
+  SOLR_JAVA_MEM: "-Xms2G -Xmx2G"
