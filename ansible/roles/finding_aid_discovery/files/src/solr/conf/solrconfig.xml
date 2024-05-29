@@ -87,6 +87,31 @@
 
   <requestHandler name="/replication" class="solr.ReplicationHandler" startup="lazy" />
 
+  <query>
+    <maxBooleanClauses>1024</maxBooleanClauses>
+
+    <filterCache class="solr.CaffeineCache"
+                 size="512"
+                 initialSize="512"
+                 autowarmCount="128"/>
+
+    <queryResultCache class="solr.CaffeineCache"
+                     size="512"
+                     initialSize="512"
+                     autowarmCount="128"/>
+
+    <documentCache class="solr.CaffeineCache"
+                   size="512"
+                   initialSize="512"
+                   autowarmCount="0"/>
+
+    <enableLazyFieldLoading>true</enableLazyFieldLoading>
+    <queryResultWindowSize>200</queryResultWindowSize>
+    <queryResultMaxDocsCached>400</queryResultMaxDocsCached>
+    <useColdSearcher>false</useColdSearcher>
+    <maxWarmingSearchers>2</maxWarmingSearchers>
+  </query>
+
   <requestDispatcher handleSelect="true" >
     <requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="2048" />
   </requestDispatcher>
