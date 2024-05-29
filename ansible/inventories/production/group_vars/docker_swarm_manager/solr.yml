@@ -17,4 +17,4 @@ solr_proxy_host: "finaid-prod01.library.upenn.int"
 
 solr_custom_env_variables:
   SOLR_HEAP: "6G"
-  SOLR_JAVA_MEM: "-Xms2G -Xmx2G"
+  SOLR_JAVA_MEM: "-Xms4G -Xmx4G"
