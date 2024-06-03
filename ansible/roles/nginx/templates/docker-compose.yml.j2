@@ -16,6 +16,10 @@ services:
         - "traefik.http.routers.nginx.service=nginx"
         - "traefik.http.services.nginx.loadbalancer.server.port={{ nginx.port }}"
 
+        - "traefik.http.routers.nginx.middlewares=http-cache"
+        - "traefik.http.middlewares.http-cache.plugin.souin.default_cache.ttl=10s"
+        - "traefik.http.middlewares.http-cache.plugin.souin.log_level=debug"
+
 {% if is_development == true %}
         - "traefik.http.routers.nginx.middlewares=nginx_https"
         - "traefik.http.middlewares.nginx_https.redirectscheme.scheme=https"
