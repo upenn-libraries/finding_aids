@@ -2,3 +2,5 @@
 traefik_dashboard_enable: true
 
 traefik_debug: true
+
+traefik_image_tag: 3.0
