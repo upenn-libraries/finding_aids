@@ -116,5 +116,9 @@
     <requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="2048" />
   </requestDispatcher>
 
+  <httpCaching never304="false" lastModFrom="openTime" etagSeed="fad-solr">
+    <cacheControl>max-age=3600, public</cacheControl>
+  </httpCaching>
+
   <requestHandler name="/analysis/field" startup="lazy" class="solr.FieldAnalysisRequestHandler" />
 </config>

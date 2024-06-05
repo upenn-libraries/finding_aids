@@ -16,3 +16,5 @@ solr_proxy_host: "finding-aid-discovery-dev.library.upenn.int"
 solr_instances: 1
 
 solr_collection_replicas: 1
+
+solr_souin_cache_enable: true
