@@ -14,6 +14,8 @@
         name: traefik
       tags: traefik
     - ansible.builtin.import_role:
+        name: souin
+    - ansible.builtin.import_role:
         name: postgres
       tags: postgres
     - ansible.builtin.import_role:
