@@ -5,6 +5,12 @@ services:
     image: ${FINDING_AID_DISCOVERY_IMAGE_NAME}:${FINDING_AID_DISCOVERY_IMAGE_TAG}
     command: ["bundle", "exec", "puma", "-b", "tcp://0.0.0.0:${FINDING_AID_DISCOVERY_PORT}"]
     deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.fad.entrypoints=web"
+        - "traefik.http.routers.fad.rule=host(`${FINDING_AID_DISCOVERY_URL}`)"
+        - "traefik.http.routers.fad.service=fad"
+        - "traefik.http.services.fad.loadbalancer.server.port=${FINDING_AID_DISCOVERY_PORT}"
       placement:
         constraints:
           - "node.labels.finding_aid_discovery == true"
