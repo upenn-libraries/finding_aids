@@ -36,9 +36,6 @@
         name: sidekiq
       tags: sidekiq
     - ansible.builtin.import_role:
-        name: nginx
-      tags: nginx
-    - ansible.builtin.import_role:
         name: chrome
       tags: chrome
       when: is_development | default (false) == true
