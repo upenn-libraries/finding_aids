@@ -3,7 +3,7 @@
 ARG BUNDLE_HOME=vendor/bundle
 
 # Image tag
-ARG IMAGE_TAG=3.1.2-alpine3.16
+ARG IMAGE_TAG=3.1.6-alpine3.19
 
 # The root of our app
 ARG PROJECT_ROOT=/home/app
@@ -43,8 +43,8 @@ RUN apk add --no-cache --virtual build-dependencies \
     bundle config set without "development:test:assets"; \
     fi && \
     bundle install -j$(nproc) --retry 3 && \
-    rm -rf ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/cache/*.gem && \
-    find ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/gems/ \( -name "*.c" -o -name "*.o" \) -delete && \
+    rm -rf ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/cache/*.gem && \
+    find ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/gems/ \( -name "*.c" -o -name "*.o" \) -delete && \
     apk del build-dependencies
 
 COPY . .
@@ -64,10 +64,10 @@ ENV RAILS_ENV=${RAILS_ENV}
 
 # Set Rails env
 ENV BUNDLE_APP_CONFIG="${PROJECT_ROOT}/.bundle"
-ENV GEM_HOME="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/"
-ENV GEM_PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/"
+ENV GEM_HOME="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/"
+ENV GEM_PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/"
 ENV NLS_LANG=$LANG
-ENV PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/bin:${PATH}"
+ENV PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/bin:${PATH}"
 
 WORKDIR ${PROJECT_ROOT}
 
@@ -91,7 +91,7 @@ RUN apk add --no-cache \
     find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
     find bin -type f -exec chmod 744 {} + && \
-    chmod +x -R ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/bin/ && \
+    chmod +x -R ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/bin/ && \
     chown -R app:app .
 
 ENTRYPOINT ["docker-entrypoint.sh"]
@@ -116,10 +116,10 @@ ENV RAILS_ENV=${RAILS_ENV}
 
 # Set Rails env
 ENV BUNDLE_APP_CONFIG="${PROJECT_ROOT}/.bundle"
-ENV GEM_HOME="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/"
-ENV GEM_PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/"
+ENV GEM_HOME="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/"
+ENV GEM_PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/"
 ENV NLS_LANG=$LANG
-ENV PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/bin:${PATH}"
+ENV PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/bin:${PATH}"
 ENV RAILS_LOG_TO_STDOUT=true
 ENV RAILS_SERVE_STATIC_FILES=true
 
@@ -144,7 +144,7 @@ RUN apk add --no-cache \
     find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
     find bin -type f -exec chmod 744 {} + && \
-    chmod +x -R ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}.0/bin/ && \
+    chmod +x -R ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/bin/ && \
     chown -R app:app .
 
 ENTRYPOINT ["docker-entrypoint.sh"]
