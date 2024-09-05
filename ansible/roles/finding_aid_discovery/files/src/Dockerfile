@@ -15,6 +15,9 @@ ARG RAILS_ENV=development
 # Build Stage ----------------------------------------
 FROM ruby:${IMAGE_TAG} AS base
 
+ARG RUBY_MAJOR
+ENV RUBY_MAJOR=3.1.0
+
 ARG BUNDLE_HOME
 ENV BUNDLE_HOME=${BUNDLE_HOME}
 
@@ -43,8 +46,8 @@ RUN apk add --no-cache --virtual build-dependencies \
     bundle config set without "development:test:assets"; \
     fi && \
     bundle install -j$(nproc) --retry 3 && \
-    rm -rf ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/cache/*.gem && \
-    find ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/gems/ \( -name "*.c" -o -name "*.o" \) -delete && \
+    rm -rf ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/cache/*.gem && \
+    find ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/gems/ \( -name "*.c" -o -name "*.o" \) -delete && \
     apk del build-dependencies
 
 COPY . .
@@ -52,6 +55,9 @@ COPY . .
 
 # Development Stage ----------------------------------
 FROM ruby:${IMAGE_TAG} as development
+
+ARG RUBY_MAJOR
+ENV RUBY_MAJOR=3.1.0
 
 ARG BUNDLE_HOME
 ENV BUNDLE_HOME=${BUNDLE_HOME}
@@ -64,10 +70,10 @@ ENV RAILS_ENV=${RAILS_ENV}
 
 # Set Rails env
 ENV BUNDLE_APP_CONFIG="${PROJECT_ROOT}/.bundle"
-ENV GEM_HOME="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/"
-ENV GEM_PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/"
+ENV GEM_HOME="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/"
+ENV GEM_PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/"
 ENV NLS_LANG=$LANG
-ENV PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/bin:${PATH}"
+ENV PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/bin:${PATH}"
 
 WORKDIR ${PROJECT_ROOT}
 
@@ -91,7 +97,7 @@ RUN apk add --no-cache \
     find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
     find bin -type f -exec chmod 744 {} + && \
-    chmod +x -R ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/bin/ && \
+    chmod +x -R ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/bin/ && \
     chown -R app:app .
 
 ENTRYPOINT ["docker-entrypoint.sh"]
@@ -105,6 +111,9 @@ CMD ["bundle", "exec", "puma", "-b", "tcp://0.0.0.0:3000"]
 # Production Stage -----------------------------------
 FROM ruby:${IMAGE_TAG} as production
 
+ARG RUBY_MAJOR
+ENV RUBY_MAJOR=3.1.0
+
 ARG BUNDLE_HOME
 ENV BUNDLE_HOME=${BUNDLE_HOME}
 
@@ -116,10 +125,10 @@ ENV RAILS_ENV=${RAILS_ENV}
 
 # Set Rails env
 ENV BUNDLE_APP_CONFIG="${PROJECT_ROOT}/.bundle"
-ENV GEM_HOME="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/"
-ENV GEM_PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/"
+ENV GEM_HOME="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/"
+ENV GEM_PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/"
 ENV NLS_LANG=$LANG
-ENV PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/bin:${PATH}"
+ENV PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/bin:${PATH}"
 ENV RAILS_LOG_TO_STDOUT=true
 ENV RAILS_SERVE_STATIC_FILES=true
 
@@ -144,7 +153,7 @@ RUN apk add --no-cache \
     find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
     find bin -type f -exec chmod 744 {} + && \
-    chmod +x -R ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/3.1.0/bin/ && \
+    chmod +x -R ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/bin/ && \
     chown -R app:app .
 
 ENTRYPOINT ["docker-entrypoint.sh"]
