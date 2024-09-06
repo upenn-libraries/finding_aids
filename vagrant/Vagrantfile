@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -11,13 +13,13 @@ end
 # Class to grab the users token from hashicorp vault v2 endpoint using ldap
 class Token
   def to_s
-    print "HashiCorp Vault username: "
-    hv_user = STDIN.gets.chomp
+    print 'HashiCorp Vault username: '
+    hv_user = $stdin.gets.chomp
 
-    print "HashiCorp Vault password: "
-    hv_pass = STDIN.noecho(&:gets).chomp
+    print 'HashiCorp Vault password: '
+    hv_pass = $stdin.noecho(&:gets).chomp
 
-    Vault.address = "https://vault.library.upenn.edu"
+    Vault.address = 'https://vault.library.upenn.edu'
     vault_instance = Vault.auth.ldap(hv_user, hv_pass)
     vault_instance.auth.client_token
   end
@@ -25,82 +27,79 @@ end
 
 # Arrange nodes in reverse order so the manager is the last vm to be provisioned
 cluster = {
-  "finding-aid-discovery-manager" => { :ip => "10.10.2.206", :cpus => 2, :mem => 4096, :port => 2020 }
+  'finding-aid-discovery-manager' => { ip: '10.10.2.206', cpus: 6, mem: 8192, port: 2020 }
 }
 
-Vagrant.configure("2") do |config|
-  config.vagrant.plugins = ["vagrant-hostsupdater", "vagrant-vbguest", "vault"]
+Vagrant.configure('2') do |config|
+  config.vagrant.plugins = %w[vagrant-hostsupdater vagrant-vbguest vault]
 
   # Select correct box for arch
   if arm_architecture?
-    config.vm.box = "bento/ubuntu-22.04-arm64"
+    config.vm.box = 'bento/ubuntu-22.04-arm64'
   else
-    config.vm.box = "bento/ubuntu-22.04"
+    config.vm.box = 'bento/ubuntu-22.04'
+    config.vm.box_version = '202404.23.0'
   end
 
+  config.vbguest.auto_update = false
+
   # Install parallels plugin if user is on mac
-  if Vagrant::Util::Platform::darwin?
-    config.vagrant.plugins << "vagrant-parallels"
-  end
+  config.vagrant.plugins << 'vagrant-parallels' if Vagrant::Util::Platform.darwin?
 
   # Add domains to hosts file
   config.hostsupdater.aliases = {
-    "10.10.2.206" => [
-      "finding-aid-discovery-dev.library.upenn.edu",
-      "finding-aid-discovery-dev.library.upenn.int"
-    ]
+    '10.10.2.206' => %w[finding-aid-discovery-dev.library.upenn.edu finding-aid-discovery-dev.library.upenn.int]
   }
 
-  cluster.each_with_index do |(hostname, info), index|
-
+  cluster.each_with_index do |(hostname, info), _index|
     # Use the default insecure key as this is only used for development
     config.ssh.insert_key = false
 
     config.vm.define hostname do |cfg|
-      cfg.vm.network :private_network, ip: "#{info[:ip]}"
-      cfg.vm.network :forwarded_port, id: "ssh", host: info[:port], guest: 22
+      cfg.vm.network :private_network, ip: (info[:ip]).to_s
+      cfg.vm.network :forwarded_port, id: 'ssh', host: info[:port], guest: 22
       cfg.vm.hostname = hostname
 
       # Virtualbox provider
-      cfg.vm.provider :virtualbox do |vb, override|
+      cfg.vm.provider :virtualbox do |vb, _override|
         vb.name = hostname
-        vb.customize ["modifyvm", :id, "--memory", info[:mem], "--cpus", info[:cpus], "--hwvirtex", "on"]
+        vb.customize ['modifyvm', :id, '--memory', info[:mem], '--cpus', info[:cpus], '--hwvirtex', 'on']
         # push the first interface far out enough to minimize potential conflict with docker swarm
         # which defaults to 10.0.0.0/8 for networks/containers
-        vb.customize ["modifyvm", :id, "--natnet1", "10.252/16"]
-        vb.customize ["modifyvm", :id, "--ioapic", "on"]
+        vb.customize ['modifyvm', :id, '--natnet1', '10.252/16']
+        vb.customize ['modifyvm', :id, '--ioapic', 'on']
       end
 
       # Parallels provider
-      cfg.vm.provider :parallels do |prl, override|
+      cfg.vm.provider :parallels do |prl, _override|
         prl.name = hostname
         prl.memory = info[:mem]
         prl.cpus = info[:cpus]
       end
 
-      cfg.vm.provision "shell", inline: <<-SHELL
+      cfg.vm.provision 'shell', inline: <<-SHELL
         apt-get update && apt-get install -y python3-pip
       SHELL
 
       # Run the ansible playbook after the manager vm has been provisioned
-      if hostname == "finding-aid-discovery-manager"
+      if hostname == 'finding-aid-discovery-manager'
         # Add volumes for development
-        cfg.vm.synced_folder "../", "/finding_aid_discovery"
+        cfg.vm.synced_folder '../', '/finding_aid_discovery'
 
         cfg.vm.provision :ansible_local do |ansible|
-          ansible.config_file = "/finding_aid_discovery/ansible/ansible.vagrant.cfg"
+          ansible.config_file = '/finding_aid_discovery/ansible/ansible.vagrant.cfg'
           ansible.extra_vars = {
             ansible_hashi_vault_token: Token.new,
-            ansible_hashi_vault_url: "https://vault.library.upenn.edu",
-            ansible_python_interpreter: "/usr/bin/env python3"
+            ansible_hashi_vault_url: 'https://vault.library.upenn.edu',
+            ansible_python_interpreter: '/usr/bin/env python3'
           }
-          ansible.install_mode = "pip3"
-          ansible.inventory_path = "/finding_aid_discovery/ansible/inventories/vagrant"
-          ansible.galaxy_role_file = "/finding_aid_discovery/ansible/roles/requirements.yml"
-          ansible.galaxy_roles_path = "/finding_aid_discovery/ansible/roles"
-          ansible.galaxy_command = "ansible-galaxy install -r %{role_file} --force"
-          ansible.limit = "all"
-          ansible.playbook = "/finding_aid_discovery/ansible/site.yml"
+          ansible.install_mode = 'pip3'
+          ansible.inventory_path = '/finding_aid_discovery/ansible/inventories/vagrant'
+          ansible.galaxy_role_file = '/finding_aid_discovery/ansible/roles/requirements.yml'
+          ansible.galaxy_roles_path = '/finding_aid_discovery/ansible/roles'
+          ansible.galaxy_command = 'ansible-galaxy install -r %<role_file>s --force'
+          ansible.limit = 'all'
+          ansible.playbook = '/finding_aid_discovery/ansible/site.yml'
           ansible.verbose = false
         end
       end
