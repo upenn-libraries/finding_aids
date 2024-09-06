@@ -26,6 +26,7 @@ services:
       RAILS_ENV: ${FINDING_AID_DISCOVERY_RAILS_ENV}
       RAILS_LOG_TO_STDOUT: "true"
       SOLR_URL: "${FINDING_AID_DISCOVERY_SOLR_URL}"
+      SOLR_TEST_URL: "${FINDING_AID_DISCOVERY_SOLR_TEST_URL}"
     healthcheck:
       test:
         [

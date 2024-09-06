@@ -107,7 +107,7 @@ rspec_app_test:
           source /opt/bitnami/scripts/libsolr.sh;solr_start_bg &&
           /opt/bitnami/solr/bin/solr auth enable -type basicAuth -credentials ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} -z 127.0.0.1:9983 &&
           /opt/bitnami/solr/bin/solr zk upconfig -n finding-aid-discovery -d ${CI_PROJECT_DIR}/ansible/roles/finding_aid_discovery/files/src/solr/conf/ -z 127.0.0.1:9983 &&
-          /opt/bitnami/solr/bin/solr create_collection -c finding-aid-discovery -n finding-aid-discovery &&
+          /opt/bitnami/solr/bin/solr create_collection -c finding-aid-discovery-test -n finding-aid-discovery &&
           source /opt/bitnami/scripts/libsolr.sh;solr_stop &&
           /opt/bitnami/scripts/solr/run.sh
       variables:
@@ -132,7 +132,7 @@ rspec_app_test:
     RAILS_SYSTEM_TESTING_SCREENSHOT_HTML: "1"
     SOLR_ADMIN_USERNAME: admin
     SOLR_ADMIN_PASSWORD: password
-    SOLR_URL: "http://${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}@solr:8983/solr/finding-aid-discovery"
+    SOLR_TEST_URL: "http://${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}@solr:8983/solr/finding-aid-discovery-test"
   script:
     - cd ${CI_PROJECT_DIR}/ansible/roles/finding_aid_discovery/files/src/
     - bundle add rspec_junit_formatter

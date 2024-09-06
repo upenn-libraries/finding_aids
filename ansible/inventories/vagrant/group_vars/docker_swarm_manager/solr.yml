@@ -1,6 +1,10 @@
 ---
 solr_collections:
-  - name: finding-aid-discovery-dev
+  - name: finding-aid-discovery-development
+    configset: finding-aid-discovery
+    replicas: 1
+    shards: 1
+  - name: finding-aid-discovery-test
     configset: finding-aid-discovery
     replicas: 1
     shards: 1
