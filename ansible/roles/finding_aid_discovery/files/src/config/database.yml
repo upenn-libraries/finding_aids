@@ -12,7 +12,7 @@ default: &default
 
 development:
   <<: *default
-  database: finding_aid_discovery_development
+  database: finding_aid_discovery
 
 test:
   <<: *default

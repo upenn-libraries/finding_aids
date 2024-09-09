@@ -1,6 +1,6 @@
 ---
 postgres:
-  database: "finding_aid_discovery_development"
+  database: "finding_aid_discovery"
   dev_env:
     log_connections: "on"
     log_disconnections: "on"
