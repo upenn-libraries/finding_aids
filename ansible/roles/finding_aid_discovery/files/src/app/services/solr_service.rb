@@ -7,7 +7,7 @@ class SolrService
   LEGACY_ID_FIELD = 'legacy_ids_ssim'
 
   def initialize
-    @solr = RSolr.connect url: ENV.fetch('SOLR_URL')
+    @solr = RSolr.connect url: Settings.solr.url
   end
 
   # @param [String] legacy_id
