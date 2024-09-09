@@ -37,7 +37,7 @@ services:
         max-file: "3"
         max-size: "10m"
     networks:
-      - database
+      - postgres
       - redis
       - traefik
     secrets:
@@ -50,7 +50,7 @@ services:
       - slack_notification_email_address
 
 networks:
-  database:
+  postgres:
     external: true
   redis:
     external: true

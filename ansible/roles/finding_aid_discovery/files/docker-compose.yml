@@ -43,7 +43,7 @@ services:
         max-file: "3"
         max-size: "10m"
     networks:
-      - database
+      - postgres
       - finding_aid_discovery
       - traefik
     secrets:
@@ -55,7 +55,7 @@ services:
       - rails_master_key
 
 networks:
-  database:
+  postgres:
     external: true
   finding_aid_discovery:
     driver: overlay

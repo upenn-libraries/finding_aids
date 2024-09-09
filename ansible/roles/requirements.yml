@@ -6,6 +6,11 @@ roles:
     scm: git
     version: master
 
+  - name: postgres
+    src: https://gitlab.library.upenn.edu/devops/ansible/roles/postgres.git
+    scm: git
+    version: 1.1.1 
+
   - name: solr
     src: https://gitlab.library.upenn.edu/devops/ansible/roles/solr.git
     scm: git

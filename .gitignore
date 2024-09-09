@@ -1,5 +1,6 @@
 # Ignore ansible galaxy roles
 ansible/roles/atosatto.docker-swarm
+ansible/roles/postgres
 ansible/roles/solr
 ansible/roles/traefik
 ansible/roles/zookeeper

@@ -1,12 +1,11 @@
 ---
-postgres:
-  database: "finding_aid_discovery"
-  image:
-    name: "postgres"
-    tag: "14"
-  replicas: 1
-  secrets:
-    password:
-      value: "{{ finaids_vault_values.secret.database_password }}"
-      version: "{{ finaids_vault_values.metadata.version }}"
-  user: "finding_aid_discovery"
+postgres_database_name: "finding_aid_discovery"
+postgres_database_user: "finding_aid_discovery"
+postgres_database_versioned_secrets:
+  database_password:
+    secret_name_prefix: "postgres_database_password_v"
+    value: "{{ finaids_vault_values.secret.database_password }}"
+    version: "{{ finaids_vault_values.metadata.version }}"
+postgres_dev_env: true
+postgres_docker_image_name: "postgres"
+postgres_docker_image_tag: "14"

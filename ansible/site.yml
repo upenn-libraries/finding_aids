@@ -11,32 +11,32 @@
   become: true
   gather_facts: true
   tasks:
-    - name: "Import app symlink"
-      ansible.builtin.import_role:
-        name: finding_aid_discovery
-        tasks_from: symlink_project
-      tags: finding_aid_discovery
-    - name: "Import traefik"
-      ansible.builtin.import_role:
-        name: traefik
-      tags: traefik
-    - name: "Import postgres"
-      ansible.builtin.import_role:
-        name: postgres
-      tags: postgres
-    - name: "Import zookeeper"
-      ansible.builtin.import_role:
-        name: zookeeper
-      tags: zookeeper
-    - name: "Import zoonavigator"
-      ansible.builtin.import_role:
-        name: zoonavigator
-      tags: zoonavigator
-      when: not is_development | default(false, true)
-    - name: "Import solr"
-      ansible.builtin.import_role:
-        name: solr
-      tags: solr
+    # - name: "Import app symlink"
+    #   ansible.builtin.import_role:
+    #     name: finding_aid_discovery
+    #     tasks_from: symlink_project
+    #   tags: finding_aid_discovery
+    # - name: "Import traefik"
+    #   ansible.builtin.import_role:
+    #     name: traefik
+    #   tags: traefik
+    # - name: "Import postgres"
+    #   ansible.builtin.import_role:
+    #     name: postgres
+    #   tags: postgres
+    # - name: "Import zookeeper"
+    #   ansible.builtin.import_role:
+    #     name: zookeeper
+    #   tags: zookeeper
+    # - name: "Import zoonavigator"
+    #   ansible.builtin.import_role:
+    #     name: zoonavigator
+    #   tags: zoonavigator
+    #   when: not is_development | default(false, true)
+    # - name: "Import solr"
+    #   ansible.builtin.import_role:
+    #     name: solr
+    #   tags: solr
     - name: "Import finding_aid_discovery"
       ansible.builtin.import_role:
         name: finding_aid_discovery

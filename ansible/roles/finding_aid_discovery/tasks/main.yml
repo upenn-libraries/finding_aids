@@ -61,9 +61,9 @@
   changed_when: false
   environment:
     CHROME_PORT: "{{ chrome.port }}"
-    DATABASE_NAME: "{{ postgres.database }}"
-    DATABASE_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
-    DATABASE_USER: "{{ postgres.user }}"
+    DATABASE_NAME: "{{ postgres_database_name }}"
+    DATABASE_PASSWORD: "{{ 'postgres_database_password_v' + postgres_database_versioned_secrets.database_password.version }}"
+    DATABASE_USER: "{{ postgres_database_user }}"
     FINDING_AID_DISCOVERY_HONEYBADGER_API_KEY: "{{ 'finding_aid_discovery_honeybadger_api_key_v' ~ finding_aid_discovery.versioned_secrets.honeybadger_api_key.version }}"
     FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.name }}"
     FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"
@@ -100,9 +100,9 @@
     state: present
   changed_when: false
   environment:
-    DATABASE_NAME: "{{ postgres.database }}"
-    DATABASE_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
-    DATABASE_USER: "{{ postgres.user }}"
+    DATABASE_NAME: "{{ postgres_database_name }}"
+    DATABASE_PASSWORD: "{{ 'postgres_database_password_v' + postgres_database_versioned_secrets.database_password.version }}"
+    DATABASE_USER: "{{ postgres_database_user }}"
     FINDING_AID_DISCOVERY_HONEYBADGER_API_KEY: "{{ 'finding_aid_discovery_honeybadger_api_key_v' ~ finding_aid_discovery.versioned_secrets.honeybadger_api_key.version }}"
     FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.registry }}"
     FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"
