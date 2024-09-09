@@ -15,7 +15,7 @@
 - [Harvesting](#harvesting)
 
 ## Overview
-This repository includes the infrastructure and application code that supports the PACSCL/Penn Libraries Finding Aids discovery site. Development occurs within a robust vagrant environment. Setup and initialization of this environment, as well as information about the deployed staging and production environments, is contained here. Information about the Rails app can be found [here](/ansible/roles/finding_aid_discovery/files/src/README.md).
+This repository includes the infrastructure and application code that supports the PACSCL/Penn Libraries Finding Aids discovery site. Development occurs within a robust vagrant environment. Setup and initialization of this environment, as well as information about the deployed staging and production environments, is contained here. Information about the Rails app can be found [here](/rails_app/README.md).
 
 ## Development
 
@@ -74,7 +74,7 @@ When running the development environment you can access the traefik web ui by na
 
 
 #### Rails Application
-For information about the Rails application, see the [README](/ansible/roles/finding_aid_discovery/files/src/README.md) in the Rails application root. This includes information about running the test suite, performing harvesting, development styleguide and general application information.
+For information about the Rails application, see the [README](/rails_app/README.md) in the Rails application root. This includes information about running the test suite, performing harvesting, development styleguide and general application information.
 
 #### Solr Admin
 
