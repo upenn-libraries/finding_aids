@@ -3,42 +3,57 @@
   hosts: docker_swarm_manager
   become: true
   tasks:
-    - ansible.builtin.import_tasks: "provision_docker.yml"
+    - name: "Import docker provisioning tasks"
+      ansible.builtin.import_tasks: "provision_docker.yml"
 
 - name: "Deploy application"
   hosts: docker_swarm_manager
   become: true
   gather_facts: true
   tasks:
-    - ansible.builtin.import_role:
+    - name: "Import app symlink"
+      ansible.builtin.import_role:
+        name: finding_aid_discovery
+        tasks_from: symlink_project
+      tags: finding_aid_discovery
+    - name: "Import traefik"
+      ansible.builtin.import_role:
         name: traefik
       tags: traefik
-    - ansible.builtin.import_role:
+    - name: "Import postgres"
+      ansible.builtin.import_role:
         name: postgres
       tags: postgres
-    - ansible.builtin.import_role:
+    - name: "Import zookeeper"
+      ansible.builtin.import_role:
         name: zookeeper
       tags: zookeeper
-    - ansible.builtin.import_role:
+    - name: "Import zoonavigator"
+      ansible.builtin.import_role:
         name: zoonavigator
       tags: zoonavigator
-      when: not is_development | default (false, true)
-    - ansible.builtin.import_role:
+      when: not is_development | default(false, true)
+    - name: "Import solr"
+      ansible.builtin.import_role:
         name: solr
       tags: solr
-    - ansible.builtin.import_role:
+    - name: "Import finding_aid_discovery"
+      ansible.builtin.import_role:
         name: finding_aid_discovery
       tags: finding_aid_discovery
-    - ansible.builtin.import_role:
+    - name: "Import redis"
+      ansible.builtin.import_role:
         name: redis
       tags: redis
-    - ansible.builtin.import_role:
+    - name: "Import sidekiq"
+      ansible.builtin.import_role:
         name: sidekiq
       tags: sidekiq
-    - ansible.builtin.import_role:
+    - name: "Import chrome"
+      ansible.builtin.import_role:
         name: chrome
       tags: chrome
-      when: is_development | default (false) == true
+      when: is_development | default(false, true)
   post_tasks:
     - name: Recursively remove project directory
       ansible.builtin.file:
@@ -50,4 +65,4 @@
         images_filters:
           dangling: false
           until: 2h
-      when: not is_development | default (false, true)
+      when: not is_development | default(false, true)
