@@ -13,7 +13,8 @@ if [ "$1" = "bundle" -a "$2" = "exec" -a "$3" = "puma" ] || [ "$1" = "bundle" -a
         bundle install -j$(nproc) --retry 3
 
         # since we are running a dev env we remove node_modules and install our dependencies
-        su - app -c $(rm -rf node_modules && yarn install --no-bin-links)
+        # this is commented out in more recent Vagrant environments that do not manifest the .node_modules issue during provisioning
+        # su - app -c $(rm -rf node_modules && yarn install --no-bin-links)
     fi
 
     # remove puma server.pid
@@ -26,6 +27,11 @@ if [ "$1" = "bundle" -a "$2" = "exec" -a "$3" = "puma" ] || [ "$1" = "bundle" -a
         bundle exec rake db:migrate
         bundle exec rake tools:ensure_sitemap
         bundle exec rake tools:robotstxt
+
+        if [ "${RAILS_ENV}" = "development" ] || [ "${RAILS_ENV}" = "test" ]; then
+            bundle exec rake db:create RAILS_ENV=test
+            bundle exec rake db:migrate RAILS_ENV=test
+        fi
     fi
 
     chown -R app:app .

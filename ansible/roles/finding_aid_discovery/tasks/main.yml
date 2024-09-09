@@ -74,6 +74,7 @@
     FINDING_AID_DISCOVERY_RAILS_MASTER_KEY: "{{ 'finding_aid_discovery_rails_master_key_v' ~ finding_aid_discovery.versioned_secrets.rails_master_key.version }}"
     FINDING_AID_DISCOVERY_SLACK_NOTIFICATION_EMAIL_ADDRESS: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery.versioned_secrets.slack_notification_email_address.version }}"
     FINDING_AID_DISCOVERY_SOLR_URL: "{{ finding_aid_discovery.solr_url }}"
+    FINDING_AID_DISCOVERY_SOLR_TEST_URL: "{{ finding_aid_discovery.solr_test_url }}"
     FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
     REPLICAS: "{{ finding_aid_discovery.replicas }}"
   no_log: true

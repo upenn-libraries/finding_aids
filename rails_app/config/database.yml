@@ -1,6 +1,5 @@
 default: &default
   adapter: postgresql
-  database: <%= ENV['DATABASE_NAME'] %>
   encoding: unicode
   host: postgres
   password: <%= File.exist?('/run/secrets/database_password') ? File.read('/run/secrets/database_password').strip : ENV['DATABASE_PASSWORD'] %>
@@ -13,12 +12,16 @@ default: &default
 
 development:
   <<: *default
+  database: finding_aid_discovery
 
 test:
   <<: *default
+  database: finding_aid_discovery_test
 
 staging:
   <<: *default
+  database: finding_aid_discovery
 
 production:
   <<: *default
+  database: finding_aid_discovery
