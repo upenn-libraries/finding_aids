@@ -152,7 +152,7 @@ title = "gitlab gitleaks config"
         ]
         paths = [
             '''ansible/vault_passwd-client.py''',
-            '''ansible/roles/finding_aid_discovery/files/src/config/initializers/devise.rb'''
+            '''rails_app/config/initializers/devise.rb'''
         ]
         regexes = [
             '''\:\s+\"\{\{''',
@@ -175,7 +175,7 @@ title = "gitlab gitleaks config"
         description = "ignore false positive - files with possible keys and credentials"
         paths = [
             '''ansible/vault_passwd-client.py''',
-            '''ansible/roles/finding_aid_discovery/files/src/config/initializers/devise.rb'''
+            '''rails_app/config/initializers/devise.rb'''
         ]
 
 [[rules]]
