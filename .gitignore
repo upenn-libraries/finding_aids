@@ -4,7 +4,7 @@ ansible/roles/solr
 ansible/roles/traefik
 ansible/roles/zookeeper
 ansible/roles/zoonavigator
-ansible/roles/finding_aid_discovery/files/src/
+ansible/roles/finding_aid_discovery/files/src
 
 # exclude ansible collections
 ansible/collections
