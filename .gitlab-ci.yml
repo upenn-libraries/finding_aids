@@ -43,9 +43,9 @@ build_and_push_base_app_image:
       - RUNNER: build
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   variables:
-    DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
+    DOCKER_BUILD_CONTEXT: "rails_app/"
     DOCKER_TARGET: "base"
-    DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
+    DOCKERFILE_PATH: "rails_app/"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   tags:
     - ${RUNNER}
@@ -64,9 +64,9 @@ build_and_push_dev_app_image:
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   variables:
     DOCKER_BUILD_ARGS: "--build-arg RAILS_ENV=development"
-    DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
+    DOCKER_BUILD_CONTEXT: "rails_app/"
     DOCKER_TARGET: "development"
-    DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
+    DOCKERFILE_PATH: "rails_app/"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   needs:
     - build_and_push_base_app_image
@@ -106,7 +106,7 @@ rspec_app_test:
         - |
           source /opt/bitnami/scripts/libsolr.sh;solr_start_bg &&
           /opt/bitnami/solr/bin/solr auth enable -type basicAuth -credentials ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} -z 127.0.0.1:9983 &&
-          /opt/bitnami/solr/bin/solr zk upconfig -n finding-aid-discovery -d ${CI_PROJECT_DIR}/ansible/roles/finding_aid_discovery/files/src/solr/conf/ -z 127.0.0.1:9983 &&
+          /opt/bitnami/solr/bin/solr zk upconfig -n finding-aid-discovery -d ${CI_PROJECT_DIR}/rails_app/solr/conf/ -z 127.0.0.1:9983 &&
           /opt/bitnami/solr/bin/solr create_collection -c finding-aid-discovery-test -n finding-aid-discovery &&
           source /opt/bitnami/scripts/libsolr.sh;solr_stop &&
           /opt/bitnami/scripts/solr/run.sh
@@ -134,7 +134,7 @@ rspec_app_test:
     SOLR_ADMIN_PASSWORD: password
     SOLR_TEST_URL: "http://${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}@solr:8983/solr/finding-aid-discovery-test"
   script:
-    - cd ${CI_PROJECT_DIR}/ansible/roles/finding_aid_discovery/files/src/
+    - cd ${CI_PROJECT_DIR}/rails_app/
     - bundle add rspec_junit_formatter
     - bundle exec rake db:reset
     - i=0
@@ -151,18 +151,18 @@ rspec_app_test:
   coverage: '/\(\d+.\d+\%\) covered/'
   artifacts:
     paths:
-      - ansible/roles/finding_aid_discovery/files/src/tmp/coverage/index.html
-      - ansible/roles/finding_aid_discovery/files/src/tmp/capybara
-      - ansible/roles/finding_aid_discovery/files/src/rspec.xml
+      - rails_app/tmp/coverage/index.html
+      - rails_app/tmp/capybara
+      - rails_app/rspec.xml
     expire_in: 1 week
     reports:
-      junit: ansible/roles/finding_aid_discovery/files/src/rspec.xml
+      junit: rails_app/rspec.xml
   rules:
     - if: $DISABLE_RSPEC_TEST == "true"
       when: never
     - exists:
-        - ansible/roles/finding_aid_discovery/files/src/spec/**.rb
-        - ansible/roles/finding_aid_discovery/files/src/spec/**/**.rb
+        - rails_app/spec/**.rb
+        - rails_app/spec/**/**.rb
   tags:
     - build
 
@@ -174,12 +174,12 @@ rubocop_app_test:
   extends:
     - .rubocop
   before_script:
-    - cd ansible/roles/finding_aid_discovery/files/src/
+    - cd rails_app/
   rules:
     - if: $DISABLE_RUBOCOP == "true"
       when: never
     - exists:
-        - ansible/roles/finding_aid_discovery/files/src/.rubocop.yml
+        - rails_app/.rubocop.yml
   tags:
     - build
 # -- End - test dev image
@@ -197,9 +197,9 @@ build_and_push_prod_app_image:
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   variables:
     DOCKER_BUILD_ARGS: "--build-arg RAILS_ENV=production"
-    DOCKER_BUILD_CONTEXT: "ansible/roles/finding_aid_discovery/files/src/"
+    DOCKER_BUILD_CONTEXT: "rails_app/"
     DOCKER_TARGET: "production"
-    DOCKERFILE_PATH: "ansible/roles/finding_aid_discovery/files/src/"
+    DOCKERFILE_PATH: "rails_app/"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   needs:
     - rspec_app_test
