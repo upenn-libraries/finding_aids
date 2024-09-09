@@ -136,7 +136,7 @@ rspec_app_test:
   script:
     - cd ${CI_PROJECT_DIR}/ansible/roles/finding_aid_discovery/files/src/
     - bundle add rspec_junit_formatter
-    - bundle exec rake db:migrate
+    - bundle exec rake db:reset
     - i=0
     - >
       while [ $i -le 9 ]; do
