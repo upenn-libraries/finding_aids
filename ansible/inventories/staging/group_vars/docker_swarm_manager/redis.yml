@@ -1,28 +1,10 @@
 ---
-redis:
-  image:
-    name: "redis"
-    tag: "7.0-alpine"
-  port: 6379
-  replicas: 1
-  versioned_configs:
-    redis_conf:
-      filename: "redis.conf.j2"
-      version: 1
-    users_acl:
-      filename: "users.acl.j2"
-      users: [
-        {
-          name: "sidekiq",
-          acl_rules: "+@all ~*",
-          password: "{{ finaids_vault_values.secret.redis_sidekiq_password }}",
-          version: "{{ finaids_vault_values.metadata.version }}"
-        },
-        {
-          name: "default",
-          acl_rules: "+@all ~*",
-          password: "{{ finaids_vault_values.secret.redis_default_password }}",
-          version: "{{ finaids_vault_values.metadata.version }}"
-        }
-      ]
-      version: "{{ finaids_vault_values.metadata.version }}"
+redis_users:
+  - name: "sidekiq"
+    acl_rules: "+@all ~*"
+    password: "{{ finaids_vault_values.secret.redis_sidekiq_password }}"
+    version: "{{ finaids_vault_values.metadata.version }}"
+  - name: "default"
+    acl_rules: "+@all ~*"
+    password: "{{ finaids_vault_values.secret.redis_default_password }}"
+    version: "{{ finaids_vault_values.metadata.version }}"

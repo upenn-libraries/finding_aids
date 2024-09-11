@@ -78,7 +78,7 @@
     FINDING_AID_DISCOVERY_SOLR_URL: "{{ finding_aid_discovery.solr_url }}"
     REDIS_SIDEKIQ_USER: "sidekiq"
     REDIS_SIDEKIQ_PASSWORD: "{{ 'redis_sidekiq_password_v' ~ redis.versioned_configs.users_acl.users | selectattr('name', 'equalto', 'sidekiq') | map(attribute='version')  | join('') }}"
-    REDIS_PORT: "{{ redis.port }}"
+    REDIS_PORT: "{{ redis_port }}"
     REPLICAS: "{{ sidekiq.replicas }}"
   no_log: true
   when: not is_development | default (false) == true
