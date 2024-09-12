@@ -9,6 +9,4 @@ Rails.application.configure do
 
   # Use sidekiq in staging
   config.active_job.queue_adapter = :sidekiq
-
-  config.credentials.key_path = '/run/secrets/rails_master_key'
 end
