@@ -83,9 +83,6 @@ services:
       - penn_aspace_api_username
       - source: rails_master_key
         target: /home/app/config/credentials/{{ finding_aid_discovery_rails_env }}.key
-        uid: "1000"
-        gid: "1000"
-        mode: 0440
     {% if is_development == false %}
       - honeybadger_api_key
     {% endif %}
