@@ -1,23 +1,15 @@
 ---
-- name: Create chrome dir
-  file:
-    path: "{{ project_root ~ '/chrome' }}"
-    state: directory
+- name: "Debug - Output docker-compose.yml object"
+  ansible.builtin.debug:
+    msg: "{{ lookup('template', 'docker-compose.yml.j2') }}"
+  when: is_development | default (false, true)
+  tags:
+    - debug
 
-- name: Copy docker-compose file
-  copy:
-    src: "../files/docker-compose.yml"
-    dest: "{{ project_root ~ '/chrome/' }}"
-
-- name: Deploy chrome
-  docker_stack:
+- name: Deploy Chrome
+  community.docker.docker_stack:
     name: "fad"
     compose:
-      - "{{ project_root ~ '/chrome/docker-compose.yml' }}"
+      - "{{ lookup('template', 'docker-compose.yml.j2') | from_yaml }}"
     state: present
   changed_when: false
-  environment:
-    CHROME_IMAGE_NAME: "{{ chrome.image.name }}"
-    CHROME_IMAGE_TAG: "{{ chrome.image.tag }}"
-    CHROME_PORT: "{{ chrome.port }}"
-  no_log: true

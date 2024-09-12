@@ -1,119 +1,45 @@
 ---
-- name: Create finding_aid_discovery dir
-  file:
-    path: "{{ project_root ~ '/finding_aid_discovery' }}"
-    state: directory
-
-# If is_development = true and finding_aid_discovery.build_docker_image = false
+# If is_development = true and finding_aid_discovery_build_docker_image = false
 # Pull existing docker image from the registry to reduce build time
 - name: Pull and use docker image from registry
   block:
     # Pull registry image
     - name: Pull the image from the registry
-      docker_image:
-        force_source: yes
-        force_tag: yes
-        name: "{{ finding_aid_discovery.image.registry ~ ':' ~ finding_aid_discovery.image.tag }}"
-        repository: "{{ finding_aid_discovery.image.name ~ ':' ~ finding_aid_discovery.image.tag }}"
+      community.docker.docker_image:
+        force_source: true
+        force_tag: true
+        name: "{{ finding_aid_discovery_docker_image_registry }}:{{ finding_aid_discovery_docker_image_tag }}"
+        repository: "{{ finding_aid_discovery_docker_image_name }}:{{ finding_aid_discovery_docker_image_tag }}"
         source: pull
-      when: is_development and not finding_aid_discovery.build_docker_image | default (false) == true
+      when: is_development and not finding_aid_discovery_build_docker_image | default(false, true)
       tags: dev_environment
   rescue:
     # An error occurred in the process of pulling the registry so build the image instead
     - name: Failed to find registry image - building image instead
-      import_tasks: "./dev/build_docker_image.yml"
-      when: is_development and not finding_aid_discovery.build_docker_image | default (false) == true
+      ansible.builtin.import_tasks: "build_docker_image.yml"
+      when: is_development and not finding_aid_discovery_build_docker_image | default(false, true)
       tags: dev_environment
 
 # Build the docker image
 - name: "Build docker image"
-  import_tasks: "./dev/build_docker_image.yml"
-  when: is_development and finding_aid_discovery.build_docker_image | default (false) == true
+  ansible.builtin.import_tasks: "build_docker_image.yml"
+  when: is_development and finding_aid_discovery_build_docker_image | default(false, true)
   tags: dev_environment
 
-- name: Copy base and dev docker-compose files
-  copy:
-    src: "../files/{{ item }}"
-    dest: "{{ project_root ~ '/finding_aid_discovery/' }}"
-  when: is_development | default (false) == true
-  loop:
-    - "docker-compose.yml"
-    - "docker-compose.dev.yml"
-  tags: dev_environment
-
+# @tag docker_secrets:description: Create versioned docker secrets
 - name: Create versioned docker secrets
-  docker_secret:
+  community.docker.docker_secret:
     name: "{{ 'finding_aid_discovery_' ~ item.key ~ '_v' ~ item.value.version }}"
     data: "{{ item.value.value }}"
     state: present
-  with_dict:
-    - "{{ finding_aid_discovery.versioned_secrets }}"
+  loop: "{{ finding_aid_discovery_versioned_secrets | dict2items }}"
   tags: versioned_secrets
-  no_log: true
+  # no_log: true
 
-- name: Deploy Finding Aid development environment
-  docker_stack:
+- name: Deploy Finding Aids
+  community.docker.docker_stack:
     name: "fad"
     compose:
-      - "{{ project_root ~ '/finding_aid_discovery/docker-compose.yml' }}"
-      - "{{ project_root ~ '/finding_aid_discovery/docker-compose.dev.yml' }}"
+      - "{{ lookup('template', 'docker-compose.yml.j2') | from_yaml }}"
     state: present
   changed_when: false
-  environment:
-    CHROME_PORT: "{{ chrome.port }}"
-    DATABASE_NAME: "{{ postgres.database }}"
-    DATABASE_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
-    DATABASE_USER: "{{ postgres.user }}"
-    FINDING_AID_DISCOVERY_HONEYBADGER_API_KEY: "{{ 'finding_aid_discovery_honeybadger_api_key_v' ~ finding_aid_discovery.versioned_secrets.honeybadger_api_key.version }}"
-    FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.name }}"
-    FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"
-    FINDING_AID_DISCOVERY_PENN_ASPACE_API_PASSWORD: "{{ 'finding_aid_discovery_penn_aspace_api_password_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_password.version }}"
-    FINDING_AID_DISCOVERY_PENN_ASPACE_API_USERNAME: "{{ 'finding_aid_discovery_penn_aspace_api_username_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_username.version }}"
-    FINDING_AID_DISCOVERY_PORT: "{{ finding_aid_discovery.port }}"
-    FINDING_AID_DISCOVERY_RAILS_ENV: "{{ finding_aid_discovery.rails_env }}"
-    FINDING_AID_DISCOVERY_RAILS_MASTER_KEY: "{{ 'finding_aid_discovery_rails_master_key_v' ~ finding_aid_discovery.versioned_secrets.rails_master_key.version }}"
-    FINDING_AID_DISCOVERY_SLACK_NOTIFICATION_EMAIL_ADDRESS: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery.versioned_secrets.slack_notification_email_address.version }}"
-    FINDING_AID_DISCOVERY_SOLR_URL: "{{ finding_aid_discovery.solr_url }}"
-    FINDING_AID_DISCOVERY_SOLR_TEST_URL: "{{ finding_aid_discovery.solr_test_url }}"
-    FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
-    REPLICAS: "{{ finding_aid_discovery.replicas }}"
-  no_log: true
-  when: is_development | default (false) == true
-  tags: dev_environment
-
-# Execute staging/production steps
-- name: Copy docker-compose file
-  copy:
-    src: "../files/{{ item }}"
-    dest: "{{ project_root ~ '/finding_aid_discovery/' }}"
-  when: not is_development | default (false) == true
-  loop:
-    - "docker-compose.yml"
-    - "docker-compose.prod.yml"
-
-- name: Deploy Finding Aid
-  docker_stack:
-    name: "fad"
-    compose:
-      - "{{ project_root ~ '/finding_aid_discovery/docker-compose.yml' }}"
-      - "{{ project_root ~ '/finding_aid_discovery/docker-compose.prod.yml' }}"
-    state: present
-  changed_when: false
-  environment:
-    DATABASE_NAME: "{{ postgres.database }}"
-    DATABASE_PASSWORD: "{{ 'postgres_password_v' ~ postgres.secrets.password.version }}"
-    DATABASE_USER: "{{ postgres.user }}"
-    FINDING_AID_DISCOVERY_HONEYBADGER_API_KEY: "{{ 'finding_aid_discovery_honeybadger_api_key_v' ~ finding_aid_discovery.versioned_secrets.honeybadger_api_key.version }}"
-    FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.registry }}"
-    FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"
-    FINDING_AID_DISCOVERY_PENN_ASPACE_API_PASSWORD: "{{ 'finding_aid_discovery_penn_aspace_api_password_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_password.version }}"
-    FINDING_AID_DISCOVERY_PENN_ASPACE_API_USERNAME: "{{ 'finding_aid_discovery_penn_aspace_api_username_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_username.version }}"
-    FINDING_AID_DISCOVERY_PORT: "{{ finding_aid_discovery.port }}"
-    FINDING_AID_DISCOVERY_RAILS_ENV: "{{ finding_aid_discovery.rails_env }}"
-    FINDING_AID_DISCOVERY_RAILS_MASTER_KEY: "{{ 'finding_aid_discovery_rails_master_key_v' ~ finding_aid_discovery.versioned_secrets.rails_master_key.version }}"
-    FINDING_AID_DISCOVERY_SLACK_NOTIFICATION_EMAIL_ADDRESS: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery.versioned_secrets.slack_notification_email_address.version }}"
-    FINDING_AID_DISCOVERY_SOLR_URL: "{{ finding_aid_discovery.solr_url }}"
-    FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
-    REPLICAS: "{{ finding_aid_discovery.replicas }}"
-  no_log: true
-  when: not is_development | default (false) == true

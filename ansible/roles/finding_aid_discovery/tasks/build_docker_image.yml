@@ -1,12 +1,11 @@
 ---
 - name: Create custom docker image
-  docker_image:
+  community.docker.docker_image:
     build:
       path: "/finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/"
-      pull: yes
       target: development
-    force_tag: yes
-    force_source: yes
-    name: "{{ finding_aid_discovery.image.name ~ ':' ~ finding_aid_discovery.image.tag }}"
+    force_tag: true
+    force_source: true
+    name: "{{ finding_aid_discovery_docker_image_name ~ ':' ~ finding_aid_discovery_docker_image_tag }}"
     source: build
     state: present

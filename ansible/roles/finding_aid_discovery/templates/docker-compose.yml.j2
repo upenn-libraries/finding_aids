@@ -1,0 +1,132 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+
+version: "3.8"
+
+services:
+  finding_aid_discovery:
+  {% if is_development == true %}
+    image: "{{ finding_aid_discovery_docker_image_name }}:{{ finding_aid_discovery_docker_image_tag }}"
+  {% else %}
+    image: "{{ finding_aid_discovery_docker_image_registry }}:{{ finding_aid_discovery_docker_image_tag }}"
+  {% endif %}
+    command: ["bundle", "exec", "puma", "-b", "tcp://0.0.0.0:{{ finding_aid_discovery_port }}"]
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.fad.entrypoints=web"
+        - "traefik.http.routers.fad.rule=host(`{{ finding_aid_discovery_url }}`)"
+        - "traefik.http.routers.fad.service=fad"
+        - "traefik.http.services.fad.loadbalancer.server.port={{ finding_aid_discovery_port }}"
+
+      {% if is_development == true %}
+        - "traefik.http.routers.fad.middlewares=fad_https"
+        - "traefik.http.middlewares.fad_https.redirectscheme.scheme=https"
+        - "traefik.http.middlewares.fad_https.redirectscheme.permanent=true"
+
+        - "traefik.http.routers.fad_secure.entrypoints=websecure"
+        - "traefik.http.routers.fad_secure.rule=host(`{{ finding_aid_discovery_url }}`)"
+        - "traefik.http.routers.fad_secure.service=fad_secure"
+        - "traefik.http.services.fad_secure.loadbalancer.server.port={{ finding_aid_discovery_port }}"
+
+        - "traefik.http.routers.fad_secure.tls=true"
+        - "traefik.http.routers.fad_secure.tls.certresolver=letsencrypt"
+      {% endif %}
+      placement:
+        constraints:
+          - "node.labels.finding_aid_discovery == true"
+      replicas: {{ finding_aid_discovery_replicas }}
+      update_config:
+        order: "start-first"
+        parallelism: 1
+    environment:
+      DATABASE_NAME: "{{ postgres_database_name }}"
+      DATABASE_PASSWORD: /run/secrets/database_password
+      DATABASE_USER: "{{ postgres_database_user }}"
+      FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery_url }}"
+      RAILS_ENV: "{{ finding_aid_discovery_rails_env }}"
+      RAILS_LOG_TO_STDOUT: "true"
+      SOLR_URL: "{{ finding_aid_discovery_solr_url }}"
+    {% if is_development == true %}
+      APP_UID: ${UID:-1000}
+      APP_GID: ${GID:-1000}
+      CHROME_URL: "http://chrome:{{ chrome_port }}"
+      SOLR_TEST_URL: "{{ finding_aid_discovery_solr_test_url }}"
+    {% endif %}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fsSL localhost:{{ finding_aid_discovery_port }}/about || exit 1",
+        ]
+      interval: 30s
+    {% if is_development == true %}
+      retries: 20
+      start_period: 5m
+    {% else %}
+      retries: 6
+      start_period: 30s
+    {% endif %}
+      timeout: 30s
+    logging:
+      driver: json-file
+      options:
+        max-file: "3"
+        max-size: "10m"
+    networks:
+      - postgres
+      - finding_aid_discovery
+      - traefik
+    secrets:
+      - database_password
+      - slack_notification_email_address
+      - penn_aspace_api_password
+      - penn_aspace_api_username
+      - source: rails_master_key
+        target: /home/app/config/credentials/{{ finding_aid_discovery_rails_env }}.key
+        uid: "1000"
+        gid: "1000"
+        mode: 0440
+    {% if is_development == false %}
+      - honeybadger_api_key
+    {% endif %}
+    volumes:
+    {% if is_development == true %}
+      - /finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/:/home/app
+    {% else %}
+      - sitemap:/home/app/public/sitemap
+    {% endif %}
+
+networks:
+  postgres:
+    external: true
+  finding_aid_discovery:
+    driver: overlay
+    name: finding_aid_discovery
+    attachable: true
+  traefik:
+    external: true
+
+secrets:
+  database_password:
+    external: true
+    name: "{{ 'postgres_database_password_v' + postgres_database_versioned_secrets.database_password.version }}"
+  honeybadger_api_key:
+    external: true
+    name: "{{ 'finding_aid_discovery_honeybadger_api_key_v' ~ finding_aid_discovery_versioned_secrets.honeybadger_api_key.version }}"
+  penn_aspace_api_password:
+    external: true
+    name: "{{ 'finding_aid_discovery_penn_aspace_api_password_v' ~ finding_aid_discovery_versioned_secrets.penn_aspace_api_password.version }}"
+  penn_aspace_api_username:
+    external: true
+    name: "{{ 'finding_aid_discovery_penn_aspace_api_username_v' ~ finding_aid_discovery_versioned_secrets.penn_aspace_api_username.version }}"
+  rails_master_key:
+    external: true
+    name: "{{ 'finding_aid_discovery_rails_master_key_v' ~ finding_aid_discovery_versioned_secrets.rails_master_key.version }}"
+  slack_notification_email_address:
+    external: true
+    name: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery_versioned_secrets.slack_notification_email_address.version }}"
+
+{% if is_development == false %}
+volumes:
+  sitemap:
+{% endif %}
