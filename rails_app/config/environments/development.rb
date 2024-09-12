@@ -81,8 +81,6 @@ Rails.application.configure do
 
   config.hosts << ENV.fetch('FINDING_AID_DISCOVERY_URL')
 
-  config.credentials.key_path = '/run/secrets/rails_master_key'
-
   # Log to $stdout in development so output is visible in docker log
   logger           = ActiveSupport::Logger.new($stdout)
   logger.formatter = config.log_formatter
