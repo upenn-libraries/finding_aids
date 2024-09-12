@@ -1,0 +1,105 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+
+version: "3.8"
+
+services:
+  sidekiq:
+    image: "{{ finding_aid_discovery.image.name }}:{{ finding_aid_discovery.image.tag }}"
+    command: ["bundle", "exec", "sidekiq", "-c", "2"]
+    deploy:
+      placement:
+        constraints:
+          - "node.labels.sidekiq == true"
+      replicas: {{ sidekiq_replicas }}
+      update_config:
+        order: "start-first"
+        parallelism: 1
+    environment:
+      DATABASE_NAME: "{{ postgres_database_name }}"
+      DATABASE_PASSWORD: /run/secrets/database_password
+      DATABASE_USER: "{{ postgres_database_user }}"
+      FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
+      RAILS_ENV: "{{ finding_aid_discovery.rails_env }}"
+      REDIS_SIDEKIQ_USER: "sidekiq"
+      REDIS_URL: "redis://redis:{{ redis_port }}/0"
+      SOLR_URL: "{{ finding_aid_discovery.solr_url }}"
+    {% if is_development == true %}
+      APP_UID: ${UID:-1000}
+      APP_GID: ${GID:-1000}
+    {% endif %}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "ps aux | grep '[s]idekiq 6' || exit 1",
+        ]
+      interval: 30s
+      retries: 3
+      start_period: 1m
+      timeout: 30s
+    logging:
+      driver: json-file
+      options:
+        max-file: "3"
+        max-size: "10m"
+    networks:
+      - postgres
+      - redis
+      - traefik
+    secrets:
+      - database_password
+      - penn_aspace_api_password
+      - penn_aspace_api_username
+      - source: rails_master_key
+        target: /home/app/config/credentials/${RAILS_ENV}.key
+        uid: "1000"
+        gid: "1000"
+        mode: 0440
+      - redis_sidekiq_password
+      - slack_notification_email_address
+    {% if is_development == false %}
+      - honeybadger_api_key
+    {% endif %}
+    volumes:
+    {% if is_development == true %}
+      - /finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/:/home/app
+    {% else %}
+      - fad_sitemap:/home/app/public/sitemap
+    {% endif %}
+
+networks:
+  postgres:
+    external: true
+  redis:
+    external: true
+  traefik:
+    external: true
+
+secrets:
+  database_password:
+    external: true
+    name: "{{ 'postgres_database_password_v' + postgres_database_versioned_secrets.database_password.version }}"
+  honeybadger_api_key:
+    external: true
+    name: "{{ 'finding_aid_discovery_honeybadger_api_key_v' ~ finding_aid_discovery.versioned_secrets.honeybadger_api_key.version }}"
+  penn_aspace_api_password:
+    external: true
+    name: "{{ 'finding_aid_discovery_penn_aspace_api_password_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_password.version }}"
+  penn_aspace_api_username:
+    external: true
+    name: "{{ 'finding_aid_discovery_penn_aspace_api_username_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_username.version }}"
+  rails_master_key:
+    external: true
+    name: "{{ 'finding_aid_discovery_rails_master_key_v' ~ finding_aid_discovery.versioned_secrets.rails_master_key.version }}"
+  redis_sidekiq_password:
+    external: true
+    name: "{{ 'redis_sidekiq_password_v' ~ redis_users | selectattr('name', 'equalto', 'sidekiq') | map(attribute='version')  | join('') }}"
+  slack_notification_email_address:
+    external: true
+    name: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery.versioned_secrets.slack_notification_email_address.version }}"
+
+{% if is_development == false %}
+volumes:
+  fad_sitemap:
+    external: true
+{% endif %}

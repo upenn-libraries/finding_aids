@@ -3,7 +3,6 @@
   docker_image:
     build:
       path: "/finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/"
-      pull: yes
       target: development
     force_tag: yes
     force_source: yes

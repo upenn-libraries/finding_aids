@@ -1,84 +1,15 @@
 ---
-- name: Create sidekiq dir
-  file:
-    path: "{{ project_root ~ '/sidekiq' }}"
-    state: directory
-
-- name: Copy base and dev docker-compose files
-  copy:
-    src: "../files/{{ item }}"
-    dest: "{{ project_root ~ '/sidekiq/' }}"
-  when: is_development | default (false) == true
-  loop:
-    - "docker-compose.yml"
-    - "docker-compose.dev.yml"
-  tags: dev_environment
-
-- name: Deploy Sidekiq development environment
-  docker_stack:
-    name: "fad"
-    compose:
-      - "{{ project_root ~ '/sidekiq/docker-compose.yml' }}"
-      - "{{ project_root ~ '/sidekiq/docker-compose.dev.yml' }}"
-    state: present
-  changed_when: false
-  environment:
-    DATABASE_NAME: "{{ postgres_database_name }}"
-    DATABASE_PASSWORD: "{{ 'postgres_database_password_v' + postgres_database_versioned_secrets.database_password.version }}"
-    DATABASE_USER: "{{ postgres_database_user }}"
-    FINDING_AID_DISCOVERY_HONEYBADGER_API_KEY: "{{ 'finding_aid_discovery_honeybadger_api_key_v' ~ finding_aid_discovery.versioned_secrets.honeybadger_api_key.version }}"
-    FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.name }}"
-    FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"
-    FINDING_AID_DISCOVERY_PENN_ASPACE_API_PASSWORD: "{{ 'finding_aid_discovery_penn_aspace_api_password_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_password.version }}"
-    FINDING_AID_DISCOVERY_PENN_ASPACE_API_USERNAME: "{{ 'finding_aid_discovery_penn_aspace_api_username_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_username.version }}"
-    FINDING_AID_DISCOVERY_RAILS_ENV: "{{ finding_aid_discovery.rails_env }}"
-    FINDING_AID_DISCOVERY_RAILS_MASTER_KEY: "{{ 'finding_aid_discovery_rails_master_key_v' ~ finding_aid_discovery.versioned_secrets.rails_master_key.version }}"
-    FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
-    FINDING_AID_DISCOVERY_SLACK_NOTIFICATION_EMAIL_ADDRESS: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery.versioned_secrets.slack_notification_email_address.version }}"
-    FINDING_AID_DISCOVERY_SOLR_URL: "{{ finding_aid_discovery.solr_url }}"
-    REDIS_SIDEKIQ_USER: "sidekiq"
-    REDIS_SIDEKIQ_PASSWORD: "{{ 'redis_sidekiq_password_v' ~ redis.versioned_configs.users_acl.users | selectattr('name', 'equalto', 'sidekiq') | map(attribute='version')  | join('') }}"
-    REDIS_PORT: "{{ redis.port }}"
-    REPLICAS: "{{ sidekiq.replicas }}"
-  no_log: true
-  when: is_development | default (false) == true
-  tags: dev_environment
-
-# Execute staging/production steps
-- name: Copy docker-compose file
-  copy:
-    src: "../files/{{ item }}"
-    dest: "{{ project_root ~ '/sidekiq/' }}"
-  when: not is_development | default (false) == true
-  loop:
-    - "docker-compose.yml"
-    - "docker-compose.prod.yml"
+- name: "Debug - Output docker-compose.yml object"
+  ansible.builtin.debug:
+    msg: "{{ lookup('template', 'docker-compose.yml.j2') }}"
+  when: is_development | default (false, true)
+  tags:
+    - debug
 
 - name: Deploy Sidekiq
-  docker_stack:
+  community.docker.docker_stack:
     name: "fad"
     compose:
-      - "{{ project_root ~ '/sidekiq/docker-compose.yml' }}"
-      - "{{ project_root ~ '/sidekiq/docker-compose.prod.yml' }}"
+      - "{{ lookup('template', 'docker-compose.yml.j2') | from_yaml }}"
     state: present
   changed_when: false
-  environment:
-    DATABASE_NAME: "{{ postgres_database_name }}"
-    DATABASE_PASSWORD: "{{ 'postgres_database_password_v' + postgres_database_versioned_secrets.database_password.version }}"
-    DATABASE_USER: "{{ postgres_database_user }}"
-    FINDING_AID_DISCOVERY_HONEYBADGER_API_KEY: "{{ 'finding_aid_discovery_honeybadger_api_key_v' ~ finding_aid_discovery.versioned_secrets.honeybadger_api_key.version }}"
-    FINDING_AID_DISCOVERY_IMAGE_NAME: "{{ finding_aid_discovery.image.registry }}"
-    FINDING_AID_DISCOVERY_IMAGE_TAG: "{{ finding_aid_discovery.image.tag }}"
-    FINDING_AID_DISCOVERY_PENN_ASPACE_API_PASSWORD: "{{ 'finding_aid_discovery_penn_aspace_api_password_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_password.version }}"
-    FINDING_AID_DISCOVERY_PENN_ASPACE_API_USERNAME: "{{ 'finding_aid_discovery_penn_aspace_api_username_v' ~ finding_aid_discovery.versioned_secrets.penn_aspace_api_username.version }}"
-    FINDING_AID_DISCOVERY_RAILS_ENV: "{{ finding_aid_discovery.rails_env }}"
-    FINDING_AID_DISCOVERY_RAILS_MASTER_KEY: "{{ 'finding_aid_discovery_rails_master_key_v' ~ finding_aid_discovery.versioned_secrets.rails_master_key.version }}"
-    FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery.url }}"
-    FINDING_AID_DISCOVERY_SLACK_NOTIFICATION_EMAIL_ADDRESS: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery.versioned_secrets.slack_notification_email_address.version }}"
-    FINDING_AID_DISCOVERY_SOLR_URL: "{{ finding_aid_discovery.solr_url }}"
-    REDIS_SIDEKIQ_USER: "sidekiq"
-    REDIS_SIDEKIQ_PASSWORD: "{{ 'redis_sidekiq_password_v' ~ redis.versioned_configs.users_acl.users | selectattr('name', 'equalto', 'sidekiq') | map(attribute='version')  | join('') }}"
-    REDIS_PORT: "{{ redis_port }}"
-    REPLICAS: "{{ sidekiq.replicas }}"
-  no_log: true
-  when: not is_development | default (false) == true
