@@ -1,6 +1,4 @@
 ---
-chrome:
-  image:
-    name: "browserless/chrome"
-    tag: "1.59-puppeteer-1.20.0"
-  port: 3333
+chrome_docker_image_name: "browserless/chrome"
+chrome_docker_image_tag: "1.59-puppeteer-1.20.0"
+chrome_port: 3333
