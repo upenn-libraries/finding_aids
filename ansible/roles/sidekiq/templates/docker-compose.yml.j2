@@ -58,7 +58,9 @@ services:
         target: /home/app/config/credentials/{{ finding_aid_discovery_rails_env }}.key
       - redis_sidekiq_password
       - slack_notification_email_address
-    {% if is_development == false %}
+    {% if is_development == true %}
+      - sidekiq_pro_credentials
+    {% elif is_development == false %}
       - honeybadger_api_key
     {% endif %}
     volumes:
@@ -98,6 +100,11 @@ secrets:
   slack_notification_email_address:
     external: true
     name: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery_versioned_secrets.slack_notification_email_address.version }}"
+{% if is_development == true %}
+  sidekiq_pro_credentials:
+    external: true
+    name: "{{ 'finding_aid_discovery_sidekiq_pro_credentials_v' ~ finding_aid_discovery_versioned_secrets.sidekiq_pro_credentials.version }}"
+{% endif %}
 
 {% if is_development == false %}
 volumes:
