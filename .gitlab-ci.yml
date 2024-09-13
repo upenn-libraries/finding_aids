@@ -56,7 +56,7 @@ build_and_push_base_app_image:
     - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
   variables:
     DOCKER_BUILD_CONTEXT: "rails_app/"
-    DOCKER_BUILD_SECRETS: "--secret id=sidekiq_pro_credentials,env=SIDEKIQ_PRO_CREDENTIALS"
+    DOCKER_BUILD_SECRETS: "--secret id=sidekiq_pro_credentials,env=SIDEKIQ_PRO_CREDENTIALS --secret id=rails_master_key,env=RAILS_MASTER_KEY"
     DOCKER_TARGET: "base"
     DOCKERFILE_PATH: "rails_app/"
     JWT_ROLE: "sidekiq_pro_ro"
@@ -239,7 +239,6 @@ build_and_push_prod_app_image:
     - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+(\.[a-zA-Z0-9]+)?$/
       variables:
         ENVIRONMENT: "production"
-
   needs:
     - rspec_app_test
     - rubocop_app_test
