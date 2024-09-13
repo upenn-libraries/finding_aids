@@ -4,7 +4,11 @@ version: "3.8"
 
 services:
   sidekiq:
+  {% if is_development == true %}
     image: "{{ finding_aid_discovery_docker_image_name }}:{{ finding_aid_discovery_docker_image_tag }}"
+  {% else %}
+    image: "{{ finding_aid_discovery_docker_image_registry }}:{{ finding_aid_discovery_docker_image_tag }}"
+  {% endif %}
     command: ["bundle", "exec", "sidekiq", "-c", "2"]
     deploy:
       placement:
