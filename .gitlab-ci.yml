@@ -51,6 +51,8 @@ build_and_push_base_app_image:
     - !reference [.vault_jwt_auth, before_script]
     - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
     - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
+  environment:
+    name: ${ENVIRONMENT}
   variables:
     DOCKER_BUILD_CONTEXT: "rails_app/"
     DOCKER_BUILD_SECRETS: "--secret id=sidekiq_pro_credentials,env=SIDEKIQ_PRO_CREDENTIALS"
@@ -85,6 +87,8 @@ build_and_push_dev_app_image:
     DOCKER_TARGET: "development"
     DOCKERFILE_PATH: "rails_app/"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
+  environment:
+    name: ${ENVIRONMENT}
   rules:
     - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+(\.[a-zA-Z0-9]+)?$/
       variables:
@@ -232,6 +236,8 @@ build_and_push_prod_app_image:
     DOCKER_TARGET: "production"
     DOCKERFILE_PATH: "rails_app/"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
+  environment:
+    name: ${ENVIRONMENT}
   rules:
     - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+(\.[a-zA-Z0-9]+)?$/
       variables:
