@@ -9,8 +9,5 @@
       - id: sidekiq_pro_credentials
         type: value
         value: "{{ dld_sidekiq_pro_vault_values.secret.credentials }}"
-      - id: rails_master_key
-        type: value
-        value: "{{ finding_aid_discovery_versioned_secrets.rails_master_key.value }}"
     args:
         RAILS_ENV: "{{ finding_aid_discovery_rails_env }}"

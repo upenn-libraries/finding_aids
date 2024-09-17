@@ -51,13 +51,12 @@ build_and_push_base_app_image:
     - !reference [.vault_jwt_auth, before_script]
     - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
     - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
-  environment:
-    name: ${ENVIRONMENT}
   variables:
     DOCKER_BUILD_CONTEXT: "rails_app/"
     DOCKER_BUILD_SECRETS: "--secret id=sidekiq_pro_credentials,env=SIDEKIQ_PRO_CREDENTIALS"
     DOCKER_TARGET: "base"
     DOCKERFILE_PATH: "rails_app/"
+    JWT_ROLE: "sidekiq_pro_ro"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   tags:
     - ${RUNNER}
@@ -79,23 +78,14 @@ build_and_push_dev_app_image:
     - !reference [.vault_jwt_auth, before_script]
     - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
     - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
-    - export RAILS_MASTER_KEY="$(vault kv get -field=rails_master_key ${VAULT_KV_ENDPOINT}${ENVIRONMENT})"
   variables:
     DOCKER_BUILD_ARGS: "--build-arg RAILS_ENV=development"
     DOCKER_BUILD_CONTEXT: "rails_app/"
-    DOCKER_BUILD_SECRETS: "--secret id=sidekiq_pro_credentials,env=SIDEKIQ_PRO_CREDENTIALS --secret id=rails_master_key,env=RAILS_MASTER_KEY"
+    DOCKER_BUILD_SECRETS: "--secret id=sidekiq_pro_credentials,env=SIDEKIQ_PRO_CREDENTIALS"
     DOCKER_TARGET: "development"
     DOCKERFILE_PATH: "rails_app/"
+    JWT_ROLE: "sidekiq_pro_ro"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
-  environment:
-    name: ${ENVIRONMENT}
-  rules:
-    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+(\.[a-zA-Z0-9]+)?$/
-      variables:
-        ENVIRONMENT: "production"
-    - if: $CI_COMMIT_TAG == null
-      variables:
-        ENVIRONMENT: "staging"
   needs:
     - build_and_push_base_app_image
   tags:
@@ -228,23 +218,14 @@ build_and_push_prod_app_image:
     - !reference [.vault_jwt_auth, before_script]
     - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
     - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
-    - export RAILS_MASTER_KEY="$(vault kv get -field=rails_master_key ${VAULT_KV_ENDPOINT}${ENVIRONMENT})"
   variables:
     DOCKER_BUILD_ARGS: "--build-arg RAILS_ENV=production"
     DOCKER_BUILD_CONTEXT: "rails_app/"
-    DOCKER_BUILD_SECRETS: "--secret id=sidekiq_pro_credentials,env=SIDEKIQ_PRO_CREDENTIALS --secret id=rails_master_key,env=RAILS_MASTER_KEY"
+    DOCKER_BUILD_SECRETS: "--secret id=sidekiq_pro_credentials,env=SIDEKIQ_PRO_CREDENTIALS"
     DOCKER_TARGET: "production"
     DOCKERFILE_PATH: "rails_app/"
+    JWT_ROLE: "sidekiq_pro_ro"
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
-  environment:
-    name: ${ENVIRONMENT}
-  rules:
-    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+(\.[a-zA-Z0-9]+)?$/
-      variables:
-        ENVIRONMENT: "production"
-    - if: $CI_COMMIT_TAG == null
-      variables:
-        ENVIRONMENT: "staging"
   needs:
     - rspec_app_test
     - rubocop_app_test
