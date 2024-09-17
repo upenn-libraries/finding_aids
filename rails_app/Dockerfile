@@ -103,7 +103,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 COPY --from=base ${PROJECT_ROOT} ${PROJECT_ROOT}
 
 RUN --mount=type=secret,id=sidekiq_pro_credentials \
-    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x rails assets:precompile
+    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x bundle exec --verbose rake assets:precompile
 
 RUN find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
@@ -167,7 +167,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 COPY --from=base ${PROJECT_ROOT} ${PROJECT_ROOT}
 
 RUN --mount=type=secret,id=sidekiq_pro_credentials \
-    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x rails assets:precompile
+    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x bundle exec rake assets:precompile
 
 RUN find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \

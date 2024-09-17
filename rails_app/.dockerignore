@@ -7,3 +7,5 @@ docker-compose.yml
 
 tmp
 vendor/bundle
+
+config/credentials/*.key
