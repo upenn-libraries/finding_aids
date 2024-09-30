@@ -11,7 +11,7 @@ services:
     #   - /finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/tmp/uploads:/app:cached
     environment:
       # By default, it uses 3000, which is typically used by Rails.
-      PORT: {{ chrome_docker_image_name }}
+      PORT: {{ chrome_port }}
       # Set connection timeout to avoid timeout exception during debugging
       # https://docs.browserless.io/docs/docker.html#connection-timeout
       CONNECTION_TIMEOUT: 600000

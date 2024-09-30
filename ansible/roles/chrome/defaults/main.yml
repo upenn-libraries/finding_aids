@@ -1,4 +1,4 @@
 ---
 chrome_docker_image_name: "browserless/chrome"
-chrome_docker_image_tag: "1.59-puppeteer-1.20.0"
+chrome_docker_image_tag: "latest"
 chrome_port: 3333
