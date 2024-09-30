@@ -4,17 +4,12 @@ require 'rails_helper'
 require_relative 'concerns/synchronizable_spec'
 
 describe Endpoint do
-  let(:index_endpoint) { build(:endpoint, :index_harvest) }
+  let(:webpage_endpoint) { build(:endpoint, :webpage_harvest) }
 
   it_behaves_like 'synchronizable'
 
   it 'has no validation errors' do
-    expect(index_endpoint.valid?).to be true
-  end
-
-  it 'has functioning JSON accessor methods' do
-    expect(index_endpoint.url).to eq 'https://www.test.com/pacscl'
-    expect(index_endpoint.source_type).to eq 'index'
+    expect(webpage_endpoint.valid?).to be true
   end
 
   describe '#slug' do
@@ -27,7 +22,7 @@ describe Endpoint do
     end
 
     it 'must be unique' do
-      new_endpoint = create(:endpoint, :index_harvest)
+      new_endpoint = create(:endpoint, :webpage_harvest)
       endpoint.slug = new_endpoint.slug
       expect(endpoint.valid?).to be false
       expect(endpoint.errors[:slug]).to include('has already been taken')
@@ -56,25 +51,25 @@ describe Endpoint do
     end
   end
 
-  describe '#url' do
+  describe '#webpage_url' do
     let(:endpoint) { build(:endpoint) }
 
     it 'must be present' do
-      endpoint.source_type = 'index'
+      endpoint.source_type = Endpoint::WEBPAGE_TYPE
       expect(endpoint.valid?).to be false
-      expect(endpoint.errors[:url]).to include "can't be blank"
+      expect(endpoint.errors[:webpage_url]).to include "can't be blank"
     end
   end
 
-  describe '#aspace_id' do
+  describe '#aspace_repo_id' do
     let(:endpoint) { build(:endpoint) }
 
-    context 'with penn_archives_space source_type' do
+    context 'with aspace source_type' do
       it 'must be present' do
-        endpoint.source_type = 'penn_archives_space'
-        endpoint.aspace_id = nil
+        endpoint.source_type = Endpoint::ASPACE_TYPE
+        endpoint.aspace_repo_id = nil
         expect(endpoint.valid?).to be false
-        expect(endpoint.errors[:aspace_id]).to include "can't be blank"
+        expect(endpoint.errors[:aspace_repo_id]).to include "can't be blank"
       end
     end
   end
@@ -82,7 +77,7 @@ describe Endpoint do
   describe '#harvest_results' do
     context 'when harvest has never been run' do
       let(:endpoint) do
-        build(:endpoint, :index_harvest)
+        build(:endpoint, :webpage_harvest)
       end
 
       it 'return status as nil' do
@@ -92,7 +87,7 @@ describe Endpoint do
 
     context 'when harvest complete' do
       let(:endpoint) do
-        build(:endpoint, :index_harvest, :complete_harvest)
+        build(:endpoint, :webpage_harvest, :complete_harvest)
       end
 
       it 'returned status is "completed"' do
@@ -103,7 +98,7 @@ describe Endpoint do
 
     context 'when harvest failed' do
       let(:endpoint) do
-        build(:endpoint, :index_harvest, :failed_harvest)
+        build(:endpoint, :webpage_harvest, :failed_harvest)
       end
 
       it 'returned status is failed' do
@@ -118,7 +113,7 @@ describe Endpoint do
 
     context 'when harvest partially complete' do
       let(:endpoint) do
-        build(:endpoint, :index_harvest, :partial_harvest)
+        build(:endpoint, :webpage_harvest, :partial_harvest)
       end
 
       it 'returned status is partial' do
@@ -137,7 +132,7 @@ describe Endpoint do
 
     context 'when files were removed during harvest' do
       let(:endpoint) do
-        build(:endpoint, :index_harvest, :harvest_with_removals)
+        build(:endpoint, :webpage_harvest, :harvest_with_removals)
       end
       let(:removed_files) do
         [

@@ -1,4 +1,4 @@
-slug,type,tech_contact,public_contact,index_url,aspace_id
+slug,source_type,tech_contact,public_contact,webpage_url,aspace_repo_id
 UPENN_RBML, penn_archives_space, hmengel@pobox.upenn.edu, rbml@pobox.upenn.edu, https://upennstaff.as.atlas-sys.com, 4
 UPENN_CAJS, penn_archives_space, cajs@pobox.upenn.edu, cajs@pobox.upenn.edu, https://upennstaff.as.atlas-sys.com, 5
 UPENN_BIDDLE, penn_archives_space, loneil@law.upenn.edu, biddlearchives@law.upenn.edu, https://upennstaff.as.atlas-sys.com, 7

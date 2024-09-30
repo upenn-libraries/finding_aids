@@ -4,7 +4,7 @@
 module Synchronizable
   extend ActiveSupport::Concern
 
-  CSV_REQUIRED_HEADERS = %w[slug type tech_contact public_contact index_url aspace_id].freeze
+  CSV_REQUIRED_HEADERS = %w[slug source_type tech_contact public_contact webpage_url aspace_repo_id].freeze
 
   class_methods do
     # Adds, removes and update endpoints based on the data provided in the CSV. Endpoints that are not present in the
@@ -21,10 +21,9 @@ module Synchronizable
         endpoint = find_or_initialize_by(slug: attr['slug'])
         endpoint.public_contacts = Array.wrap(attr['public_contact'])
         endpoint.tech_contacts = Array.wrap(attr['tech_contact'])
-        endpoint.source_type = attr['type']
-        endpoint.url = attr['index_url']
-        endpoint.aspace_id = attr['aspace_id']
-        endpoint.harvest_config = {}
+        endpoint.source_type = attr['source_type']
+        endpoint.webpage_url = attr['webpage_url']
+        endpoint.aspace_repo_id = attr['aspace_repo_id']
         endpoint
       end
 

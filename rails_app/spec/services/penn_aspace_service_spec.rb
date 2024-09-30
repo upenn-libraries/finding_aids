@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe PennAspaceService do
+describe PennASpaceService do
   subject(:service) { described_class.new repository_id }
 
   let(:repository_id) { 1 }

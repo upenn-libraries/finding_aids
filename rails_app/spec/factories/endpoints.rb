@@ -6,15 +6,14 @@ FactoryBot.define do
     public_contacts { ['public@test.org'] }
     tech_contacts { ['tech@test.org'] }
 
-    trait :index_harvest do
-      source_type { 'index' }
-      url { 'https://www.test.com/pacscl' }
+    trait :webpage_harvest do
+      source_type { Endpoint::WEBPAGE_TYPE }
+      webpage_url { 'https://www.test.com/pacscl' }
     end
 
-    trait :penn_aspace_harvest do
-      source_type { 'penn_archives_space' }
-      url { 'https://www.test.com/pacscl' }
-      aspace_id { '1' }
+    trait :aspace_harvest do
+      source_type { Endpoint::ASPACE_TYPE }
+      aspace_repo_id { '1' }
     end
 
     trait :failed_harvest do

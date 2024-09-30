@@ -6,7 +6,7 @@ describe PennArchivesSpaceExtractor do
   let(:endpoint) { build(:endpoint, :penn_aspace_harvest) }
   let(:extractor) { described_class.new(endpoint: endpoint, api: api_client) }
   let(:api_client) do
-    client = instance_double(PennAspaceService)
+    client = instance_double(PennASpaceService)
     allow(client).to receive(:all_resource_ids).and_return(['test'])
     allow(client).to receive(:resource_ead_xml).with('test').and_return('FAKE EAD XML')
     client

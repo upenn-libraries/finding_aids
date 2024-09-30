@@ -1,7 +1,8 @@
 <h1>Last Harvest Failed</h1>
 
+<%# TODO: update information sent in notification %>
 <strong>Endpoint Slug:</strong> <%= @endpoint.slug %>
-<strong>Endpoint URL:</strong> <%= @endpoint.url %>
+<strong>Endpoint URL:</strong> <%= @endpoint.webpage_url %>
 <strong>Harvest Date:</strong> <%= @endpoint.last_harvest.date %>
 
 Harvest failed with the following errors:

@@ -9,7 +9,7 @@ class PennArchivesSpaceExtractor < BaseExtractor
   # @param [Endpoint] endpoint
   # @param [ArchivesSpaceExtractor::ArchivesSpaceApi] api
   def initialize(endpoint:, api: nil)
-    @api = api || PennAspaceService.new(endpoint.aspace_id)
+    @api = api || PennASpaceService.new(endpoint.aspace_id)
     super endpoint: endpoint
   end
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # simple wrapper for the gem-provided ASpace API
-class PennAspaceService
+class PennASpaceService
   # @param [String] repository_id
   def initialize(repository_id)
     client.repository(repository_id)

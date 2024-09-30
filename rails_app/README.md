@@ -4,7 +4,7 @@
   - [Endpoints](#endpoints)
   - [Generating Unique Identifiers](#generating-unique-identifiers)
   - [Harvesting](#harvesting)
-    - [IndexExtractor](#indexextractor)
+    - [WebpageExtractor](#webpageextractor)
     - [PennASpaceExtractor](#pennaspaceextractor)
     - [Notifications](#notifications)
     - [Status](#status)
@@ -46,7 +46,7 @@ Background jobs exist to queue up and perform the harvesting operations. [`Partn
 
 Currently two means of harvesting are supported. The means used is configured as part of the endpoint's configuration. Harvesting behavior is represented in `Extractor` classes.
 
-#### IndexExtractor
+#### WebpageExtractor
 
 This means of harvesting supports the legacy application style of basic HTML pages containing an index of links to EAD XML files. This extractor will parse a HTML document and pull out any `href`s that point to `.xml` files.
 
