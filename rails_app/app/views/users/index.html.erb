@@ -1,0 +1,29 @@
+<h1>Users</h1>
+
+<div class="btn-group mb-3">
+  <%= link_to 'Add User', new_user_path, class: 'btn btn-outline-dark' %>
+</div>
+
+<% if @users.empty? %>
+  <p>No users yet!</p>
+<% else %>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Email</th>
+      <th scope="col">Active</th>
+      <th scope="col">Created At</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @users.each do |user| %>
+      <tr class="user-row row-id-<%= user.id %>">
+        <td class="email"><%= link_to user.email, user_path(user)%></td>
+        <td class="active"><%= user.active ? 'Active' : 'Inactive' %></td>
+        <td class="created-at"><%= user.created_at.to_fs(:display) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <%= paginate @users %>
+<% end %>

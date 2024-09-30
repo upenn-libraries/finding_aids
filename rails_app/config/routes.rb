@@ -3,12 +3,18 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
   devise_scope :user do
-    post 'sign_out', to: 'devise/sessions#destroy', as: 'destroy_user_session'
+    get 'login', to: 'login#index', as: :new_user_session
+    post 'sign_out', to: 'devise/sessions#destroy', as: :destroy_user_session
   end
-  get 'login', to: 'login#index'
-  get 'admin', to: 'admin#index', as: 'admin'
+
+  scope :admin do
+    resources :users
+  end
+
+  # TODO: drop authenticated users into user UI for now, but this should probably go to the endpoints page when that is
+  #       available
   authenticated do
-    root to: 'catalog#index', as: 'authenticated_root'
+    root to: 'users#index', as: 'authenticated_root'
   end
 
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new

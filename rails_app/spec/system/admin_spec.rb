@@ -8,24 +8,24 @@ describe 'Admin index page' do
   context 'when visiting as an authenticated user' do
     before do
       sign_in user
-      visit admin_path
+      visit users_path
     end
 
-    it 'displays admin index page' do
-      expect(page).to have_text 'Admin'
+    it 'displays users index page' do
+      expect(page).to have_text user.email
     end
   end
 
   context 'when visiting as an unauthenticated user' do
     before do
-      visit admin_path
+      visit users_path
     end
 
-    it 'does not display admin index page' do
-      expect(page).not_to have_text 'Admin'
+    it 'does not display user index page' do
+      expect(page).not_to have_text user.email
     end
 
-    it 'displays alert error message' do
+    it 'redirects to login page' do
       expect(page).to have_text 'You need to sign in or sign up before continuing.'
     end
   end
