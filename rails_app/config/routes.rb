@@ -33,8 +33,8 @@ Rails.application.routes.draw do
     end
   end
 
-  scope :admin do
-    resources :endpoints, only: %i[index show]
+  scope :status do
+    resources :endpoints, only: %i[index show], controller: :status
   end
 
   get 'repositories', to: 'catalog#repositories'

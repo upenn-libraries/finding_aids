@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-# Actions for showing status information about Endpoints
-class EndpointsController < ApplicationController
+# Actions for showing Status information about endpoints
+class StatusController < ApplicationController
   layout 'application'
+
   def index
     @endpoints = Endpoint.all.order(updated_at: :desc)
   end
