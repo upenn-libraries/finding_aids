@@ -4,4 +4,6 @@
 class ASpaceInstance < ApplicationRecord
   validates :slug, :base_url, :username, presence: true
   validates :slug, format: { with: /\A[a-z_]+\z/ }, uniqueness: true
+
+  has_many :endpoints, dependent: :restrict_with_exception
 end

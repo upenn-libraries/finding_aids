@@ -45,4 +45,21 @@ describe ASpaceInstance do
       expect(aspace_instance.errors[:username]).to include('can\'t be blank')
     end
   end
+
+  describe '#endpoints' do
+    let(:endpoints) { create_list(:endpoint, 2, :aspace_harvest) }
+
+    before do
+      aspace_instance.endpoints = endpoints
+      aspace_instance.save
+    end
+
+    it 'can have many endpoints' do
+      expect(aspace_instance.endpoints).to all be_an_instance_of(Endpoint)
+    end
+
+    it 'raises an exception on delete' do
+      expect { aspace_instance.destroy }.to raise_error ActiveRecord::DeleteRestrictionError
+    end
+  end
 end

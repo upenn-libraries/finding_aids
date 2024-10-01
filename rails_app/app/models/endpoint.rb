@@ -13,6 +13,8 @@ class Endpoint < ApplicationRecord
   validates :webpage_url, presence: true, if: :webpage_type?
   validates :aspace_repo_id, presence: true, if: :aspace_type?
 
+  belongs_to :aspace_instance, optional: true
+
   # TODO: doesn't seem like these are used....
   scope :index_type, -> { where(source_type: 'index') }
   scope :penn_aspace_type, -> { where(source_type: 'penn_archives_space') }

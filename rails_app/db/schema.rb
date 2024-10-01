@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_30_191739) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_01_184047) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,6 +45,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_30_191739) do
     t.string "source_type", null: false
     t.text "webpage_url"
     t.integer "aspace_repo_id"
+    t.bigint "aspace_instance_id"
+    t.index ["aspace_instance_id"], name: "index_endpoints_on_aspace_instance_id"
     t.index ["slug"], name: "index_endpoints_on_slug", unique: true
   end
 
@@ -68,4 +70,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_30_191739) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "endpoints", "aspace_instances"
 end

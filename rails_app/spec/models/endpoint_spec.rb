@@ -150,4 +150,19 @@ describe Endpoint do
       end
     end
   end
+
+  describe '#aspace_instance' do
+    let(:endpoint) { build(:endpoint, :aspace_harvest, aspace_instance: aspace_instance) }
+    let(:aspace_instance) { create(:aspace_instance) }
+
+    it 'has no validation errors' do
+      expect(endpoint.valid?).to be true
+      expect(endpoint.aspace_instance).to be_a ASpaceInstance
+    end
+
+    it 'is an optional relationship' do
+      endpoint.aspace_instance = nil
+      expect(endpoint.valid?).to be true
+    end
+  end
 end
