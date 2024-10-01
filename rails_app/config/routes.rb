@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     post 'sign_out', to: 'devise/sessions#destroy', as: :destroy_user_session
   end
 
+  # adds in a login_path route helper
+  get 'login', to: 'login#index', as: :login_path
+
   scope :admin do
     resources :users
   end
@@ -40,7 +43,8 @@ Rails.application.routes.draw do
   end
 
   scope :status do
-    resources :endpoints, only: %i[index show], controller: :status
+    get '/', to: 'status#index', as: :endpoints_status
+    get '/:id', to: 'status#show', as: :endpoint_status
   end
 
   get 'repositories', to: 'catalog#repositories'
