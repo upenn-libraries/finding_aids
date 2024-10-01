@@ -45,6 +45,7 @@ services:
       FINDING_AID_DISCOVERY_URL: "{{ finding_aid_discovery_url }}"
       RAILS_ENV: "{{ finding_aid_discovery_rails_env }}"
       RAILS_LOG_TO_STDOUT: "true"
+      SHIB_SP_ENTITY_ID: "https://{{ finding_aid_discovery_url }}/shibboleth"
       SOLR_URL: "{{ finding_aid_discovery_solr_url }}"
     {% if is_development == true %}
       APP_UID: ${UID:-1000}
