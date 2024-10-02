@@ -8,16 +8,10 @@ Rails.application.routes.draw do
   end
 
   # adds in a login_path route helper
-  get 'login', to: 'login#index', as: :login_path
+  get 'login', to: 'login#index', as: :login
 
   scope :admin do
     resources :users
-  end
-
-  # TODO: drop authenticated users into user UI for now, but this should probably go to the endpoints page when that is
-  #       available
-  authenticated do
-    root to: 'users#index', as: 'authenticated_root'
   end
 
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new

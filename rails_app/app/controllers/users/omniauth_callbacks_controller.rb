@@ -12,7 +12,7 @@ module Users
 
     def saml
       @user = User.from_omniauth_saml(request.env['omniauth.auth'])
-      handle_user(user: @user, kind: 'saml')
+      handle_user(user: @user, kind: 'SAML')
     end
 
     def failure
