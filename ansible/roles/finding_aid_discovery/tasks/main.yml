@@ -31,7 +31,6 @@
   community.docker.docker_secret:
     name: "{{ 'finding_aid_discovery_' ~ item ~ '_v' ~ finaids_vault_values.metadata.version }}"
     data: "{{ finaids_vault_values['secret'][item] }}"
-#    data: "{{ lookup('vars', 'finaids_vault_values.secret.' ~ item ~ '.value') }}"
     state: present
   loop: "{{ finding_aid_discovery_versioned_secrets }}"
   tags: versioned_secrets
