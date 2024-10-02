@@ -48,12 +48,11 @@ RUN bundle config path ${PROJECT_ROOT}/${BUNDLE_HOME} && \
     fi
 
 RUN --mount=type=secret,id=sidekiq_pro_credentials \
-    bundle config --local gems.contribsys.com $(cat /run/secrets/sidekiq_pro_credentials)
+    bundle config set --local gems.contribsys.com $(cat /run/secrets/sidekiq_pro_credentials)
 
 RUN MAKE="make -j $(nproc)" bundle install && \
-    mkdir -p ${PROJECT_ROOT}/app/assets/builds/ && \
-    rm -rf ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/cache/*.gem && \
-    find ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/gems/ \( -name "*.c" -o -name "*.o" \) -delete
+  rm -rf ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/cache/*.gem && \
+  find ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/gems/ \( -name "*.c" -o -name "*.o" \) -delete
 
 COPY . .
 
@@ -102,10 +101,9 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 COPY --from=base ${PROJECT_ROOT} ${PROJECT_ROOT}
 
-RUN --mount=type=secret,id=sidekiq_pro_credentials \
-    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x bundle exec --verbose rake assets:precompile
-
-RUN find . -type d -exec chmod 755 {} + && \
+RUN mkdir -p ${PROJECT_ROOT}/app/assets/builds/ && \
+    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x bundle exec rake assets:precompile && \
+    find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
     find bin -type f -exec chmod 744 {} + && \
     chmod +x -R ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/bin/ && \
@@ -166,10 +164,9 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 COPY --from=base ${PROJECT_ROOT} ${PROJECT_ROOT}
 
-RUN --mount=type=secret,id=sidekiq_pro_credentials \
-    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x bundle exec rake assets:precompile
-
-RUN find . -type d -exec chmod 755 {} + && \
+RUN mkdir -p ${PROJECT_ROOT}/app/assets/builds/ && \
+    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x bundle exec rake assets:precompile && \
+    find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
     find bin -type f -exec chmod 744 {} + && \
     chmod +x -R ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/bin/ && \
