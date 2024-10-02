@@ -29,12 +29,13 @@
 # @tag docker_secrets:description: Create versioned docker secrets
 - name: Create versioned docker secrets
   community.docker.docker_secret:
-    name: "{{ 'finding_aid_discovery_' ~ item.key ~ '_v' ~ item.value.version }}"
-    data: "{{ item.value.value }}"
+    name: "{{ 'finding_aid_discovery_' ~ item ~ '_v' ~ finaids_vault_values.metadata.version }}"
+    data: "{{ finaids_vault_values['secret'][item] }}"
+#    data: "{{ lookup('vars', 'finaids_vault_values.secret.' ~ item ~ '.value') }}"
     state: present
-  loop: "{{ finding_aid_discovery_versioned_secrets | dict2items }}"
+  loop: "{{ finding_aid_discovery_versioned_secrets }}"
   tags: versioned_secrets
-  no_log: true
+  no_log: false
 
 - name: Deploy Finding Aids
   community.docker.docker_stack:

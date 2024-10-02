@@ -32,5 +32,8 @@ module FindingAidDiscovery
 
     # Default hostname used for sitemap generation.
     config.default_host = URI::HTTPS.build host: ENV.fetch('FINDING_AID_DISCOVERY_URL').to_s
+
+    # Read credentials key from Docker Secrets
+    config.credentials.key_path = '/run/secrets/rails_master_key'
   end
 end

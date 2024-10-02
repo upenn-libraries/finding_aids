@@ -7,18 +7,8 @@ finding_aid_discovery_replicas: 2
 finding_aid_discovery_solr_url: "http://finaid-prod01.library.upenn.int/solr/finding-aid-discovery"
 finding_aid_discovery_url: "findingaids.library.upenn.edu"
 finding_aid_discovery_versioned_secrets:
-  honeybadger_api_key:
-    value: "{{ finaids_vault_values.secret.honeybadger_api_key }}"
-    version: "{{ finaids_vault_values.metadata.version }}"
-  penn_aspace_api_username:
-    value: "{{ finaids_vault_values.secret.penn_aspace_api_username }}"
-    version: "{{ finaids_vault_values.metadata.version }}"
-  penn_aspace_api_password:
-    value: "{{ finaids_vault_values.secret.penn_aspace_api_password }}"
-    version: "{{ finaids_vault_values.metadata.version }}"
-  rails_master_key:
-    value: "{{ finaids_vault_values.secret.rails_master_key }}"
-    version: "{{ finaids_vault_values.metadata.version }}"
-  slack_notification_email_address:
-    value: "{{ finaids_vault_values.secret.slack_notification_email_address }}"
-    version: "{{ finaids_vault_values.metadata.version }}"
+  - honeybadger_api_key
+  - penn_aspace_api_username
+  - penn_aspace_api_password
+  - rails_master_key
+  - slack_notification_email_address
