@@ -24,7 +24,7 @@ class UsersController < ApplicationController
       redirect_to user_path(@user)
     else
       flash.alert = "Problem adding user: #{@user.errors.map(&:full_message).join(', ')}"
-      render :edit
+      render :new
     end
   end
 
