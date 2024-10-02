@@ -1,15 +1,15 @@
 <ul class="nav">
   <li class="nav-link">
-    <a href="<%= search_catalog_path %>">Homepage</a>
+    <%= link_to t('admin.menu.homepage'), root_path %>
   </li>
   <li class="nav-link">
-    <a href="<%= users_path %>">Users</a>
+    <%= link_to t('admin.menu.users'), users_path %>
   </li>
+<!--  <li class="nav-link">-->
+    <%#= link_to t('admin.menu.endpoints'), endpoints_path %>
+<!--  </li>-->
   <li class="nav-link">
-    Endpoints
-  </li>
-  <li class="nav-link">
-    <a href="<%= endpoints_status_path %>">Status Page</a>
+    <%= link_to t('admin.menu.status'), endpoints_status_path %>
   </li>
 </ul>
 

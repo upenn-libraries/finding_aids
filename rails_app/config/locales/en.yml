@@ -126,3 +126,9 @@ en:
       physdesc: 'Physical Description'
       materialspec: 'Material Specific Details'
       physloc: 'Physical Location'
+  admin:
+    menu:
+      homepage: 'Homepage'
+      users: 'Users'
+      endpoints: 'Endpoints'
+      status: 'Status Page'
