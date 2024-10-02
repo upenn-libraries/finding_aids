@@ -11,14 +11,12 @@ Rails.application.routes.draw do
     root to: 'catalog#index', as: 'authenticated_root'
   end
 
-  concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   mount Blacklight::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new
 
   resource :catalog, only: [:index], as: 'catalog', path: '/records',
                      controller: 'catalog', constraints: { id: %r{[^/]+} } do
     concerns :searchable
-    concerns :range_searchable
   end
 
   # Legacy ID lookup route

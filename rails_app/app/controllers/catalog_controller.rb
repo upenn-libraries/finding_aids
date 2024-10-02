@@ -3,7 +3,6 @@
 # Blacklight controller configuring search and record pages.
 class CatalogController < ApplicationController
   include Blacklight::Catalog
-  include BlacklightRangeLimit::ControllerOverride
 
   configure_blacklight do |config|
     # enable search state field filtering - it will be default in BL8
