@@ -35,7 +35,7 @@
     state: present
   loop: "{{ finding_aid_discovery_versioned_secrets }}"
   tags: versioned_secrets
-  no_log: false
+  no_log: true
 
 - name: Deploy Finding Aids
   community.docker.docker_stack:
