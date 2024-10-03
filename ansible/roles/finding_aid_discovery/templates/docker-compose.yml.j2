@@ -78,8 +78,8 @@ services:
       - traefik
     secrets:
       - database_password
-    {% for secret in finding_aid_discovery_versioned_secrets %}
-      - {{ secret }}
+    {% for key, value in finding_aid_discovery_versioned_secrets.items() %}
+      - {{ key }}
     {% endfor %}
     volumes:
     {% if is_development == true %}
@@ -102,10 +102,10 @@ secrets:
   database_password:
     external: true
     name: "{{ 'postgres_database_password_v' + postgres_database_versioned_secrets.database_password.version }}"
-{% for secret in finding_aid_discovery_versioned_secrets %}
-  {{ secret }}:
+{% for key, value in finding_aid_discovery_versioned_secrets.items() %}
+  {{ key }}:
     external: true
-    name: "{{ 'finding_aid_discovery_' ~ secret ~ '_v' ~ finaids_vault_values.metadata.version }}"
+    name: "{{ 'finding_aid_discovery_' ~ key ~ '_v' ~ lookup('vars', value.vault).metadata.version }}"
 {% endfor %}
 
 {% if is_development == false %}

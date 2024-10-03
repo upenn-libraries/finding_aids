@@ -53,8 +53,8 @@ services:
     secrets:
       - database_password
       - redis_sidekiq_password
-    {% for secret in finding_aid_discovery_versioned_secrets %}
-      - {{ secret }}
+    {% for key, value in finding_aid_discovery_versioned_secrets.items() %}
+      - {{ key }}
     {% endfor %}
     volumes:
     {% if is_development == true %}
@@ -78,10 +78,10 @@ secrets:
   redis_sidekiq_password:
     external: true
     name: "{{ 'redis_sidekiq_password_v' ~ redis_users | selectattr('name', 'equalto', 'sidekiq') | map(attribute='version')  | join('') }}"
-{% for secret in finding_aid_discovery_versioned_secrets %}
-  {{ secret }}:
+{% for key, value in finding_aid_discovery_versioned_secrets.items() %}
+  {{ key }}:
     external: true
-    name: "{{ 'finding_aid_discovery_' ~ secret ~ '_v' ~ finaids_vault_values.metadata.version }}"
+    name: "{{ 'finding_aid_discovery_' ~ key ~ '_v' ~ lookup('vars', value.vault).metadata.version }}"
 {% endfor %}
 
 {% if is_development == false %}

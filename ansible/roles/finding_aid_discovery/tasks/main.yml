@@ -29,10 +29,10 @@
 # @tag docker_secrets:description: Create versioned docker secrets
 - name: Create versioned docker secrets
   community.docker.docker_secret:
-    name: "{{ 'finding_aid_discovery_' ~ item ~ '_v' ~ finaids_vault_values.metadata.version }}"
-    data: "{{ finaids_vault_values['secret'][item] }}"
+    name: "{{ 'finding_aid_discovery_' ~ item.key ~ '_v' ~ lookup('vars', item.value.vault).metadata.version }}"
+    data: "{{ lookup('vars', item.value.vault).secret[item.value.name | default(item.key)] }}"
     state: present
-  loop: "{{ finding_aid_discovery_versioned_secrets }}"
+  loop: "{{ finding_aid_discovery_versioned_secrets | dict2items }}"
   tags: versioned_secrets
   no_log: true
 
