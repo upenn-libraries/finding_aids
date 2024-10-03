@@ -12,6 +12,9 @@ finding_aid_discovery_versioned_secrets:
   rails_master_key:
     value: "{{ finaids_vault_values.secret.rails_master_key }}"
     version: "{{ finaids_vault_values.metadata.version }}"
+  sidekiq_pro_credentials:
+    value: "{{ dld_sidekiq_pro_vault_values.secret.credentials }}"
+    version: "{{ dld_sidekiq_pro_vault_values.metadata.version }}"
   slack_notification_email_address:
     value: "{{ finaids_vault_values.secret.slack_notification_email_address }}"
     version: "{{ finaids_vault_values.metadata.version }}"

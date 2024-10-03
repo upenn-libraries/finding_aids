@@ -1,4 +1,5 @@
 ---
+dld_sidekiq_pro_vault_values: "{{ lookup('community.hashi_vault.vault_kv2_get', 'sidekiq_pro', engine_mount_point='dld') }}"
 is_development: true
 finaids_vault_values: "{{ lookup('community.hashi_vault.vault_kv2_get', 'finding-aids/vagrant', engine_mount_point='kv-applications') }}"
 project_root: "/opt/devops"

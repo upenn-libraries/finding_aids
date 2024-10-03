@@ -31,24 +31,28 @@ ENV BUNDLE_APP_CONFIG="${PROJECT_ROOT}/.bundle"
 
 WORKDIR ${PROJECT_ROOT}
 
-COPY Gemfile* ./
-
 # Install build packages
 RUN apk add --no-cache --virtual build-dependencies \
-        build-base \
-        git  \
-        postgresql-dev && \
-    bundle config path ${PROJECT_ROOT}/${BUNDLE_HOME} && \
+      build-base \
+      git  \
+      postgresql-dev
+
+COPY Gemfile* ./
+
+RUN bundle config path ${PROJECT_ROOT}/${BUNDLE_HOME} && \
     set -eux; \
     if [ "${RAILS_ENV}" = "development" ]; then \
     bundle config set with "development:test:assets"; \
     else \
     bundle config set without "development:test:assets"; \
-    fi && \
-    bundle install -j$(nproc) --retry 3 && \
-    rm -rf ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/cache/*.gem && \
-    find ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/gems/ \( -name "*.c" -o -name "*.o" \) -delete && \
-    apk del build-dependencies
+    fi
+
+RUN --mount=type=secret,id=sidekiq_pro_credentials \
+    bundle config set --local gems.contribsys.com $(cat /run/secrets/sidekiq_pro_credentials)
+
+RUN MAKE="make -j $(nproc)" bundle install && \
+  rm -rf ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/cache/*.gem && \
+  find ${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/gems/ \( -name "*.c" -o -name "*.o" \) -delete
 
 COPY . .
 
@@ -77,23 +81,28 @@ ENV PATH="${PROJECT_ROOT}/${BUNDLE_HOME}/ruby/${RUBY_MAJOR}/bin:${PATH}"
 
 WORKDIR ${PROJECT_ROOT}
 
-COPY ./docker-entrypoint.sh /usr/local/bin/
+RUN apk add --no-cache \
+      build-base \
+      curl \
+      git \
+      libc6-compat \
+      nodejs \
+      postgresql-dev \
+      shadow \
+      su-exec \
+      tzdata \
+      yarn && \
+    addgroup -S app && adduser -S app -G app -h ${PROJECT_ROOT} -s /bin/ash && \
+    mkdir -p ${PROJECT_ROOT}/tmp/pids
+
+COPY --from=base ${PROJECT_ROOT}/docker-entrypoint.sh /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 COPY --from=base ${PROJECT_ROOT} ${PROJECT_ROOT}
 
-RUN apk add --no-cache \
-        build-base \
-        curl \
-        git \
-        libc6-compat \
-        nodejs \
-        postgresql-dev \
-        shadow \
-        su-exec \
-        tzdata \
-        yarn && \
-    chmod +x /usr/local/bin/docker-entrypoint.sh && \
-    addgroup -S app && adduser -S app -G app -h ${PROJECT_ROOT} -s /bin/ash && \
-    mkdir -p ${PROJECT_ROOT}/tmp/pids && \
+RUN mkdir -p ${PROJECT_ROOT}/app/assets/builds/ && \
+    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x bundle exec rake assets:precompile && \
     find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
     find bin -type f -exec chmod 744 {} + && \
@@ -138,18 +147,25 @@ COPY ./docker-entrypoint.sh /usr/local/bin/
 COPY --from=base ${PROJECT_ROOT} ${PROJECT_ROOT}
 
 RUN apk add --no-cache \
-        curl \
-        libc6-compat \
-        nodejs \
-        postgresql-dev \
-        shadow \
-        su-exec \
-        tzdata \
-        yarn && \
-    chmod +x /usr/local/bin/docker-entrypoint.sh && \
+      curl \
+      libc6-compat \
+      nodejs \
+      postgresql-dev \
+      shadow \
+      su-exec \
+      tzdata \
+      yarn && \
     addgroup -S app && adduser -S app -G app -h ${PROJECT_ROOT} -s /bin/ash && \
-    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x rails assets:precompile && \
-    mkdir -p ${PROJECT_ROOT}/tmp/pids && \
+    mkdir -p ${PROJECT_ROOT}/tmp/pids
+
+COPY --from=base ${PROJECT_ROOT}/docker-entrypoint.sh /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+COPY --from=base ${PROJECT_ROOT} ${PROJECT_ROOT}
+
+RUN mkdir -p ${PROJECT_ROOT}/app/assets/builds/ && \
+    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x bundle exec rake assets:precompile && \
     find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
     find bin -type f -exec chmod 744 {} + && \
