@@ -44,6 +44,11 @@ namespace :tools do
 
   desc 'Sync all endpoints'
   task sync_endpoints: :environment do
+    # Hard coding UPenn ASpace instance for now. We'll move away from this soon.
+    ASpaceInstance.find_or_create_by(slug: 'university_of_pennsylvania') do |instance|
+      instance.base_url = 'https://upennstaff.as.atlas-sys.com'
+      instance.username = SecretsService.lookup(key: 'penn_aspace_api_username')
+    end
     Endpoint.sync_from_csv(Rails.root.join('data/endpoints.csv'))
   end
 
