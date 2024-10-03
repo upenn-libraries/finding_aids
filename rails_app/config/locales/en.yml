@@ -127,8 +127,12 @@ en:
       materialspec: 'Material Specific Details'
       physloc: 'Physical Location'
   admin:
+    heading: 'Finding Aids Admin'
     menu:
       homepage: 'Homepage'
       users: 'Users'
       endpoints: 'Endpoints'
       status: 'Status Page'
+      sign_out: 'Log Out'
+    users:
+      uid: 'PennKey'

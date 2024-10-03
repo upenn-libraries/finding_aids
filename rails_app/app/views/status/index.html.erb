@@ -1,41 +1,39 @@
-<div class="container">
-  <h1>
-    PACSCL Harvesting Status
-  </h1>
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Last Harvest</th>
-      <th scope="col">Records Harvested</th>
-      <th scope="col">Errors</th>
+<h1>
+  PACSCL Harvesting Status
+</h1>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th scope="col">Name</th>
+    <th scope="col">Last Harvest</th>
+    <th scope="col">Records Harvested</th>
+    <th scope="col">Errors</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @endpoints.each do |ep| %>
+    <tr class="<%= ep.last_harvest.failed? ? 'table-danger' : '' %> <%= "table-row-#{ep.slug}"  %>">
+      <th scope="row">
+        <%= link_to ep.slug, endpoint_status_path(ep.slug) %>
+      </th>
+      <td>
+        <%= time_since_last_harvest ep.last_harvest.date %>
+      </td>
+      <td>
+        <%# TODO: link to faceted results set? %>
+        <%= ep.last_harvest.success_files&.length %>
+        <% if ep.last_harvest.removals? %>
+          <%= "(removed #{pluralize(ep.last_harvest.removed_files&.count, 'record')})" %>
+        <% end %>
+      </td>
+      <td>
+        <% if ep.last_harvest.failed? %>
+          <%= ep.last_harvest.errors.try :join, ', ' %>
+        <% elsif ep.last_harvest.problem_files.any? %>
+          <%= link_to "#{ep.last_harvest.problem_files.count} file issues", endpoint_status_path(ep.slug.downcase) %>
+        <% end %>
+      </td>
     </tr>
-    </thead>
-    <tbody>
-    <% @endpoints.each do |ep| %>
-      <tr class="<%= ep.last_harvest.failed? ? 'table-danger' : '' %> <%= "table-row-#{ep.slug}"  %>">
-        <th scope="row">
-          <%= link_to ep.slug, endpoint_status_path(ep.slug) %>
-        </th>
-        <td>
-          <%= time_since_last_harvest ep.last_harvest.date %>
-        </td>
-        <td>
-          <%# TODO: link to faceted results set? %>
-          <%= ep.last_harvest.success_files&.length %>
-          <% if ep.last_harvest.removals? %>
-            <%= "(removed #{pluralize(ep.last_harvest.removed_files&.count, 'record')})" %>
-          <% end %>
-        </td>
-        <td>
-          <% if ep.last_harvest.failed? %>
-            <%= ep.last_harvest.errors.try :join, ', ' %>
-          <% elsif ep.last_harvest.problem_files.any? %>
-            <%= link_to "#{ep.last_harvest.problem_files.count} file issues", endpoint_status_path(ep.slug.downcase) %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-</div>
+  <% end %>
+  </tbody>
+</table>

@@ -5,6 +5,8 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_user, only: %w[show edit update destroy]
 
+  layout 'application'
+
   def index
     @users = User.page(params[:page])
   end
