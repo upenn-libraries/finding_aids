@@ -17,14 +17,14 @@ class User < ApplicationRecord
   # @return [User, nil]
   def self.from_omniauth_saml(auth)
     user = find_by(provider: auth.provider, uid: auth.info.uid.gsub('@upenn.edu', ''))
-    return nil unless user
+    return unless user
 
     user.email = auth.info.uid # update email with value from IdP, save will occur later
     user
   end
 
   # @param [OmniAuth::AuthHash] auth
-  # @return [User]
+  # @return [User, nil]
   def self.from_omniauth_developer(auth)
     return unless Rails.env.development?
 
