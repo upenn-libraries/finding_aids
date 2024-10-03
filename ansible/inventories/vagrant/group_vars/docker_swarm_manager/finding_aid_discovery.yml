@@ -9,8 +9,8 @@ finding_aid_discovery_versioned_secrets:
   rails_master_key:
     vault: finaids_vault_values
   sidekiq_pro_credentials:
-    name: credentials
     vault: dld_sidekiq_pro_vault_values
+    vault_key: credentials
   slack_notification_email_address:
     vault: finaids_vault_values
 
