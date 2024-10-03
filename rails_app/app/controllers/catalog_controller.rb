@@ -164,6 +164,10 @@ class CatalogController < ApplicationController
     @pagination = @presenter.paginator
   end
 
+  def penn
+    redirect_to search_catalog_path({ 'f[record_source][]': 'upenn' })
+  end
+
   private
 
   def json_request?
