@@ -6,8 +6,7 @@ class ApplicationController < ActionController::Base
   layout :determine_layout if respond_to? :layout
 
   # Path to redirect users to after successful authentication
-  # @todo use endpoints_path when that is available
   def after_sign_in_path_for(_resource)
-    users_path
+    admin_path
   end
 end

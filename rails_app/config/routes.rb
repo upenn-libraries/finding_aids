@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'login', to: 'login#index', as: :login
 
   scope :admin do
+    get '/', to: 'admin#index', as: :admin
     resources :users
   end
 
