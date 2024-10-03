@@ -1,17 +1,16 @@
 ---
 finding_aid_discovery_versioned_secrets:
   honeybadger_api_key:
-    value: "{{ finaids_vault_values.secret.honeybadger_api_key }}"
-    version: "{{ finaids_vault_values.metadata.version }}"
+    vault: finaids_vault_values
   penn_aspace_api_username:
-    value: "{{ finaids_vault_values.secret.penn_aspace_api_username }}"
-    version: "{{ finaids_vault_values.metadata.version }}"
+    vault: finaids_vault_values
   penn_aspace_api_password:
-    value: "{{ finaids_vault_values.secret.penn_aspace_api_password }}"
-    version: "{{ finaids_vault_values.metadata.version }}"
+    vault: finaids_vault_values
   rails_master_key:
-    value: "{{ finaids_vault_values.secret.rails_master_key }}"
-    version: "{{ finaids_vault_values.metadata.version }}"
+    vault: finaids_vault_values
+  sidekiq_pro_credentials:
+    vault: dld_sidekiq_pro_vault_values
+    vault_key: credentials
   slack_notification_email_address:
-    value: "{{ finaids_vault_values.secret.slack_notification_email_address }}"
-    version: "{{ finaids_vault_values.metadata.version }}"
+    vault: finaids_vault_values
+

@@ -61,6 +61,24 @@ en:
       show_inventory: 'Collection Inventory'
     titles:
       repositories_list: 'Repositories'
+  facets:
+      era:
+        label: 'Era'
+        century:
+          tenth: '10th Century'
+          eleventh: '11th Century'
+          twelfth: '12th Century'
+          thirteenth: '13th Century'
+          fourteenth: '14th Century'
+          fifteenth: '15th Century'
+          sixteenth: '16th Century'
+          seventeenth: '17th Century'
+          eighteenth: '18th Century'
+          nineteenth: '19th Century'
+          twentieth: '20th Century'
+          twenty-first: '21st Century'
+        millennium:
+          first: 'First Millennium'
   fields:
     endpoint: 'Endpoint'
     repository: 'Repository'

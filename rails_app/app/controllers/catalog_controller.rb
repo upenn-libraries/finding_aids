@@ -3,7 +3,6 @@
 # Blacklight controller configuring search and record pages.
 class CatalogController < ApplicationController
   include Blacklight::Catalog
-  include BlacklightRangeLimit::ControllerOverride
 
   configure_blacklight do |config|
     # enable search state field filtering - it will be default in BL8
@@ -93,9 +92,21 @@ class CatalogController < ApplicationController
     config.add_facet_field 'creators_ssim', label: I18n.t('fields.creators'), limit: true
     config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors'), limit: true
     config.add_facet_field 'languages_ssim', label: I18n.t('fields.language'), limit: true
-    config.add_facet_field 'years_iim', label: I18n.t('fields.year'), range: {
-      assumed_boundaries: [1600, Time.zone.now.year + 2]
-    }
+    config.add_facet_field 'era_facet', label: I18n.t('facets.era.label'), solr_params:
+      { 'facet.mincount': 1 }, query: {
+        first_millennium: { label: I18n.t('facets.era.millennium.first'), fq: 'years_iim:[0001 TO 1000]' },
+        eleventh_century: { label: I18n.t('facets.era.century.eleventh'), fq: 'years_iim:[1001 TO 1100]' },
+        twelfth_century: { label: I18n.t('facets.era.century.twelfth'), fq: 'years_iim:[1101 TO 1200]' },
+        thirteenth_century: { label: I18n.t('facets.era.century.thirteenth'), fq: 'years_iim:[1201 TO 1300]' },
+        fourteenth_century: { label: I18n.t('facets.era.century.fourteenth'), fq: 'years_iim:[1301 TO 1400]' },
+        fifteenth_century: { label: I18n.t('facets.era.century.fifteenth'), fq: 'years_iim:[1401 TO 1500]' },
+        sixteenth_century: { label: I18n.t('facets.era.century.sixteenth'), fq: 'years_iim:[1501 TO 1600]' },
+        seventeenth_century: { label: I18n.t('facets.era.century.seventeenth'), fq: 'years_iim:[1601 TO 1700]' },
+        eighteenth_century: { label: I18n.t('facets.era.century.eighteenth'), fq: 'years_iim:[1701 TO 1800]' },
+        nineteenth_century: { label: I18n.t('facets.era.century.nineteenth'), fq: 'years_iim:[1801 TO 1900]' },
+        twentieth_century: { label: I18n.t('facets.era.century.twentieth'), fq: 'years_iim:[1901 TO 2000]' },
+        twenty_first_century: { label: I18n.t('facets.era.century.twenty-first'), fq: 'years_iim:[2001 TO 2100]' }
+      }
     config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint'), limit: true, unless: Rails.env.production?
 
     config.add_facet_fields_to_solr_request!

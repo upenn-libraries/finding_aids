@@ -12,14 +12,10 @@ finding_aid_discovery_url: "finding-aid-discovery-dev.library.upenn.edu"
 
 finding_aid_discovery_versioned_secrets:
   slack_notification_email_address:
-    value: "sample-slack@upennlts.slack.com"
-    version: 1
+    vault: finaids_vault_values
   honeybadger_api_key:
-    value: "123456"
-    version: 1
+    vault: finaids_vault_values
   penn_aspace_api_username:
-    value: "sample"
-    version: 1
+    vault: finaids_vault_values
   penn_aspace_api_password:
-    value: "123456"
-    version: 1
+    vault: finaids_vault_values

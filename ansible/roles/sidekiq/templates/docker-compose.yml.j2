@@ -52,15 +52,10 @@ services:
       - traefik
     secrets:
       - database_password
-      - penn_aspace_api_password
-      - penn_aspace_api_username
-      - source: rails_master_key
-        target: /home/app/config/credentials/{{ finding_aid_discovery_rails_env }}.key
       - redis_sidekiq_password
-      - slack_notification_email_address
-    {% if is_development == false %}
-      - honeybadger_api_key
-    {% endif %}
+    {% for key, value in finding_aid_discovery_versioned_secrets.items() %}
+      - {{ key }}
+    {% endfor %}
     volumes:
     {% if is_development == true %}
       - /finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/:/home/app
@@ -80,24 +75,14 @@ secrets:
   database_password:
     external: true
     name: "{{ 'postgres_database_password_v' + postgres_database_versioned_secrets.database_password.version }}"
-  honeybadger_api_key:
-    external: true
-    name: "{{ 'finding_aid_discovery_honeybadger_api_key_v' ~ finding_aid_discovery_versioned_secrets.honeybadger_api_key.version }}"
-  penn_aspace_api_password:
-    external: true
-    name: "{{ 'finding_aid_discovery_penn_aspace_api_password_v' ~ finding_aid_discovery_versioned_secrets.penn_aspace_api_password.version }}"
-  penn_aspace_api_username:
-    external: true
-    name: "{{ 'finding_aid_discovery_penn_aspace_api_username_v' ~ finding_aid_discovery_versioned_secrets.penn_aspace_api_username.version }}"
-  rails_master_key:
-    external: true
-    name: "{{ 'finding_aid_discovery_rails_master_key_v' ~ finding_aid_discovery_versioned_secrets.rails_master_key.version }}"
   redis_sidekiq_password:
     external: true
     name: "{{ 'redis_sidekiq_password_v' ~ redis_users | selectattr('name', 'equalto', 'sidekiq') | map(attribute='version')  | join('') }}"
-  slack_notification_email_address:
+{% for key, value in finding_aid_discovery_versioned_secrets.items() %}
+  {{ key }}:
     external: true
-    name: "{{ 'finding_aid_discovery_slack_notification_email_address_v' ~ finding_aid_discovery_versioned_secrets.slack_notification_email_address.version }}"
+    name: "{{ 'finding_aid_discovery_' ~ key ~ '_v' ~ lookup('vars', value.vault).metadata.version }}"
+{% endfor %}
 
 {% if is_development == false %}
 volumes:
