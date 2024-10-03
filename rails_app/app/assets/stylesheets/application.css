@@ -11,7 +11,6 @@
  * It is generally better to create a new file per style scope.
  *
  *= require 'rails_bootstrap_forms'
- *= require 'blacklight_range_limit'
  *= require_tree .
  *= require_self
  */
