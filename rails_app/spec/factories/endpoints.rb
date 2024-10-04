@@ -14,6 +14,8 @@ FactoryBot.define do
     trait :aspace_harvest do
       source_type { Endpoint::ASPACE_TYPE }
       aspace_repo_id { '1' }
+
+      association :aspace_instance
     end
 
     trait :failed_harvest do

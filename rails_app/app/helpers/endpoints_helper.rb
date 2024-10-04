@@ -15,7 +15,7 @@ module EndpointsHelper
   def error_message_for(endpoint, file)
     if endpoint.penn_aspace_type?
       aspace_link = link_to_penn_aspace_record(
-        endpoint.aspace_id, file['id']
+        endpoint, file['id']
       )
       "#{aspace_link}: #{file['errors'].join(', ')}"
     else
@@ -25,12 +25,12 @@ module EndpointsHelper
 
   # return a URL to a record in ASpace based on environment
   # see: https://gitlab.library.upenn.edu/dld/finding-aids/-/issues/93
-  def link_to_penn_aspace_record(endpoint_aspace_id, record_id)
-    return '' if record_id.blank? || endpoint_aspace_id.blank?
+  def link_to_penn_aspace_record(endpoint, record_id)
+    return '' if record_id.blank? || endpoint.aspace_repo_id.blank? || endpoint.aspace_instance.blank?
 
-    base_url = PennArchivesSpaceExtractor::WEB_URL_PRODUCTION
+    base_url = endpoint.aspace_instance.base_url
     link_to(record_id,
-            "#{base_url}/resolve/edit?uri=/repositories/#{endpoint_aspace_id}/resources/#{record_id}",
+            "#{base_url}/resolve/edit?uri=/repositories/#{endpoint.aspace_repo_id}/resources/#{record_id}",
             target: '_blank', rel: 'noopener')
   end
 end

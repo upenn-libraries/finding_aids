@@ -152,8 +152,7 @@ describe Endpoint do
   end
 
   describe '#aspace_instance' do
-    let(:endpoint) { build(:endpoint, :aspace_harvest, aspace_instance: aspace_instance) }
-    let(:aspace_instance) { create(:aspace_instance) }
+    let(:endpoint) { build(:endpoint, :aspace_harvest) }
 
     it 'has no validation errors' do
       expect(endpoint.valid?).to be true

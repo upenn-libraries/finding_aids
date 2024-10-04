@@ -40,12 +40,14 @@ shared_examples_for 'synchronizable' do
 
     context 'when adding new aspace and index endpoint' do
       let(:csv_file) { file_fixture('endpoint_csv/new_endpoints.csv') }
+      let!(:aspace_instance) { create(:aspace_instance, slug: 'university_of_pennsylvania') }
       let(:rbml_attributes) do
         {
           public_contacts: ['rbml@pobox.upenn.edu'],
           tech_contacts: ['hmengel@pobox.upenn.edu'],
           source_type: 'aspace',
-          aspace_repo_id: 4
+          aspace_repo_id: 4,
+          aspace_instance: aspace_instance
         }
       end
       let(:haverford_attributes) do
@@ -90,6 +92,7 @@ shared_examples_for 'synchronizable' do
             public_contacts: ['cajs@pobox.upenn.edu'],
             tech_contacts: ['cajs@pobox.upenn.edu'],
             source_type: 'aspace',
+            aspace_instance: aspace_instance,
             aspace_repo_id: 5
           }
         end

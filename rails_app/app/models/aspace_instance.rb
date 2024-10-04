@@ -6,4 +6,12 @@ class ASpaceInstance < ApplicationRecord
   validates :slug, format: { with: /\A[a-z_]+\z/ }, uniqueness: true
 
   has_many :endpoints, dependent: :restrict_with_exception
+
+  # def username
+  #   # TODO: needs to be read in from docker secrets
+  # end
+
+  def password
+    # TODO: needs to be read in from docker secrets
+  end
 end

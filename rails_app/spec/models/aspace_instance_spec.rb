@@ -47,7 +47,7 @@ describe ASpaceInstance do
   end
 
   describe '#endpoints' do
-    let(:endpoints) { create_list(:endpoint, 2, :aspace_harvest) }
+    let(:endpoints) { create_list(:endpoint, 2, :aspace_harvest, aspace_instance: nil) }
 
     before do
       aspace_instance.endpoints = endpoints
