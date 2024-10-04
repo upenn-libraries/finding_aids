@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
-# Controller for authenticated routes
+# controller actions for Admin landing page
 class AdminController < ApplicationController
   before_action :authenticate_user!
+
+  layout 'application'
+
   def index; end
 end
