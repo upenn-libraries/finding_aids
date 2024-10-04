@@ -10,14 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_01_184047) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_04_191646) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "aspace_instances", force: :cascade do |t|
     t.string "slug", null: false
     t.string "base_url", null: false
-    t.string "username", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_aspace_instances_on_slug", unique: true

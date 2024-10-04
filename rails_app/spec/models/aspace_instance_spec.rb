@@ -38,14 +38,6 @@ describe ASpaceInstance do
     end
   end
 
-  describe '#username' do
-    it 'must be present' do
-      aspace_instance.username = nil
-      expect(aspace_instance.valid?).to be false
-      expect(aspace_instance.errors[:username]).to include('can\'t be blank')
-    end
-  end
-
   describe '#endpoints' do
     let(:endpoints) { create_list(:endpoint, 2, :aspace_harvest, aspace_instance: nil) }
 
