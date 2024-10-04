@@ -42,6 +42,11 @@ class SolrDocument
     @parsed_ead ||= ParsedEad.new(fetch(XML_FIELD_NAME))
   end
 
+  # @return [String, nil]
+  def language_notes
+    parsed_ead.did.at_xpath('langmaterial').try(:text).try(:strip)
+  end
+
   # @return [Array<String> (frozen)]
   def display_dates
     fetch(:display_date_ssim, [])
@@ -98,6 +103,11 @@ class SolrDocument
     def initialize(xml)
       @nodes = Nokogiri::XML.parse(xml)
       @nodes.remove_namespaces!
+    end
+
+    # @return [Nokogiri::XML::Element] required element in <archdesc> node
+    def did
+      @nodes.at_xpath('/ead/archdesc/did')
     end
 
     # @return [Nokogiri::XML::Element]

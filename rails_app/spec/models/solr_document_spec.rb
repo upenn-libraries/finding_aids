@@ -41,11 +41,44 @@ describe SolrDocument do
     end
   end
 
+  describe '#language_notes' do
+    context 'without langmaterial text content' do
+      it 'returns a blank value' do
+        expect(doc.language_notes).to be_blank
+      end
+    end
+
+    context 'with langmaterial text content' do
+      let(:xml) do
+        <<~XML
+          <ead>
+            <archdesc>
+              <did>
+                <langmaterial>
+                  Mostly in <language langcode="eng">English</language>, but some materials contain Esperanto.
+                </langmaterial>
+               </did>
+             </archdesc>
+          </ead>
+        XML
+      end
+
+      it 'parses the expected data' do
+        expect(doc.language_notes).to eq 'Mostly in English, but some materials contain Esperanto.'
+      end
+    end
+  end
+
   context 'when using ParsedEad object' do
     let(:parsed_ead) { doc.parsed_ead }
 
     it 'returns dsc node' do
       expect(parsed_ead.dsc).to be_an_instance_of Nokogiri::XML::Element
+    end
+
+    it 'returns did node' do
+      expect(parsed_ead.did).to be_an_instance_of Nokogiri::XML::Element
+      expect(parsed_ead.did.name).to eq 'did'
     end
 
     it 'does not respond to arbitrary method calls' do
