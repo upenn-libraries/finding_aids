@@ -14,6 +14,8 @@ class EadParser
                     (?<end>\d{4}) # second capture group for 'end' date
                   )?}x
 
+  class ValidationError < StandardError; end
+
   # @param [Endpoint] endpoint
   def initialize(endpoint)
     @endpoint = endpoint
@@ -337,9 +339,11 @@ class EadParser
 
   # usage: { solr_field_name: value, ... }
   # @param [String] xml contents of xml file
+  # @raise UnsupportedEadSpecError
   # @return [Hash]
   def parse(xml)
     doc = Nokogiri::XML.parse xml
+    validate_ead_spec!(doc)
     doc.remove_namespaces!
     {
       id: id(doc),
@@ -376,5 +380,17 @@ class EadParser
       genre_form_ssim: genre_form(doc),
       names_ssim: names(doc)
     }
+  end
+
+  private
+
+  # Provide additional EAD specification validations, for example validating EAD XML namespace
+  # @param [Nokogiri::XML::Document] doc
+  # @raises StandardError
+  # @return [nil]
+  def validate_ead_spec!(doc)
+    return unless doc.namespaces['xmlns']&.include?('http://ead3.archivists.org/schema/')
+
+    raise ValidationError, 'EAD3 spec not supported'
   end
 end
