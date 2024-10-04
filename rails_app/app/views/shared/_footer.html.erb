@@ -13,6 +13,9 @@
       <li><%= link_to t('common.links.browse_repositories'), repositories_path %></li>
       <li><%= link_to t('common.links.about'), about_path, class: "ext" %></li>
       <li><%= link_to t('common.links.how_to'), how_to_use_path, class: "ext" %></li>
+      <% if current_user %>
+      <li><%= link_to(t('common.links.admin'), admin_path, class: "ext") %></li>
+      <% end %>
     </ul>
     <h3 class="bs4-visually-hidden">PACSCL</h3>
     <ul class="no-list-style vlist pacscl">

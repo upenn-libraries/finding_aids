@@ -152,7 +152,9 @@ title = "gitlab gitleaks config"
         ]
         paths = [
             '''ansible/vault_passwd-client.py''',
-            '''rails_app/config/initializers/devise.rb'''
+            '''rails_app/config/initializers/devise.rb''',
+            '''rails_app/app/models/user.rb''',
+            '''ansible/inventories/vagrant/group_vars/docker_swarm_manager/finding_aid_discovery.yml'''
         ]
         regexes = [
             '''\:\s+\"\{\{''',
@@ -203,6 +205,9 @@ title = "gitlab gitleaks config"
         '''98a54b30b3ab6be91284333de2ade674a071d6dc''',
         '''92f3cbdd86c5d5b67db61e652dc4d75058af5711''',
         '''080b99df319f38e61668af5f16d71ab57dd90023'''
+        '''78b0ecd4a93fc75e1bb90acb6281b3b9eace6179''',
+        '''37128a86fba35db31d2fa3c8d6998538907a0357''',
+        '''74f5338bffbc77155d496f29b57044db81315e88'''
 
     ]
     files = [

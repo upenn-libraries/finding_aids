@@ -5,4 +5,4 @@
 <strong>Endpoint URL:</strong> <%= @endpoint.webpage_url %>
 <strong>Harvest Date:</strong> <%= @endpoint.last_harvest.date %>
 
-For more information visit the endpoint's <%= link_to 'status page', endpoint_url(@endpoint.slug) %>.
+For more information visit the endpoint's <%= link_to 'status page', endpoint_status_url(@endpoint.slug) %>.

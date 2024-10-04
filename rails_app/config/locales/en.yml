@@ -6,6 +6,7 @@ en:
       how_to: 'How to use this site'
       browse_repositories: 'Browse Repositories'
       statement: 'Statement on Archival Description and Harmful Language'
+      admin: 'Site Administration'
   homepage:
     page_title: 'Finding Aids - Philadelphia Area Archives'
     header: 'About the site'
@@ -144,3 +145,15 @@ en:
       physdesc: 'Physical Description'
       materialspec: 'Material Specific Details'
       physloc: 'Physical Location'
+  admin:
+    heading: 'Finding Aids Admin'
+    homepage:
+      copy: 'Welcome to the administration area, esteemed colleague!'
+    menu:
+      homepage: 'Homepage'
+      users: 'Users'
+      endpoints: 'Endpoints'
+      status: 'Status Page'
+      sign_out: 'Log Out'
+    users:
+      uid: 'PennKey'

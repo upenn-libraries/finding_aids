@@ -14,7 +14,7 @@ describe 'Endpoint dashboard' do
   after { Endpoint.delete_all }
 
   context 'when visiting index page' do
-    before { visit endpoints_path }
+    before { visit endpoints_status_path }
 
     it 'renders all endpoint slugs' do
       test_endpoints.each do |endpoint|
@@ -27,7 +27,7 @@ describe 'Endpoint dashboard' do
     it 'renders links to endpoint show pages' do
       test_endpoints.each do |endpoint|
         within ".table-row-#{endpoint.slug}" do
-          expect(page).to have_link endpoint.slug, href: endpoint_path(endpoint.slug)
+          expect(page).to have_link endpoint.slug, href: endpoint_status_path(endpoint.slug)
         end
       end
     end
@@ -47,7 +47,7 @@ describe 'Endpoint dashboard' do
 
   context 'when visiting show page' do
     context 'with removals' do
-      before { visit endpoint_path(endpoint_removals.slug) }
+      before { visit endpoint_status_path(endpoint_removals.slug) }
 
       it 'lists removed ids' do
         endpoint_removals.last_harvest.removed_files.each do |removed_file|
