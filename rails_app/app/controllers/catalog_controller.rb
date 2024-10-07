@@ -162,11 +162,29 @@ class CatalogController < ApplicationController
 
     @presenter = @facet_config.presenter.new(@facet_config, @display_facet, view_context)
     @pagination = @presenter.paginator
+
+    respond_to do |format|
+      format.html { render :repositories }
+      format.json do
+        items = @pagination.items.map do |repo|
+          repo_hash = repo.to_h
+          repo_hash[:url] = repository_facet_url(repository_name: repo_hash[:value])
+          repo_hash
+        end
+        render json: items.to_json
+      end
+    end
   end
 
   private
 
   def json_request?
     request.format.json?
+  end
+
+  def repository_facet_url(repository_name:)
+    # records?f%5Bera_facet%5D%5B%5D=fourteenth_century
+    # records?f%5Brepository_ssi%5D%5B%5D=Haverford+College+Quaker+%26+Special+Collections
+    "/records[repository_ssi][]=#{repository_name}".to_param
   end
 end
