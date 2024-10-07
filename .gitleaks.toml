@@ -162,7 +162,7 @@ title = "gitlab gitleaks config"
             '''abcde12345''',
             '''(?i)penn_aspace_api_(password|username)''',
             '''key: (''|'secret_key')''',
-            '''SecretsService\.lookup''',
+            '''DockerSecrets\.lookup''',
             '''auth\:\s1''',
             '''\:\s+\"password\"''',
             '''(external|penn)_auth''',
