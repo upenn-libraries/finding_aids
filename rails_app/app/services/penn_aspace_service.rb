@@ -36,8 +36,8 @@ class PennAspaceService
       {
         base_uri: 'https://upennapi.as.atlas-sys.com',
         base_repo: '',
-        username: SecretsService.lookup(key: 'penn_aspace_api_username'),
-        password: SecretsService.lookup(key: 'penn_aspace_api_password'),
+        username: DockerSecrets.lookup(:penn_aspace_api_username),
+        password: DockerSecrets.lookup(:penn_aspace_api_password),
         page_size: 50, throttle: 0.1,
         debug: false, verify_ssl: false
       }
