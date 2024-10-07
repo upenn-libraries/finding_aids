@@ -15,10 +15,6 @@ class Endpoint < ApplicationRecord
 
   belongs_to :aspace_instance, optional: true
 
-  # TODO: doesn't seem like these are used....
-  scope :index_type, -> { where(source_type: 'index') }
-  scope :penn_aspace_type, -> { where(source_type: 'penn_archives_space') }
-
   def aspace_type?
     source_type == ASPACE_TYPE
   end
