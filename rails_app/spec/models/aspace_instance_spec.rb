@@ -50,7 +50,7 @@ describe ASpaceInstance do
       expect(aspace_instance.endpoints).to all be_an_instance_of(Endpoint)
     end
 
-    it 'raises an exception on delete' do
+    it 'raises an exception on delete if there are still related endpoints' do
       expect { aspace_instance.destroy }.to raise_error ActiveRecord::DeleteRestrictionError
     end
   end
