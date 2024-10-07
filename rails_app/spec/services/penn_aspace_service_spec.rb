@@ -12,9 +12,9 @@ describe PennAspaceService do
     stub_request(:post, %r{https://upennapi.as.atlas-sys.com/users/[a-z_]*/login?})
       .to_return(status: 200, body: { session: '1234' }.to_json, headers: response_headers)
     allow(DockerSecrets).to receive(:lookup).with(:penn_aspace_api_username)
-                                             .and_return('test_user')
+                                            .and_return('test_user')
     allow(DockerSecrets).to receive(:lookup).with(:penn_aspace_api_password)
-                                             .and_return('test_pass')
+                                            .and_return('test_pass')
   end
 
   describe '#all_resource_ids' do
