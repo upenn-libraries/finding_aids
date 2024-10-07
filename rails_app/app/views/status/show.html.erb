@@ -30,11 +30,9 @@
     <dt>Endpoint Type</dt>
     <dd><%= @endpoint.source_type %></dd>
 
-    <%# TODO: update information based on type %>
-
-    <% if @endpoint.webpage_url %>
+    <% if @endpoint.display_url %>
       <dt>Endpoint URL</dt>
-      <dd><%= link_to @endpoint.webpage_url, @endpoint.webpage_url %></dd>
+      <dd><%= link_to @endpoint.display_url, @endpoint.display_url %></dd>
     <% end %>
   </dl>
 

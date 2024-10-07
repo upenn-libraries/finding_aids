@@ -27,6 +27,15 @@ class Endpoint < ApplicationRecord
     @last_harvest ||= LastHarvest.new(last_harvest_results)
   end
 
+  # URL to display in UI and mailers.
+  def display_url
+    if webpage_type?
+      webpage_url
+    else
+      aspace_instance&.base_url
+    end
+  end
+
   # Wrapper for last_harvest_results providing accessor and helper methods.
   class LastHarvest
     PARTIAL = 'partial'
