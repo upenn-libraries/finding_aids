@@ -2,8 +2,9 @@
 
 require 'rails_helper'
 
-describe 'Repositories JSON API' do
+describe 'JSON API for Endpoint and Repository index' do
   let(:solr) { SolrService.new }
+  let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
   let(:documents) do
     [attributes_for(:solr_document), attributes_for(:solr_document)]
   end
@@ -11,7 +12,6 @@ describe 'Repositories JSON API' do
   before do
     solr.add_many documents: documents
     solr.commit
-    get '/repositories.json', headers: { 'CONTENT_TYPE' => 'application/json' }
   end
 
   after do
@@ -19,10 +19,25 @@ describe 'Repositories JSON API' do
     solr.commit
   end
 
-  it 'returns expected fields' do
-    items = JSON.parse response.body
-    expect(items.length).to eq 1
-    keys = items.first.keys
-    expect(keys).to include('value', 'url', 'hits')
+  describe '/repositories' do
+    before { get repositories_api_path, headers: headers }
+
+    it 'returns expected fields' do
+      items = response.parsed_body
+      expect(items.length).to eq 1
+      keys = items.first.keys
+      expect(keys).to include('name', 'count', 'records_url')
+    end
+  end
+
+  describe '/endpoints' do
+    before { get endpoints_api_path, headers: headers }
+
+    it 'returns expected fields' do
+      items = response.parsed_body
+      expect(items.length).to eq 1
+      keys = items.first.keys
+      expect(keys).to include('name', 'count', 'records_url')
+    end
   end
 end

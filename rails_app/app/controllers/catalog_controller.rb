@@ -162,18 +162,6 @@ class CatalogController < ApplicationController
 
     @presenter = @facet_config.presenter.new(@facet_config, @display_facet, view_context)
     @pagination = @presenter.paginator
-
-    respond_to do |format|
-      format.html { render :repositories }
-      format.json do
-        items = @pagination.items.map do |repo|
-          repo_hash = repo.to_h
-          repo_hash[:url] = repository_facet_url(repository_name: repo_hash[:value])
-          repo_hash
-        end
-        render json: items.to_json
-      end
-    end
   end
 
   private

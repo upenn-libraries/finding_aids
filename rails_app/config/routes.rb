@@ -15,6 +15,9 @@ Rails.application.routes.draw do
     resources :users
   end
 
+  get '/api/endpoints', to: 'api#endpoints', as: :endpoints_api
+  get '/api/repositories', to: 'api#repositories', as: :repositories_api
+
   mount Blacklight::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new
 
