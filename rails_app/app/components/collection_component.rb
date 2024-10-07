@@ -4,7 +4,7 @@
 class CollectionComponent < ViewComponent::Base
   IIIF_MAINFEST_ROLE_ATTRIBUTE = 'https://iiif.io/api/presentation/2.1/'
   IDENTIFICATION_DATA_SECTIONS = %w[physdesc materialspec physloc].freeze
-  DESCRIPTIVE_DATA_SECTIONS = %w[arrangement scopecontent odd relatedmaterial
+  DESCRIPTIVE_DATA_SECTIONS = %w[bioghist arrangement scopecontent odd relatedmaterial
                                  userestrict altformavail].freeze
   NO_TITLE = '(No Title)'
 
