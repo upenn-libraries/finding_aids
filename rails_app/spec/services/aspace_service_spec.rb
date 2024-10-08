@@ -10,12 +10,13 @@ describe ASpaceService do
   let(:aspace_instance) { create(:aspace_instance) }
 
   before do
-    stub_request(:post, "#{aspace_instance.base_url}/users/#{aspace_instance.username}/login?password=")
-      .to_return(status: 200, body: { session: '1234' }.to_json, headers: response_headers)
-    allow(DockerSecrets).to receive(:lookup).with(:penn_aspace_api_username)
+    allow(DockerSecrets).to receive(:lookup).with(:"#{aspace_instance.slug}_aspace_username")
                                             .and_return('test_user')
-    allow(DockerSecrets).to receive(:lookup).with(:penn_aspace_api_password)
+    allow(DockerSecrets).to receive(:lookup).with(:"#{aspace_instance.slug}_aspace_password")
                                             .and_return('test_pass')
+    stub_request(:post, "#{aspace_instance.base_url}/users/#{aspace_instance.username}/login" \
+                        "?password=#{aspace_instance.password}")
+      .to_return(status: 200, body: { session: '1234' }.to_json, headers: response_headers)
   end
 
   describe '#all_resource_ids' do

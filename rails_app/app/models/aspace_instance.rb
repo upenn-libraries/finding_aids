@@ -7,11 +7,13 @@ class ASpaceInstance < ApplicationRecord
 
   has_many :endpoints, dependent: :restrict_with_exception
 
+  # Docker secrets key must match slug + "_aspace_username"
   def username
-    # TODO: needs to be read in from docker secrets
+    DockerSecrets.lookup(:"#{slug}_aspace_username")
   end
 
+  # Docker secrets key must match slug + "_aspace_password"
   def password
-    # TODO: needs to be read in from docker secrets
+    DockerSecrets.lookup(:"#{slug}_aspace_password")
   end
 end
