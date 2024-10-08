@@ -156,6 +156,7 @@ en:
       users: 'Users'
       endpoints: 'Endpoints'
       status: 'Status Page'
+      sidekiq: 'Sidekiq'
       sign_out: 'Log Out'
     users:
       uid: 'PennKey'
