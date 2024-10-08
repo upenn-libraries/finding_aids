@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   get 'how-to-use', to: 'static_pages#how_to_use'
 
   # Vanity route for Penn materials
-  get 'penn', to: 'catalog#penn'
+  get 'upenn', to: 'catalog#upenn'
 
   root to: 'catalog#index'
 end
