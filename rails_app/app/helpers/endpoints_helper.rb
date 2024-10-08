@@ -13,8 +13,8 @@ module EndpointsHelper
   # @param [Hash] file
   # @return [String]
   def error_message_for(endpoint, file)
-    if endpoint.penn_aspace_type?
-      aspace_link = link_to_penn_aspace_record(
+    if endpoint.aspace_type?
+      aspace_link = link_to_aspace_record(
         endpoint, file['id']
       )
       "#{aspace_link}: #{file['errors'].join(', ')}"
@@ -25,12 +25,11 @@ module EndpointsHelper
 
   # return a URL to a record in ASpace based on environment
   # see: https://gitlab.library.upenn.edu/dld/finding-aids/-/issues/93
-  def link_to_penn_aspace_record(endpoint, record_id)
+  def link_to_aspace_record(endpoint, record_id)
     return '' if record_id.blank? || endpoint.aspace_repo_id.blank? || endpoint.aspace_instance.blank?
 
     base_url = endpoint.aspace_instance.base_url
-    link_to(record_id,
-            "#{base_url}/resolve/edit?uri=/repositories/#{endpoint.aspace_repo_id}/resources/#{record_id}",
+    link_to(record_id, "#{base_url}/resolve/edit?uri=/repositories/#{endpoint.aspace_repo_id}/resources/#{record_id}",
             target: '_blank', rel: 'noopener')
   end
 end
