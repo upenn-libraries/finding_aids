@@ -23,7 +23,7 @@
           <%= access_clarification_message %>
           <h3 class="bs4-visually-hidden">Overview and metadata sections</h3>
           <%= render CollapsableMetadataSection.new(title: t('sections.collection_overview'), open: true) do %>
-            <%= render metadata component: Blacklight::DocumentMetadataComponent %>
+            <%= render metadata %>
           <% end %>
           <% collapsable_metadata_sections.each do |section| %>
             <%= section %>
@@ -41,10 +41,10 @@
           </li>
         </ul>
       <% else %>
-        <%= title component: ::DocumentTitleComponent %>
+        <%= title %>
         <%= embed %>
         <%= content %>
-        <%= metadata component: Blacklight::DocumentMetadataComponent %>
+        <%= metadata %>
         <% metadata_sections.each do |section| %>
           <%= section %>
         <% end %>

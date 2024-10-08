@@ -153,8 +153,8 @@ class CatalogController < ApplicationController
     config.autocomplete_enabled = false
 
     # Use local Document component to customize results and show page views
-    config.index.document_component = DocumentComponent
-    config.show.document_component = DocumentComponent
+    config.index.document_component = ::DocumentComponent
+    config.show.document_component = ::DocumentComponent
   end
 
   def repositories

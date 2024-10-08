@@ -68,8 +68,8 @@ class DocumentComponent < Blacklight::DocumentComponent
 
     def call
       render CollapsableSectionComponent.new(id: title.parameterize, open: open) do |section|
-        section.title { title }
-        section.body { content }
+        section.with_title { title }
+        section.with_body { content }
       end
     end
   end

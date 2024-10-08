@@ -16,20 +16,20 @@
 
   <% SolrDocument::ParsedEad::OTHER_SECTIONS.each do |section| %>
     <% open = %w[bioghist scopecontent arrangement].include?(section) %>
-    <% component.collapsable_metadata_section(title: I18n.t(section, scope: :sections), open: open) do %>
+    <% component.with_collapsable_metadata_section(title: I18n.t(section, scope: :sections), open: open) do %>
       <%= render AdditionalMetadataComponent.new(nodes: @document.parsed_ead.try(section)) %>
     <% end %>
   <% end %>
 
-  <% component.collapsable_metadata_section(title: t('sections.topics')) do %>
-    <%=  render TopicsComponent.new topics: @document.topics_hash %>
+  <% component.with_collapsable_metadata_section(title: t('sections.topics')) do %>
+    <%= render TopicsComponent.new topics: @document.topics_hash %>
   <% end %>
 
-  <% component.collapsable_metadata_section(title: t('sections.admin_info')) do %>
+  <% component.with_collapsable_metadata_section(title: t('sections.admin_info')) do %>
     <%= render AdministrativeInformationComponent.new sections: SolrDocument::ParsedEad::ADMIN_INFO_SECTIONS, document: @document %>
   <% end %>
 
-  <% component.collection_inventory do %>
+  <% component.with_collection_inventory do %>
     <% if @document.requestable? %>
       <form id="requestItemsForm" class="form" action="<%= requests_path %>" method="POST">
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
@@ -60,9 +60,7 @@
     <% end %>
   <% end %>
 
-  <%# Use :body for complete backwards compatibility (overriding the component body markup),
-        but if the app explicitly  opted-in to components, make the partials data available as :partials to ease migrations pain %>
-  <% component.public_send(blacklight_config.view_config(:show).document_component.blank? && blacklight_config.view_config(:show).partials.any? ? :body : :partial) do %>
+  <% component.body do %>
     <div id="doc_<%= @document.id.to_s.parameterize %>">
       <%= render_document_partials @document, blacklight_config.view_config(:show).partials, component: component %>
     </div>
