@@ -48,7 +48,7 @@ describe SolrDocument do
       end
     end
 
-    context 'with langmaterial text content' do
+    context 'with text content' do
       let(:xml) do
         <<~XML
           <ead>
@@ -65,6 +65,28 @@ describe SolrDocument do
 
       it 'parses the expected data' do
         expect(doc.language_note).to eq 'Mostly in English, but some materials contain Esperanto.'
+      end
+    end
+
+    context 'when text content is the same as indexed languages field' do
+      let(:xml) do
+        <<~XML
+          <ead>
+            <archdesc>
+              <did>
+                <langmaterial>
+                 <language langcode="eng">English</language>
+                 <language langcode="fre">French</language>
+                </langmaterial>
+               </did>
+             </archdesc>
+          </ead>
+        XML
+      end
+      let(:fields) { { languages_ssim: %w[English French], xml_ss: xml } }
+
+      it 'returns nil' do
+        expect(doc.language_note).to be_nil
       end
     end
   end
