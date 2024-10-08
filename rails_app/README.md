@@ -46,6 +46,8 @@ Background jobs exist to queue up and perform the harvesting operations. [`Partn
 
 Currently two means of harvesting are supported. The means used is configured as part of the endpoint's configuration. Harvesting behavior is represented in `Extractor` classes.
 
+> Important Note: EAD files in [EAD 3 spec](https://github.com/SAA-SDT/EAD3/tree/v1.1.1) will not be harvested. An error will be shown in the harvest outcomes if a file in EAD 3 is detected.
+
 #### IndexExtractor
 
 This means of harvesting supports the legacy application style of basic HTML pages containing an index of links to EAD XML files. This extractor will parse a HTML document and pull out any `href`s that point to `.xml` files.

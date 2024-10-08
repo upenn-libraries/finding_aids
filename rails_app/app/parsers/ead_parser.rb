@@ -3,6 +3,7 @@
 # Parser for an Endpoint
 # Takes a URL for an XML file and maps it to a Hash for indexing to Solr
 # e.g., EadParser.new(endpoint_1).process(url_1)
+# Known-good support for EAD 1, EAD 2(002), but NOT for EAD 3. See #validate_ead_spec!
 class EadParser
   YEARS_REGEX = %r{[a-zA-Z]*\s* # match any preceding text or whitespace
                   (?<begin>\d{4}) # capture 'begin' date if a range
