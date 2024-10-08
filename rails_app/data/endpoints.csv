@@ -1,7 +1,7 @@
 slug,source_type,tech_contact,public_contact,webpage_url, aspace_instance, aspace_repo_id
-UPENN_RBML,aspace, hmengel@pobox.upenn.edu, rbml@pobox.upenn.edu,,university_of_pennsylvania, 4
-UPENN_CAJS,aspace, cajs@pobox.upenn.edu, cajs@pobox.upenn.edu,,university_of_pennsylvania, 5
-UPENN_BIDDLE,aspace, loneil@law.upenn.edu, biddlearchives@law.upenn.edu,,university_of_pennsylvania, 7
+UPENN_RBML,aspace, hmengel@pobox.upenn.edu, rbml@pobox.upenn.edu,,upenn, 4
+UPENN_CAJS,aspace, cajs@pobox.upenn.edu, cajs@pobox.upenn.edu,,upenn, 5
+UPENN_BIDDLE,aspace, loneil@law.upenn.edu, biddlearchives@law.upenn.edu,,upenn, 7
 UPENN_MUSEUM,webpage, archives@pennmuseum.org, archives@pennmuseum.org, https://www.penn.museum/collections/archives/finding-aids/,,
 ISM,webpage, director@pacscl.org, library@phillyseaport.org, http://archive.pacscl.org/phillyseaport/production/,,
 DU,webpage, mgraham@drexelmed.edu, archives@drexel.edu, https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/drexel_university_archives/,,
@@ -28,7 +28,7 @@ PhilU,webpage, mgraham@drexelmed.edu, gorskis@philau.edu, https://drexel.edu/leg
 LEHIGH,webpage, erl321@lehigh.edu, inspc@lehigh.edu, http://archivesspace.lib.lehigh.edu/assets/ATexports/,,
 PAHRC,webpage, jhoffman@archphila.org, pahrc89@gmail.com, http://www.pahrc.net/faids/,,
 swarthmore,webpage, ccauste1@swarthmore.edu, ccauste1@swarthmore.edu, https://web.tricolib.brynmawr.edu/paarp/swarthmore-fhl/production/,,
-UPENN_ANN,aspace, samantha.dodd@asc.upenn.edu, samantha.dodd@asc.upenn.edu,,university_of_pennsylvania,2
+UPENN_ANN,aspace, samantha.dodd@asc.upenn.edu, samantha.dodd@asc.upenn.edu,,upenn,2
 WHYY,webpage, mgraham@drexelmed.edu, talkback@whyy.org, https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/whyy/,,
 SCIHIST,webpage, ERubeiz@sciencehistory.org, archivist@sciencehistory.org, https://ead.sciencehistory.org/,,
 PRIN_MUDD,webpage, digital-library@princeton.libanswers.com, mudd@princeton.edu, https://findingaids.princeton.edu/pacscl/production/,,
@@ -40,5 +40,5 @@ Peace,webpage, ccauste1@swarthmore.edu, ccauste1@swarthmore.edu, https://web.tri
 QuakMeet,webpage, ccauste1@swarthmore.edu, ccauste1@swarthmore.edu, https://web.tricolib.brynmawr.edu/paarp/quaker/production/,,
 SJU,webpage, mgraham@drexelmed.edu, dlenert@sju.edu, https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/stjoseph_university/,,
 FLP,webpage, NorrisLA@freelibrary.org, ErefRBD@freelibrary.org, https://libwww.freelibrary.org/ead/pacscl/production,,
-UPENN_AAUP,aspace, archarchives@design.upenn.edu, archarchives@design.upenn.edu,,university_of_pennsylvania, 17
-UPENN_ARCHIVES,aspace, jmduffin@pobox.upenn.edu, uarc@lists.isc.upenn.edu,,university_of_pennsylvania, 16
+UPENN_AAUP,aspace, archarchives@design.upenn.edu, archarchives@design.upenn.edu,,upenn, 17
+UPENN_ARCHIVES,aspace, jmduffin@pobox.upenn.edu, uarc@lists.isc.upenn.edu,,upenn, 16

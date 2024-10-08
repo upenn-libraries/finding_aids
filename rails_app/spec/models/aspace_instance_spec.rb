@@ -28,6 +28,12 @@ describe ASpaceInstance do
       expect(aspace_instance.valid?).to be false
       expect(aspace_instance.errors[:slug]).to include('is invalid')
     end
+
+    it 'must be less than 20 characters' do
+      aspace_instance.slug = 'university_of_pennsylvania'
+      expect(aspace_instance.valid?).to be false
+      expect(aspace_instance.errors[:slug]).to include('is too long (maximum is 20 characters)')
+    end
   end
 
   describe '#base_url' do

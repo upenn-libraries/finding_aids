@@ -40,7 +40,7 @@ shared_examples_for 'synchronizable' do
 
     context 'when adding new aspace and index endpoint' do
       let(:csv_file) { file_fixture('endpoint_csv/new_endpoints.csv') }
-      let!(:aspace_instance) { create(:aspace_instance, slug: 'university_of_pennsylvania') }
+      let!(:aspace_instance) { create(:aspace_instance, slug: 'upenn') }
       let(:rbml_attributes) do
         {
           public_contacts: ['rbml@pobox.upenn.edu'],

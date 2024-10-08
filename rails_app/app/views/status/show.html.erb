@@ -69,7 +69,7 @@
   <dd>
     <ol>
       <% @endpoint.last_harvest.problem_files.each do |file| %>
-      <li><%= error_message_for(@endpoint, file).html_safe %></li>
+      <li><%= error_message_for(file).html_safe %></li>
       <% end %>
     </ol>
   </dd>
