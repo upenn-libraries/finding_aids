@@ -142,8 +142,12 @@ class CatalogController < ApplicationController
     # except in the relevancy case). Add the sort: option to configure a
     # custom Blacklight url parameter value separate from the Solr sort fields.
     config.add_sort_field 'relevance', sort: 'score desc', label: I18n.t('sorts.relevance')
-    config.add_sort_field 'year-desc', sort: 'years_iim desc, score desc', label: I18n.t('sorts.year_desc')
-    config.add_sort_field 'year-asc', sort: 'years_iim asc, score desc', label: I18n.t('sorts.year_asc')
+    config.add_sort_field 'year-desc', sort: 'years_iim desc, title_ssort asc, score desc',
+                                       label: I18n.t('sorts.year_desc')
+    config.add_sort_field 'year-asc', sort: 'years_iim asc, title_ssort asc, score desc',
+                                      label: I18n.t('sorts.year_asc')
+    config.add_sort_field 'title-desc', sort: 'title_ssort desc, score desc', label: I18n.t('sorts.title_desc')
+    config.add_sort_field 'title-asc', sort: 'title_ssort asc, score desc', label: I18n.t('sorts.title_asc')
 
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = false

@@ -12,10 +12,10 @@ describe ASpaceService do
   before do
     stub_request(:post, "#{aspace_instance.base_url}/users/#{aspace_instance.username}/login?password=")
       .to_return(status: 200, body: { session: '1234' }.to_json, headers: response_headers)
-    allow(SecretsService).to receive(:lookup).with(key: 'penn_aspace_api_username')
-                                             .and_return('test_user')
-    allow(SecretsService).to receive(:lookup).with(key: 'penn_aspace_api_password')
-                                             .and_return('test_pass')
+    allow(DockerSecrets).to receive(:lookup).with(:penn_aspace_api_username)
+                                            .and_return('test_user')
+    allow(DockerSecrets).to receive(:lookup).with(:penn_aspace_api_password)
+                                            .and_return('test_pass')
   end
 
   describe '#all_resource_ids' do
