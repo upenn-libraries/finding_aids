@@ -41,10 +41,10 @@ describe SolrDocument do
     end
   end
 
-  describe '#language_notes' do
-    context 'without langmaterial text content' do
+  describe '#language_note' do
+    context 'without text content' do
       it 'returns a blank value' do
-        expect(doc.language_notes).to be_blank
+        expect(doc.language_note).to be_blank
       end
     end
 
@@ -64,7 +64,7 @@ describe SolrDocument do
       end
 
       it 'parses the expected data' do
-        expect(doc.language_notes).to eq 'Mostly in English, but some materials contain Esperanto.'
+        expect(doc.language_note).to eq 'Mostly in English, but some materials contain Esperanto.'
       end
     end
   end

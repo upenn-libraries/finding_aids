@@ -19,7 +19,7 @@ describe 'Blacklight show page' do
 
   context 'without langmaterial text content' do
     it 'does not display language notes dynamic field' do
-      expect(page).to have_text(I18n.t('fields.language_notes'), count: 0)
+      expect(page).to have_text(I18n.t('fields.language_note'), count: 0)
     end
   end
 
@@ -42,7 +42,7 @@ describe 'Blacklight show page' do
     let(:document_hash) { attributes_for(:solr_document, xml_ss: xml_ss) }
 
     it 'displays the language notes dynamic field' do
-      expect(page).to have_text(I18n.t('fields.language_notes'))
+      expect(page).to have_text(I18n.t('fields.language_note'))
       expect(page).to have_text 'Mostly in English, but some materials contain Esperanto.'
     end
   end

@@ -123,8 +123,8 @@ class CatalogController < ApplicationController
     config.add_show_field 'url_ss', label: 'Original URL'
     config.add_show_field 'extent_ssim', label: I18n.t('fields.extent'), helper_method: :extent_display
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
-    config.add_show_field 'language_notes', label: I18n.t('fields.language_notes'), accessor: :language_notes,
-                                            if: ->(_c, _f, document) { document.language_notes.present? }
+    config.add_show_field 'language_note', label: I18n.t('fields.language_note'), accessor: :language_note,
+                                           if: ->(_c, _f, document) { document.language_note.present? }
     config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation')
     config.add_show_field 'display_date_ssim', label: I18n.t('fields.date')
     config.add_show_field 'creators_ssim', label: I18n.t('fields.creators'), link_to_facet: true

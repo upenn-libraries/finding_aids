@@ -93,7 +93,7 @@ en:
     raw_xml: 'Raw XML'
     creators: 'Creator'
     language: 'Language'
-    language_notes: 'Language Notes'
+    language_note: 'Language Note'
     donors: 'Donor'
     genre_form: 'Form'
     citation: 'Preferred Citation'
