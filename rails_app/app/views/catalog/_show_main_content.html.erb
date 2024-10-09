@@ -1,18 +1,21 @@
+<!-- copied from Blacklight 8.4.0, customized to render many additional sections -->
+
 <%= render 'previous_next_doc' if @search_context && search_session['document_id'] == @document.id %>
 
-<% @page_title = t('blacklight.search.show.title', document_title: Deprecation.silence(Blacklight::BlacklightHelperBehavior) { document_show_html_title }, application_name: application_name).html_safe %>
+<%= render blacklight_config.view_config(:show).document_header_component.new(document: @document, search_context: @search_context, search_session: search_session) %>
+<% @page_title = t('blacklight.search.show.title', document_title: document_presenter(@document).html_title, application_name: application_name).html_safe %>
 <% content_for(:head) { render_link_rel_alternates } %>
 
-<%= render (blacklight_config.view_config(:show).document_component || Blacklight::DocumentComponent).new(
-  presenter: document_presenter(@document),
-  component: :div,
-  title_component: :h1,
-  show: true) do |component| %>
-  <% component.footer do %>
+<% document_component = blacklight_config.view_config(:show).document_component -%>
+<%= render (document_component).new(document_component.collection_parameter => document_presenter(@document), component: :div, show: true, partials: blacklight_config.view_config(:show).partials) do |component| %>
+  <% component.with_title(as: 'h1', classes: '', link_to_document: false, actions: false) %>
+  <% component.with_footer do %>
     <% if @document.respond_to?(:export_as_openurl_ctx_kev) %>
-      <span class="Z3988" title="<%= @document.export_as_openurl_ctx_kev(Deprecation.silence(Blacklight::RenderPartialsHelperBehavior) { document_partial_name(@document) }) %>"></span>
+      <!-- COinS, for Zotero among others. -->
+      <span class="Z3988" title="<%= @document.export_as_openurl_ctx_kev(document_presenter(@document).display_type) %>"></span>
     <% end %>
-  <%  end %>
+  <% end %>
+
 
   <% SolrDocument::ParsedEad::OTHER_SECTIONS.each do |section| %>
     <% open = %w[bioghist scopecontent arrangement].include?(section) %>

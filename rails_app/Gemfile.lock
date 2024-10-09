@@ -85,15 +85,13 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.19)
     bindex (0.8.1)
-    blacklight (7.39.0)
-      deprecation
+    blacklight (8.4.0)
       globalid
-      hashdiff
       i18n (>= 1.7.0)
       jbuilder (~> 2.7)
       kaminari (>= 0.15)
       ostruct (>= 0.3.2)
-      rails (>= 6.1, < 7.3)
+      rails (>= 6.1, < 8)
       view_component (>= 2.66, < 4)
       zeitwerk
     bootsnap (1.11.1)
@@ -129,8 +127,6 @@ GEM
       ferrum (~> 0.11.0)
     date (3.3.4)
     deep_merge (1.2.2)
-    deprecation (1.1.0)
-      activesupport
     devise (4.9.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -431,7 +427,7 @@ PLATFORMS
 
 DEPENDENCIES
   archivesspace-client
-  blacklight (~> 7)
+  blacklight (~> 8)
   bootsnap (>= 1.4.4)
   bootstrap (~> 4.0)
   bootstrap_form (~> 4.0)
