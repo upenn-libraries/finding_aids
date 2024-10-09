@@ -1,3 +1,7 @@
+<%# Copied from Blacklight 8.4.0 to add in display of additional metadata sections and other show page customizations.
+    Note the conditional used here to control differences between index and show page contexts.
+    TODO: reduce complexity in this BL override/customization %>
+
 <%= content_tag @component,
                 id: @id,
                 data: {
@@ -13,8 +17,8 @@
   <% else %>
     <div class="document-main-section">
       <h2 id="main-content" class="bs4-visually-hidden">Main content</h2>
+      <%= title %>
       <% if @show %>
-        <%= title %>
         <%= embed %>
         <%= content %>
         <div id="overview">
@@ -41,7 +45,6 @@
           </li>
         </ul>
       <% else %>
-        <%= title %>
         <%= embed %>
         <%= content %>
         <%= metadata %>
