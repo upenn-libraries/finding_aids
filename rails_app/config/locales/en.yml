@@ -93,6 +93,7 @@ en:
     raw_xml: 'Raw XML'
     creators: 'Creator'
     language: 'Language'
+    language_note: 'Language Note'
     donors: 'Donor'
     genre_form: 'Form'
     citation: 'Preferred Citation'
@@ -156,6 +157,7 @@ en:
       users: 'Users'
       endpoints: 'Endpoints'
       status: 'Status Page'
+      sidekiq: 'Sidekiq'
       sign_out: 'Log Out'
     users:
       uid: 'PennKey'

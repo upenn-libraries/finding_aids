@@ -18,6 +18,9 @@
       <li class="nav-item">
         <%= link_to t('admin.menu.status'), endpoints_status_path, class: 'nav-link' %>
       </li>
+      <li class="nav-item">
+        <%= link_to t('admin.menu.sidekiq'), sidekiq_web_path, class: 'nav-link', target: '_blank' %>
+      </li>
     </ul>
     <%= button_to t('admin.menu.sign_out'), destroy_user_session_path, class: 'btn btn-link' %>
   </div>
