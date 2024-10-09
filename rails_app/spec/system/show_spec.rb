@@ -30,9 +30,9 @@ describe 'Blacklight show page' do
         <ead xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd">
           <archdesc level="collection">
             <did>
-            <langmaterial>
-              Mostly in <language langcode="eng">English</language>, but some materials contain Esperanto.
-            </langmaterial>
+              <langmaterial>
+                Mostly in <language langcode="eng">English</language>, but some materials contain Esperanto.
+              </langmaterial>
             </did>
             <dsc><c id="ref1" level="series"></c></dsc>
           </archdesc>

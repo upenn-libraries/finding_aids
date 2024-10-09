@@ -57,8 +57,8 @@ describe SolrDocument do
                 <langmaterial>
                   Mostly in <language langcode="eng">English</language>, but some materials contain Esperanto.
                 </langmaterial>
-               </did>
-             </archdesc>
+              </did>
+            </archdesc>
           </ead>
         XML
       end

@@ -154,10 +154,10 @@ XML
         <head>Scope and Contents</head>
         <p>Photo Album</p>
       </scopecontent>
-        <bioghist>
-          <head>Biographical / Historical</head>
-          <p>Born, lived, died</p>
-        </bioghist>
+      <bioghist>
+        <head>Biographical / Historical</head>
+        <p>Born, lived, died</p>
+      </bioghist>
     </c>
 XML
     end
