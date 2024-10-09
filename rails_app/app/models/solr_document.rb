@@ -44,13 +44,7 @@ class SolrDocument
 
   # @return [String, nil]
   def language_note
-    languages = fetch(:languages_ssim, []).join
-    note = parsed_ead.did.at_xpath('langmaterial').try(:text).try(:strip)
-    return if note.blank?
-    # early return if parsed alphanumeric characters are the same in language field
-    return if languages.gsub(/[^0-9a-zA-Z]/, '') == note.gsub(/[^0-9a-zA-Z]/, '')
-
-    note
+    parsed_ead.did.at_xpath('langmaterial').try(:text).try(:strip)
   end
 
   # @return [Array<String> (frozen)]

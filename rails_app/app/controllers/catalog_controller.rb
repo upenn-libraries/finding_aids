@@ -124,7 +124,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'extent_ssim', label: I18n.t('fields.extent'), helper_method: :extent_display
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
     config.add_show_field 'language_note', label: I18n.t('fields.language_note'), accessor: :language_note,
-                                           if: ->(_c, _f, document) { document.language_note.present? }
+                                           if: :render_language_note?
     config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation')
     config.add_show_field 'display_date_ssim', label: I18n.t('fields.date')
     config.add_show_field 'creators_ssim', label: I18n.t('fields.creators'), link_to_facet: true
@@ -170,5 +170,15 @@ class CatalogController < ApplicationController
 
   def json_request?
     request.format.json?
+  end
+
+  # render dynamically parsed language note if it's different from indexed language field
+  # @param document [SolrDocument]
+  # @return [Boolean]
+  def render_language_note?(_field_config, document)
+    note = document.language_note
+    languages = document.fetch(:languages_ssim, []).join
+
+    note.present? && languages.gsub(/[^0-9a-zA-Z]/, '') != note.gsub(/[^0-9a-zA-Z]/, '')
   end
 end
