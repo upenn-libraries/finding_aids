@@ -123,6 +123,8 @@ class CatalogController < ApplicationController
     config.add_show_field 'url_ss', label: 'Original URL'
     config.add_show_field 'extent_ssim', label: I18n.t('fields.extent'), helper_method: :extent_display
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
+    config.add_show_field 'language_note', label: I18n.t('fields.language_note'), accessor: :language_note,
+                                           if: :render_language_note?
     config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation')
     config.add_show_field 'display_date_ssim', label: I18n.t('fields.date')
     config.add_show_field 'creators_ssim', label: I18n.t('fields.creators'), link_to_facet: true
@@ -142,8 +144,12 @@ class CatalogController < ApplicationController
     # except in the relevancy case). Add the sort: option to configure a
     # custom Blacklight url parameter value separate from the Solr sort fields.
     config.add_sort_field 'relevance', sort: 'score desc', label: I18n.t('sorts.relevance')
-    config.add_sort_field 'year-desc', sort: 'years_iim desc, score desc', label: I18n.t('sorts.year_desc')
-    config.add_sort_field 'year-asc', sort: 'years_iim asc, score desc', label: I18n.t('sorts.year_asc')
+    config.add_sort_field 'year-desc', sort: 'years_iim desc, title_ssort asc, score desc',
+                                       label: I18n.t('sorts.year_desc')
+    config.add_sort_field 'year-asc', sort: 'years_iim asc, title_ssort asc, score desc',
+                                      label: I18n.t('sorts.year_asc')
+    config.add_sort_field 'title-desc', sort: 'title_ssort desc, score desc', label: I18n.t('sorts.title_desc')
+    config.add_sort_field 'title-asc', sort: 'title_ssort asc, score desc', label: I18n.t('sorts.title_asc')
 
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = false
@@ -164,15 +170,23 @@ class CatalogController < ApplicationController
     @pagination = @presenter.paginator
   end
 
+  def upenn
+    redirect_to search_catalog_path({ 'f[record_source][]': 'upenn' })
+  end
+
   private
 
   def json_request?
     request.format.json?
   end
 
-  def repository_facet_url(repository_name:)
-    # records?f%5Bera_facet%5D%5B%5D=fourteenth_century
-    # records?f%5Brepository_ssi%5D%5B%5D=Haverford+College+Quaker+%26+Special+Collections
-    "/records[repository_ssi][]=#{repository_name}".to_param
+  # render dynamically parsed language note if it's different from indexed language field
+  # @param document [SolrDocument]
+  # @return [Boolean]
+  def render_language_note?(_field_config, document)
+    note = document.language_note
+    languages = document.fetch(:languages_ssim, []).join
+
+    note.present? && languages.gsub(/[^0-9a-zA-Z]/, '') != note.gsub(/[^0-9a-zA-Z]/, '')
   end
 end
