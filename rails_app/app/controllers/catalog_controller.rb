@@ -7,9 +7,6 @@ class CatalogController < ApplicationController
   configure_blacklight do |config|
     config.bootstrap_version = 4
 
-    # enable search state field filtering - it will be default in BL8
-    config.filter_search_state_fields = true
-
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository
     #
@@ -23,9 +20,7 @@ class CatalogController < ApplicationController
     # config.raw_endpoint.enabled = false
 
     ## Default parameters to send to solr for all search-like requests. See also SearchBuilder#processed_parameters
-    config.default_solr_params = {
-      rows: 10
-    }
+    config.default_solr_params = { rows: 10 }
 
     # disable tracking links since we don't allow paginating through a results set
     config.track_search_session = Blacklight::OpenStructWithHashAccess.new({ storage: false })
@@ -36,6 +31,10 @@ class CatalogController < ApplicationController
 
     # items to show per page, each number in the array represent another option to choose from.
     config.per_page = [10, 20, 50, 100]
+
+    # Use local Document component to customize results and show page views
+    config.index.document_component = Catalog::DocumentComponent
+    config.show.document_component = Catalog::DocumentComponent
 
     # Use custom DocumentTitleComponent on results page
     config.index.title_component = Catalog::DocumentTitleComponent
@@ -159,10 +158,6 @@ class CatalogController < ApplicationController
 
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = false
-
-    # Use local Document component to customize results and show page views
-    config.index.document_component = Catalog::DocumentComponent
-    config.show.document_component = Catalog::DocumentComponent
   end
 
   def repositories
