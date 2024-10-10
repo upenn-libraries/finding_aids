@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Extract XML content from Penn ArchivesSpace
+# Extract XML content from ArchivesSpace Instance
 class ASpaceExtractor < BaseExtractor
   attr_reader :endpoint
 
