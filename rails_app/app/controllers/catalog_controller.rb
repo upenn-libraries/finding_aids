@@ -39,6 +39,7 @@ class CatalogController < ApplicationController
 
     # Use custom DocumentTitleComponent on results page
     config.index.title_component = Catalog::DocumentTitleComponent
+    config.show.title_component = Blacklight::DocumentTitleComponent
 
     # solr field configuration for search results/index views
     config.index.title_field = :title_tsi
