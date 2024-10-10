@@ -11,7 +11,9 @@ class Endpoint < ApplicationRecord
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[A-Za-z_]+\z/ }
   validates :source_type, presence: true, inclusion: SOURCE_TYPES
   validates :webpage_url, presence: true, if: :webpage_type?
-  validates :aspace_repo_id, presence: true, if: :aspace_type?
+  validates :webpage_url, absence: true, if: :aspace_type?
+  validates :aspace_repo_id, :aspace_instance, presence: true, if: :aspace_type?
+  validates :aspace_repo_id, :aspace_instance, absence: true, if: :webpage_type?
 
   belongs_to :aspace_instance, optional: true
 

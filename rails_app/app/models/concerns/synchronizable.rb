@@ -25,6 +25,7 @@ module Synchronizable
         endpoint.source_type = attr['source_type']
         endpoint.webpage_url = attr['webpage_url']
         endpoint.aspace_repo_id = attr['aspace_repo_id']
+        endpoint.aspace_instance = nil
         endpoint.aspace_instance = ASpaceInstance.find_by!(slug: attr['aspace_instance']) if attr['aspace_instance']
         endpoint
       end

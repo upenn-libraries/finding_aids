@@ -54,15 +54,35 @@ describe Endpoint do
   describe '#webpage_url' do
     let(:endpoint) { build(:endpoint) }
 
-    it 'must be present' do
-      endpoint.source_type = Endpoint::WEBPAGE_TYPE
-      expect(endpoint.valid?).to be false
-      expect(endpoint.errors[:webpage_url]).to include "can't be blank"
+    context 'with webpage source_type' do
+      it 'must be present' do
+        endpoint.source_type = Endpoint::WEBPAGE_TYPE
+        expect(endpoint.valid?).to be false
+        expect(endpoint.errors[:webpage_url]).to include "can't be blank"
+      end
+    end
+
+    context 'with aspace source_type' do
+      it 'must be blank' do
+        endpoint.source_type = Endpoint::ASPACE_TYPE
+        endpoint.webpage_url = 'test_url'
+        expect(endpoint.valid?).to be false
+        expect(endpoint.errors[:webpage_url]).to include 'must be blank'
+      end
     end
   end
 
   describe '#aspace_repo_id' do
     let(:endpoint) { build(:endpoint) }
+
+    context 'with webpage source_type' do
+      it 'must be blank' do
+        endpoint.source_type = Endpoint::WEBPAGE_TYPE
+        endpoint.aspace_repo_id = '1'
+        expect(endpoint.valid?).to be false
+        expect(endpoint.errors[:aspace_repo_id]).to include 'must be blank'
+      end
+    end
 
     context 'with aspace source_type' do
       it 'must be present' do
@@ -152,16 +172,28 @@ describe Endpoint do
   end
 
   describe '#aspace_instance' do
-    let(:endpoint) { build(:endpoint, :aspace_harvest) }
+    let(:aspace_endpoint) { build(:endpoint, :aspace_harvest) }
 
-    it 'has no validation errors' do
-      expect(endpoint.valid?).to be true
-      expect(endpoint.aspace_instance).to be_a ASpaceInstance
+    context 'with aspace source_type' do
+      it 'has no validation errors' do
+        expect(aspace_endpoint.valid?).to be true
+        expect(aspace_endpoint.aspace_instance).to be_a ASpaceInstance
+      end
+
+      it 'must have an aspace_instance relationship' do
+        aspace_endpoint.aspace_instance = nil
+        expect(aspace_endpoint.valid?).to be false
+      end
     end
 
-    it 'is an optional relationship' do
-      endpoint.aspace_instance = nil
-      expect(endpoint.valid?).to be true
+    context 'with webpage source_type' do
+      let(:aspace_instance) { build(:aspace_instance) }
+
+      it 'must not have an aspace_instance relationship' do
+        webpage_endpoint.aspace_instance = aspace_instance
+        expect(webpage_endpoint.valid?).to be false
+        expect(webpage_endpoint.errors[:aspace_instance]).to include('must be blank')
+      end
     end
   end
 end
