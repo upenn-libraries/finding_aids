@@ -3,10 +3,10 @@
 require 'system_helper'
 
 describe 'Endpoint dashboard' do
-  let!(:endpoint_success)  { create(:endpoint, :index_harvest, :complete_harvest) }
-  let!(:endpoint_failed)   { create(:endpoint, :index_harvest, :failed_harvest) }
-  let!(:endpoint_problem)  { create(:endpoint, :index_harvest, :partial_harvest) }
-  let!(:endpoint_removals) { create(:endpoint, :index_harvest, :harvest_with_removals) }
+  let!(:endpoint_success)  { create(:endpoint, :webpage_harvest, :complete_harvest) }
+  let!(:endpoint_failed)   { create(:endpoint, :webpage_harvest, :failed_harvest) }
+  let!(:endpoint_problem)  { create(:endpoint, :webpage_harvest, :partial_harvest) }
+  let!(:endpoint_removals) { create(:endpoint, :webpage_harvest, :harvest_with_removals) }
   let(:test_endpoints) do
     [endpoint_success, endpoint_failed, endpoint_problem, endpoint_removals]
   end

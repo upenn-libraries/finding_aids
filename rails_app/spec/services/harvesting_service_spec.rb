@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe HarvestingService do
-  let(:endpoint) { create(:endpoint, :index_harvest) }
+  let(:endpoint) { create(:endpoint, :webpage_harvest) }
 
   describe '#process_deletes' do
     let(:solr_service) { instance_double SolrService }
@@ -24,7 +24,7 @@ describe HarvestingService do
   describe '#harvest' do
     context 'when everything goes to plan' do
       before do
-        stub_request(:get, endpoint.url).to_return(status: [200, ''])
+        stub_request(:get, endpoint.webpage_url).to_return(status: [200, ''])
         described_class.new(endpoint).harvest
         endpoint.reload
       end
@@ -36,7 +36,7 @@ describe HarvestingService do
 
     context 'when endpoint url returns a 404 error' do
       before do
-        stub_request(:get, endpoint.url).to_return(status: [404, 'Not Found'])
+        stub_request(:get, endpoint.webpage_url).to_return(status: [404, 'Not Found'])
         described_class.new(endpoint).harvest
         endpoint.reload
       end
@@ -63,7 +63,7 @@ describe HarvestingService do
 
     context 'when endpoint url returns a 500 error' do
       before do
-        stub_request(:get, endpoint.url).to_return(status: [500, 'Internal Server Error'])
+        stub_request(:get, endpoint.webpage_url).to_return(status: [500, 'Internal Server Error'])
         described_class.new(endpoint).harvest
         endpoint.reload
       end
@@ -75,7 +75,7 @@ describe HarvestingService do
 
     context 'when EAD cannot not be retrieved because of a HTTP error' do
       let(:url) { 'https://www.test.com/not_here.xml' }
-      let(:xml_file) { IndexExtractor::XMLFile.new(url: url) }
+      let(:xml_file) { WebpageExtractor::XMLFile.new(url: url) }
       let(:expected_file_error_hash) do
         [{
           'id' => 'not_here.xml',
@@ -85,8 +85,8 @@ describe HarvestingService do
       end
 
       before do
-        allow_any_instance_of(IndexExtractor).to receive(:files).and_return([xml_file])
-        stub_request(:get, endpoint.url).to_return(status: [200])
+        allow_any_instance_of(WebpageExtractor).to receive(:files).and_return([xml_file])
+        stub_request(:get, endpoint.webpage_url).to_return(status: [200])
         stub_request(:get, url).to_return(status: [404, 'Not Found'])
         described_class.new(endpoint).harvest
         endpoint.reload

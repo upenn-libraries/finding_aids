@@ -20,8 +20,8 @@ namespace :tools do
       print "Harvesting #{ep.slug} ... "
 
       # Skip localhost endpoints
-      if ep.url&.include? '127.0.0.1'
-        puts Rainbow("Skipping because it's @ #{ep.url}").cyan
+      if ep.webpage_url&.include? '127.0.0.1'
+        puts Rainbow("Skipping because it's @ #{ep.webpage_url}").cyan
         next
       end
 
@@ -44,6 +44,10 @@ namespace :tools do
 
   desc 'Sync all endpoints'
   task sync_endpoints: :environment do
+    # Hard coding UPenn ASpace instance for now. We'll move away from this soon.
+    ASpaceInstance.find_or_create_by(slug: 'upenn') do |instance|
+      instance.base_url = 'https://upennapi.as.atlas-sys.com/'
+    end
     Endpoint.sync_from_csv(Rails.root.join('data/endpoints.csv'))
   end
 
