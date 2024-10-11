@@ -3,6 +3,7 @@
 # Parser for an Endpoint
 # Takes a URL for an XML file and maps it to a Hash for indexing to Solr
 # e.g., EadParser.new(endpoint_1).process(url_1)
+# Known-good support for EAD 1, EAD 2(002), but NOT for EAD 3. See #validate_ead_spec!
 class EadParser
   YEARS_REGEX = %r{[a-zA-Z]*\s* # match any preceding text or whitespace
                   (?<begin>\d{4}) # capture 'begin' date if a range
@@ -13,6 +14,8 @@ class EadParser
                     [a-zA-Z]*\s* # # any more preceding text or whitespace
                     (?<end>\d{4}) # second capture group for 'end' date
                   )?}x
+
+  class ValidationError < StandardError; end
 
   # @param [Endpoint] endpoint
   def initialize(endpoint)
@@ -337,9 +340,11 @@ class EadParser
 
   # usage: { solr_field_name: value, ... }
   # @param [String] xml contents of xml file
+  # @raise UnsupportedEadSpecError
   # @return [Hash]
   def parse(xml)
     doc = Nokogiri::XML.parse xml
+    validate_ead_spec!(doc)
     doc.remove_namespaces!
     {
       id: id(doc),
@@ -376,5 +381,17 @@ class EadParser
       genre_form_ssim: genre_form(doc),
       names_ssim: names(doc)
     }
+  end
+
+  private
+
+  # Provide additional EAD specification validations, for example validating EAD XML namespace
+  # @param [Nokogiri::XML::Document] doc
+  # @raises StandardError
+  # @return [nil]
+  def validate_ead_spec!(doc)
+    return unless doc.namespaces['xmlns']&.include?('http://ead3.archivists.org/schema/')
+
+    raise ValidationError, 'EAD3 spec not supported'
   end
 end

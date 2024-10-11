@@ -110,5 +110,25 @@ describe HarvestingService do
         expect(ActionMailer::Base.deliveries.last.body.to_s).to match('404 Not Found')
       end
     end
+
+    context 'when EAD 3 format is detected in a file' do
+      before do
+        stub_extractor = instance_double BaseExtractor, files: files
+        allow(endpoint).to receive(:extractor).and_return stub_extractor
+        described_class.new(endpoint).harvest
+        endpoint.reload
+      end
+
+      let(:files) do
+        [instance_double(BaseExtractor::BaseEadSource,
+                         xml: file_fixture('ead/ead3_aspace_export.xml').read,
+                         source_id: '123')]
+      end
+
+      it 'save error message making it clear that EAD 3 is unsupported' do
+        file_errors = endpoint.last_harvest.files.pluck('errors').flatten
+        expect(file_errors.join(' ')).to include 'EAD3 spec not supported'
+      end
+    end
   end
 end

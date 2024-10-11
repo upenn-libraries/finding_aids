@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="https://raw.githubusercontent.com/SAA-SDT/EAD3/master/ead3.rng"
+        type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<ead xmlns="http://ead3.archivists.org/schema/"><control countryencoding="iso3166-1" dateencoding="iso8601" langencoding="iso639-2b" relatedencoding="marc" repositoryencoding="iso15511" scriptencoding="iso15924"><recordid instanceurl=""></recordid><filedesc><titlestmt><titleproper>Album of beautiful seaweeds, souvenir de Torquay, circa 1860-1870 </titleproper><author>Donna Brandolisio</author></titlestmt><publicationstmt><publisher>University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts</publisher><address><addressline>3420 Walnut Street</addressline><addressline>Philadelphia, PA 19104-6206</addressline><addressline localtype="business">(215) 898-2065</addressline><addressline localtype="fax">(215) 573-9079</addressline><addressline localtype="email">rbml@pobox.upenn.edu</addressline><addressline><ref href="http://www.library.upenn.edu/rbm/" linktitle="http://www.library.upenn.edu/rbm/" show="new">http://www.library.upenn.edu/rbm/</ref></addressline></address><date>December 2015</date><num>PUSp.Ms. Coll. 1150</num></publicationstmt></filedesc><maintenancestatus value="derived"/><maintenanceagency><agencyname>University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts</agencyname></maintenanceagency><languagedeclaration><language langcode="eng">English</language><script scriptcode="Latn">Latin</script><descriptivenote><p>English</p></descriptivenote></languagedeclaration><conventiondeclaration><abbr>dacs</abbr><citation>Describing Archives: A Content Standard</citation></conventiondeclaration><localcontrol localtype="findaidstatus"><term>completed</term></localcontrol><maintenancehistory><maintenanceevent><eventtype value="derived"/><eventdatetime>2024-10-04T14:20:41-04:00</eventdatetime><agenttype value="machine"/><agent>ArchivesSpace v3.4.1</agent><eventdescription>This finding aid was produced using ArchivesSpace on Friday October  4, 2024 at 14:20</eventdescription></maintenanceevent></maintenancehistory></control><archdesc level="collection">
+  <did>
+    <unittitle>Album of beautiful seaweeds, souvenir de Torquay</unittitle>
+    <unitid>PUSp.Ms. Coll. 1150</unitid>
+    <unitid localtype="aspace_uri">/repositories/4/resources/617</unitid>
+    <repository>
+      <corpname>
+        <part>University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts</part>
+      </corpname>
+    </repository>
+    <langmaterial>
+      <language langcode="eng">English</language>
+    </langmaterial>
+    <physdescstructured coverage="whole" physdescstructuredtype="spaceoccupied">
+      <quantity>1</quantity>
+      <unittype>volume</unittype>
+    </physdescstructured>
+    <physdesc localtype="container_summary">+ 1 leaf</physdesc>
+    <unitdatestructured datechar="creation" unitdatetype="inclusive">
+      <daterange>
+        <fromdate standarddate="0">0</fromdate>
+        <todate standarddate="0">0</todate>
+      </daterange>
+    </unitdatestructured>
+    <unitdate datechar="creation" unitdatetype="inclusive">circa 1860-1870</unitdate>
+    <abstract id="aspace_de3231bc810d35797c84664385452c98">A herbarium by an unknown collector was probably created in the 1860s.  The album of twenty-four leaves comprises seaweed specimens collected at Torquay, England, specimens of plant and tree leaves, and color prints.</abstract>
+  </did>
+  <accessrestrict id="aspace_5c9e9c16d5a9f92f889ab8a05d520632">
+    <head>Conditions Governing Access</head>
+    <p>This collection is open for research.</p>  </accessrestrict>
+  <userestrict id="aspace_d0f434298dde3534327a986e6eea881c">
+    <head>Conditions Governing Use</head>
+    <p>Copyright restrictions may exist. For most library holdings, the Trustees of the University of Pennsylvania do not hold copyright. It is the responsibility of the requester to seek permission from the holder of the copyright to reproduce material from the Kislak Center for Special Collections, Rare Books and Manuscripts.</p>  </userestrict>
+  <scopecontent id="aspace_313932e1e0945ac9328389b59cddfc0e">
+    <head>Scope and Contents</head>
+    <p>An album of twenty-four leaves bound in a green cloth cover, decorated with a gold and black design, and embossed with the title Scraps.  This herbarium by an unknown collector was probably created in the 1860s.  The album comprises thirteen leaves of seaweed specimens collected at Torquay, England.  There are six pages of unidentified leaf specimens from ferns and trees.  The last nine leaves have eighteen printed botanical color plates mounted two per leaf measuring 8 3/4 x 5 1/2 inches.  Each seaweed specimen in the herbarium has been mounted on white paper,  glued in the volume, and the name for each written on the bottom left-hand corner.  The seaweed specimens have various leafy shapes and have retained some of their vibrant color with examples in magenta, purple, green, and brown. The botanical leaf specimens have been mounted directly onto the pages in the album.  The botanical color prints have illustrations of flowering plants and ferns. There are four postcards mounted in the album with reproductions of water color landscapes by T. L. Rowbotham.  Laid in the album is a skeletal specimen of a flyingfish wing (fin) mounted on paper with the notation "captured in Oct. 1861" written in pencil.</p>  </scopecontent>
+  <acqinfo id="aspace_74297ac0df6de53fd5584467254de46e">
+    <head>Source of Acquisition</head>
+    <p>Sold by Bearnes, Hampton &amp; Littlewood (Exeter, Devon, United Kingdom), 2015.</p>  </acqinfo>
+  <prefercite id="aspace_b09eb16b4afc0593cd7baea290eedff0">
+    <head>Preferred Citation</head>
+    <p>Album of Beautiful Seaweeds, Souvenir de Toquay, circa 1860-1870, Ms. Coll. 1150, Kislak Center for Special Collections, Rare Books and Manuscripts, University of Pennsylvania</p>  </prefercite>
+  <controlaccess>
+    <genreform identifier="http://vocab.getty.edu/page/aat/300026819" source="aat">
+      <part>Picture postcards</part>
+    </genreform>
+    <genreform source="aat">
+      <part>Color prints</part>
+    </genreform>
+    <genreform identifier="http://vocab.getty.edu/page/aat/300041273" source="aat">
+      <part>Prints (visual works)</part>
+    </genreform>
+    <genreform identifier="http://vocab.getty.edu/page/aat/300379591" source="aat">
+      <part>Natural history specimens</part>
+    </genreform>
+    <genreform identifier="http://vocab.getty.edu/page/aat/300235576" source="aat">
+      <part>Specimens</part>
+    </genreform>
+    <genreform identifier="http://vocab.getty.edu/page/aat/300027341" source="aat">
+      <part>Scrapbooks</part>
+    </genreform>
+    <subject identifier="http://id.loc.gov/authorities/subjects/sh85060337" source="lcsh">
+      <part>Herbaria</part>
+    </subject>
+    <subject identifier="http://id.loc.gov/authorities/subjects/sh85049600" source="lcsh">
+      <part>Flyingfishes</part>
+    </subject>
+    <subject identifier="http://id.loc.gov/authorities/subjects/sh85102839" source="lcsh">
+      <part>Plants</part>
+    </subject>
+    <subject identifier="http://id.loc.gov/authorities/subjects/sh2001000705" source="lcsh">
+      <part>Botanical specimens</part>
+    </subject>
+    <subject identifier="http://id.loc.gov/authorities/subjects/sh85081114" source="lcsh">
+      <part>Marine algae</part>
+    </subject>
+  </controlaccess>
+  <dsc>
+    <c id="aspace_ref7_g0w" level="file">
+      <did>
+        <unittitle>Album of beautiful seaweeds, souvenir de Torquay</unittitle>
+        <unitid localtype="aspace_uri">/repositories/4/archival_objects/108801</unitid>
+        <physdescstructured coverage="whole" physdescstructuredtype="spaceoccupied">
+          <quantity>1</quantity><unittype>volume</unittype>
+        </physdescstructured>
+        <physdesc localtype="container_summary">+ 1 leaf</physdesc>
+        <unitdate datechar="creation" unitdatetype="inclusive">circa 1860-1870</unitdate>
+        <container id="aspace_d03151ec4fc01a3c815e4cb5a36482bd" label="Mixed Materials" localtype="volume">1</container>
+      </did>
+    </c>
+  </dsc>
+</archdesc>
+</ead>
