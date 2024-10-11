@@ -30,8 +30,10 @@
     <dt>Endpoint Type</dt>
     <dd><%= @endpoint.source_type %></dd>
 
-    <dt>Endpoint URL</dt>
-    <dd><%= link_to @endpoint.url, @endpoint.url %></dd>
+    <% if @endpoint.display_url %>
+      <dt>Endpoint URL</dt>
+      <dd><%= link_to @endpoint.display_url, @endpoint.display_url %></dd>
+    <% end %>
   </dl>
 
   <h4>
@@ -67,7 +69,7 @@
   <dd>
     <ol>
       <% @endpoint.last_harvest.problem_files.each do |file| %>
-      <li><%= error_message_for(@endpoint, file).html_safe %></li>
+      <li><%= error_message_for(file).html_safe %></li>
       <% end %>
     </ol>
   </dd>

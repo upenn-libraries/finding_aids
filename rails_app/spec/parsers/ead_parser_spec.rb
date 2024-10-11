@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe EadParser do
-  let(:endpoint) { build(:endpoint, :index_harvest) }
+  let(:endpoint) { build(:endpoint, :webpage_harvest) }
   let(:parser) { described_class.new endpoint }
 
   describe '#to_years_array' do

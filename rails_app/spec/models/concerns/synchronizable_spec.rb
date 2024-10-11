@@ -40,21 +40,22 @@ shared_examples_for 'synchronizable' do
 
     context 'when adding new aspace and index endpoint' do
       let(:csv_file) { file_fixture('endpoint_csv/new_endpoints.csv') }
+      let!(:aspace_instance) { create(:aspace_instance, slug: 'upenn') }
       let(:rbml_attributes) do
         {
           public_contacts: ['rbml@pobox.upenn.edu'],
           tech_contacts: ['hmengel@pobox.upenn.edu'],
-          source_type: 'penn_archives_space',
-          url: 'https://upennstaff.as.atlas-sys.com',
-          aspace_id: 4
+          source_type: 'aspace',
+          aspace_repo_id: 4,
+          aspace_instance: aspace_instance
         }
       end
       let(:haverford_attributes) do
         {
           public_contacts: ['hc-special@haverford.edu'],
           tech_contacts: ['shorowitz@haverford.edu'],
-          source_type: 'index',
-          url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/'
+          source_type: 'webpage',
+          webpage_url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/'
         }
       end
 
@@ -74,25 +75,25 @@ shared_examples_for 'synchronizable' do
           {
             public_contacts: ['rbml@pobox.upenn.edu'],
             tech_contacts: ['hmengel@pobox.upenn.edu'],
-            source_type: 'index',
-            url: 'http://127.0.0.1:8080/ead/manuscripts'
+            source_type: 'webpage',
+            webpage_url: 'http://127.0.0.1:8080/ead/manuscripts'
           }
         end
         let(:haverford_attributes) do
           {
             public_contacts: ['public@haverford.edu'],
             tech_contacts: ['example@haverford.edu'],
-            source_type: 'index',
-            url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/new'
+            source_type: 'webpage',
+            webpage_url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/new'
           }
         end
         let(:cajs_attributes) do
           {
             public_contacts: ['cajs@pobox.upenn.edu'],
             tech_contacts: ['cajs@pobox.upenn.edu'],
-            source_type: 'penn_archives_space',
-            url: 'https://upennstaff.as.atlas-sys.com',
-            aspace_id: 5
+            source_type: 'aspace',
+            aspace_instance: aspace_instance,
+            aspace_repo_id: 5
           }
         end
 

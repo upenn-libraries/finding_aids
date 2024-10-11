@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe IndexExtractor do
-  let(:endpoint) { build(:endpoint, :index_harvest) }
+describe WebpageExtractor do
+  let(:endpoint) { build(:endpoint, :webpage_harvest) }
   let(:html) { file_fixture('xml_listing.html').read }
   let(:extractor) { described_class.new(endpoint: endpoint) }
 
@@ -22,7 +22,7 @@ describe IndexExtractor do
 
     context 'when URL is retrieved successfully' do
       before do
-        stub_request(:get, endpoint.url).to_return(body: html)
+        stub_request(:get, endpoint.webpage_url).to_return(body: html)
       end
 
       it 'responds to enumerable methods' do
@@ -34,7 +34,7 @@ describe IndexExtractor do
       end
 
       it 'returns an Array of XMLFiles' do
-        expect(files.first).to be_an_instance_of IndexExtractor::XMLFile
+        expect(files.first).to be_an_instance_of WebpageExtractor::XMLFile
       end
 
       it 'returns XMLFile objects with properly derived source IDs' do
@@ -61,7 +61,7 @@ describe IndexExtractor do
       end
 
       before do
-        stub_request(:get, endpoint.url).to_return(status: 302, headers: { 'Location' => redirected_to })
+        stub_request(:get, endpoint.webpage_url).to_return(status: 302, headers: { 'Location' => redirected_to })
         stub_request(:get, redirected_to).to_return(body: html)
       end
 
@@ -72,7 +72,7 @@ describe IndexExtractor do
 
     context 'when URL raises a 404' do
       before do
-        stub_request(:get, endpoint.url).to_return(status: ['404', 'Not Found'])
+        stub_request(:get, endpoint.webpage_url).to_return(status: ['404', 'Not Found'])
       end
 
       it 'raises an OpenURI::HTTPError' do
