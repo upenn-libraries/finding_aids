@@ -38,6 +38,9 @@ class CatalogController < ApplicationController
 
     # Use custom DocumentTitleComponent on results page
     config.index.title_component = Catalog::DocumentTitleComponent
+    # TODO: we've found that setting this is required, even though it should be the default. otherwise the setting from
+    #       above applies in show contexts as well. this could be a blacklight bug, or by using distinct
+    #       DocumentComponents.
     config.show.title_component = Blacklight::DocumentTitleComponent
 
     # solr field configuration for search results/index views
