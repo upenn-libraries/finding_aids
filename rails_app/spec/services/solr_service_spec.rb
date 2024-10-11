@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe SolrService do
   let(:solr) { described_class.new }
-  let(:endpoint) { build(:endpoint, :index_harvest) }
+  let(:endpoint) { build(:endpoint, :webpage_harvest) }
   let(:slug) { endpoint.slug }
 
   def sample_documents(endpoint_slug, count = 2)

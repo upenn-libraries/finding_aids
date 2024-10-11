@@ -1,35 +1,36 @@
-<%= render 'previous_next_doc' if @search_context && search_session['document_id'] == @document.id %>
+<!-- copied from Blacklight 8.4.0, customized to render many additional sections -->
 
-<% @page_title = t('blacklight.search.show.title', document_title: Deprecation.silence(Blacklight::BlacklightHelperBehavior) { document_show_html_title }, application_name: application_name).html_safe %>
+<%= render blacklight_config.view_config(:show).document_header_component.new(document: @document, search_context: @search_context, search_session: search_session) %>
+<% @page_title = t('blacklight.search.show.title', document_title: document_presenter(@document).html_title, application_name: application_name).html_safe %>
 <% content_for(:head) { render_link_rel_alternates } %>
 
-<%= render (blacklight_config.view_config(:show).document_component || Blacklight::DocumentComponent).new(
-  presenter: document_presenter(@document),
-  component: :div,
-  title_component: :h1,
-  show: true) do |component| %>
-  <% component.footer do %>
+<% document_component = blacklight_config.view_config(:show).document_component -%>
+<%= render (document_component).new(document_component.collection_parameter => document_presenter(@document), component: :div, show: true, partials: blacklight_config.view_config(:show).partials) do |component| %>
+  <% component.with_title(as: 'h1', link_to_document: false, actions: false) %>
+  <% component.with_footer do %>
     <% if @document.respond_to?(:export_as_openurl_ctx_kev) %>
-      <span class="Z3988" title="<%= @document.export_as_openurl_ctx_kev(Deprecation.silence(Blacklight::RenderPartialsHelperBehavior) { document_partial_name(@document) }) %>"></span>
+      <!-- COinS, for Zotero among others. -->
+      <span class="Z3988" title="<%= @document.export_as_openurl_ctx_kev(document_presenter(@document).display_type) %>"></span>
     <% end %>
-  <%  end %>
+  <% end %>
+
 
   <% SolrDocument::ParsedEad::OTHER_SECTIONS.each do |section| %>
     <% open = %w[bioghist scopecontent arrangement].include?(section) %>
-    <% component.collapsable_metadata_section(title: I18n.t(section, scope: :sections), open: open) do %>
+    <% component.with_collapsable_metadata_section(title: I18n.t(section, scope: :sections), open: open) do %>
       <%= render AdditionalMetadataComponent.new(nodes: @document.parsed_ead.try(section)) %>
     <% end %>
   <% end %>
 
-  <% component.collapsable_metadata_section(title: t('sections.topics')) do %>
-    <%=  render TopicsComponent.new topics: @document.topics_hash %>
+  <% component.with_collapsable_metadata_section(title: t('sections.topics')) do %>
+    <%= render TopicsComponent.new topics: @document.topics_hash %>
   <% end %>
 
-  <% component.collapsable_metadata_section(title: t('sections.admin_info')) do %>
+  <% component.with_collapsable_metadata_section(title: t('sections.admin_info')) do %>
     <%= render AdministrativeInformationComponent.new sections: SolrDocument::ParsedEad::ADMIN_INFO_SECTIONS, document: @document %>
   <% end %>
 
-  <% component.collection_inventory do %>
+  <% component.with_collection_inventory do %>
     <% if @document.requestable? %>
       <form id="requestItemsForm" class="form" action="<%= requests_path %>" method="POST">
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
@@ -60,9 +61,7 @@
     <% end %>
   <% end %>
 
-  <%# Use :body for complete backwards compatibility (overriding the component body markup),
-        but if the app explicitly  opted-in to components, make the partials data available as :partials to ease migrations pain %>
-  <% component.public_send(blacklight_config.view_config(:show).document_component.blank? && blacklight_config.view_config(:show).partials.any? ? :body : :partial) do %>
+  <% component.body do %>
     <div id="doc_<%= @document.id.to_s.parameterize %>">
       <%= render_document_partials @document, blacklight_config.view_config(:show).partials, component: component %>
     </div>

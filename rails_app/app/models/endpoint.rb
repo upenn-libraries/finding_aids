@@ -4,24 +4,38 @@
 class Endpoint < ApplicationRecord
   include Synchronizable
 
-  INDEX_TYPE = 'index'
-  PENN_ASPACE_TYPE = 'penn_archives_space'
-  SOURCE_TYPES = [INDEX_TYPE, PENN_ASPACE_TYPE].freeze
+  WEBPAGE_TYPE = 'webpage'
+  ASPACE_TYPE = 'aspace'
+  SOURCE_TYPES = [WEBPAGE_TYPE, ASPACE_TYPE].freeze
 
   validates :slug, presence: true, uniqueness: true, format: { with: /\A[A-Za-z_]+\z/ }
   validates :source_type, presence: true, inclusion: SOURCE_TYPES
-  validates :url, presence: true
-  validates :aspace_id, presence: true, if: :penn_aspace_type?
+  validates :webpage_url, presence: true, if: :webpage_type?
+  validates :webpage_url, absence: true, if: :aspace_type?
+  validates :aspace_repo_id, :aspace_instance, presence: true, if: :aspace_type?
+  validates :aspace_repo_id, :aspace_instance, absence: true, if: :webpage_type?
 
-  scope :index_type, -> { where(source_type: 'index') }
-  scope :penn_aspace_type, -> { where(source_type: 'penn_archives_space') }
+  belongs_to :aspace_instance, optional: true
 
-  def penn_aspace_type?
-    source_type == PENN_ASPACE_TYPE
+  def aspace_type?
+    source_type == ASPACE_TYPE
+  end
+
+  def webpage_type?
+    source_type == WEBPAGE_TYPE
   end
 
   def last_harvest
     @last_harvest ||= LastHarvest.new(last_harvest_results)
+  end
+
+  # URL to display in UI and mailers.
+  def display_url
+    if webpage_type?
+      webpage_url
+    else
+      aspace_instance&.base_url
+    end
   end
 
   # Wrapper for last_harvest_results providing accessor and helper methods.

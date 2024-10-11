@@ -1,2 +1,5 @@
 solr:
   url: <%= ENV['SOLR_URL'] %>
+
+honeybadger:
+  api_key: <%= DockerSecrets.lookup('honeybadger_api_key') %>

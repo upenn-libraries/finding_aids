@@ -2,19 +2,21 @@
 
 require 'rails_helper'
 
-describe PennAspaceService do
-  subject(:service) { described_class.new repository_id }
+describe ASpaceService do
+  subject(:service) { described_class.new(aspace_instance: aspace_instance, repository_id: repository_id) }
 
   let(:repository_id) { 1 }
   let(:response_headers) { { 'Content-Type': 'application/json' } }
+  let(:aspace_instance) { create(:aspace_instance) }
 
   before do
-    stub_request(:post, %r{https://upennapi.as.atlas-sys.com/users/[a-z_]*/login?})
+    allow(DockerSecrets).to receive(:lookup).with(:"#{aspace_instance.slug}_aspace_username")
+                                            .and_return('test_user')
+    allow(DockerSecrets).to receive(:lookup).with(:"#{aspace_instance.slug}_aspace_password")
+                                            .and_return('test_pass')
+    stub_request(:post, "#{aspace_instance.base_url}/users/#{aspace_instance.username}/login" \
+                        "?password=#{aspace_instance.password}")
       .to_return(status: 200, body: { session: '1234' }.to_json, headers: response_headers)
-    allow(SecretsService).to receive(:lookup).with(key: 'penn_aspace_api_username')
-                                             .and_return('test_user')
-    allow(SecretsService).to receive(:lookup).with(key: 'penn_aspace_api_password')
-                                             .and_return('test_pass')
   end
 
   describe '#all_resource_ids' do
@@ -30,9 +32,9 @@ describe PennAspaceService do
     end
 
     before do
-      stub_request(:get, 'https://upennapi.as.atlas-sys.com/repositories/1/resources?page=1')
+      stub_request(:get, "#{aspace_instance.base_url}/repositories/#{repository_id}/resources?page=1")
         .to_return(status: 200, body: page_one_response.to_json, headers: response_headers)
-      stub_request(:get, 'https://upennapi.as.atlas-sys.com/repositories/1/resources?page=2')
+      stub_request(:get, "#{aspace_instance.base_url}/repositories/#{repository_id}/resources?page=2")
         .to_return(status: 200, body: page_two_response.to_json, headers: response_headers)
     end
 
@@ -47,9 +49,13 @@ describe PennAspaceService do
 
   describe '#resource_ead_xml' do
     let(:some_content) { '<?xml version="1.0" encoding="utf-8"?><ead></ead>' }
+    let(:api_request_url) do
+      "#{aspace_instance.base_url}/repositories/#{repository_id}/" \
+        'resource_descriptions/1.xml?include_daos=true&include_unpublished=false'
+    end
 
     before do
-      stub_request(:get, 'https://upennapi.as.atlas-sys.com/repositories/1/resource_descriptions/1.xml?include_daos=true&include_unpublished=false')
+      stub_request(:get, api_request_url)
         .to_return(status: 200, body: some_content, headers: { 'Content-Type': 'application/xml' })
     end
 

@@ -33,7 +33,7 @@ Rails.application.configure do
   end
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
-  # config.active_job.queue_adapter     = :sidekiq
+  config.active_job.queue_adapter = :sidekiq
 
   # Tell Action Mailer not to deliver emails to the real world.
   # The :file delivery method saves the emails in tmp/mails

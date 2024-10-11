@@ -15,7 +15,7 @@ finding_aid_discovery_versioned_secrets:
     vault: finaids_vault_values
   honeybadger_api_key:
     vault: finaids_vault_values
-  penn_aspace_api_username:
+  upenn_aspace_username:
     vault: finaids_vault_values
-  penn_aspace_api_password:
+  upenn_aspace_password:
     vault: finaids_vault_values

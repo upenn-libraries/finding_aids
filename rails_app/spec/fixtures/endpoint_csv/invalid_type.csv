@@ -1,3 +1,3 @@
-slug,type,tech_contact,public_contact,index_url,aspace_id
-upenn_rbml, invalid, hmengel@pobox.upenn.edu, rbml@pobox.upenn.edu, https://upennstaff.as.atlas-sys.com, 4
-haverford, index, shorowitz@haverford.edu, hc-special@haverford.edu, https://web.tricolib.brynmawr.edu/paarp/haverford/production/,
+slug,source_type,tech_contact,public_contact,webpage_url, aspace_instance, aspace_repo_id
+upenn_rbml, invalid, hmengel@pobox.upenn.edu, rbml@pobox.upenn.edu,,, 4
+haverford, webpage, shorowitz@haverford.edu, hc-special@haverford.edu, https://web.tricolib.brynmawr.edu/paarp/haverford/production/,,

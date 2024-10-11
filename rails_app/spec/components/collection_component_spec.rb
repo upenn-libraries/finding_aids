@@ -142,4 +142,27 @@ XML
     it { is_expected.not_to have_link 'Notebook A' }
     it { is_expected.not_to have_link 'Notebook B' }
   end
+
+  context 'with descriptive data sections' do
+    let(:xml) do
+      <<XML
+    <c>
+      <did>
+        <container type="Folder">1</container>
+      </did>
+      <scopecontent>
+        <head>Scope and Contents</head>
+        <p>Photo Album</p>
+      </scopecontent>
+      <bioghist>
+        <head>Biographical / Historical</head>
+        <p>Born, lived, died</p>
+      </bioghist>
+    </c>
+XML
+    end
+
+    it { is_expected.to have_text 'Photo Album' }
+    it { is_expected.to have_text 'Born, lived, died' }
+  end
 end

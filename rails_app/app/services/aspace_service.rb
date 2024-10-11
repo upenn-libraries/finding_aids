@@ -1,9 +1,15 @@
 # frozen_string_literal: true
 
 # simple wrapper for the gem-provided ASpace API
-class PennAspaceService
+class ASpaceService
+  attr_reader :aspace_instance
+
+  # @param [ASpaceInstance] aspace_instance
   # @param [String] repository_id
-  def initialize(repository_id)
+  def initialize(aspace_instance:, repository_id:)
+    @aspace_instance = aspace_instance
+
+    # Create ArchivesSpace Client and set default repository.
     client.repository(repository_id)
   end
 
@@ -34,10 +40,10 @@ class PennAspaceService
   def config
     ArchivesSpace::Configuration.new(
       {
-        base_uri: 'https://upennapi.as.atlas-sys.com',
+        base_uri: aspace_instance.base_url,
         base_repo: '',
-        username: SecretsService.lookup(key: 'penn_aspace_api_username'),
-        password: SecretsService.lookup(key: 'penn_aspace_api_password'),
+        username: aspace_instance.username,
+        password: aspace_instance.password,
         page_size: 50, throttle: 0.1,
         debug: false, verify_ssl: false
       }
