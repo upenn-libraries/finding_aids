@@ -37,7 +37,7 @@ describe 'API index endpoints' do
   context 'with repositories' do
     let(:api_url) { repositories_api_path }
 
-    it 'returns a list of all extant endpoints with count and records link' do
+    it 'returns a list of all extant repositories with count and records link' do
       expect(data.first.keys).to include 'name', 'count', 'records_url'
       expect(data.first['records_url']).to include '.json'
     end
