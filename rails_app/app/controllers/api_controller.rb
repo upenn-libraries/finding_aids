@@ -27,7 +27,7 @@ class ApiController < ApplicationController
     facet_config = blacklight_config.facet_fields[facet_field]
     response = search_service.facet_field_response(facet_config.key, { "f.#{facet_field}.facet.limit" => -1 })
     field_data = response.aggregations[facet_field]
-    field_data.items.map { |entry| hashify_with_link(field: facet_field, item: entry) }
+    field_data.items.map { |entry| hashify_with_link(field: facet_field, item: entry) }.sort_by { |h| h[:name] }
   end
 
   # @param field [String]
@@ -42,6 +42,6 @@ class ApiController < ApplicationController
   # @param field [String]
   # @return [String]
   def facet_entry_url(entry:, field:)
-    search_catalog_url("f[#{field}][]" => entry)
+    search_catalog_url("f[#{field}][]" => entry, format: :json)
   end
 end

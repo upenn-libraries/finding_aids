@@ -69,6 +69,16 @@ Email notifications are sent to the technical contact and the product owner, Hol
 #### Status
 The status of harvesting operation can be viewed at `/admin/endpoints` - including specific information about individual files.
 
+### API Endpoints
+
+The site provides a few points for API access:
+
+1. `/api/endpoints` gives top-level information about the Endpoints in the system, the number of records and a link to retrieve all records for that endpoint
+2. `/api/repostories` gives top-level information about the repositories in the system, the number of records and a link to retrieve all records for that repository
+3. `/records.json?q=__SEARCH-TERM__` can be used to conduct a search and return results, in addition to facet values and search options.
+
+All data is returned in JSON. Search and document responses make use of the [JSON::API schema](https://jsonapi.org/).
+
 ### Sitemap
 The sitemap is generated via the [sitemap_generator](https://github.com/kjvarga/sitemap_generator) gem. It is generated at deploy in the `docker-entrypoint.sh` script if one isn't present and it is scheduled to be regenerated after each harvest. If a harvest is completed outside of the scheduled harvest the sitemap will have to be regenerated manually in order to reflect any changes. In most cases, its fine to wait until the next scheduled sitemap generation. 
 
