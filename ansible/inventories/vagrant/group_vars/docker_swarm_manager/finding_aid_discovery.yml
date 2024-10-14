@@ -2,10 +2,6 @@
 finding_aid_discovery_versioned_secrets:
   honeybadger_api_key:
     vault: finaids_vault_values
-  penn_aspace_api_username:
-    vault: finaids_vault_values
-  penn_aspace_api_password:
-    vault: finaids_vault_values
   rails_master_key:
     vault: finaids_vault_values
   sidekiq_pro_credentials:
@@ -13,4 +9,8 @@ finding_aid_discovery_versioned_secrets:
     vault_key: credentials
   slack_notification_email_address:
     vault: finaids_vault_values
+  upenn_aspace_username:
+    vault: aspace_vault_values
+  upenn_aspace_password:
+    vault: aspace_vault_values
 

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# Extracts XML files linked to on any HTML page
-class IndexExtractor < BaseExtractor
+# Extracts XML files linked to on any HTML webpage
+class WebpageExtractor < BaseExtractor
   # @return [Array<XMLFile>]
   def files
-    @files ||= extract_xml_urls(endpoint.url)
+    @files ||= extract_xml_urls(endpoint.webpage_url)
   end
 
   class XMLFile < BaseEadSource

@@ -7,7 +7,8 @@ class CollapsableSectionComponent < ViewComponent::Base
   renders_one :title
   renders_one :body
 
-  # @param [String] id
+  # @param id [String]
+  # @param open [Boolean]
   def initialize(id:, open: true)
     @collapsable_id = id
     @open = open

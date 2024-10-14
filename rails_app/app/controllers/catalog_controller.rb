@@ -5,8 +5,7 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
 
   configure_blacklight do |config|
-    # enable search state field filtering - it will be default in BL8
-    config.filter_search_state_fields = true
+    config.bootstrap_version = 4
 
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository
@@ -21,12 +20,10 @@ class CatalogController < ApplicationController
     # config.raw_endpoint.enabled = false
 
     ## Default parameters to send to solr for all search-like requests. See also SearchBuilder#processed_parameters
-    config.default_solr_params = {
-      rows: 10
-    }
+    config.default_solr_params = { rows: 10 }
 
     # disable tracking links since we don't allow paginating through a results set
-    config.track_search_session = false
+    config.track_search_session = Blacklight::OpenStructWithHashAccess.new({ storage: false })
 
     # solr path which will be added to solr base url before the other solr params.
     # config.solr_path = 'select'
@@ -34,6 +31,17 @@ class CatalogController < ApplicationController
 
     # items to show per page, each number in the array represent another option to choose from.
     config.per_page = [10, 20, 50, 100]
+
+    # Use local Document component to customize results and show page views
+    config.index.document_component = Catalog::DocumentComponent
+    config.show.document_component = Catalog::DocumentComponent
+
+    # Use custom DocumentTitleComponent on results page
+    config.index.title_component = Catalog::DocumentTitleComponent
+    # TODO: we've found that setting this is required, even though it should be the default. otherwise the setting from
+    #       above applies in show contexts as well. this could be a blacklight bug, or by using distinct
+    #       DocumentComponents.
+    config.show.title_component = Blacklight::DocumentTitleComponent
 
     # solr field configuration for search results/index views
     config.index.title_field = :title_tsi
@@ -74,7 +82,7 @@ class CatalogController < ApplicationController
     # :index_range can be an array or range of prefixes that will be used to create the navigation
     #              (note: It is case sensitive when searching values)
 
-    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true, component: true
+    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true
     config.add_facet_field 'record_source', label: I18n.t('fields.record_source'), query: {
       upenn: { label: 'University of Pennsylvania', fq: 'upenn_record_bsi:true' },
       non_upenn: { label: 'Other PACSCL Partners', fq: 'upenn_record_bsi:false' }
@@ -153,10 +161,6 @@ class CatalogController < ApplicationController
 
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = false
-
-    # Use local Document component to customize results and show page views
-    config.index.document_component = DocumentComponent
-    config.show.document_component = DocumentComponent
   end
 
   def repositories

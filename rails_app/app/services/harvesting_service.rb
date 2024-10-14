@@ -5,6 +5,8 @@
 class HarvestingService
   CRAWL_DELAY = 0.2
 
+  class IdentifierValidationError < StandardError; end
+
   attr_reader :file_results, :document_ids
 
   # @param [Endpoint] endpoint
@@ -37,10 +39,10 @@ class HarvestingService
       documents = []
       slice.each do |ead|
         document = @parser.parse(ead.xml)
-        validate_identifier(ead, document[:id])
+        validate_identifier!(ead, document[:id])
         documents << document
         document_ids << document[:id]
-      rescue StandardError => e
+      rescue EadParser::ValidationError, IdentifierValidationError, StandardError => e
         log_error_from(ead, e)
       else
         log_document_added(document)
@@ -83,13 +85,14 @@ class HarvestingService
 
   # @param [BaseExtractor::BaseEadSource] ead
   # @param [String] id
-  def validate_identifier(ead, id)
+  def validate_identifier!(ead, id)
     return unless id.in?(document_ids)
 
-    raise StandardError, "Generated ID is not unique for #{ead.source_id}. Please ensure each file has a unique id."
+    raise IdentifierValidationError,
+          "Generated ID is not unique for #{ead.source_id}. Please ensure each file has a unique id."
   end
 
-  # @param [BaseEadFile] ead_file
+  # @param [BaseExtractor::BaseEadSource] ead_file
   # @param [Exception] exception
   def log_error_from(ead_file, exception)
     Rails.logger.error "Problem parsing #{ead_file.source_id}: #{exception.message}"

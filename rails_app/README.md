@@ -4,8 +4,8 @@
   - [Endpoints](#endpoints)
   - [Generating Unique Identifiers](#generating-unique-identifiers)
   - [Harvesting](#harvesting)
-    - [IndexExtractor](#indexextractor)
-    - [PennASpaceExtractor](#pennaspaceextractor)
+    - [WebpageExtractor](#webpageextractor)
+    - [ASpaceExtractor](#aspaceextractor)
     - [Notifications](#notifications)
     - [Status](#status)
   - [Sitemap](#sitemap)
@@ -26,8 +26,9 @@ When a new organization wishes to have their EADs indexed into the application t
 - an endpoint slug, which can include uppercase letters and underscores
 - technical contact, email
 - public contact, email
-- index url, if indexing from a webpage
-- repository id, if indexing from the Penn ArchiveSpace instance
+- webpage url, if indexing from a webpage
+- repository id, if indexing from a ArchiveSpace instance
+- aspace_instance slug, if indexing from an ArchiveSpace instance
 
 ### Generating Unique Identifiers
 Identifiers for each EAD are generated from the endpoint slug and unit id. The unit ids provided in each EAD should be unique for that repository. If they are not this is a problem the partner needs to rectify.
@@ -46,15 +47,21 @@ Background jobs exist to queue up and perform the harvesting operations. [`Partn
 
 Currently two means of harvesting are supported. The means used is configured as part of the endpoint's configuration. Harvesting behavior is represented in `Extractor` classes.
 
-#### IndexExtractor
+> Important Note: EAD files in [EAD 3 spec](https://github.com/SAA-SDT/EAD3/tree/v1.1.1) will not be harvested. An error will be shown in the harvest outcomes if a file in EAD 3 is detected.
+
+#### WebpageExtractor
 
 This means of harvesting supports the legacy application style of basic HTML pages containing an index of links to EAD XML files. This extractor will parse a HTML document and pull out any `href`s that point to `.xml` files.
 
-#### PennASpaceExtractor
+#### ASpaceExtractor
 
-Endpoints that correspond to a repository in the Penn libraries ArchivesSpace environment can have records harvested directly from ASpace via the ASpace API. Penn Libraries ASpace is hosted by Atlas Systems. API access is performed with the `pacscl_api` ASpace user.
+The ASpaceExtractor supports harvesting records directly from an ArchivesSpace instance via the ArchivesSpace API. In order to harvest from an ArchivesSpace instance:
+- an `ASpaceInstance` object must be related to the `Endpoint`
+- a username and password must be provided in Vault and exposed to the application as a Docker Secret
 
-It is important to note that all Resources in a Repository will be harvested where `publish` is set to `true` in ASpace.
+Penn Libraries ArchivesSpace is hosted by Atlas Systems. API access is performed with the `pacscl_api` ASpace user.
+
+It is important to note that all Resources in a Repository will be harvested where `publish` is set to `true` in ArchivesSpace.
 
 #### Notifications
 Email notifications are sent to the technical contact and the product owner, Holly Mengel, when there is a partial or failed harvest. 
