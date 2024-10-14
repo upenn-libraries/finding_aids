@@ -125,10 +125,11 @@ class CatalogController < ApplicationController
     config.add_index_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), if: :json_request?
     config.add_index_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents'),
                                                           helper_method: :truncated_abstract
+    config.add_index_field 'xml_ss', label: I18n.t('fields.xml'), if: :json_request?
 
     config.add_show_field 'pretty_unit_id_ss', label: I18n.t('fields.pretty_unit_id')
     config.add_show_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
-    config.add_show_field 'url_ss', label: 'Original URL'
+    config.add_show_field 'url_ss', label: I18n.t('fields.url')
     config.add_show_field 'extent_ssim', label: I18n.t('fields.extent'), helper_method: :extent_display
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
     config.add_show_field 'language_note', label: I18n.t('fields.language_note'), accessor: :language_note,
@@ -139,12 +140,9 @@ class CatalogController < ApplicationController
     config.add_show_field 'donors_ssim', label: I18n.t('fields.donors'), link_to_facet: true
     config.add_show_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), link_to_facet: true
     config.add_show_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents')
+    config.add_show_field 'xml_ss', label: I18n.t('fields.xml'), if: :json_request?
 
     config.add_search_field 'all_fields', label: 'All Fields'
-
-    # Now we see how to over-ride Solr request handler defaults, in this
-    # case for a BL "search field", which is really a dismax aggregate
-    # of Solr search fields.
 
     # "sort results by" select (pulldown)
     # label in pulldown is followed by the name of the Solr field to sort by and
