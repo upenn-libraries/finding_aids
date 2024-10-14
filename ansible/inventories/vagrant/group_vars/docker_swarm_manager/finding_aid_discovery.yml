@@ -10,7 +10,7 @@ finding_aid_discovery_versioned_secrets:
   slack_notification_email_address:
     vault: finaids_vault_values
   upenn_aspace_username:
-    vault: finaids_vault_values
+    vault: aspace_vault_values
   upenn_aspace_password:
-    vault: finaids_vault_values
+    vault: aspace_vault_values
 
