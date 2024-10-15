@@ -48,6 +48,9 @@ namespace :tools do
     ASpaceInstance.find_or_create_by(slug: 'upenn') do |instance|
       instance.base_url = 'https://upennapi.as.atlas-sys.com/'
     end
+    ASpaceInstance.find_or_create_by(slug: 'temple') do |instance|
+      instance.base_url = 'https://scrcarchivesspace.temple.edu/staff/api'
+    end
     Endpoint.sync_from_csv(Rails.root.join('data/endpoints.csv'))
   end
 
