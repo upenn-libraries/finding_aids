@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require_relative 'concerns/synchronizable_spec'
+require_relative 'concerns/synchronizable'
 
 describe Endpoint do
   let(:webpage_endpoint) { build(:endpoint, :webpage_harvest) }
