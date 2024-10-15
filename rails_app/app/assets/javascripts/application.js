@@ -17,11 +17,11 @@ Blacklight.onLoad(function() {
 
     // Enable request submit button when at least one checkbox is selected.
     // Disable if none are selected.
-    let requestCheckboxes = document.querySelectorAll('input.request-checkbox-input');
+    const requestCheckboxes = document.querySelectorAll('input.request-checkbox-input');
     if (requestCheckboxes) {
         requestCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('click', () => {
-                let selectedCheckboxes = document.querySelectorAll('input.request-checkbox-input[type="checkbox"]:checked').length;
+                const selectedCheckboxes = document.querySelectorAll('input.request-checkbox-input[type="checkbox"]:checked').length;
                 document.querySelector('#submit-request').disabled = selectedCheckboxes === 0;
             });
         });
@@ -29,7 +29,7 @@ Blacklight.onLoad(function() {
 
     // facilitate styling by applying class if descendents contain
     // a collapsable element
-    let collapsableElements = document.querySelectorAll('.h5-collapse');
+    const collapsableElements = document.querySelectorAll('.h5-collapse');
     if (collapsableElements) {
         collapsableElements.forEach(element => {
             element.addEventListener('click', (event) => {

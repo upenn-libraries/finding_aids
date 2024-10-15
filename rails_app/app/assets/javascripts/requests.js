@@ -2,7 +2,7 @@ Blacklight.onLoad(function() {
     'use strict';
 
     // Toggle toggler for other items in the same container
-    let requestCheckboxes = document.querySelectorAll('.request-checkbox-input');
+    const requestCheckboxes = document.querySelectorAll('.request-checkbox-input');
     if (requestCheckboxes) {
         requestCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('click', (event) => {
