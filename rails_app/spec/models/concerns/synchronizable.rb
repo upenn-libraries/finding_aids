@@ -46,15 +46,15 @@ shared_examples_for 'synchronizable' do
 
       it 'creates upenn_rbml endpoint' do
         expect(Endpoint.find_by(slug: 'upenn_rbml')).to have_attributes(
-          { public_contacts: ['rbml@pobox.upenn.edu'], tech_contacts: ['hmengel@pobox.upenn.edu'],
-            source_type: 'aspace', aspace_repo_id: 4, aspace_instance: aspace_instance }
+          public_contacts: ['rbml@pobox.upenn.edu'], tech_contacts: ['hmengel@pobox.upenn.edu'],
+          source_type: 'aspace', aspace_repo_id: 4, aspace_instance: aspace_instance
         )
       end
 
       it 'creates haverford endpoint' do
         expect(Endpoint.find_by(slug: 'haverford')).to have_attributes(
-          { public_contacts: ['hc-special@haverford.edu'], tech_contacts: ['shorowitz@haverford.edu'],
-            source_type: 'webpage', webpage_url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/' }
+          public_contacts: ['hc-special@haverford.edu'], tech_contacts: ['shorowitz@haverford.edu'],
+          source_type: 'webpage', webpage_url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/'
         )
       end
 
