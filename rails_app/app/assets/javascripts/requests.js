@@ -6,8 +6,8 @@ Blacklight.onLoad(function() {
     if (requestCheckboxes) {
         requestCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('click', (event) => {
-                let name = event.target.name;
-                let matchingCheckboxes = document.querySelectorAll('.request-checkbox-input[name="' + name + '"]');
+                const name = event.target.name;
+                const matchingCheckboxes = document.querySelectorAll('.request-checkbox-input[name="' + name + '"]');
 
                 matchingCheckboxes.forEach(box => box.setAttribute('checked', event.target.checked));
             });
