@@ -2,13 +2,20 @@ Blacklight.onLoad(function() {
     'use strict';
 
     // Toggle toggler for other items in the same container
-    $('.request-checkbox-input').click(function() {
-        let name = $(this).attr('name');
-        $('.request-checkbox-input[name="' + name + '"]')
-            .prop('checked', this.checked);
-    })
+    const requestCheckboxes = document.querySelectorAll('.request-checkbox-input');
+    if (requestCheckboxes) {
+        requestCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('click', (event) => {
+                const name = event.target.name;
+                const matchingCheckboxes = document.querySelectorAll('.request-checkbox-input[name="' + name + '"]');
+
+                matchingCheckboxes.forEach(box => box.setAttribute('checked', event.target.checked));
+            });
+        });
+    }
 
     // Handle Submit of Request Confirmation form
+    // TODO: Still needs to be converted to vanilla javascript.
     $('#aeonRequestForm').on('submit', function() {
         const $form = $(this);
         $.post({
