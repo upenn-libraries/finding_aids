@@ -39,7 +39,9 @@ Rails.application.routes.draw do
   get '/records/legacy/:id', to: 'legacy#redirect'
 
   resources :solr_documents, only: [:show], path: '/records',
-                             controller: :catalog, constraints: { id: %r{[^/]+} }
+                             controller: :catalog, constraints: { id: %r{[^/]+} } do
+    member { get '/ead', to: 'catalog#show', defaults: { format: 'ead' } } # get raw EAD XML
+  end
 
   resources :requests, only: %i[create] do
     collection do
