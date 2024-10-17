@@ -10,10 +10,11 @@ class HarvestingService
   attr_reader :file_results, :document_ids
 
   # @param [Endpoint] endpoint
-  def initialize(endpoint, solr_service = SolrService.new)
+  def initialize(endpoint, solr_service = SolrService.new, limit: nil)
     @endpoint = endpoint
     @parser = endpoint.parser
     @solr = solr_service
+    @limit = limit
     @existing_record_ids = @solr.find_ids_by_endpoint(@endpoint.slug)
     @file_results = []
     @document_ids = []
@@ -32,7 +33,7 @@ class HarvestingService
   # Extracts files from endpoint and harvests each one. The harvest status
   # of each file is logged and saved to the @file_results hash.
   def harvest_all_files
-    xml_files = @endpoint.extractor.files
+    xml_files = @limit.present? ? @endpoint.extractor.files.first(@limit) : @endpoint.extractor.files
     Rails.logger.info "Parsing #{xml_files.size} files from #{@endpoint.slug}"
 
     xml_files.each_slice(500) do |slice|
