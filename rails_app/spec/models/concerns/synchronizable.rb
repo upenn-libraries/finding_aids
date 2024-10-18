@@ -41,74 +41,47 @@ shared_examples_for 'synchronizable' do
     context 'when adding new aspace and index endpoint' do
       let(:csv_file) { file_fixture('endpoint_csv/new_endpoints.csv') }
       let!(:aspace_instance) { create(:aspace_instance, slug: 'upenn') }
-      let(:rbml_attributes) do
-        {
-          public_contacts: ['rbml@pobox.upenn.edu'],
-          tech_contacts: ['hmengel@pobox.upenn.edu'],
-          source_type: 'aspace',
-          aspace_repo_id: 4,
-          aspace_instance: aspace_instance
-        }
-      end
-      let(:haverford_attributes) do
-        {
-          public_contacts: ['hc-special@haverford.edu'],
-          tech_contacts: ['shorowitz@haverford.edu'],
-          source_type: 'webpage',
-          webpage_url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/'
-        }
-      end
 
       before { described_class.sync_from_csv(csv_file) }
 
       it 'creates upenn_rbml endpoint' do
-        expect(Endpoint.find_by(slug: 'upenn_rbml')).to have_attributes(rbml_attributes)
+        expect(Endpoint.find_by(slug: 'upenn_rbml')).to have_attributes(
+          public_contacts: ['rbml@pobox.upenn.edu'], tech_contacts: ['hmengel@pobox.upenn.edu'],
+          source_type: 'aspace', aspace_repo_id: 4, aspace_instance: aspace_instance
+        )
       end
 
       it 'creates haverford endpoint' do
-        expect(Endpoint.find_by(slug: 'haverford')).to have_attributes(haverford_attributes)
+        expect(Endpoint.find_by(slug: 'haverford')).to have_attributes(
+          public_contacts: ['hc-special@haverford.edu'], tech_contacts: ['shorowitz@haverford.edu'],
+          source_type: 'webpage', webpage_url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/'
+        )
       end
 
       context 'when updating endpoints' do
         let(:update_csv_file) { file_fixture('endpoint_csv/update_endpoints.csv') }
-        let(:rbml_attributes) do
-          {
-            public_contacts: ['rbml@pobox.upenn.edu'],
-            tech_contacts: ['hmengel@pobox.upenn.edu'],
-            source_type: 'webpage',
-            webpage_url: 'http://127.0.0.1:8080/ead/manuscripts'
-          }
-        end
-        let(:haverford_attributes) do
-          {
-            public_contacts: ['public@haverford.edu'],
-            tech_contacts: ['example@haverford.edu'],
-            source_type: 'webpage',
-            webpage_url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/new'
-          }
-        end
-        let(:cajs_attributes) do
-          {
-            public_contacts: ['cajs@pobox.upenn.edu'],
-            tech_contacts: ['cajs@pobox.upenn.edu'],
-            source_type: 'aspace',
-            aspace_instance: aspace_instance,
-            aspace_repo_id: 5
-          }
-        end
 
         before { described_class.sync_from_csv(update_csv_file) }
 
         it 'updates upenn_rbml endpoint' do
-          expect(Endpoint.find_by(slug: 'upenn_rbml')).to have_attributes(rbml_attributes)
+          expect(Endpoint.find_by(slug: 'upenn_rbml')).to have_attributes(
+            { public_contacts: ['rbml@pobox.upenn.edu'], tech_contacts: ['hmengel@pobox.upenn.edu'],
+              source_type: 'webpage', webpage_url: 'http://127.0.0.1:8080/ead/manuscripts' }
+          )
         end
 
         it 'updates haverford endpoint' do
-          expect(Endpoint.find_by(slug: 'haverford')).to have_attributes(haverford_attributes)
+          expect(Endpoint.find_by(slug: 'haverford')).to have_attributes(
+            { public_contacts: ['public@haverford.edu'], tech_contacts: ['example@haverford.edu'],
+              source_type: 'webpage', webpage_url: 'https://web.tricolib.brynmawr.edu/paarp/haverford/production/new' }
+          )
         end
 
         it 'adds upenn_cajs endpoint' do
-          expect(Endpoint.find_by(slug: 'upenn_cajs')).to have_attributes(cajs_attributes)
+          expect(Endpoint.find_by(slug: 'upenn_cajs')).to have_attributes(
+            { public_contacts: ['cajs@pobox.upenn.edu'], tech_contacts: ['cajs@pobox.upenn.edu'],
+              source_type: 'aspace', aspace_instance: aspace_instance, aspace_repo_id: 5 }
+          )
         end
       end
 
