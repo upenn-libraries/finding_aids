@@ -106,6 +106,10 @@ To harvest some of the endpoints in a local development environment:
 bundle exec rake tools:sync_endpoints
 bundle exec rake tools:harvest_from endpoints=ISM,WFIS,ANSP,LCP,CCHS,PCA
 ```
+The `harvest_from` task also supports a `limit` param that limits harvest of each specified endpoint to a provided interger:
+```bash
+bundle exec rake tools:harvest_from endpoints=all limit=10
+```
 
 ### Running Test Suite
 
