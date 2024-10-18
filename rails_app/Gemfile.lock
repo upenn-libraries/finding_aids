@@ -90,7 +90,6 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.20)
     bigdecimal (3.1.8)
-    bigdecimal (3.1.8)
     bindex (0.8.1)
     blacklight (8.4.0)
       globalid
