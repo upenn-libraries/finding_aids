@@ -24,7 +24,7 @@ gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-saml'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
-gem 'rails', '~> 7.0.2'
+gem 'rails', '~> 7.2.0'
 gem 'rainbow'
 gem 'retryable'
 gem 'rsolr', '>= 1.0', '< 3'
@@ -42,7 +42,7 @@ group :development, :test do
   gem 'debug'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'rspec-rails', '~> 5.0.0'
+  gem 'rspec-rails', '~> 7.0'
 end
 
 group :development do
