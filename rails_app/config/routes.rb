@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   scope :admin do
     get '/', to: 'admin#index', as: :admin
     resources :users
+    resources :endpoints
+    resources :aspace_instances
   end
 
   mount Blacklight::Engine => '/'

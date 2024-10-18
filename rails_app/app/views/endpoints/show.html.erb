@@ -1,0 +1,41 @@
+<h1 class="mb-3">Endpoint Summary</h1>
+
+<div class="btn-group mb-3">
+  <%= link_to t('admin.actions.edit'), edit_endpoint_path(@endpoint), class: 'btn btn-outline-dark' %>
+</div>
+
+<dl class="endpoint-list">
+  <dt>Slug</dt>
+  <dd><%= @endpoint.slug %></dd>
+
+  <dt>Source Type</dt>
+  <dd><%= @endpoint.source_type %></dd>
+
+  <dt>Public Contacts</dt>
+  <dd><%= @endpoint.public_contacts.join(', ') %></dd>
+
+  <dt>Technical Contacts</dt>
+  <dd><%= @endpoint.tech_contacts.join(', ') %></dd>
+
+  <dt>Status</dt>
+  <dd><%= link_to(t('admin.endpoints.last_harvest_results'), endpoint_status_path(@endpoint.slug)) %></dd>
+
+  <% if @endpoint.webpage_type? %>
+  <dt>Webpage URL</dt>
+  <dd><%= link_to @endpoint.webpage_url, @endpoint.webpage_url %></dd>
+  <% end %>
+
+  <% if @endpoint.aspace_type? %>
+    <dt>ASpace Instance</dt>
+    <dd><%= link_to @endpoint.aspace_instance.slug, aspace_instance_path(@endpoint.aspace_instance) %></dd>
+
+    <dt><%= I18n.t('admin.endpoints.aspace_repo_id') %></dt>
+    <dd><%= @endpoint.aspace_repo_id %></dd>
+  <% end %>
+
+  <dt>Created At</dt>
+  <dd><%= @endpoint.created_at.to_fs(:display) %></dd>
+
+  <dt>Updated At</dt>
+  <dd><%= @endpoint.updated_at.to_fs(:display) %></dd>
+</dl>

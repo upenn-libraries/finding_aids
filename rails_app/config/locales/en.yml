@@ -156,8 +156,30 @@ en:
       homepage: 'Homepage'
       users: 'Users'
       endpoints: 'Endpoints'
+      aspace_instances: 'ASpace Instances'
       status: 'Status Page'
       sidekiq: 'Sidekiq'
       sign_out: 'Log Out'
     users:
       uid: 'PennKey'
+    endpoints:
+      aspace_repo_id: 'ASpace repository ID'
+      aspace_instance:
+        include_blank: 'select an aspace instance'
+      last_harvest_results: 'Last Harvest Results'
+    actions:
+      create: 'Add'
+      edit: 'Edit'
+      destroy: 'Delete'
+    flash:
+      create:
+        success: "Successfully added %{class_name} %{identifier}."
+        failure: "Failed to add %{class_name}: %{error}."
+      update:
+        success: "Successfully updated %{class_name} %{identifier}."
+        failure: "Failed to update %{class_name} %{identifier}: %{error}."
+      destroy:
+        success: " Successfully deleted %{class_name} %{identifier}."
+        failure: "Failed to delete %{class_name} %{identifier}: %{error}."
+
+
