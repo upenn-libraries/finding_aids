@@ -15,6 +15,7 @@
 - [Harvesting](#harvesting)
 
 ## Overview
+
 This repository includes the infrastructure and application code that supports the PACSCL/Penn Libraries Finding Aids discovery site. Development occurs within a robust vagrant environment. Setup and initialization of this environment, as well as information about the deployed staging and production environments, is contained here. Information about the Rails app can be found [here](/rails_app/README.md).
 
 ## Development
@@ -44,6 +45,8 @@ vagrant up --provider=parallels --provision
 
 This will run the [vagrant/Vagrantfile](vagrant/Vagrantfile) which will bring up an Ubuntu VM and run the Ansible script which will provision a single node Docker Swarm behind nginx with a self-signed certificate to mimic a load balancer. Your hosts file will be modified; the domain `finding-aid-discovery-dev.library.upenn.edu` will be added and mapped to the Ubuntu VM. Once the Ansible script has completed and the Docker Swarm is deployed you can access the application by navigating to [https://finding-aid-discovery-dev.library.upenn.edu](https://finding-aid-discovery-dev.library.upenn.edu).
 
+During the provisioning process, you will be asked for you library Active Directory credentials in order to pull application secrets from HashiCorp Vault. If this doesn't work, contact the Ops team to ensure your access in Vault is properly configured.
+
 #### Stopping
 
 To stop the development environment, from the `vagrant` directory run:
@@ -70,10 +73,13 @@ vagrant ssh
 
 #### Traefik
 
+> Note: The Traefik UI isn't properly exposed at this time.
+
 When running the development environment you can access the traefik web ui by navigating to: [https://finding-aid-discovery-dev.library.upenn.edu:8080/#](https://finding-aid-discovery-dev.library.upenn.edu:8080/#). The username and password are located in [ansible/inventories/vagrant/group_vars/docker_swarm_manager/traefik.yml](ansible/inventories/vagrant/group_vars/docker_swarm_manager/traefik.yml)
 
 
 #### Rails Application
+
 For information about the Rails application, see the [README](/rails_app/README.md) in the Rails application root. This includes information about running the test suite, performing harvesting, development styleguide and general application information.
 
 #### Solr Admin
@@ -83,14 +89,17 @@ Solr is running in [CloudMode](https://solr.apache.org/guide/solr/latest/deploym
 To access the Solr Admin UI, navigate to [http://finding-aid-discovery-dev.library.upenn.int/solr/#/](http://finding-aid-discovery-dev.library.upenn.int/solr/#/).
 
 ## Deployment
+
 Gitlab automatically deploys to both our staging and production environment under certain conditions.
 
 ### Staging
+
 Gitlab deploys to our staging server every time new code gets merged into `main`. The staging site is available at [https://findingaids-staging.library.upenn.edu/](https://findingaids-staging.library.upenn.edu/).
 
 Code cannot be pushed directly onto `main`, new code must be merged via a merge request.
 
 ### Production
+
 Deployments are triggered when a new git tag is created that matches [semantic versioning](https://semver.org/), (e.g., v1.0.0). Git tags should be created via the creation of a new Release in Gitlab.
 
 In order to deploy to production:
@@ -103,4 +112,7 @@ In order to deploy to production:
 The production site is available at [https://findingaids.library.upenn.edu/](https://findingaids.library.upenn.edu/).
 
 ## Harvesting
-In our production and staging environments we schedule harvesting jobs via [sidekiq-cron](https://github.com/ondrejbartas/sidekiq-cron). All endpoints are harvested on Monday, Wednesday, Friday at 5am.
+
+In our production and staging environments we schedule harvesting jobs via [sidekiq-cron](https://github.com/ondrejbartas/sidekiq-cron). In production, all endpoints are harvested on Monday, Wednesday, Friday at 5am. In staging, all endpoints are harvested on Monday, Wednesday, Friday at 1am.
+
+See `rails_app/config/schedule.yml` for the harvesting schedule configuration.
