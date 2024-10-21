@@ -1,0 +1,5 @@
+<%= bootstrap_form_for(@aspace_instance) do |f| %>
+  <%= f.text_field :slug, disabled: edit %>
+  <%= f.text_field :base_url %>
+  <%= f.submit 'Save' %>
+<% end %>

@@ -1,0 +1,50 @@
+<h1 class="mb-3">ASpace Instance Summary</h1>
+
+<div class="btn-group mb-3">
+  <%= link_to I18n.t('admin.actions.edit'), edit_aspace_instance_path(@aspace_instance), class: 'btn btn-outline-dark' %>
+</div>
+<%# TODO: add turbo confirmation when available %>
+<div class="btn-group mb-3">
+  <%= link_to I18n.t('admin.actions.destroy'), aspace_instance_path(@aspace_instance), class: 'btn btn-outline-danger', method: :delete %>
+</div>
+
+<dl class="endpoint-list">
+  <dt>Slug</dt>
+  <dd><%= @aspace_instance.slug %></dd>
+
+  <dt>Base Url</dt>
+  <dd><%= @aspace_instance.base_url %></dd>
+
+  <dt>Created At</dt>
+  <dd><%= @aspace_instance.created_at.to_fs(:display) %></dd>
+
+  <dt>Updated At</dt>
+  <dd><%= @aspace_instance.updated_at.to_fs(:display) %></dd>
+
+  <div class="font-weight-bold mb-3">Endpoints</div>
+
+  <% if @aspace_instance.endpoints.empty? %>
+    <p>No endpoints yet!</p>
+  <% else %>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Slug</th>
+        <th scope= "col"> Repository ID</th>
+        <th scope="col">Created At</th>
+        <th scope="col">Updated At</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @aspace_instance.endpoints.each do |endpoint| %>
+        <tr class="row-id-<%= endpoint.id %>">
+          <td class="slug"><%= link_to endpoint.slug, endpoint_path(endpoint) %></td>
+          <td class="apsace-repo-id"><%= endpoint.aspace_repo_id %></td>
+          <td class="created-at"><%= endpoint.created_at.to_fs(:display) %></td>
+          <td class="updated-at"><%= endpoint.updated_at.to_fs(:display) %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</dl>

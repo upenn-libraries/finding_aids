@@ -22,32 +22,34 @@ class UsersController < ApplicationController
   def create
     @user = User.new(**user_params, provider: 'saml')
     if @user.save
-      flash.notice = "User access granted for #{@user.uid}"
+      notify_success action: :create, class_name: @user.class, identifier: @user.email
       redirect_to user_path(@user)
     else
-      flash.alert = "Problem adding user: #{@user.errors.map(&:full_message).join(', ')}"
+      alert_failure action: :create, class_name: @user.class, identifier: @user.email,
+                    error: @user.errors.map(&:full_message).join(', ')
       render :new
     end
   end
 
   def update
-    @user.update(**user_params)
-    if @user.save
-      flash.notice = 'User successfully updated'
+    if @user.update(**user_params)
+      notify_success action: :update, class_name: @user.class, identifier: @user.email
       redirect_to user_path(@user)
     else
-      flash.alert = "Problem updating user: #{@user.errors.map(&:full_message).join(', ')}"
+      alert_failure action: :update, class_name: @user.class, identifier: @user.email,
+                    error: @user.errors.map(&:full_message).join(', ')
       render :edit
     end
   end
 
   def destroy
-    if @user.destroy
-      flash.notice = 'User has been deleted'
-      redirect_to users_path
-    else
-      flash.alert = "User could not be deleted: #{@user.errors.map(&:full_message).join(', ')}"
-    end
+    @user.destroy
+    notify_success action: :destroy, class_name: @user.class, identifier: @user.email
+    redirect_to users_path
+  rescue StandardError => e
+    alert_failure action: :destroy, class_name: @user.class, identifier: @user.slug,
+                  error: e.message
+    render :show
   end
 
   private

@@ -1,0 +1,33 @@
+<h1>Endpoints</h1>
+
+<div class="d-flex justify-content-end">
+  <div class="btn-group mb-3">
+    <%= link_to t('admin.actions.create'), new_endpoint_path, class: 'btn btn-outline-dark' %>
+  </div>
+</div>
+
+<% if @endpoints.empty? %>
+  <p>No endpoints yet!</p>
+<% else %>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Slug</th>
+      <th scope="col">Source Type</th>
+      <th scope="col">Created At</th>
+      <th scope="col">Updated At</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @endpoints.each do |endpoint| %>
+      <tr class="row-id-<%= endpoint.id %>">
+        <td class="slug"><%= link_to endpoint.slug, endpoint_path(endpoint) %></td>
+        <td class="source_type"><%= endpoint.source_type %></td>
+        <td class="created_at"><%= endpoint.created_at.to_fs(:display) %></td>
+        <td class="updated_at"><%= endpoint.updated_at.to_fs(:display) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <%= paginate @endpoints %>
+<% end %>
