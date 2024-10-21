@@ -23,10 +23,10 @@ class EndpointsController < ApplicationController
   def create
     @endpoint = Endpoint.new(endpoint_params)
     if @endpoint.save
-      notify_success action: 'create', class_name: @endpoint.class, identifier: @endpoint.slug
+      notify_success action: :create, class_name: @endpoint.class, identifier: @endpoint.slug
       redirect_to endpoint_path(@endpoint)
     else
-      alert_failure action: 'create', class_name: @endpoint.class, identifier: @endpoint.slug,
+      alert_failure action: :create, class_name: @endpoint.class, identifier: @endpoint.slug,
                     error: @endpoint.errors.map(&:full_message).join(', ')
       render :new
     end
@@ -34,10 +34,10 @@ class EndpointsController < ApplicationController
 
   def update
     if @endpoint.update(endpoint_params.except(:slug))
-      notify_success action: 'update', class_name: @endpoint.class, identifier: @endpoint.slug
+      notify_success action: :update, class_name: @endpoint.class, identifier: @endpoint.slug
       redirect_to endpoint_path(@endpoint)
     else
-      alert_failure action: 'update', class_name: @endpoint.class, identifier: @endpoint.slug,
+      alert_failure action: :update, class_name: @endpoint.class, identifier: @endpoint.slug,
                     error: @endpoint.errors.map(&:full_message).join(', ')
       render :edit
     end

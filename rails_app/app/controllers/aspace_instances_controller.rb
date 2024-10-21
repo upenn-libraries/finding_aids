@@ -22,10 +22,10 @@ class ASpaceInstancesController < ApplicationController
   def create
     @aspace_instance = ASpaceInstance.new(aspace_instance_params)
     if @aspace_instance.save
-      notify_success action: 'create', class_name: @aspace_instance.class, identifier: @aspace_instance.slug
+      notify_success action: :create, class_name: @aspace_instance.class, identifier: @aspace_instance.slug
       redirect_to aspace_instance_path(@aspace_instance)
     else
-      alert_failure action: 'create', class_name: @aspace_instance.class, identifier: @aspace_instance.slug,
+      alert_failure action: :create, class_name: @aspace_instance.class, identifier: @aspace_instance.slug,
                     error: @aspace_instance.errors.map(&:full_message).join(', ')
       render :new
     end
@@ -33,10 +33,10 @@ class ASpaceInstancesController < ApplicationController
 
   def update
     if @aspace_instance.update(aspace_instance_params.except(:slug))
-      notify_success action: 'update', class_name: @aspace_instance.class, identifier: @aspace_instance.slug
+      notify_success action: :update, class_name: @aspace_instance.class, identifier: @aspace_instance.slug
       redirect_to aspace_instance_path(@aspace_instance)
     else
-      alert_failure action: 'update', class_name: @aspace_instance.class, identifier: @aspace_instance.slug,
+      alert_failure action: :update, class_name: @aspace_instance.class, identifier: @aspace_instance.slug,
                     error: @aspace_instance.errors.map(&:full_message).join(', ')
       render :edit
     end
@@ -44,10 +44,10 @@ class ASpaceInstancesController < ApplicationController
 
   def destroy
     @aspace_instance.destroy
-    notify_success action: 'destroy', class_name: @aspace_instance.class, identifier: @aspace_instance.slug
+    notify_success action: :destroy, class_name: @aspace_instance.class, identifier: @aspace_instance.slug
     redirect_to aspace_instances_path
   rescue StandardError => e
-    alert_failure action: 'destroy', class_name: @aspace_instance.class, identifier: @aspace_instance.slug,
+    alert_failure action: :destroy, class_name: @aspace_instance.class, identifier: @aspace_instance.slug,
                   error: e.message
     render :show
   end
