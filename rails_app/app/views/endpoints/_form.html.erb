@@ -1,7 +1,7 @@
 <%= bootstrap_form_for(@endpoint) do |f| %>
   <%= f.text_field :slug, disabled: edit %>
-  <%= f.text_field :public_contacts %>
-  <%= f.text_field :tech_contacts %>
+  <%= f.text_field :public_contacts, value: @endpoint.public_contacts&.join(',') %>
+  <%= f.text_field :tech_contacts, value: @endpoint.tech_contacts&.join(',') %>
   <%= f.select :source_type, @endpoint.class::SOURCE_TYPES %>
   <%= f.text_field :webpage_url %>
   <%= f.collection_select :aspace_instance_id, @aspace_instances, :id, :slug,

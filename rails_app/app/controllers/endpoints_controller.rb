@@ -59,7 +59,14 @@ class EndpointsController < ApplicationController
 
   # @return [ActionController::Parameters]
   def endpoint_params
-    params.require(:endpoint).permit(:slug, :public_contacts, :tech_contacts, :source_type, :webpage_url,
+    prepare_contacts_params
+    params.require(:endpoint).permit(:slug, { public_contacts: [] }, { tech_contacts: [] }, :source_type, :webpage_url,
                                      :aspace_repo_id, :aspace_instance_id)
+  end
+
+  # @return [ActionController::Parameters]
+  def prepare_contacts_params
+    params[:endpoint][:public_contacts] = params[:endpoint][:public_contacts].split(',').map(&:strip)
+    params[:endpoint][:tech_contacts] = params[:endpoint][:tech_contacts].split(',').map(&:strip)
   end
 end
