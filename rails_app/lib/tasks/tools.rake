@@ -6,8 +6,10 @@ namespace :tools do
   desc 'Harvest selected endpoints'
   task harvest_from: :environment do
     abort(Rainbow('Incorrect arguments. Pass endpoints=first,second,third').red) if ENV['endpoints'].blank?
+    abort(Rainbow('Please specify a limit greater than 0').red) if ENV['limit'].present? && ENV['limit'].to_i <= 0
 
     slugs = ENV['endpoints'].split(',')
+    limit = ENV['limit'].presence&.to_i
     endpoints = if slugs.size == 1 && slugs.first.eql?('all')
                   Endpoint.all
                 else
@@ -26,7 +28,7 @@ namespace :tools do
       end
 
       begin
-        HarvestingService.new(ep).harvest
+        HarvestingService.new(ep, limit: limit).harvest
         ep.reload
         status_color = {
           Endpoint::LastHarvest::PARTIAL => :yellow,
