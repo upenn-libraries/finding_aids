@@ -21,6 +21,9 @@ class HarvestingService
   end
 
   def harvest
+    # TODO: return some kind of indicator/error message that specifies the endpoint is inactive
+    return unless @endpoint.active?
+
     harvest_all_files
     process_removals
     save_outcomes
@@ -75,6 +78,7 @@ class HarvestingService
   end
 
   def send_notifications
+    return unless @endpoint.active?
     return if @endpoint.last_harvest.status == Endpoint::LastHarvest::COMPLETE
 
     HarvestNotificationMailer.with(endpoint: @endpoint)

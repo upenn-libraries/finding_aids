@@ -14,6 +14,7 @@ class Endpoint < ApplicationRecord
   validates :webpage_url, absence: true, if: :aspace_type?
   validates :aspace_repo_id, :aspace_instance, presence: true, if: :aspace_type?
   validates :aspace_repo_id, :aspace_instance, absence: true, if: :webpage_type?
+  validates :active, inclusion: [true, false]
 
   belongs_to :aspace_instance, optional: true
 

@@ -5,6 +5,11 @@
 </div>
 
 <dl class="endpoint-list">
+  <dt>Active</dt>
+  <dd class="<%= @endpoint.active? ? 'text-success' : 'text-danger' %>">
+    <%= @endpoint.active.to_s.titleize %>
+  </dd>
+
   <dt>Slug</dt>
   <dd><%= @endpoint.slug %></dd>
 

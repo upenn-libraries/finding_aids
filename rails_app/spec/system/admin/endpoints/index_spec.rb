@@ -21,7 +21,7 @@ describe 'Endpoints index page' do
 
   context 'when visiting as an authenticated user' do
     let(:webpage_endpoint) { create(:endpoint, :webpage_harvest) }
-    let(:aspace_endpoint) { create(:endpoint, :aspace_harvest) }
+    let(:aspace_endpoint) { create(:endpoint, :aspace_harvest, active: false) }
 
     before do
       webpage_endpoint
@@ -45,6 +45,13 @@ describe 'Endpoints index page' do
       within('.table') do
         expect(page).to have_text(webpage_endpoint.source_type, count: 1)
         expect(page).to have_text(aspace_endpoint.source_type, count: 1)
+      end
+    end
+
+    it 'lists endpoint status' do
+      within('.table') do
+        expect(page).to have_text(webpage_endpoint.active.to_s.titleize, count: 1)
+        expect(page).to have_text(aspace_endpoint.active.to_s.titleize, count: 1)
       end
     end
   end

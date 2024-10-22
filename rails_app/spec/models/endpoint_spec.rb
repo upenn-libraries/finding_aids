@@ -94,6 +94,25 @@ describe Endpoint do
     end
   end
 
+  describe '#active' do
+    let(:endpoint) { build(:endpoint, :webpage_harvest) }
+
+    it 'is true by default' do
+      expect(endpoint.active?).to be true
+    end
+
+    it 'can be false' do
+      endpoint.active = false
+      expect(endpoint.valid?).to be true
+    end
+
+    it 'must be true or false' do
+      endpoint.active = nil
+      expect(endpoint.valid?).to be false
+      expect(endpoint.errors[:active]).to include 'is not included in the list'
+    end
+  end
+
   describe '#harvest_results' do
     context 'when harvest has never been run' do
       let(:endpoint) do

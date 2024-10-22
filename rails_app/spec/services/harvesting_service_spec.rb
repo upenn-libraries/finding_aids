@@ -130,5 +130,13 @@ describe HarvestingService do
         expect(file_errors.join(' ')).to include 'EAD3 spec not supported'
       end
     end
+
+    context 'when endpoint is not active' do
+      let(:endpoint) { create(:endpoint, :webpage_harvest, active: false) }
+
+      it 'does not harvest' do
+        expect(described_class.new(endpoint).harvest).to be_nil
+      end
+    end
   end
 end

@@ -61,7 +61,7 @@ class EndpointsController < ApplicationController
   def endpoint_params
     prepare_contacts_params
     params.require(:endpoint).permit(:slug, { public_contacts: [] }, { tech_contacts: [] }, :source_type, :webpage_url,
-                                     :aspace_repo_id, :aspace_instance_id)
+                                     :aspace_repo_id, :aspace_instance_id, :active)
   end
 
   # @return [ActionController::Parameters]
