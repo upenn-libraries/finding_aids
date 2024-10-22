@@ -79,6 +79,8 @@ The site provides a few points for API access:
 
 All data is returned in JSON. Search and document responses make use of the [JSON::API schema](https://jsonapi.org/).
 
+> The raw EAD XML can be viewed by appending `/ead` to any record page URL (e.g., `https://finding-aid-discovery-dev.library.upenn.edu/records/TUBLOCKSON_BC008/xml`)
+
 ### Sitemap
 The sitemap is generated via the [sitemap_generator](https://github.com/kjvarga/sitemap_generator) gem. It is generated at deploy in the `docker-entrypoint.sh` script if one isn't present and it is scheduled to be regenerated after each harvest. If a harvest is completed outside of the scheduled harvest the sitemap will have to be regenerated manually in order to reflect any changes. In most cases, its fine to wait until the next scheduled sitemap generation. 
 
