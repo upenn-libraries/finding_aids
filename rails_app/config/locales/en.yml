@@ -98,6 +98,8 @@ en:
     genre_form: 'Form'
     citation: 'Preferred Citation'
     year: 'Year'
+    url: 'Original URL'
+    xml: 'EAD XML'
     topics:
       corpnames: 'Organization'
       subjects: 'Subject'
