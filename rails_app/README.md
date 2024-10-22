@@ -35,6 +35,8 @@ Each organization providing records has a corresponding `Endpoint`. All informat
 
 #### Unique Identifiers
 
+> Important Note: EAD files in [EAD 3 spec](https://github.com/SAA-SDT/EAD3/tree/v1.1.1) will not be harvested. An error will be shown in the harvest outcomes if a file in EAD 3 is detected.
+
 When adding a new Endpoint, ensure that the generated identifiers for the Endpoint's records will have unique identifiers. Identifiers for each EAD are generated from the endpoint slug and unit id. If they will not be unique this is a problem the partner needs to rectify.
 
 We generate the id by extracting the `unit_id` from `/ead/archdesc/did/unitid[not(@audience='internal')]`, removing any characters that aren't letters, numbers, period or dashes, uppercasing the value and then prefixing it with the endpoint slug followed by an underscore. The code looks something like:
@@ -107,13 +109,14 @@ Once your local development environment is set up you can ssh into the vagrant b
 
 To harvest some of the endpoints in a local development environment:
 
-1. Start a shell in the finding aids discovery app, see [interacting-with-the-application](#interacting-with-the-application)
-2. Run rake tasks:
+1. To harvest from ASpace endpoints, it is best to use the Penn GlobalProtect VPN with the `sra.vpn.upenn.edu` server. 
+2. Start a shell in the finding aids discovery app, see [interacting-with-the-application](#interacting-with-the-application)
+3. Run rake tasks:
 ```bash
 bundle exec rake tools:sync_endpoints
 bundle exec rake tools:harvest_from endpoints=ISM,WFIS,ANSP,LCP,CCHS,PCA
 ```
-The `harvest_from` task also supports a `limit` param that limits harvest of each specified endpoint to a provided interger:
+The `harvest_from` task also supports a `limit` param that limits harvest of each specified endpoint to a provided integer:
 ```bash
 bundle exec rake tools:harvest_from endpoints=all limit=10
 ```
@@ -137,40 +140,3 @@ rubocop --auto-gen-config  --auto-gen-only-exclude --exclude-limit 10000
 ```
 
 To change our default Rubocop config please open an MR in the `upennlib-rubocop` project.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Harvesting
-
-Background jobs exist to queue up and perform the harvesting operations in deployed environments. [`PartnerHarvestEnququeJob`](/ansible/roles/finding_aid_discovery/files/src/app/jobs/partner_harvest_enqueue_job.rb) will enqueue a [`PartnerHarvestJob`](/ansible/roles/finding_aid_discovery/files/src/app/jobs/partner_harvest_job.rb) for each endpoint present in the system.
-
-Currently two means of harvesting are supported. The means used is configured as part of the endpoint's configuration. Harvesting behavior is represented in `Extractor` classes.
-
-> Important Note: EAD files in [EAD 3 spec](https://github.com/SAA-SDT/EAD3/tree/v1.1.1) will not be harvested. An error will be shown in the harvest outcomes if a file in EAD 3 is detected.
-
-#### WebpageExtractor
-
-
-
-
-
-
-
