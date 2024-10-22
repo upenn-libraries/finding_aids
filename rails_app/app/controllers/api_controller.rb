@@ -35,13 +35,13 @@ class ApiController < ApplicationController
   # @return [Hash{Symbol->String}]
   def hashify_with_link(field:, item:)
     { name: item.value, count: item.hits,
-      records_url: facet_value_url(entry: item.value, field: field) }
+      records_url: facet_value_url(value: item.value, field: field) }
   end
 
-  # @param entry [String]
+  # @param value [String]
   # @param field [String]
   # @return [String]
-  def facet_value_url(entry:, field:)
-    search_catalog_url("f[#{field}][]": entry, format: :json)
+  def facet_value_url(value:, field:)
+    search_catalog_url("f[#{field}][]": value, format: :json)
   end
 end
