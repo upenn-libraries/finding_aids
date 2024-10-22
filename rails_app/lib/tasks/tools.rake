@@ -50,7 +50,7 @@ namespace :tools do
   desc 'Create appropriate robots.txt for the environment'
   task robotstxt: :environment do
     prod_robots = <<~PROD
-      User-agent: *I 
+      User-agent: *
       Disallow: /admin
       Disallow: /records/facet/
       Disallow: /records*f%5B
