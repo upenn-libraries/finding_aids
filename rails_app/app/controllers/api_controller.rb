@@ -25,9 +25,9 @@ class ApiController < ApplicationController
   # @return [Array<Hash>]
   def facet_response(facet_field:)
     facet_config = blacklight_config.facet_fields[facet_field]
-    response = search_service.facet_field_response(facet_config.key, { "f.#{facet_field}.facet.limit" => -1 })
+    response = search_service.facet_field_response(facet_config.key, { "f.#{facet_field}.facet.limit": -1 })
     field_data = response.aggregations[facet_field]
-    field_data.items.map { |entry| hashify_with_link(field: facet_field, item: entry) }.sort_by { |h| h[:name] }
+    field_data.items.map { |item| hashify_with_link(field: facet_field, item: item) }.sort_by { |h| h[:name] }
   end
 
   # @param field [String]
@@ -35,13 +35,13 @@ class ApiController < ApplicationController
   # @return [Hash{Symbol->String}]
   def hashify_with_link(field:, item:)
     { name: item.value, count: item.hits,
-      records_url: facet_entry_url(entry: item.value, field: field) }
+      records_url: facet_value_url(entry: item.value, field: field) }
   end
 
   # @param entry [String]
   # @param field [String]
   # @return [String]
-  def facet_entry_url(entry:, field:)
-    search_catalog_url("f[#{field}][]" => entry, format: :json)
+  def facet_value_url(entry:, field:)
+    search_catalog_url("f[#{field}][]": entry, format: :json)
   end
 end
