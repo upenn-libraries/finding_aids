@@ -1,7 +1,7 @@
-slug,source_type,tech_contact,public_contact,webpage_url,aspace_instance,aspace_repo_id
-UPENN_RBML,aspace,hmengel@pobox.upenn.edu,rbml@pobox.upenn.edu,,upenn,4
-UPENN_CAJS,aspace,cajs@pobox.upenn.edu,cajs@pobox.upenn.edu,,upenn,5
-UPENN_BIDDLE,aspace,loneil@law.upenn.edu,biddlearchives@law.upenn.edu,,upenn,7
+slug,source_type,tech_contact,public_contact,webpage_url,aspace_instance,aspace_repo_id,aspace_instance_url
+UPENN_RBML,aspace,hmengel@pobox.upenn.edu,rbml@pobox.upenn.edu,,upenn,4,https://upennapi.as.atlas-sys.com/
+UPENN_CAJS,aspace,cajs@pobox.upenn.edu,cajs@pobox.upenn.edu,,upenn,5,https://upennapi.as.atlas-sys.com/
+UPENN_BIDDLE,aspace,loneil@law.upenn.edu,biddlearchives@law.upenn.edu,,upenn,7,https://upennapi.as.atlas-sys.com/
 UPENN_MUSEUM,webpage,archives@pennmuseum.org,archives@pennmuseum.org,https://www.penn.museum/collections/archives/finding-aids/,,
 ISM,webpage,director@pacscl.org,library@phillyseaport.org,http://archive.pacscl.org/phillyseaport/production/,,
 DU,webpage,mgraham@drexelmed.edu,archives@drexel.edu,https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/drexel_university_archives/,,
@@ -20,8 +20,8 @@ CCHS,webpage,drofini@chestercohistorical.org,library@chestercohistorical.org,htt
 NARA,webpage,Leslie.Simon@nara.gov,philadelphia.archives@nara.gov,https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/nara_at_philadelphia/,,
 PCA,webpage,jrawnsley@msn.com,archives@phila.gov,https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/philadelphia_city_archives/,,
 PennHort,webpage,jevans@pennhort.org,jevans@pennhort.org,https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/pennsylvania_horticultural_society/,,
-TUSCRC,aspace,scrc@temple.edu,scrc@temple.edu,,temple,4
-TUBLOCKSON,aspace,blockson@temple.edu,blockson@temple.edu,,temple,6
+TUSCRC,aspace,scrc@temple.edu,scrc@temple.edu,,temple,4,https://scrcarchivesspace.temple.edu/staff/api
+TUBLOCKSON,aspace,blockson@temple.edu,blockson@temple.edu,,temple,6,https://scrcarchivesspace.temple.edu/staff/api
 ude,webpage,AskSpec@udel.libanswers.com,jmargalo@udel.edu,https://library.udel.edu/special/findaids/data/ead/,,
 UL,webpage,mundyj@unionleague.org,mundyj@unionleague.org,https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/union_league/,,
 UPENN_BATES,webpage,colliert@nursing.upenn.edu,nhistory@nursing.upenn.edu,https://sites.nursing.upenn.edu/bates-center-archive/,,
@@ -29,7 +29,7 @@ PhilU,webpage,mgraham@drexelmed.edu,gorskis@philau.edu,https://drexel.edu/legacy
 LEHIGH,webpage,erl321@lehigh.edu,inspc@lehigh.edu,http://archivesspace.lib.lehigh.edu/assets/ATexports/,,
 PAHRC,webpage,jhoffman@archphila.org,pahrc89@gmail.com,http://www.pahrc.net/faids/,,
 swarthmore,webpage,ccauste1@swarthmore.edu,ccauste1@swarthmore.edu,https://web.tricolib.brynmawr.edu/paarp/swarthmore-fhl/production/,,
-UPENN_ANN,aspace,samantha.dodd@asc.upenn.edu,samantha.dodd@asc.upenn.edu,,upenn,2
+UPENN_ANN,aspace,samantha.dodd@asc.upenn.edu,samantha.dodd@asc.upenn.edu,,upenn,2,https://upennapi.as.atlas-sys.com/
 WHYY,webpage,mgraham@drexelmed.edu,talkback@whyy.org,https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/whyy/,,
 SCIHIST,webpage,ERubeiz@sciencehistory.org,archivist@sciencehistory.org,https://ead.sciencehistory.org/,,
 PRIN_MUDD,webpage,digital-library@princeton.libanswers.com,mudd@princeton.edu,https://findingaids.princeton.edu/pacscl/production/,,
@@ -41,5 +41,5 @@ Peace,webpage,ccauste1@swarthmore.edu,ccauste1@swarthmore.edu,https://web.tricol
 QuakMeet,webpage,ccauste1@swarthmore.edu,ccauste1@swarthmore.edu,https://web.tricolib.brynmawr.edu/paarp/quaker/production/,,
 SJU,webpage,mgraham@drexelmed.edu,dlenert@sju.edu,https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/stjoseph_university/,,
 FLP,webpage,NorrisLA@freelibrary.org,ErefRBD@freelibrary.org,https://libwww.freelibrary.org/ead/pacscl/production,,
-UPENN_AAUP,aspace,archarchives@design.upenn.edu,archarchives@design.upenn.edu,,upenn,17
-UPENN_ARCHIVES,aspace,jmduffin@pobox.upenn.edu,uarc@lists.isc.upenn.edu,,upenn,16
+UPENN_AAUP,aspace,archarchives@design.upenn.edu,archarchives@design.upenn.edu,,upenn,17,https://upennapi.as.atlas-sys.com/
+UPENN_ARCHIVES,aspace,jmduffin@pobox.upenn.edu,uarc@lists.isc.upenn.edu,,upenn,16,https://upennapi.as.atlas-sys.com/

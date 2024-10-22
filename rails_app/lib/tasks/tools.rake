@@ -44,20 +44,13 @@ namespace :tools do
 
   desc 'Sync all endpoints'
   task sync_endpoints: :environment do
-    # Hard coding UPenn ASpace instance for now. We'll move away from this soon.
-    ASpaceInstance.find_or_create_by(slug: 'upenn') do |instance|
-      instance.base_url = 'https://upennapi.as.atlas-sys.com/'
-    end
-    ASpaceInstance.find_or_create_by(slug: 'temple') do |instance|
-      instance.base_url = 'https://scrcarchivesspace.temple.edu/staff/api'
-    end
     Endpoint.sync_from_csv(Rails.root.join('data/endpoints.csv'))
   end
 
   desc 'Create appropriate robots.txt for the environment'
   task robotstxt: :environment do
     prod_robots = <<~PROD
-      User-agent: *
+      User-agent: *I 
       Disallow: /admin
       Disallow: /records/facet/
       Disallow: /records*f%5B
