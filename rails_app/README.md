@@ -78,10 +78,23 @@ Steps for configuring these credentials in the application environments:
 
 This Endpoint configuration supports the legacy application style of basic HTML pages containing an index of links to EAD XML files. This extractor will parse a HTML document and pull out any `href`s that point to `.xml` files.
 
-##### Sitemap
+
+### API Endpoints
+
+The site provides a few points for API access:
+
+1. `/api/endpoints` gives top-level information about the Endpoints in the system, the number of records and a link to retrieve all records for that endpoint
+2. `/api/repostories` gives top-level information about the repositories in the system, the number of records and a link to retrieve all records for that repository
+3. `/records.json?q=__SEARCH-TERM__` can be used to conduct a search and return results, in addition to facet values and search options.
+
+All data is returned in JSON. Search and document responses make use of the [JSON::API schema](https://jsonapi.org/).
+
+> The raw EAD XML can be viewed by appending `/ead` to any record page URL (e.g., `https://finding-aid-discovery-dev.library.upenn.edu/records/TUBLOCKSON_BC008/ead`)
+
+#### Sitemap
 The sitemap is generated via the [sitemap_generator](https://github.com/kjvarga/sitemap_generator) gem. It is generated at deploy in the `docker-entrypoint.sh` script if one isn't present and it is scheduled to be regenerated after each harvest. If a harvest is completed outside of the scheduled harvest the sitemap will have to be regenerated manually in order to reflect any changes. In most cases, its fine to wait until the next scheduled sitemap generation.
 
-##### robots.txt
+#### robots.txt
 The robots.txt file is generate and added to the `public` folder at deploy time. A different `robots.txt` is generated based on the environment. To manually create the `robots.txt` run:
 ```ruby
 bundle exec rake tools:robotstxt

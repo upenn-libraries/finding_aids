@@ -24,11 +24,16 @@ Rails.application.routes.draw do
     resources :aspace_instances
   end
 
+  defaults format: :json do
+    get '/api/endpoints', to: 'api#endpoints', as: :endpoints_api
+    get '/api/repositories', to: 'api#repositories', as: :repositories_api
+  end
+
   mount Blacklight::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new
 
   resource :catalog, only: [:index], as: 'catalog', path: '/records',
-                     controller: 'catalog', constraints: { id: %r{[^/]+} } do
+                     controller: :catalog, constraints: { id: %r{[^/]+} } do
     concerns :searchable
   end
 
@@ -36,7 +41,9 @@ Rails.application.routes.draw do
   get '/records/legacy/:id', to: 'legacy#redirect'
 
   resources :solr_documents, only: [:show], path: '/records',
-                             controller: 'catalog', constraints: { id: %r{[^/]+} }
+                             controller: :catalog, constraints: { id: %r{[^/]+} } do
+    member { get '/ead', to: 'catalog#show', defaults: { format: 'ead' } } # get raw EAD XML
+  end
 
   resources :requests, only: %i[create] do
     collection do

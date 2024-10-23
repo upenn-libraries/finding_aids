@@ -3,7 +3,7 @@
 ARG BUNDLE_HOME=vendor/bundle
 
 # Image tag
-ARG IMAGE_TAG=3.1.6-alpine3.19
+ARG IMAGE_TAG=3.3.5-alpine3.19
 
 # The root of our app
 ARG PROJECT_ROOT=/home/app
@@ -16,7 +16,7 @@ ARG RAILS_ENV=development
 FROM ruby:${IMAGE_TAG} AS base
 
 ARG RUBY_MAJOR
-ENV RUBY_MAJOR=3.1.0
+ENV RUBY_MAJOR=3.3.0
 
 ARG BUNDLE_HOME
 ENV BUNDLE_HOME=${BUNDLE_HOME}
@@ -58,10 +58,10 @@ COPY . .
 
 
 # Development Stage ----------------------------------
-FROM ruby:${IMAGE_TAG} as development
+FROM ruby:${IMAGE_TAG} AS development
 
 ARG RUBY_MAJOR
-ENV RUBY_MAJOR=3.1.0
+ENV RUBY_MAJOR=3.3.0
 
 ARG BUNDLE_HOME
 ENV BUNDLE_HOME=${BUNDLE_HOME}
@@ -118,10 +118,10 @@ CMD ["bundle", "exec", "puma", "-b", "tcp://0.0.0.0:3000"]
 
 
 # Production Stage -----------------------------------
-FROM ruby:${IMAGE_TAG} as production
+FROM ruby:${IMAGE_TAG} AS production
 
 ARG RUBY_MAJOR
-ENV RUBY_MAJOR=3.1.0
+ENV RUBY_MAJOR=3.3.0
 
 ARG BUNDLE_HOME
 ENV BUNDLE_HOME=${BUNDLE_HOME}
