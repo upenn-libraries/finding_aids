@@ -58,8 +58,7 @@ FactoryBot.define do
         {
           date: DateTime.current,
           errors: [
-            "Something went wrong during extraction: #{slug} is inactive." \
-            'Please reactivate to harvest from this endpoint.'
+            "Something went wrong during extraction: #{I18n.t('admin.endpoints.inactive_error', endpoint_slug: slug)}"
           ],
           files: []
         }
