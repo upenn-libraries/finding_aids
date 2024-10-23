@@ -3,7 +3,7 @@
 - [Overview](#overview)
 - [Administration](#administration)
   - [Users](#users)
-  - [Endpoints](#endpoints)
+  - [Endpoints](#partner-endpoints)
     - [Configuration](#configuration)
       - [With ArchivesSpace](#with-archivesspace)
       - [Legacy](#legacy)
@@ -27,7 +27,7 @@ The site includes a user-facing administration area available at `/admin`. PennK
 
 Any PennKey-holding user can add another user, by PennKey, using the User Admin area. Users can also be set to "inactive" to temporarily withold access to the admin area.
 
-### Endpoints
+### Partner Endpoints
 
 Each organization providing records has a corresponding `Endpoint`. All information (slug, configuration, contact persons) about these endpoints is contained in the database and editable via the admin area of the site.
 
@@ -78,8 +78,7 @@ Steps for configuring these credentials in the application environments:
 
 This Endpoint configuration supports the legacy application style of basic HTML pages containing an index of links to EAD XML files. This extractor will parse a HTML document and pull out any `href`s that point to `.xml` files.
 
-
-### API Endpoints
+#### API Routes
 
 The site provides a few points for API access:
 
