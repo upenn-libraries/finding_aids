@@ -1,2 +1,2 @@
-slug,source_type,tech_contact,public_contact,webpage_url, aspace_instance, aspace_repo_id
-upenn_rbml, aspace, hmengel@pobox.upenn.edu, rbml@pobox.upenn.edu,,upenn, 4
+slug,source_type,tech_contact,public_contact,webpage_url,aspace_instance,aspace_repo_id,aspace_instance_url
+upenn_rbml,aspace,hmengel@pobox.upenn.edu,rbml@pobox.upenn.edu,,upenn,4,https://aspace.upenn.edu/api
