@@ -6,6 +6,7 @@ class HarvestingService
   CRAWL_DELAY = 0.2
 
   class IdentifierValidationError < StandardError; end
+  class InactiveError < StandardError; end
 
   attr_reader :file_results, :document_ids
 
@@ -21,8 +22,7 @@ class HarvestingService
   end
 
   def harvest
-    # TODO: return some kind of indicator/error message that specifies the endpoint is inactive
-    return unless @endpoint.active?
+    raise InactiveError, "#{@endpoint.slug} is inactive. Please reactivate to harvest." unless @endpoint.active?
 
     harvest_all_files
     process_removals

@@ -134,8 +134,11 @@ describe HarvestingService do
     context 'when endpoint is not active' do
       let(:endpoint) { create(:endpoint, :webpage_harvest, active: false) }
 
-      it 'does not harvest' do
-        expect(described_class.new(endpoint).harvest).to be_nil
+      before { described_class.new(endpoint).harvest }
+
+      it 'saves inactive error' do
+        inactive_error = endpoint.last_harvest.errors.first
+        expect(inactive_error).to include "#{endpoint.slug} is inactive."
       end
     end
   end
