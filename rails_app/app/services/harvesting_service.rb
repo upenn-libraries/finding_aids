@@ -80,7 +80,6 @@ class HarvestingService
   end
 
   def send_notifications
-    return unless @endpoint.active?
     return if @endpoint.last_harvest.status == Endpoint::LastHarvest::COMPLETE
     return if @endpoint.last_harvest.status == Endpoint::LastHarvest::INACTIVE
 
