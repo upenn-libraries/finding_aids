@@ -44,7 +44,8 @@ class Endpoint < ApplicationRecord
     PARTIAL = 'partial'
     COMPLETE = 'complete'
     FAILED = 'failed'
-    STATUSES = [PARTIAL, COMPLETE, FAILED].freeze
+    INACTIVE = 'inactive'
+    STATUSES = [PARTIAL, COMPLETE, FAILED, INACTIVE].freeze
 
     attr_reader :results
 
@@ -61,15 +62,12 @@ class Endpoint < ApplicationRecord
     # @return [String] status of harvest run
     # @return [nil] harvest was not run
     def status
-      if results.to_h.blank?
-        nil
-      elsif errors&.any?
-        FAILED
-      elsif problem_files.any?
-        PARTIAL
-      else
-        COMPLETE
-      end
+      return nil if results.to_h.blank?
+      return INACTIVE if errors&.any? { |e| e.include? 'inactive' }
+      return FAILED if errors&.any?
+      return PARTIAL if problem_files.any?
+
+      COMPLETE
     end
 
     STATUSES.each do |s|

@@ -5,10 +5,10 @@ require 'system_helper'
 describe 'Endpoint dashboard' do
   let!(:endpoint_success)  { create(:endpoint, :webpage_harvest, :complete_harvest) }
   let!(:endpoint_failed)   { create(:endpoint, :webpage_harvest, :failed_harvest) }
-  let!(:endpoint_problem)  { create(:endpoint, :webpage_harvest, :partial_harvest) }
+  let!(:endpoint_inactive) { create(:endpoint, :webpage_harvest, :inactive_harvest, active: false) }
   let!(:endpoint_removals) { create(:endpoint, :webpage_harvest, :harvest_with_removals) }
   let(:test_endpoints) do
-    [endpoint_success, endpoint_failed, endpoint_problem, endpoint_removals]
+    [endpoint_success, endpoint_failed, endpoint_inactive, endpoint_removals]
   end
 
   after { Endpoint.delete_all }
@@ -35,6 +35,12 @@ describe 'Endpoint dashboard' do
     it 'shows error message text for problem harvest' do
       within ".table-row-#{endpoint_failed.slug}" do
         expect(page).to have_text endpoint_failed.last_harvest.errors.first
+      end
+    end
+
+    it 'shows inactive message text for inactive endpoint' do
+      within ".table-row-#{endpoint_inactive.slug}" do
+        expect(page).to have_text I18n.t('admin.endpoints.inactive_error', endpoint_slug: endpoint_inactive.slug)
       end
     end
 

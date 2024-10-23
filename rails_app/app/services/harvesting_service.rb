@@ -22,13 +22,11 @@ class HarvestingService
   end
 
   def harvest
-    raise InactiveError, "#{@endpoint.slug} is inactive. Please reactivate to harvest." unless @endpoint.active?
-
     harvest_all_files
     process_removals
     save_outcomes
   rescue StandardError => e
-    fatal_error "Problem extracting URLs from Endpoint URL: #{e.message}"
+    fatal_error "Something went wrong during extraction: #{e.message}"
   ensure
     send_notifications
   end
@@ -36,6 +34,10 @@ class HarvestingService
   # Extracts files from endpoint and harvests each one. The harvest status
   # of each file is logged and saved to the @file_results hash.
   def harvest_all_files
+    unless @endpoint.active?
+      raise InactiveError, I18n.t('admin.endpoints.inactive_error', endpoint_slug: @endpoint.slug)
+    end
+
     xml_files = @limit.present? ? @endpoint.extractor.files.first(@limit) : @endpoint.extractor.files
     Rails.logger.info "Parsing #{xml_files.size} files from #{@endpoint.slug}"
 
@@ -80,6 +82,7 @@ class HarvestingService
   def send_notifications
     return unless @endpoint.active?
     return if @endpoint.last_harvest.status == Endpoint::LastHarvest::COMPLETE
+    return if @endpoint.last_harvest.status == Endpoint::LastHarvest::INACTIVE
 
     HarvestNotificationMailer.with(endpoint: @endpoint)
                              .send("#{@endpoint.last_harvest.status}_harvest_notification")

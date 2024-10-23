@@ -169,6 +169,7 @@ en:
       aspace_instance:
         include_blank: 'select an aspace instance'
       last_harvest_results: 'Last Harvest Results'
+      inactive_error: "%{endpoint_slug} is inactive. Please reactivate to harvest from this endpoint."
     actions:
       create: 'Add'
       edit: 'Edit'

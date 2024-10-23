@@ -33,7 +33,8 @@ namespace :tools do
         status_color = {
           Endpoint::LastHarvest::PARTIAL => :yellow,
           Endpoint::LastHarvest::COMPLETE => :green,
-          Endpoint::LastHarvest::FAILED => :red
+          Endpoint::LastHarvest::FAILED => :red,
+          Endpoint::LastHarvest::INACTIVE => :purple
         }[ep.last_harvest.status]
         puts Rainbow(ep.last_harvest.status.titlecase).color(status_color)
       rescue StandardError => e
