@@ -20,4 +20,10 @@ describe User do
     expect(user.valid?).to be false
     expect(user.errors['uid']).to include 'has already been taken'
   end
+
+  it 'requires an active status' do
+    user = build(:user, active: nil)
+    expect(user.valid?).to be false
+    expect(user.errors['active']).to include "can't be blank"
+  end
 end
