@@ -3,7 +3,11 @@
 require 'system_helper'
 
 shared_examples_for 'endpoint show page' do
+  include ActiveJob::TestHelper
+
   before { visit endpoint_path(endpoint) }
+
+  after { clear_enqueued_jobs }
 
   it 'links to edit page' do
     expect(page).to have_link(I18n.t('admin.actions.edit'), count: 1)
@@ -24,6 +28,16 @@ shared_examples_for 'endpoint show page' do
 
   it 'links to the last harvest results' do
     expect(page).to have_link(I18n.t('admin.endpoints.last_harvest_results'), href: endpoint_status_path(endpoint.slug))
+  end
+
+  it 'shows a harvest action button' do
+    expect(page).to have_button I18n.t('admin.actions.harvest')
+  end
+
+  it 'enqueues a harvest job when the harvest button is clicked' do
+    click_button I18n.t('admin.actions.harvest')
+    expect(PartnerHarvestJob).to have_been_enqueued
+    expect(page).to have_text I18n.t('admin.flash.harvest.success', class_name: 'Endpoint', identifier: endpoint.slug)
   end
 end
 

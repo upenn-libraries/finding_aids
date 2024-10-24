@@ -1,7 +1,12 @@
 <h1 class="mb-3">Endpoint Summary</h1>
 
-<div class="btn-group mb-3">
-  <%= link_to t('admin.actions.edit'), edit_endpoint_path(@endpoint), class: 'btn btn-outline-dark' %>
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Endpoint actions">
+  <div class="btn-group mr-2" role="group" aria-label="Endpoint management">
+    <%= link_to t('admin.actions.edit'), edit_endpoint_path(@endpoint), class: 'btn btn-outline-dark' %>
+  </div>
+  <div class="btn-group" role="group" aria-label="Endpoint jobs">
+    <%= button_to t('admin.actions.harvest'), harvest_endpoint_path(@endpoint), class: 'btn btn-outline-dark' %>
+  </div>
 </div>
 
 <dl class="endpoint-list">

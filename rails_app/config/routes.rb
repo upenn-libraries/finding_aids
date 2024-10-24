@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   scope :admin do
     get '/', to: 'admin#index', as: :admin
     resources :users
-    resources :endpoints
+    resources :endpoints do
+      member { post :harvest }
+    end
     resources :aspace_instances
   end
 
