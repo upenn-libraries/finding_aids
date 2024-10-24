@@ -12,7 +12,7 @@
   </head>
 
   <body>
-    <%= render 'shared/admin_menu' unless controller_name == 'status' %>
+    <%= render 'shared/admin_menu' if current_user %>
 
     <div class="container">
       <%= render partial: 'shared/flash_msg', layout: 'shared/flash_messages' %>
