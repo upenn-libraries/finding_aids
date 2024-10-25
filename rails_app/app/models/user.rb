@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true
   validates :uid, uniqueness: { scope: :provider }, if: :provider_provided?
-  validates :active, presence: true
+  validates :active, inclusion: { in: [true, false] }
 
   # @param [OmniAuth::AuthHash] auth
   # @return [User, nil]

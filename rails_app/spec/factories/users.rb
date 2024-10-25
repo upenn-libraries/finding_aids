@@ -8,6 +8,5 @@ FactoryBot.define do
     provider { 'test' }
     uid { identifier }
     email { identifier }
-    active { true }
   end
 end
