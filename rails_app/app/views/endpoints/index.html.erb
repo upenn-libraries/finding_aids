@@ -26,7 +26,7 @@
         <td class="source_type"><%= endpoint.source_type %></td>
         <td class="created_at"><%= endpoint.created_at.to_fs(:display) %></td>
         <td class="updated_at"><%= endpoint.updated_at.to_fs(:display) %></td>
-        <td class="active <%= endpoint.active? ? 'text-success' : 'text-danger' %>">
+        <td class="active <%= active_class(endpoint) %>">
           <%= endpoint.active.to_s.titleize %>
         </td>
       </tr>

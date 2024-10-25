@@ -15,16 +15,9 @@ module EndpointsHelper
     "#{file['id']}: #{file['errors'].join(', ')}"
   end
 
-  # Class of the table row depending on harvest status
-  # @param [Endpoint::LastHarvest] last_harvest
+  # @param [Endpoint] endpoint
   # @return [String]
-  def table_row_class(last_harvest)
-    if last_harvest.failed?
-      'table-danger'
-    elsif last_harvest.inactive?
-      'table-warning'
-    else
-      ''
-    end
+  def active_class(endpoint)
+    endpoint.active? ? 'text-success' : 'text-danger'
   end
 end

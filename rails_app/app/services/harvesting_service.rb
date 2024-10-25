@@ -34,10 +34,6 @@ class HarvestingService
   # Extracts files from endpoint and harvests each one. The harvest status
   # of each file is logged and saved to the @file_results hash.
   def harvest_all_files
-    unless @endpoint.active?
-      raise InactiveError, I18n.t('admin.endpoints.inactive_error', endpoint_slug: @endpoint.slug)
-    end
-
     xml_files = @limit.present? ? @endpoint.extractor.files.first(@limit) : @endpoint.extractor.files
     Rails.logger.info "Parsing #{xml_files.size} files from #{@endpoint.slug}"
 
@@ -80,8 +76,8 @@ class HarvestingService
   end
 
   def send_notifications
+    return unless @endpoint.active?
     return if @endpoint.last_harvest.status == Endpoint::LastHarvest::COMPLETE
-    return if @endpoint.last_harvest.status == Endpoint::LastHarvest::INACTIVE
 
     HarvestNotificationMailer.with(endpoint: @endpoint)
                              .send("#{@endpoint.last_harvest.status}_harvest_notification")

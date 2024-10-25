@@ -18,6 +18,8 @@ class Endpoint < ApplicationRecord
 
   belongs_to :aspace_instance, optional: true
 
+  scope :is_active, -> { where(active: true) }
+
   def aspace_type?
     source_type == ASPACE_TYPE
   end
@@ -44,8 +46,7 @@ class Endpoint < ApplicationRecord
     PARTIAL = 'partial'
     COMPLETE = 'complete'
     FAILED = 'failed'
-    INACTIVE = 'inactive'
-    STATUSES = [PARTIAL, COMPLETE, FAILED, INACTIVE].freeze
+    STATUSES = [PARTIAL, COMPLETE, FAILED].freeze
 
     attr_reader :results
 
@@ -63,7 +64,6 @@ class Endpoint < ApplicationRecord
     # @return [nil] harvest was not run
     def status
       return nil if results.to_h.blank?
-      return INACTIVE if errors&.any? { |e| e.include? 'inactive' }
       return FAILED if errors&.any?
       return PARTIAL if problem_files.any?
 

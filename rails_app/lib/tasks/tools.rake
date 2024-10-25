@@ -19,6 +19,11 @@ namespace :tools do
     puts Rainbow("Harvesting from #{endpoints.count} endpoints").green
 
     endpoints.each do |ep|
+      unless ep.active?
+        puts Rainbow("Endpoint #{ep.slug} is inactive.").yellow
+        next
+      end
+
       print "Harvesting #{ep.slug} ... "
 
       # Skip localhost endpoints
@@ -33,8 +38,7 @@ namespace :tools do
         status_color = {
           Endpoint::LastHarvest::PARTIAL => :yellow,
           Endpoint::LastHarvest::COMPLETE => :green,
-          Endpoint::LastHarvest::FAILED => :red,
-          Endpoint::LastHarvest::INACTIVE => :purple
+          Endpoint::LastHarvest::FAILED => :red
         }[ep.last_harvest.status]
         puts Rainbow(ep.last_harvest.status.titlecase).color(status_color)
       rescue StandardError => e

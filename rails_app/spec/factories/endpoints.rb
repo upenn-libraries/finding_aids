@@ -53,18 +53,6 @@ FactoryBot.define do
       end
     end
 
-    trait :inactive_harvest do
-      last_harvest_results do
-        {
-          date: DateTime.current,
-          errors: [
-            "Something went wrong during extraction: #{I18n.t('admin.endpoints.inactive_error', endpoint_slug: slug)}"
-          ],
-          files: []
-        }
-      end
-    end
-
     trait :harvest_with_removals do
       last_harvest_results do
         {
