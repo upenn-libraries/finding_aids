@@ -77,7 +77,7 @@ Steps for configuring these credentials in the application environments:
 2. Add credential names to Ansible configuration for each environment, starting with the development environment (see `ansible/inventories/vagrant/group_vars/docker_swarm_manager/finding_aid_discovery.yml`).
 3. Re-provision your local Vagrant environment to read the secrets from Vault into Docker Secrets.
 
-##### Legacy
+##### Legacy (webpage)
 
 This Endpoint configuration supports the legacy application style of basic HTML pages containing an index of links to EAD XML files. This extractor will parse a HTML document and pull out any `href`s that point to `.xml` files.
 
