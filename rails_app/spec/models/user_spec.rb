@@ -20,4 +20,15 @@ describe User do
     expect(user.valid?).to be false
     expect(user.errors['uid']).to include 'has already been taken'
   end
+
+  it 'is active by default' do
+    user = build(:user)
+    expect(user.active).to be true
+  end
+
+  it 'requires a valid active status' do
+    user = build(:user, active: nil)
+    expect(user.valid?).to be false
+    expect(user.errors['active']).to include 'is not included in the list'
+  end
 end
