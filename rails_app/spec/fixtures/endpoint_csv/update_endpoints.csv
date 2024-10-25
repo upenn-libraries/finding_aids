@@ -1,4 +1,4 @@
-slug,source_type,tech_contact,public_contact,webpage_url, aspace_instance, aspace_repo_id
-upenn_rbml, webpage, hmengel@pobox.upenn.edu, rbml@pobox.upenn.edu, http://127.0.0.1:8080/ead/manuscripts,,
-haverford, webpage, example@haverford.edu, public@haverford.edu, https://web.tricolib.brynmawr.edu/paarp/haverford/production/new,,
-upenn_cajs, aspace, cajs@pobox.upenn.edu, cajs@pobox.upenn.edu,,upenn, 5
+slug,source_type,tech_contact,public_contact,webpage_url,aspace_instance,aspace_repo_id,aspace_instance_url
+upenn_rbml,webpage,hmengel@pobox.upenn.edu,rbml@pobox.upenn.edu,http://127.0.0.1:8080/ead/manuscripts,,
+haverford,webpage,example@haverford.edu,public@haverford.edu,https://web.tricolib.brynmawr.edu/paarp/haverford/production/new,,
+upenn_cajs,aspace,cajs@pobox.upenn.edu,cajs@pobox.upenn.edu,,upenn,5,https://aspace.upenn.edu/api

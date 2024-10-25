@@ -5,7 +5,7 @@ module Synchronizable
   extend ActiveSupport::Concern
 
   CSV_REQUIRED_HEADERS = %w[slug source_type tech_contact public_contact webpage_url aspace_repo_id
-                            aspace_instance].freeze
+                            aspace_instance aspace_instance_url].freeze
 
   class_methods do
     # Adds, removes and update endpoints based on the data provided in the CSV. Endpoints that are not present in the
@@ -26,7 +26,7 @@ module Synchronizable
         endpoint.webpage_url = attr['webpage_url']
         endpoint.aspace_repo_id = attr['aspace_repo_id']
         endpoint.aspace_instance = nil
-        endpoint.aspace_instance = ASpaceInstance.find_by!(slug: attr['aspace_instance']) if attr['aspace_instance']
+        append_aspace_instance(endpoint, attr) if attr['aspace_instance']
         endpoint
       end
 
@@ -54,6 +54,16 @@ module Synchronizable
       raise "Error parsing CSV on line #{e.line_number}"
     rescue Errno::ENOENT
       raise "Cannot read CSV file at #{path}."
+    end
+
+    # @param [Endpoint] endpoint
+    # @param [Hash] attr
+    def append_aspace_instance(endpoint, attr)
+      instance = ASpaceInstance.find_by(slug: attr['aspace_instance'])
+      if instance.blank?
+        instance = ASpaceInstance.create! slug: attr['aspace_instance'], base_url: attr['aspace_instance_url']
+      end
+      endpoint.aspace_instance = instance
     end
   end
 end
