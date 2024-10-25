@@ -1,4 +1,5 @@
 <%= bootstrap_form_for(@endpoint) do |f| %>
+  <%= f.check_box :active, checked: @endpoint.active %>
   <%= f.text_field :slug, disabled: edit %>
   <%= f.text_field :public_contacts, value: @endpoint.public_contacts&.join(',') %>
   <%= f.text_field :tech_contacts, value: @endpoint.tech_contacts&.join(',') %>

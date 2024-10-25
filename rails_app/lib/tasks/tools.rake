@@ -19,6 +19,11 @@ namespace :tools do
     puts Rainbow("Harvesting from #{endpoints.count} endpoints").green
 
     endpoints.each do |ep|
+      unless ep.active?
+        puts Rainbow("Endpoint #{ep.slug} is inactive.").yellow
+        next
+      end
+
       print "Harvesting #{ep.slug} ... "
 
       # Skip localhost endpoints

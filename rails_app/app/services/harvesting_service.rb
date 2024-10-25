@@ -25,7 +25,7 @@ class HarvestingService
     process_removals
     save_outcomes
   rescue StandardError => e
-    fatal_error "Problem extracting URLs from Endpoint URL: #{e.message}"
+    fatal_error "Something went wrong during extraction: #{e.message}"
   ensure
     send_notifications
   end
@@ -75,6 +75,7 @@ class HarvestingService
   end
 
   def send_notifications
+    return unless @endpoint.active?
     return if @endpoint.last_harvest.status == Endpoint::LastHarvest::COMPLETE
 
     HarvestNotificationMailer.with(endpoint: @endpoint)

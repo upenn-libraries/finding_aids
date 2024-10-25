@@ -13,6 +13,10 @@ describe 'Endpoints edit page' do
   context 'when viewing the form' do
     let(:endpoint) { create(:endpoint, :aspace_harvest) }
 
+    it 'pre-checks active checkbox' do
+      expect(page).to have_field('Active', checked: endpoint.active)
+    end
+
     it 'disables the slug field' do
       expect(page).to have_field('Slug', type: :text, disabled: true)
     end

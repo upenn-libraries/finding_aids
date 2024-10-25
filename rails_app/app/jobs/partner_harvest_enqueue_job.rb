@@ -5,7 +5,7 @@ class PartnerHarvestEnqueueJob < ApplicationJob
   queue_as :default
 
   def perform
-    Endpoint.order(updated_at: :asc).each do |endpoint|
+    Endpoint.is_active.order(updated_at: :asc).each do |endpoint|
       PartnerHarvestJob.perform_later endpoint
     end
   end

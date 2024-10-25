@@ -16,6 +16,7 @@
       <th scope="col">Source Type</th>
       <th scope="col">Created At</th>
       <th scope="col">Updated At</th>
+      <th scope="col">Active</th>
     </tr>
     </thead>
     <tbody>
@@ -25,6 +26,9 @@
         <td class="source_type"><%= endpoint.source_type %></td>
         <td class="created_at"><%= endpoint.created_at.to_fs(:display) %></td>
         <td class="updated_at"><%= endpoint.updated_at.to_fs(:display) %></td>
+        <td class="active <%= endpoint_active_class(endpoint) %>">
+          <%= endpoint.active.to_s.titleize %>
+        </td>
       </tr>
     <% end %>
     </tbody>

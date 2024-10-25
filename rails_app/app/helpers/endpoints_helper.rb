@@ -14,4 +14,19 @@ module EndpointsHelper
   def error_message_for(file)
     "#{file['id']}: #{file['errors'].join(', ')}"
   end
+
+  # @param [Endpoint] endpoint
+  # @return [String]
+  def endpoint_active_class(endpoint)
+    endpoint.active? ? 'text-success' : 'text-danger'
+  end
+
+  # @param [Endpoint] endpoint
+  # @return [String]
+  def table_active_class(endpoint)
+    return 'table-danger' if endpoint.last_harvest.failed?
+    return 'table-warning' unless endpoint.active?
+
+    ''
+  end
 end

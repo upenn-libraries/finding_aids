@@ -3,12 +3,14 @@
 require 'system_helper'
 
 describe 'Endpoint dashboard' do
+  include EndpointsHelper
+
   let!(:endpoint_success)  { create(:endpoint, :webpage_harvest, :complete_harvest) }
   let!(:endpoint_failed)   { create(:endpoint, :webpage_harvest, :failed_harvest) }
-  let!(:endpoint_problem)  { create(:endpoint, :webpage_harvest, :partial_harvest) }
   let!(:endpoint_removals) { create(:endpoint, :webpage_harvest, :harvest_with_removals) }
+  let!(:endpoint_inactive) { create(:endpoint, :webpage_harvest, active: false) }
   let(:test_endpoints) do
-    [endpoint_success, endpoint_failed, endpoint_problem, endpoint_removals]
+    [endpoint_success, endpoint_failed, endpoint_removals, endpoint_inactive]
   end
 
   after { Endpoint.delete_all }
@@ -43,6 +45,10 @@ describe 'Endpoint dashboard' do
         expect(page).to have_text "removed #{endpoint_removals.last_harvest.removed_files.count} record"
       end
     end
+
+    it 'colors inactive endpoint' do
+      expect(page).to have_selector(".#{table_active_class(endpoint_inactive)}")
+    end
   end
 
   context 'when visiting show page' do
@@ -55,6 +61,10 @@ describe 'Endpoint dashboard' do
             expect(page).to have_text removed_file['id']
           end
         end
+      end
+
+      it 'lists active status' do
+        expect(page).to have_selector('.active')
       end
     end
   end

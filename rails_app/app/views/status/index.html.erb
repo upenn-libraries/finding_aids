@@ -12,7 +12,7 @@
   </thead>
   <tbody>
   <% @endpoints.each do |ep| %>
-    <tr class="<%= ep.last_harvest.failed? ? 'table-danger' : '' %> <%= "table-row-#{ep.slug}"  %>">
+    <tr class="<%= table_active_class(ep) %> <%= "table-row-#{ep.slug}"  %>">
       <th scope="row">
         <%= link_to ep.slug, endpoint_status_path(ep.slug) %>
       </th>
