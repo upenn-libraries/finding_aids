@@ -26,6 +26,9 @@
     Harvesting Information
   </h3>
 
+  <dt>Active</dt>
+  <dd class="active <%= endpoint_active_class(@endpoint) %>"><%= @endpoint.active.to_s.titleize %></dd>
+
   <dl>
     <dt>Endpoint Type</dt>
     <dd><%= @endpoint.source_type %></dd>

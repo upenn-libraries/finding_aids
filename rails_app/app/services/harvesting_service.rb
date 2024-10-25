@@ -6,7 +6,6 @@ class HarvestingService
   CRAWL_DELAY = 0.2
 
   class IdentifierValidationError < StandardError; end
-  class InactiveError < StandardError; end
 
   attr_reader :file_results, :document_ids
 

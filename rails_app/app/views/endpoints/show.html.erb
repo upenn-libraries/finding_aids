@@ -6,7 +6,7 @@
 
 <dl class="endpoint-list">
   <dt>Active</dt>
-  <dd class="<%= active_class(@endpoint) %>">
+  <dd class="<%= endpoint_active_class(@endpoint) %>">
     <%= @endpoint.active.to_s.titleize %>
   </dd>
 
