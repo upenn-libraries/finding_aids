@@ -53,10 +53,11 @@ unit_id = xml.at_path('/ead/archdesc/did/unitid[not(@audience="internal")]').tex
 
 When a new organization wishes to have their EADs indexed into the application they must provide:
 - An endpoint slug, which can include uppercase letters and underscores
-- A technical contact, email
-- A public contact, email
-- A webpage url, if indexing from a webpage- A repository id, if indexing from a ArchiveSpace instance. This can be found via the ASpace Admin UI.
-- An aspace_instance slug, if indexing from an ArchiveSpace instance.
+- A technical contact email
+- A public contact email
+- A webpage url, if indexing from a webpage
+- A repository id, if indexing from a ArchiveSpace instance. This can be found via the ASpace Admin UI.
+- An aspace_instance slug, if indexing from an ArchiveSpace instance. This slug must be no more than 20 characters.
 
 ##### With ArchivesSpace
 
@@ -68,7 +69,7 @@ It is important to note that all Resources in a Repository will be harvested whe
 
 ###### `ASpaceInstance` secret configuration
 
-ArchivesSpace credentials are stored in Penn Libraries' HashiCorp Vault, in an environment-agnostic vault `aspace_credentials`. `ASpaceInstance` application models are linked to corresponding secrets via a naming convention. The `slug` value of an `ASpaceInstance` should prefix the vault username value names `#{slug}_aspace_username` and the password as `#{slug}_aspace_password`.
+ArchivesSpace credentials are stored in Penn Libraries' HashiCorp Vault, in an environment-agnostic vault `aspace_credentials`. `ASpaceInstance` application models are linked to corresponding secrets via a naming convention. The `slug` value of an `ASpaceInstance` should prefix the vault username value names `#{slug}_aspace_username` and the password as `#{slug}_aspace_password`. As mentioned above, the ASpace slug must be no more than 20 characters for this configuration to work properly.
 
 Steps for configuring these credentials in the application environments:
 
@@ -105,9 +106,9 @@ bundle exec rake tools:robotstxt
 
 Our local development environment uses vagrant in order to set up a consistent environment with the required services. Please see the [root README for instructions](../../../../../README.md#development)  on how to set up this environment.
 
-The Rails application will be available at, [https://finding-aid-discovery-dev.library.upenn.edu](https://finding-aid-discovery-dev.library.upenn.edu).
+The Rails application will be available at [https://finding-aid-discovery-dev.library.upenn.edu](https://finding-aid-discovery-dev.library.upenn.edu).
 
-The Solr admin console will be available at, [http://finding-aid-discovery-dev.library.upenn.int/solr/#/](http://finding-aid-discovery-dev.library.upenn.int/solr/#/).
+The Solr admin console will be available at [http://finding-aid-discovery-dev.library.upenn.int/solr/#/](http://finding-aid-discovery-dev.library.upenn.int/solr/#/).
 
 ### Interacting with the Application
 
@@ -130,7 +131,11 @@ To harvest some of the endpoints in a local development environment:
 bundle exec rake tools:sync_endpoints
 bundle exec rake tools:harvest_from endpoints=ISM,WFIS,ANSP,LCP,CCHS,PCA
 ```
-The `harvest_from` task also supports a `limit` param that limits harvest of each specified endpoint to a provided integer:
+To harvest from all endpoints, use the `all` argument: 
+```bash
+bundle exec rake tools:harvest_from endpoints=all
+```
+The `harvest_from` task also supports a `limit` param that limits harvest of each specified endpoint to a provided integer. This makes it easier to test endpoints without having to harvest all of their records:
 ```bash
 bundle exec rake tools:harvest_from endpoints=all limit=10
 ```
