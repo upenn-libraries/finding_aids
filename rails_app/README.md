@@ -31,6 +31,8 @@ Any PennKey-holding user can add another user, by PennKey, using the User Admin 
 
 Each organization providing records has a corresponding `Endpoint`. All information (slug, configuration, contact persons) about these endpoints is contained in the database and editable via the admin area of the site.
 
+Endpoints can be set to be "inactive" so that they are not automatically harvested when Endpoint harvesting is run. Additionally, endpoints can be harvested on an as-needed basis using the "Run Harvest" button on the endpoint show page. Even inactive Endpoints can be harvested via the "Run Harvest" button.
+
 > For now, all production Endpoint data can be found in the [endpoints CSV file](/ansible/roles/finding_aid_discovery/files/src/data/endpoints.csv).
 
 #### Unique Identifiers
