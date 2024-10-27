@@ -167,12 +167,13 @@ en:
     endpoints:
       aspace_repo_id: 'ASpace repository ID'
       aspace_instance:
-        include_blank: 'select an aspace instance'
+        include_blank: 'Select an ASpace instance'
       last_harvest_results: 'Last Harvest Results'
     actions:
       create: 'Add'
       edit: 'Edit'
       destroy: 'Delete'
+      harvest: 'Run Harvest'
     flash:
       create:
         success: "Successfully added %{class_name} %{identifier}."
@@ -183,5 +184,8 @@ en:
       destroy:
         success: " Successfully deleted %{class_name} %{identifier}."
         failure: "Failed to delete %{class_name} %{identifier}: %{error}."
+      harvest:
+        success: "Successfully enqueued harvest job for %{class_name} %{identifier}."
+        failure: "Failed to enqueue harvest for %{class_name} %{identifier}: %{error}."
 
 

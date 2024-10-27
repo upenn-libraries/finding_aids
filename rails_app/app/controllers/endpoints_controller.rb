@@ -3,7 +3,7 @@
 # controller actions for Endpoints
 class EndpointsController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_endpoint, only: %w[show edit update]
+  before_action :load_endpoint, only: %w[show edit update harvest]
   before_action :load_aspace_instances, only: %w[new create edit update]
 
   layout 'application'
@@ -45,14 +45,22 @@ class EndpointsController < ApplicationController
 
   def destroy; end
 
+  def harvest
+    PartnerHarvestJob.perform_later @endpoint
+    notify_success action: :harvest, class_name: @endpoint.class.name, identifier: @endpoint.slug
+    redirect_to endpoint_path(@endpoint)
+  rescue StandardError => e
+    alert_failure action: :harvest, class_name: @endpoint.class.name, identifier: @endpoint.slug,
+                  error: e.message
+    redirect_to endpoint_path(@endpoint)
+  end
+
   private
 
-  # @return [Endpoint]
   def load_endpoint
     @endpoint = Endpoint.find(params[:id])
   end
 
-  # @return [Array<ASpaceInstance>]
   def load_aspace_instances
     @aspace_instances = ASpaceInstance.all
   end
