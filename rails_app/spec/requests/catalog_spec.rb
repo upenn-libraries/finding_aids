@@ -20,6 +20,11 @@ describe 'Catalog actions' do
       solr.commit
     end
 
+    after do
+      solr.delete_by_ids(documents.pluck(:id))
+      solr.commit
+    end
+
     describe 'index endpoint' do
       before { get search_catalog_path, headers: { 'HTTP_ACCEPT' => 'application/json' } }
 
