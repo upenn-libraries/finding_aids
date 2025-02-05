@@ -94,6 +94,10 @@ a, a:visited {
   border-color: #ccc !important;
   .card-header {
     background-color: rgba(0, 0, 0, 0.03) !important;
+
+    .btn {
+      color: #212529;
+    }
   }
 }
 .facet-values li .selected {
