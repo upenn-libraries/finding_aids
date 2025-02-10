@@ -30,7 +30,7 @@ describe 'Catalog actions' do
 
       it 'returns the expected attributes' do
         expected_keys = %w[title extent_ssim display_date_ssim genre_form_ssim creators_ssim
-                           abstract_scope_contents_tsi]
+                           repository_ssi abstract_scope_contents_tsi]
         expect(data['data'].first['attributes'].keys).to include(*expected_keys)
       end
     end
