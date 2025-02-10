@@ -3,13 +3,14 @@
 # Custom Blacklight Join step to return an array for JSON requests
 # This overrides app/presenters/blacklight/rendering/join.rb from the Blacklight gem
 # and must be updated if the original file is modified.
+# rubocop:disable Metrics
 class JoinProcessor < Blacklight::Rendering::AbstractStep
   include ActionView::Context
   include ActionView::Helpers::TextHelper
 
   def render
     return next_step(values) if json_request?
-    
+
     options = config.separator_options || {}
     if values.one? || values.none?
       next_step(values.first)
@@ -34,3 +35,4 @@ class JoinProcessor < Blacklight::Rendering::AbstractStep
     context.search_state&.params&.dig(:format) == 'json'
   end
 end
+# rubocop:enable Metrics
