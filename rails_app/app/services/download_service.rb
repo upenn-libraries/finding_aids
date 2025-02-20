@@ -8,7 +8,7 @@ class DownloadService
 
   # @param [String] url
   def self.fetch(url)
-    Retryable.retryable(tries: 3, sleep: 6, on: StandardError) do
+    Retryable.retryable(tries: 3, sleep: 6, on: OpenURI::HTTPError) do
       URI.parse(url).read(HEADERS, read_timeout: 60, open_timeout: 30)
     end
   end
