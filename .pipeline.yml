@@ -1,27 +1,28 @@
 include:
-  - project: "devops/gitlab/ci-templates/deploy"
-    file: ".hashicorp_vault.yml"
-  - project: "devops/gitlab/ci-templates/docker"
-    ref: "1.0.0"
-    file:
-      - ".amend_manifests.yml"
-      - ".build_and_push_docker_images.yml"
-      - ".copy_docker_images.yml"
-      - ".remove_tmp_registry.yml"
-  - project: "devops/gitlab/ci-templates/general"
-    file:
-      - ".install_hashicorp_vault.yml"
-      - ".vault_jwt_auth.yml"
-  - project: "devops/gitlab/ci-templates/ruby"
-    ref: "sans-dind"
-    file: 
-      - ".rspec.yml"
-      - ".rubocop.yml"
-  - project: "devops/gitlab/ci-templates/sast"
-    ref: "master"
-    file:
-      - ".trivy_container_scanning.yml"
-
+  - component: gitlab.library.upenn.edu/devops/gitlab/components/general/install_hashicorp_vault@0.0.39
+  - component: gitlab.library.upenn.edu/devops/gitlab/components/general/install_regctl@0.0.39
+  - component: gitlab.library.upenn.edu/devops/gitlab/components/general/install_trivy@0.0.39
+  - component: gitlab.library.upenn.edu/devops/gitlab/components/general/vault_jwt_auth@0.0.39
+    inputs:
+      vault_auth_role: "${VAULT_AUTH_ROLE}"
+  # Staging
+  - component: gitlab.library.upenn.edu/devops/gitlab/components/deploy/deploy@0.0.16
+    inputs:
+      deploy_environment_url: "https://netbox-test.library.upenn.int/"
+      deploy_host: "${DEPLOY_HOST}"
+      valid_principals: "${VALID_PRINCIPALS}"
+      vault_auth_role: "${VAULT_AUTH_ROLE}"
+      vault_ssh_client_role: "${VAULT_SSH_CLIENT_ROLE}"
+  # Production
+  - component: gitlab.library.upenn.edu/devops/gitlab/components/deploy/deploy@0.0.16
+    inputs:
+      deploy_environment: "production"
+      deploy_environment_url: "https://netbox.library.upenn.int/"
+      deploy_host: "${DEPLOY_HOST}"
+      job_suffix: "production"
+      valid_principals: "${VALID_PRINCIPALS}"
+      vault_auth_role: "${VAULT_AUTH_ROLE}"
+      vault_ssh_client_role: "${VAULT_SSH_CLIENT_ROLE}"
 workflow:
   rules:
   - when: always
@@ -42,7 +43,10 @@ stages:
 build_and_push_base_app_image:
   stage: build_and_push:tmp_base_image
   extends:
-    - .build_and_push_docker_images
+    - .install_hashicorp_vault
+    - .vault_jwt_auth
+    - .install_regct
+
   parallel:
     matrix:
       - RUNNER: build-arm
@@ -50,8 +54,6 @@ build_and_push_base_app_image:
       - RUNNER: build
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   before_script:
-    - !reference [.install_hashicorp_vault, before_script]
-    - !reference [.vault_jwt_auth, before_script]
     - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
     - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
   variables:
@@ -69,7 +71,10 @@ build_and_push_base_app_image:
 build_and_push_dev_app_image:
   stage: build_and_push:tmp_dev_image
   extends:
-    - .build_and_push_docker_images
+    - .install_hashicorp_vault
+    - .vault_jwt_auth
+    - .install_regct
+
   parallel:
     matrix:
       - RUNNER: build-arm
@@ -77,8 +82,6 @@ build_and_push_dev_app_image:
       - RUNNER: build
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   before_script:
-    - !reference [.install_hashicorp_vault, before_script]
-    - !reference [.vault_jwt_auth, before_script]
     - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
     - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
   variables:
@@ -98,7 +101,9 @@ build_and_push_dev_app_image:
 amend_tmp_base_dev_images:
   stage: amend_tmp_base_dev_images
   extends:
-    - .amend_manifests
+    - .install_hashicorp_vault
+    - .vault_jwt_auth
+    - .install_regct
   needs:
     - build_and_push_base_app_image
     - build_and_push_dev_app_image
@@ -140,7 +145,10 @@ rspec_app_test:
         SOLR_AUTHENTICATION_OPTS: "-Dbasicauth=${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}"
         SOLR_AUTH_TYPE: "basic"
   extends:
-    - .rspec
+    - .install_hashicorp_vault
+    - .vault_jwt_auth
+    - .install_regct
+
   variables:
     CHROME_URL: "http://chrome:3000"
     CONNECTION_TIMEOUT: -1
@@ -193,7 +201,9 @@ rubocop_app_test:
   needs:
     - amend_tmp_base_dev_images
   extends:
-    - .rubocop
+    - .install_hashicorp_vault
+    - .vault_jwt_auth
+    - .install_regct
   before_script:
     - cd rails_app/
   rules:
@@ -209,7 +219,9 @@ rubocop_app_test:
 build_and_push_prod_app_image:
   stage: build_and_push:tmp_prod_image
   extends:
-    - .build_and_push_docker_images
+    - .install_hashicorp_vault
+    - .vault_jwt_auth
+    - .install_regct
   parallel:
     matrix:
       - RUNNER: build-arm
@@ -217,8 +229,6 @@ build_and_push_prod_app_image:
       - RUNNER: build
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   before_script:
-    - !reference [.install_hashicorp_vault, before_script]
-    - !reference [.vault_jwt_auth, before_script]
     - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
     - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
   variables:
@@ -239,7 +249,9 @@ build_and_push_prod_app_image:
 amend_prod_image:
   stage: amend_prod_image
   extends:
-    - .amend_manifests
+    - .install_hashicorp_vault
+    - .vault_jwt_auth
+    - .install_regct
   needs:
     - build_and_push_prod_app_image
   variables:
@@ -254,7 +266,9 @@ amend_prod_image:
 trivy_app_container_scanning:
   stage: sast
   extends:
-    - .trivy_container_scanning
+    - .install_hashicorp_vault
+    - .vault_jwt_auth
+    - .install_regct
   before_script:
     - apk add --no-cache docker
     - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
@@ -275,7 +289,9 @@ copy_app_docker_images:
   needs:
     - trivy_app_container_scanning
   extends:
-    - .copy_docker_images
+    - .install_hashicorp_vault
+    - .vault_jwt_auth
+    - .install_regct
   tags:
     - build
 # -- End - Copy app docker images
@@ -284,7 +300,9 @@ copy_app_docker_images:
 remove_tmp_registry:
   stage: remove_tmp_registry
   extends:
-    - .remove_tmp_registry
+    - .install_hashicorp_vault
+    - .vault_jwt_auth
+    - .install_regct
   rules:
     - when: always
   needs:
@@ -298,7 +316,9 @@ remove_tmp_registry:
 deploy_staging:
   stage: deploy
   extends:
-    - .deploy
+    - .install_hashicorp_vault
+    - .vault_jwt_auth
+    - .install_regct
   variables:
     IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
   environment:
@@ -315,7 +335,9 @@ deploy_staging:
 deploy_production:
   stage: deploy
   extends:
-    - .deploy
+    - .install_hashicorp_vault
+    - .vault_jwt_auth
+    - .install_regct
   variables:
     IMAGE_TAG: ${CI_COMMIT_SHORT_SHA}
   environment:
