@@ -29,27 +29,66 @@ describe 'Blacklight search results' do
       solr.commit
     end
 
-    it 'shows a result' do
-      visit search_catalog_path search_field: 'all_fields', q: ''
-      expect(page).to have_css 'article.document-position-1'
+    context 'when viewing results' do
+      before { visit search_catalog_path search_field: 'all_fields', q: '' }
+
+      it 'shows a result' do
+        expect(page).to have_css 'article.document-position-1'
+      end
+
+      it 'shows the title with the date' do
+        within('article.document-position-1 div.document-main-section header.documentHeader h3') do
+          expect(page).to have_link "#{document_title}, 1800", href: solr_document_path(document_hash[:id])
+        end
+      end
+
+      it 'shows the repository info' do
+        within('article.document-position-1 div.document-main-section p.repository-info') do
+          expect(page).to have_content "Held at: #{document_hash[:repositoryssi]}"
+        end
+      end
+
+      it 'shows the contact link' do
+        within('article.document-position-1 div.document-main-section p.repository-info') do
+          expect(page).to have_link('Contact Us', href: /#{document_hash[:contact_emails_ssm].first}/)
+        end
+      end
+
+      it 'shows the extent' do
+        within('article.document-position-1 div.document-main-section dl.document-metadata') do
+          expect(page).to have_content document_hash[:extent_ssim].first
+        end
+      end
+
+      it 'shows the abstract scope and contents' do
+        within('article.document-position-1 div.document-main-section dl.document-metadata') do
+          expect(page).to have_content document_hash[:abstract_scope_contents_tsi]
+        end
+      end
     end
 
-    it 'returns a record when searching by identifier' do
-      visit search_catalog_path search_field: 'all_fields', q: document_hash[:unit_id_tsi]
-      expect(page).to have_css 'article.document-position-1 h3',
-                               text: /#{document_title}/
+    context 'when searching by an identifier' do
+      before { visit search_catalog_path search_field: 'all_fields', q: document_hash[:unit_id_tsi] }
+
+      it 'returns a record when searching by identifier' do
+        expect(page).to have_css 'article.document-position-1 h3', text: /#{document_title}/
+      end
     end
 
-    it 'returns a record when searching by title' do
-      visit search_catalog_path search_field: 'all_fields', q: document_title
-      expect(page).to have_css 'article.document-position-1 h3',
-                               text: /#{document_title}/
+    context 'when searching by a title' do
+      before { visit search_catalog_path search_field: 'all_fields', q: document_title }
+
+      it 'returns a record when searching by title' do
+        expect(page).to have_css 'article.document-position-1 h3', text: /#{document_title}/
+      end
     end
 
-    it 'returns a record when searching by collection information' do
-      visit search_catalog_path search_field: 'all_fields', q: 'Something Really Distinctive'
-      expect(page).to have_css 'article.document-position-1 h3',
-                               text: /#{document_title}/
+    context 'when searching by collection information' do
+      before { visit search_catalog_path search_field: 'all_fields', q: 'Something Really Distinctive' }
+
+      it 'returns a record when searching by collection information' do
+        expect(page).to have_css 'article.document-position-1 h3', text: /#{document_title}/
+      end
     end
 
     context 'with dates spanning centuries' do
