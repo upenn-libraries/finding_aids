@@ -25,7 +25,7 @@ describe 'Blacklight show page' do
 
   it 'shows the repository info' do
     within('div#document div.document-main-section div#overview p.repository-info') do
-      expect(page).to have_content "Held at: #{document_hash[:repositoryssi]}"
+      expect(page).to have_content "Held at: #{document_hash[:repository_ssi]}"
     end
   end
 
@@ -49,7 +49,7 @@ describe 'Blacklight show page' do
 
   it 'shows the suggestion email' do
     within('div#document div.document-main-section ul.show-page-links li.suggest') do
-      expect(page).to have_link 'Suggest a correction', href: /#{document_hash[:contact_emails_ssm].first}/
+      expect(page).to have_link I18n.t('document.links.submit_correction'), href: /#{document_hash[:contact_emails_ssm].first}/
     end
   end
 
