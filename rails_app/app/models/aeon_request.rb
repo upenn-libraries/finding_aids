@@ -76,10 +76,7 @@ class AeonRequest
 
   # @return [String]
   def formatted_retrieval_date
-    day = @params['retrieval_date(3i)'].to_i
-    month = @params['retrieval_date(2i)'].to_i
-    year = @params['retrieval_date(1i)'].to_i
-    DateTime.new(year, month, day).strftime('%m/%d/%Y')
+    Date.parse(@params['retrieval_date']).strftime('%m/%d/%Y')
   end
 
   # @return [Hash{String (frozen)->String (frozen)}]
