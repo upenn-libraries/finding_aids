@@ -1,6 +1,4 @@
-<%# Copied from Blacklight 8.4.0 to add in display of additional metadata sections and other show page customizations.
-    Note the conditional used here to control differences between index and show page contexts.
-    TODO: reduce complexity in this BL override/customization %>
+<%# Copied from Blacklight 8.4.0 to add in display of additional metadata sections and other show page customizations. %>
 
 <%= content_tag @component,
                 id: @id,
@@ -18,12 +16,11 @@
     <div class="document-main-section">
       <h2 id="main-content" class="bs4-visually-hidden">Main content</h2>
       <%= title %>
-      <% if @show %>
         <%= embed %>
         <%= content %>
         <div id="overview">
           <h3 class="bs4-visually-hidden">Notifications</h3>
-          <%= location_message(with_address: true, url: request.original_url) %>
+          <%= repository_info %>
           <%= access_clarification_message %>
           <h3 class="bs4-visually-hidden">Overview and metadata sections</h3>
           <%= render CollapsableMetadataSection.new(title: t('sections.collection_overview'), open: true) do %>
@@ -41,20 +38,10 @@
         <ul class="show-page-links no-list-style clearfix">
           <li class="print-all"><button onClick="window.print()"><%= t('document.links.print') %></button></li>
           <li class="suggest">
-            <%= correction_email_link request.original_url %>
+            <%= correction_email_link %>
           </li>
         </ul>
-      <% else %>
-        <%= embed %>
-        <%= content %>
-        <%= metadata %>
-        <% metadata_sections.each do |section| %>
-          <%= section %>
-        <% end %>
-        <%= location_message(url: request.original_url) %>
-      <% end %>
     </div>
-
     <%= thumbnail %>
   <% end %>
   <%= footer %>

@@ -26,6 +26,7 @@ FactoryBot.define do
     corpnames_ssim { [] }
     subjects_ssim { ['Testing'] }
     upenn_record_bsi { false }
+    repository_address_ssi { '1 Research Park' }
     repository_name_component_1_ssi { 'Test Institute' }
     repository_name_component_2_ssi { 'Research Center' }
     repository_name_component_3_ssi { 'Individual Room' }
@@ -50,8 +51,8 @@ FactoryBot.define do
         </eadheader>
         <archdesc level="collection">
           <did></did>
-          <scopecontent id="ref177"></scopecontent>
-          <bioghist id="ref176"></bioghist>
+          <scopecontent id="ref177">This collection contains...</scopecontent>
+          <bioghist id="ref176">This committee was established in...</bioghist>
           <controlaccess></controlaccess>
           <dsc>
             <c id="ref1" level="series">

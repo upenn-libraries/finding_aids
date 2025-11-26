@@ -17,6 +17,92 @@ describe 'Blacklight show page' do
     solr.commit
   end
 
+  it 'shows the title' do
+    within('div#document div.document-main-section header.documentHeader h1.document-title-heading') do
+      expect(page).to have_content document_hash[:title_tsi]
+    end
+  end
+
+  it 'shows the repository info' do
+    within('div#document div.document-main-section div#overview p.repository-info') do
+      expect(page).to have_content "Held at: #{document_hash[:repository_ssi]}"
+    end
+  end
+
+  it 'shows repository address' do
+    within('div#document div.document-main-section div#overview p.repository-info span.repository-location') do
+      expect(page).to have_content document_hash[:repository_address_ssi]
+    end
+  end
+
+  it 'shows contact link' do
+    within('div#document div.document-main-section div#overview p.repository-info') do
+      expect(page).to have_link 'Contact Us', href: /#{document_hash[:contact_emails_ssm].first}/
+    end
+  end
+
+  it 'shows the access clarification message' do
+    within('div#document div.document-main-section div#overview p.access-clarification') do
+      expect(page).to have_content(/This is a finding aid. It is a description of archival material/)
+    end
+  end
+
+  it 'shows the suggestion email' do
+    within('div#document div.document-main-section ul.show-page-links li.suggest') do
+      expect(page).to have_link I18n.t('document.links.submit_correction'),
+                                href: /#{document_hash[:contact_emails_ssm].first}/
+    end
+  end
+
+  it 'expands the collection overview' do
+    within('div#document div.document-main-section div#overview') do
+      expect(page).to have_css('div#collection-overview.show')
+    end
+  end
+
+  it 'shows the expected metadata in the collections overview' do
+    within('div#document div.document-main-section div#overview div#collection-overview dl.document-metadata') do
+      expect(page).to have_content document_hash[:pretty_unit_id_ss]
+      expect(page).to have_content document_hash[:creators_ssim].first
+    end
+  end
+
+  it 'expands the biography history overview' do
+    within('div#document div.document-main-section div#overview') do
+      expect(page).to have_css('div#biography-history.show')
+    end
+  end
+
+  it 'shows the expected metadata in the biography-history overview' do
+    within('div#document div.document-main-section div#overview div#biography-history') do
+      expect(page).to have_content 'This committee was established in...'
+    end
+  end
+
+  it 'expands the scope and contents overview' do
+    within('div#document div.document-main-section div#overview') do
+      expect(page).to have_css('div#scope-and-content.show')
+    end
+  end
+
+  it 'shows the expected metadata in the scope and contents overview' do
+    within('div#document div.document-main-section div#overview div#scope-and-content') do
+      expect(page).to have_content 'This collection contains...'
+    end
+  end
+
+  it 'expands the collection inventory' do
+    within('div#document div.document-main-section div#inventory') do
+      expect(page).to have_css('div#collection-1.show')
+    end
+  end
+
+  it 'expands the expected collection inventory' do
+    within('div#document div.document-main-section div#inventory div#collection-1') do
+      expect(page).to have_content 'Something Really Distinctive. Box 1 Another Really Distinctive Thing. Box 2'
+    end
+  end
+
   context 'without language note' do
     it 'does not display language note field' do
       expect(page).to have_text(I18n.t('fields.language_note'), count: 0)
