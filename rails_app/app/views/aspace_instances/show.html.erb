@@ -12,8 +12,11 @@
   <dt>Slug</dt>
   <dd><%= @aspace_instance.slug %></dd>
 
-  <dt>Base Url</dt>
+  <dt>Base URL</dt>
   <dd><%= @aspace_instance.base_url %></dd>
+
+  <dt>Throttle</dt>
+  <dd><%= @aspace_instance.harvest_throttle %> seconds</dd>
 
   <dt>Created At</dt>
   <dd><%= @aspace_instance.created_at.to_fs(:display) %></dd>

@@ -44,7 +44,7 @@ class ASpaceService
         base_repo: '',
         username: aspace_instance.username,
         password: aspace_instance.password,
-        page_size: 50, throttle: 0.5,
+        page_size: 50, throttle: aspace_instance.harvest_throttle,
         debug: false, verify_ssl: false
       }
     )
