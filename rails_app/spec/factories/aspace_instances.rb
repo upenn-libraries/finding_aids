@@ -6,10 +6,6 @@ FactoryBot.define do
     base_url { Faker::Internet.url }
   end
 
-  trait :with_custom_throttle do
-    throttle { 1.1 }
-  end
-
   trait :with_endpoints do
     transient do
       endpoint_count { 2 }
