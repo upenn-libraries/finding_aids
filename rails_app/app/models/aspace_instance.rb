@@ -2,9 +2,6 @@
 
 # Represent an ArchiveSpace instance that we will harvest records from.
 class ASpaceInstance < ApplicationRecord
-  # Use a constant to handle a default throttle rather than a DB default so that it can be adjusted without
-  # having to do a migration
-  DEFAULT_THROTTLE = 0.5
   THROTTLE_RANGE = 0.1..2
 
   validates :harvest_throttle, numericality: { in: THROTTLE_RANGE }
@@ -24,6 +21,6 @@ class ASpaceInstance < ApplicationRecord
   end
 
   def harvest_throttle
-    throttle || DEFAULT_THROTTLE
+    throttle || Settings.aspace_throttle
   end
 end
