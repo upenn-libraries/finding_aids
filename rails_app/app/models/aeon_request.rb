@@ -136,7 +136,7 @@ class AeonRequest
       { 'CallNumber' => @request.call_number, 'ItemTitle' => @request.title, 'ItemAuthor' => '',
         'Site' => @request.repository[:site], 'SubLocation' => @request.repository[:sublocation],
         'Location' => @request.repository[:location], 'ItemVolume' => @container[:volume],
-        'ItemIssue' => @container[:issue], 'Request' => @number, "ItemBarcode" => @request.barcode(@number)}
+        'ItemIssue' => @container[:issue], 'Request' => @number, 'ItemBarcode' => @request.barcode(@number) }
         .transform_keys { |key| key + "_#{@number}" }
     end
   end

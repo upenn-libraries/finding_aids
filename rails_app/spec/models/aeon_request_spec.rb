@@ -28,7 +28,7 @@ describe AeonRequest do
         { 'CallNumber_0' => 'test-call-num',
           'ItemTitle_0' => 'Some old thing',
           'ItemAuthor_0' => '',
-          'ItemBarcode_0' =>  '111111111',
+          'ItemBarcode_0' => '111111111',
           'Site_0' => 'KISLAK',
           'SubLocation_0' => 'Manuscripts',
           'Location_0' => 'scmss',
