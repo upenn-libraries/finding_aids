@@ -4,6 +4,7 @@
 class ASpaceInstance < ApplicationRecord
   THROTTLE_RANGE = 0.1..2
 
+  validates :throttle, numericality: { in: THROTTLE_RANGE }, allow_nil: true
   validates :harvest_throttle, numericality: { in: THROTTLE_RANGE }
   validates :slug, :base_url, presence: true
   validates :slug, format: { with: /\A[a-z_]+\z/ }, length: { maximum: 20 }, uniqueness: true
