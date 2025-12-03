@@ -12,5 +12,5 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
-Rails.application.config.assets.precompile += %w[bootstrap.bundle.min.js jquery3.min.js jquery_ujs.js
+Rails.application.config.assets.precompile += %w[jquery3.min.js jquery_ujs.js
                                                  blacklight/manifest.js]
