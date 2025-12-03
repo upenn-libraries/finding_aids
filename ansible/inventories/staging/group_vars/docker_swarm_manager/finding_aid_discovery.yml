@@ -6,22 +6,6 @@ finding_aid_discovery_rails_env: "staging"
 finding_aid_discovery_replicas: 2
 finding_aid_discovery_solr_url: "http://finaid-stg01.library.upenn.int/solr/finding-aid-discovery"
 finding_aid_discovery_url: "findingaids-staging.library.upenn.edu"
-finding_aid_discovery_versioned_secrets:
-  honeybadger_api_key:
-    vault: finaids_vault_values
-  rails_master_key:
-    vault: finaids_vault_values
-  slack_notification_email_address:
-    vault: finaids_vault_values
-  upenn_aspace_username:
-    vault: aspace_vault_values
-  upenn_aspace_password:
-    vault: aspace_vault_values
-  temple_aspace_username:
-    vault: aspace_vault_values
-  temple_aspace_password:
-    vault: aspace_vault_values
-  tricolib_aspace_username:
-    vault: aspace_vault_values
-  tricolib_aspace_password:
-    vault: aspace_vault_values
+
+# See roles/finding_aid_discovery/defaults.main.yml
+#finding_aid_discovery_versioned_secrets:
