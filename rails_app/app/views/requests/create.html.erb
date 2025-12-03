@@ -23,7 +23,7 @@
   <% end  %>
   <%= form.text_area :special_request, label: t('requests.form.fields.special_request') %>
   <%= form.text_area :notes, label: t('requests.form.fields.notes') %>
-  <%= form.date_select :retrieval_date, label: t('requests.form.fields.retrieval_date') %>
+  <%= form.date_field :retrieval_date, label: t('requests.form.fields.retrieval_date'), required: true %>
   <%= form.form_group :auth_type, label: { text: t('requests.form.fields.auth_types') }, help: t('requests.form.messages.auth_help_html', aeon_link: link_to('ensure that you are logged in', AeonRequest::AEON_URL, class: 'ext', target: '_blank', rel: 'noopener')) do %>
     <%= form.radio_button :auth_type, 'penn', label: t('requests.form.fields.penn_auth'), checked: true %>
     <%= form.radio_button :auth_type, 'external', label: t('requests.form.fields.external_auth') %>

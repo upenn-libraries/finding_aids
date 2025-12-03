@@ -13,9 +13,7 @@ describe AeonRequest do
           title: 'Some old thing',
           special_request: 'I need this NOW!',
           notes: 'Thanks',
-          'retrieval_date(3i)': '30',
-          'retrieval_date(2i)': '6',
-          'retrieval_date(1i)': '2023',
+          retrieval_date: '2025-12-25',
           save_for_later: true,
           auth_type: 'penn',
           item: ['Month January: Page 6', 'Month December: Plate 40'],
@@ -59,7 +57,7 @@ describe AeonRequest do
       it 'has a hash representation with proper fulfillment fields' do
         expect(request.to_h).to include(
           { 'UserReview' => 'No',
-            'ScheduledDate' => '06/30/2023' }
+            'ScheduledDate' => '12/25/2025' }
         )
       end
 
