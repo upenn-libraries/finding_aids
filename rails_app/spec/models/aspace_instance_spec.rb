@@ -44,6 +44,27 @@ describe ASpaceInstance do
     end
   end
 
+  describe '#throttle' do
+    it 'can be nil' do
+      aspace_instance.throttle = nil
+      expect(aspace_instance.valid?).to be true
+    end
+
+    it 'must be a number in the acceptable range' do
+      aspace_instance.throttle = 0
+      expect(aspace_instance.valid?).to be false
+      expect(aspace_instance.errors[:throttle].first).to include('must be in')
+    end
+  end
+
+  describe '#harvest_throttle' do
+    it 'must be a number in the acceptable range' do
+      aspace_instance.throttle = 0
+      expect(aspace_instance.valid?).to be false
+      expect(aspace_instance.errors[:harvest_throttle].first).to include('must be in')
+    end
+  end
+
   describe '#endpoints' do
     let(:endpoints) { build_list(:endpoint, 2, :aspace_harvest, aspace_instance: nil) }
 
