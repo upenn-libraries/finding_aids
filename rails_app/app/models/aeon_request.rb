@@ -38,8 +38,6 @@ class AeonRequest
   def build_items
     @params['item'].map.with_index do |item, i|
       volume, issue = item.split(':').map(&:strip)
-      barcode = @params['item_barcode'][i]
-      volume += " [#{barcode}]" if barcode.present?
       container_info = { volume: volume, issue: issue }
       Item.new i, container_info, self
     end
@@ -97,6 +95,12 @@ class AeonRequest
     @params[:title]
   end
 
+  # @return [String]
+  # @param [Integer] index
+  def barcode(index)
+    @params[:item_barcode][index]
+  end
+
   # @return [Hash]
   def to_h
     item_fields = {}
@@ -132,7 +136,7 @@ class AeonRequest
       { 'CallNumber' => @request.call_number, 'ItemTitle' => @request.title, 'ItemAuthor' => '',
         'Site' => @request.repository[:site], 'SubLocation' => @request.repository[:sublocation],
         'Location' => @request.repository[:location], 'ItemVolume' => @container[:volume],
-        'ItemIssue' => @container[:issue], 'Request' => @number }
+        'ItemIssue' => @container[:issue], 'Request' => @number, 'ItemBarcode' => @request.barcode(@number) }
         .transform_keys { |key| key + "_#{@number}" }
     end
   end
