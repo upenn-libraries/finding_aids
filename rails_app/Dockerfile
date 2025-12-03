@@ -90,8 +90,7 @@ RUN apk add --no-cache \
       postgresql-dev \
       shadow \
       su-exec \
-      tzdata \
-      yarn && \
+      tzdata && \
     addgroup -S app && adduser -S app -G app -h ${PROJECT_ROOT} -s /bin/ash && \
     mkdir -p ${PROJECT_ROOT}/tmp/pids
 
@@ -153,8 +152,7 @@ RUN apk add --no-cache \
       postgresql-dev \
       shadow \
       su-exec \
-      tzdata \
-      yarn && \
+      tzdata && \
     addgroup -S app && adduser -S app -G app -h ${PROJECT_ROOT} -s /bin/ash && \
     mkdir -p ${PROJECT_ROOT}/tmp/pids
 
