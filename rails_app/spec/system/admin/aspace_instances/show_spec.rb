@@ -27,6 +27,10 @@ describe 'ASpaceInstances show page' do
     expect(page).to have_text(aspace_instance.base_url)
   end
 
+  it 'displays throttle' do
+    expect(page).to have_text(aspace_instance.harvest_throttle)
+  end
+
   it 'displays endpoints' do
     within('.table') do
       expect(page).to have_text(aspace_instance.endpoints.first.slug)

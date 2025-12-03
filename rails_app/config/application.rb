@@ -17,7 +17,12 @@ Bundler.require(*Rails.groups)
 module FindingAidDiscovery
   class Application < Rails::Application
     # Initialize configuration defaults for the new Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.2
+
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -29,6 +34,9 @@ module FindingAidDiscovery
 
     # Set hostname for urls generated within emails
     config.action_mailer.default_url_options = { host: ENV.fetch('FINDING_AID_DISCOVERY_URL') }
+
+    # Don't generate system test files.
+    config.generators.system_tests = nil
 
     # Default hostname used for sitemap generation.
     config.default_host = URI::HTTPS.build host: ENV.fetch('FINDING_AID_DISCOVERY_URL').to_s

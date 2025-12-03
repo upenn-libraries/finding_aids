@@ -2,6 +2,10 @@
 
 # Represent an ArchiveSpace instance that we will harvest records from.
 class ASpaceInstance < ApplicationRecord
+  THROTTLE_RANGE = 0.1..2
+
+  validates :throttle, numericality: { in: THROTTLE_RANGE }, allow_nil: true
+  validates :harvest_throttle, numericality: { in: THROTTLE_RANGE }
   validates :slug, :base_url, presence: true
   validates :slug, format: { with: /\A[a-z_]+\z/ }, length: { maximum: 20 }, uniqueness: true
 
@@ -15,5 +19,9 @@ class ASpaceInstance < ApplicationRecord
   # Docker secrets key must match slug + "_aspace_password"
   def password
     DockerSecrets.lookup(:"#{slug}_aspace_password")
+  end
+
+  def harvest_throttle
+    throttle || Settings.aspace_throttle
   end
 end
