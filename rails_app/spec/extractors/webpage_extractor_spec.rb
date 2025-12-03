@@ -75,8 +75,8 @@ describe WebpageExtractor do
         stub_request(:get, endpoint.webpage_url).to_return(status: ['404', 'Not Found'])
       end
 
-      it 'raises an OpenURI::HTTPError' do
-        expect { files }.to raise_error OpenURI::HTTPError
+      it 'raises an DownloadService::Error' do
+        expect { files }.to raise_error DownloadService::Error
       end
     end
   end

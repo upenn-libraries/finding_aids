@@ -56,11 +56,11 @@ class WebpageExtractor < BaseExtractor
     # Getting response and storing it in a variable in order to use additional methods provided by OpenURI::Meta.
     # Specifically we are using the #base_uri method in order to generate accurate full URI's in case of redirection.
     response = DownloadService.fetch(url)
-    doc = Nokogiri::HTML.parse(response)
+    doc = Nokogiri::HTML.parse(response.body)
 
     # Extract list of XML URLs
     doc.xpath('//a/@href')
-       .filter_map { |node| full_url node.value, response.base_uri }
+       .filter_map { |node| full_url node.value, response.env.url.to_s }
        .select { |uri| uri.path&.ends_with? '.xml' }
        .map { |uri| XMLFile.new(url: uri.to_s) }
   end
