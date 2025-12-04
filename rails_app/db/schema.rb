@@ -10,63 +10,63 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_01_153345) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_01_153345) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "aspace_instances", force: :cascade do |t|
-    t.string "slug", null: false
     t.string "base_url", null: false
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "slug", null: false
     t.float "throttle"
+    t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_aspace_instances_on_slug", unique: true
   end
 
   create_table "bookmarks", id: :serial, force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string "user_type"
+    t.datetime "created_at", precision: nil, null: false
     t.string "document_id"
     t.string "document_type"
     t.binary "title"
-    t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.integer "user_id", null: false
+    t.string "user_type"
     t.index ["document_id"], name: "index_bookmarks_on_document_id"
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
   create_table "endpoints", force: :cascade do |t|
-    t.string "slug", null: false
-    t.string "public_contacts", array: true
-    t.string "tech_contacts", array: true
-    t.jsonb "last_harvest_results", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "source_type", null: false
-    t.text "webpage_url"
-    t.integer "aspace_repo_id"
-    t.bigint "aspace_instance_id"
     t.boolean "active", default: true, null: false
+    t.bigint "aspace_instance_id"
+    t.integer "aspace_repo_id"
+    t.datetime "created_at", null: false
+    t.jsonb "last_harvest_results", default: {}
+    t.string "public_contacts", array: true
+    t.string "slug", null: false
+    t.string "source_type", null: false
+    t.string "tech_contacts", array: true
+    t.datetime "updated_at", null: false
+    t.text "webpage_url"
     t.index ["aspace_instance_id"], name: "index_endpoints_on_aspace_instance_id"
     t.index ["slug"], name: "index_endpoints_on_slug", unique: true
   end
 
   create_table "searches", id: :serial, force: :cascade do |t|
+    t.datetime "created_at", precision: nil, null: false
     t.binary "query_params"
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "user_id"
     t.string "user_type"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_searches_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", null: false
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "email", null: false
     t.string "provider"
     t.string "uid"
+    t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
