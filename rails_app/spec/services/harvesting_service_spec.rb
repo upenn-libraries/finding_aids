@@ -63,9 +63,7 @@ describe HarvestingService do
 
     context 'when endpoint url returns a 500 error' do
       before do
-        stub_request(:get, endpoint.webpage_url).to_return(status: 500,
-                                                           body: { errors: ['Internal Server Error'] }.to_json,
-                                                           headers: { 'Content-Type' => 'application/json' })
+        stub_request(:get, endpoint.webpage_url).to_return(status: 500)
         described_class.new(endpoint).harvest
         endpoint.reload
       end
@@ -88,10 +86,8 @@ describe HarvestingService do
 
       before do
         allow_any_instance_of(WebpageExtractor).to receive(:files).and_return([xml_file])
-        stub_request(:get, endpoint.webpage_url).to_return(status: [200])
-        stub_request(:get, url).to_return(status: 404,
-                                          body: { errors: ['Not Found'] }.to_json,
-                                          headers: { 'Content-Type' => 'application/json' })
+        stub_request(:get, endpoint.webpage_url).to_return(status: 200)
+        stub_request(:get, url).to_return(status: 404)
         described_class.new(endpoint).harvest
         endpoint.reload
       end

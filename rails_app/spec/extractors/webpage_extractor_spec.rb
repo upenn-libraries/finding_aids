@@ -75,7 +75,7 @@ describe WebpageExtractor do
         stub_request(:get, endpoint.webpage_url).to_return(status: ['404', 'Not Found'])
       end
 
-      it 'raises an DownloadService::Error' do
+      it 'raises an Faraday::ResourceNotFound' do
         expect { files }.to raise_error Faraday::ResourceNotFound
       end
     end
