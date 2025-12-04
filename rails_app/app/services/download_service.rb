@@ -8,20 +8,18 @@ class DownloadService
   HEADERS = { 'User-Agent' => 'PACSCL Discovery harvester' }.freeze
   class Error < StandardError; end
 
-  class << self
-    # @param [String] url
-    # @return [Faraday::Response]
-    def fetch(url)
-      connection = Faraday.new do |f|
-        f.response :follow_redirects
-        f.response :raise_error
-        f.request :retry,
-                  max: 3,
-                  interval: 6,
-                  exceptions: Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS + [Faraday::ConnectionFailed]
-      end
-
-      connection.get(url, {}, HEADERS)
+  # @param [String] url
+  # @return [Faraday::Response]
+  def self.fetch(url)
+    connection = Faraday.new do |f|
+      f.response :follow_redirects
+      f.response :raise_error
+      f.request :retry,
+                max: 3,
+                interval: 6,
+                exceptions: Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS + [Faraday::ConnectionFailed]
     end
+
+    connection.get(url, {}, HEADERS)
   end
 end
