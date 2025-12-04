@@ -47,7 +47,7 @@ class WebpageExtractor < BaseExtractor
 
   private
 
-  # Extract all XML URLs present at the given URL.  
+  # Extract all XML URLs present at the given URL.
   # If the URL is redirected, the redirected URL is used as the base for
   # constructing absolute URLs from relative links.
   #
@@ -60,8 +60,7 @@ class WebpageExtractor < BaseExtractor
     base     = response.env.url.to_s
 
     hrefs(doc)
-      .map { |href| full_url href, base }
-      .compact
+      .filter_map { |href| full_url href, base }
       .select { |uri| xml_path?(uri) }
       .map { |uri| XMLFile.new(url: uri.to_s) }
   end
@@ -80,7 +79,7 @@ class WebpageExtractor < BaseExtractor
   # @return [Boolean] True if the URI represents an XML file path.
   def xml_path?(uri)
     uri&.path&.end_with?('.xml')
-  end  
+  end
 
   # Converts link into full url. If link is a relative link, it prepends the base uri to create a full url. If the link
   # is already a full url, it isn't changed.
