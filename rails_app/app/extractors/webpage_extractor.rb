@@ -53,16 +53,14 @@ class WebpageExtractor < BaseExtractor
   # @param [String] url
   # @return [Array[<XMLFile>]]
   def extract_xml_urls(url)
-    # Getting response and storing it in a variable in order to use additional methods provided by OpenURI::Meta.
-    # Specifically we are using the #base_uri method in order to generate accurate full URI's in case of redirection.
     response = DownloadService.fetch(url)
     doc = Nokogiri::HTML.parse(response.body)
+    base = response.env.url.to_s
 
-    # Extract list of XML URLs
-    doc.xpath('//a/@href')
-       .filter_map { |node| full_url node.value, response.env.url.to_s }
-       .select { |uri| uri.path&.ends_with? '.xml' }
-       .map { |uri| XMLFile.new(url: uri.to_s) }
+    hrefs(doc)
+      .filter_map { |href| full_url href, base }
+      .select { |uri| xml_path?(uri) }
+      .map { |uri| XMLFile.new(url: uri.to_s) }
   end
 
   # Converts link into full url. If link is a relative link, it prepends the base uri to create a full url. If the link
@@ -90,5 +88,13 @@ class WebpageExtractor < BaseExtractor
     else
       "#{uri}/"
     end
+  end
+
+  def hrefs(doc)
+    doc.xpath('//a/@href').map(&:value)
+  end
+
+  def xml_path?(uri)
+    uri.path&.end_with?('.xml')
   end
 end

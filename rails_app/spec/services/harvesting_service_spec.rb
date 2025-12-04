@@ -36,22 +36,20 @@ describe HarvestingService do
 
     context 'when endpoint url returns a 404 error' do
       before do
-        stub_request(:get, endpoint.webpage_url).to_return(status: 404,
-          body: { errors: ['Not Found'] }.to_json,
-          headers: { 'Content-Type' => 'application/json' })
+        stub_request(:get, endpoint.webpage_url).to_return(status: 404)
         described_class.new(endpoint).harvest
         endpoint.reload
       end
 
       it 'saves error information to Endpoint' do
-        expect(endpoint.last_harvest.errors.first).to include('404 Not Found')
+        expect(endpoint.last_harvest.errors.first).to include('the server responded with status 404')
       end
 
       it 'sends failure notification' do
         expect(ActionMailer::Base.deliveries.count).to be 1
         expect(ActionMailer::Base.deliveries.last.from).to match_array('no-reply@library.upenn.edu')
         expect(ActionMailer::Base.deliveries.last.subject).to eq "Harvest of #{endpoint.slug} failed"
-        expect(ActionMailer::Base.deliveries.last.body.to_s).to match('404 Not Found')
+        expect(ActionMailer::Base.deliveries.last.body.to_s).to match('the server responded with status 404')
       end
 
       it 'sends failure notification to endpoint tech contacts' do
@@ -66,14 +64,14 @@ describe HarvestingService do
     context 'when endpoint url returns a 500 error' do
       before do
         stub_request(:get, endpoint.webpage_url).to_return(status: 500,
-          body: { errors: ['Internal Server Error'] }.to_json,
-          headers: { 'Content-Type' => 'application/json' })
+                                                           body: { errors: ['Internal Server Error'] }.to_json,
+                                                           headers: { 'Content-Type' => 'application/json' })
         described_class.new(endpoint).harvest
         endpoint.reload
       end
 
       it 'saves error information to Endpoint' do
-        expect(endpoint.last_harvest.errors.first).to include('500 Internal Server Error')
+        expect(endpoint.last_harvest.errors.first).to include('the server responded with status 500')
       end
     end
 
@@ -84,7 +82,7 @@ describe HarvestingService do
         [{
           'id' => 'not_here.xml',
           'status' => 'failed',
-          'errors' => ['Problem downloading file: 404 Not Found']
+          'errors' => ['Problem downloading file: the server responded with status 404']
         }]
       end
 
@@ -92,8 +90,8 @@ describe HarvestingService do
         allow_any_instance_of(WebpageExtractor).to receive(:files).and_return([xml_file])
         stub_request(:get, endpoint.webpage_url).to_return(status: [200])
         stub_request(:get, url).to_return(status: 404,
-          body: { errors: ['Not Found'] }.to_json,
-          headers: { 'Content-Type' => 'application/json' })
+                                          body: { errors: ['Not Found'] }.to_json,
+                                          headers: { 'Content-Type' => 'application/json' })
         described_class.new(endpoint).harvest
         endpoint.reload
       end
@@ -113,7 +111,7 @@ describe HarvestingService do
       it 'sends partial harvest notification with appropriate subject and content' do
         expect(ActionMailer::Base.deliveries.last.subject).to eq "Harvest of #{endpoint.slug} partially completed"
         expect(ActionMailer::Base.deliveries.last.body.to_s).to match('Last Harvest Partially Completed')
-        expect(ActionMailer::Base.deliveries.last.body.to_s).to match('404 Not Found')
+        expect(ActionMailer::Base.deliveries.last.body.to_s).to match('the server responded with status 404')
       end
     end
 

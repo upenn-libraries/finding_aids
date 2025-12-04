@@ -16,7 +16,7 @@ describe DownloadService do
       it 'raises error' do
         stub_request(:get, url).with(headers: described_class::HEADERS)
                                .to_return(status: 500)
-        expect { described_class.fetch(url) }.to raise_error(described_class::Error)
+        expect { described_class.fetch(url) }.to raise_error(Faraday::ServerError)
       end
     end
   end

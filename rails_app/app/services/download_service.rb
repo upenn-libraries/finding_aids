@@ -14,28 +14,14 @@ class DownloadService
     def fetch(url)
       connection = Faraday.new do |f|
         f.response :follow_redirects
+        f.response :raise_error
         f.request :retry,
-          max: 3,
-          interval: 6,
-          exceptions: Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS + [Faraday::ConnectionFailed]
+                  max: 3,
+                  interval: 6,
+                  exceptions: Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS + [Faraday::ConnectionFailed]
       end
-      response = connection.get(url, {}, HEADERS)
 
-      return response if response.success?
-
-      error = format_webpage_error_response(response)
-
-      raise Error, [response.status, error].join(' ')
-    end
-
-    private
-
-    def format_webpage_error_response(response)
-      if response.headers['Content-Type'] == 'application/json'
-        JSON.parse(response.body)['errors'].join(' ')
-      else
-        response.body
-      end
+      connection.get(url, {}, HEADERS)
     end
   end
 end

@@ -76,7 +76,7 @@ describe WebpageExtractor do
       end
 
       it 'raises an DownloadService::Error' do
-        expect { files }.to raise_error DownloadService::Error
+        expect { files }.to raise_error Faraday::ResourceNotFound
       end
     end
   end
