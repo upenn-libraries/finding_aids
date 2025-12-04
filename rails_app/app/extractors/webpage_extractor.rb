@@ -47,21 +47,40 @@ class WebpageExtractor < BaseExtractor
 
   private
 
-  # Extract all xml urls present at the URL given. If URL is redirected, uses new redirected URL when creating
-  # absolute URLs from relative URLs.
+  # Extract all XML URLs present at the given URL.  
+  # If the URL is redirected, the redirected URL is used as the base for
+  # constructing absolute URLs from relative links.
   #
-  # @param [String] url
-  # @return [Array[<XMLFile>]]
+  # @param [String] url The starting URL to fetch and scan for XML links.
+  # @return [Array<XMLFile>] A list of XMLFile objects created from discovered XML URLs.
   def extract_xml_urls(url)
+    # Use response object to access base_uri-like behavior (via response.env.url)
     response = DownloadService.fetch(url)
-    doc = Nokogiri::HTML.parse(response.body)
-    base = response.env.url.to_s
+    doc      = Nokogiri::HTML.parse(response.body)
+    base     = response.env.url.to_s
 
     hrefs(doc)
-      .filter_map { |href| full_url href, base }
+      .map { |href| full_url href, base }
+      .compact
       .select { |uri| xml_path?(uri) }
       .map { |uri| XMLFile.new(url: uri.to_s) }
   end
+
+  # Extract all href attribute values from <a> tags.
+  #
+  # @param [Nokogiri::HTML::Document] doc The parsed HTML document.
+  # @return [Array<String>] An array of raw href values.
+  def hrefs(doc)
+    doc.xpath('//a/@href').map(&:value)
+  end
+
+  # Determines whether a URI's path ends with `.xml`.
+  #
+  # @param [URI, nil] uri The URI object to inspect.
+  # @return [Boolean] True if the URI represents an XML file path.
+  def xml_path?(uri)
+    uri&.path&.end_with?('.xml')
+  end  
 
   # Converts link into full url. If link is a relative link, it prepends the base uri to create a full url. If the link
   # is already a full url, it isn't changed.
@@ -88,13 +107,5 @@ class WebpageExtractor < BaseExtractor
     else
       "#{uri}/"
     end
-  end
-
-  def hrefs(doc)
-    doc.xpath('//a/@href').map(&:value)
-  end
-
-  def xml_path?(uri)
-    uri.path&.end_with?('.xml')
   end
 end
