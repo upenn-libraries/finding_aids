@@ -44,7 +44,7 @@ end
 describe 'Endpoints show page' do
   let(:user) { create(:user) }
 
-  before { sign_in user }
+  before { login_as user }
 
   context 'when visiting the show page of an webpage endpoint' do
     let(:webpage_endpoint) { create(:endpoint, :webpage_harvest) }

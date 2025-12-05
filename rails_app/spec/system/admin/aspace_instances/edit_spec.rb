@@ -7,7 +7,7 @@ describe 'ASpaceInstances edit page' do
   let(:aspace_instance) { create(:aspace_instance) }
 
   before do
-    sign_in user
+    login_as user
     visit edit_aspace_instance_path(aspace_instance)
   end
 

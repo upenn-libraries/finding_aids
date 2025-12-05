@@ -26,7 +26,7 @@ describe 'Endpoints index page' do
     before do
       webpage_endpoint
       aspace_endpoint
-      sign_in user
+      login_as user
       visit endpoints_path
     end
 
