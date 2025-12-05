@@ -16,7 +16,7 @@ class WebpageExtractor < BaseExtractor
 
     # @return [String]
     def xml
-      validate_encoding(DownloadService.fetch(url))
+      validate_encoding(DownloadService.fetch(url).body)
     end
 
     # Returns filename as the source_id
