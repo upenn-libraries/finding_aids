@@ -3,6 +3,6 @@ import 'jquery';
 import 'jquery_ujs';
 import 'bootstrap';
 import Blacklight from 'blacklight';
-import './init.js';
-import './requests.js';
+import 'initialize';
+import 'requests';
 
