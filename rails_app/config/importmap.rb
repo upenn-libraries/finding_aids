@@ -7,5 +7,5 @@ pin 'jquery', to: 'jquery3.min.js', preload: true
 pin 'jquery_ujs', to: 'jquery_ujs.js', preload: true
 # bundled bootstrap package that includes popper peer dependency
 pin 'bootstrap', to: 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js', preload: true
-pin 'initialize', to: 'app/javascript/initialize.js', preload: true
-pin 'requests', to: 'app/javascript/requests.js', preload: true
+pin 'initialize', preload: true
+pin 'requests', preload: true
