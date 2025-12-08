@@ -6,7 +6,6 @@ require 'faraday/follow_redirects'
 # downloads files, setting appropriate headers and retrying as needed
 class DownloadService
   HEADERS = { 'User-Agent' => 'PACSCL Discovery harvester' }.freeze
-  class Error < StandardError; end
 
   # @param [String] url
   # @return [Faraday::Response]
