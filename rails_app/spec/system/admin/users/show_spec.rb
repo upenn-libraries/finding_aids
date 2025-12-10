@@ -6,7 +6,7 @@ describe 'Users show page' do
   let(:user) { create(:user) }
 
   before do
-    sign_in user
+    login_as user
     visit user_path(user.id)
   end
 

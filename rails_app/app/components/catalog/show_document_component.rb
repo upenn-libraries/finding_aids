@@ -2,7 +2,7 @@
 
 module Catalog
   # custom methods for our show page DocumentComponent
-  # Copied from Blacklight 8.4.0
+  # Copied from Blacklight 8.12.3
   class ShowDocumentComponent < Blacklight::DocumentComponent
     # Slot for the location details
     renders_one :repository_info, RepositoryInfoComponent

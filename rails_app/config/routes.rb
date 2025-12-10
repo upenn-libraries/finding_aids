@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   mount Blacklight::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new
 
-  resource :catalog, only: [:index], as: 'catalog', path: '/records',
+  resource :catalog, only: [], as: 'catalog', path: '/records',
                      controller: :catalog, constraints: { id: %r{[^/]+} } do
     concerns :searchable
   end

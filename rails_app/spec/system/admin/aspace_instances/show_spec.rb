@@ -7,7 +7,7 @@ describe 'ASpaceInstances show page' do
   let(:aspace_instance) { create(:aspace_instance, :with_endpoints) }
 
   before do
-    sign_in user
+    login_as user
     visit aspace_instance_path(aspace_instance)
   end
 
