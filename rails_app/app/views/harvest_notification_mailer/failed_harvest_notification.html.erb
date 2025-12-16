@@ -1,7 +1,7 @@
 <h1>Last Harvest Failed</h1>
 
 <strong>Endpoint Slug:</strong> <%= @endpoint.slug %>
-<strong>Endpoint URL:</strong> <%= @endpoint.display_url %>
+<% if @endpoint.display_url %><strong>Endpoint URL:</strong> <%= @endpoint.display_url %><% end %>
 <strong>Harvest Date:</strong> <%= @endpoint.last_harvest.date %>
 
 Harvest failed with the following errors:
