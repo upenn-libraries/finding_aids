@@ -16,4 +16,4 @@ solr_limits_mem: "14G"
 solr_proxy_host: "finaid-prod01.library.upenn.int"
 
 solr_custom_env_variables:
-  SOLR_HEAP: "8G"
+  SOLR_HEAP: "10G"
