@@ -32,13 +32,12 @@ class Endpoint < ApplicationRecord
     @last_harvest ||= LastHarvest.new(last_harvest_results)
   end
 
-  # URL to display in UI and mailers.
+  # URL to display in UI and mailers. We only display webpage type URLs because the ASpace hosts are locked down and
+  # typically not generally resolvable.
   def display_url
-    if webpage_type?
-      webpage_url
-    else
-      aspace_instance&.base_url
-    end
+    return unless webpage_type?
+
+    webpage_url
   end
 
   # Wrapper for last_harvest_results providing accessor and helper methods.

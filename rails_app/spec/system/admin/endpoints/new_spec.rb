@@ -6,7 +6,7 @@ describe 'Endpoints new page' do
   let(:user) { create(:user) }
 
   before do
-    sign_in user
+    login_as user
     create(:aspace_instance)
     visit new_endpoint_path
   end

@@ -16,7 +16,7 @@ class WebpageExtractor < BaseExtractor
 
     # @return [String]
     def xml
-      validate_encoding(DownloadService.fetch(url))
+      validate_encoding(DownloadService.fetch(url).body)
     end
 
     # Returns filename as the source_id
@@ -47,22 +47,38 @@ class WebpageExtractor < BaseExtractor
 
   private
 
-  # Extract all xml urls present at the URL given. If URL is redirected, uses new redirected URL when creating
-  # absolute URLs from relative URLs.
+  # Extract all XML URLs present at the given URL.
+  # If the URL is redirected, the redirected URL is used as the base for
+  # constructing absolute URLs from relative links.
   #
-  # @param [String] url
-  # @return [Array[<XMLFile>]]
+  # @param [String] url The starting URL to fetch and scan for XML links.
+  # @return [Array<XMLFile>] A list of XMLFile objects created from discovered XML URLs.
   def extract_xml_urls(url)
-    # Getting response and storing it in a variable in order to use additional methods provided by OpenURI::Meta.
-    # Specifically we are using the #base_uri method in order to generate accurate full URI's in case of redirection.
+    # Use response object to access base_uri-like behavior (via response.env.url)
     response = DownloadService.fetch(url)
-    doc = Nokogiri::HTML.parse(response)
+    doc      = Nokogiri::HTML.parse(response.body)
+    base     = response.env.url.to_s
 
-    # Extract list of XML URLs
-    doc.xpath('//a/@href')
-       .filter_map { |node| full_url node.value, response.base_uri }
-       .select { |uri| uri.path&.ends_with? '.xml' }
-       .map { |uri| XMLFile.new(url: uri.to_s) }
+    hrefs(doc)
+      .filter_map { |href| full_url href, base }
+      .select { |uri| xml_path?(uri) }
+      .map { |uri| XMLFile.new(url: uri.to_s) }
+  end
+
+  # Extract all href attribute values from <a> tags.
+  #
+  # @param [Nokogiri::HTML::Document] doc The parsed HTML document.
+  # @return [Array<String>] An array of raw href values.
+  def hrefs(doc)
+    doc.xpath('//a/@href').map(&:value)
+  end
+
+  # Determines whether a URI's path ends with `.xml`.
+  #
+  # @param [URI, nil] uri The URI object to inspect.
+  # @return [Boolean] True if the URI represents an XML file path.
+  def xml_path?(uri)
+    uri&.path&.end_with?('.xml')
   end
 
   # Converts link into full url. If link is a relative link, it prepends the base uri to create a full url. If the link

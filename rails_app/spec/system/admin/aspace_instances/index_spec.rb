@@ -24,7 +24,7 @@ describe 'ASpaceInstances index page' do
 
     before do
       aspace_instance
-      sign_in user
+      login_as user
       visit aspace_instances_path
     end
 

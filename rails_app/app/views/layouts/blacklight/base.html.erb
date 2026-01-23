@@ -1,5 +1,5 @@
 <%#
-  Overriding Blacklight v8.4.0 template in order to add additional fonts and google tag
+  Overriding Blacklight v8.12.3 template in order to add additional fonts and google tag
   manager snippets.
 %>
 
@@ -23,7 +23,6 @@
       <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
     <% else %>
       <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-      <%# javascript_include_tag "blacklight/blacklight", type: 'module' %>
     <% end %>
     <%= render 'shared/fonts' %>
 

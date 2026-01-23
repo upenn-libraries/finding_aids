@@ -6,7 +6,7 @@ describe 'ASpaceInstances new page' do
   let(:user) { create(:user) }
 
   before do
-    sign_in user
+    login_as user
     visit new_aspace_instance_path
   end
 

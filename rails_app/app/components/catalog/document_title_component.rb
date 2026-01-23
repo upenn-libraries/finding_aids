@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Catalog
-  # Enable customization of header/title for results page
+  # Copied from Blacklight 8.12.3 to enable customization of header/title for results page
   class DocumentTitleComponent < Blacklight::DocumentTitleComponent
     def title
       text = presenter.heading

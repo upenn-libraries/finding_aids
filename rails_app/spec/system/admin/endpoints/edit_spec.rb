@@ -6,7 +6,7 @@ describe 'Endpoints edit page' do
   let(:user) { create(:user) }
 
   before do
-    sign_in user
+    login_as user
     visit edit_endpoint_path(endpoint)
   end
 

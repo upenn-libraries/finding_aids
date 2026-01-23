@@ -21,7 +21,7 @@ describe 'Users index page' do
 
   context 'when visiting as an authenticated user' do
     before do
-      sign_in user
+      login_as user
       visit users_path
     end
 
