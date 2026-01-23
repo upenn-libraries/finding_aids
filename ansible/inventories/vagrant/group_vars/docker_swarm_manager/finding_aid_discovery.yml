@@ -1,23 +1,4 @@
 ---
-finding_aid_discovery_versioned_secrets:
-  honeybadger_api_key:
-    vault: finaids_vault_values
-  rails_master_key:
-    vault: finaids_vault_values
-  sidekiq_pro_credentials:
-    vault: dld_sidekiq_pro_vault_values
-    vault_key: credentials
-  slack_notification_email_address:
-    vault: finaids_vault_values
-  upenn_aspace_username:
-    vault: aspace_vault_values
-  upenn_aspace_password:
-    vault: aspace_vault_values
-  temple_aspace_username:
-    vault: aspace_vault_values
-  temple_aspace_password:
-    vault: aspace_vault_values
-  tricolib_aspace_username:
-    vault: aspace_vault_values
-  tricolib_aspace_password:
-    vault: aspace_vault_values
+# See roles/finding_aid_discovery/defaults.main.yml
+#finding_aid_discovery_versioned_secrets:
+
