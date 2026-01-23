@@ -10,7 +10,6 @@ finding_aid_discovery_solr_url: "http://solr-1:8983/solr/finding-aid-discovery-d
 finding_aid_discovery_solr_test_url: "http://solr-1:8983/solr/finding-aid-discovery-test"
 finding_aid_discovery_url: "finding-aid-discovery-dev.library.upenn.edu"
 
-# Defaults that can be overridden in environment (inventory) config
 finding_aid_discovery_versioned_secrets:
   sidekiq_pro_credentials:
     vault: dld_sidekiq_pro_vault_values
