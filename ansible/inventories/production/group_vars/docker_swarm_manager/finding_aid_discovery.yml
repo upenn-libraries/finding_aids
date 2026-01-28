@@ -17,19 +17,3 @@ finding_aid_discovery_versioned_secrets:
     vault: finaids_vault_values
   honeybadger_api_key:
     vault: finaids_vault_values
-  upenn_aspace_username:
-    vault: aspace_vault_values
-  upenn_aspace_password:
-    vault: aspace_vault_values
-  temple_aspace_username:
-    vault: aspace_vault_values
-  temple_aspace_password:
-    vault: aspace_vault_values
-  tricolib_aspace_username:
-    vault: aspace_vault_values
-  tricolib_aspace_password:
-    vault: aspace_vault_values
-  drexelmed_aspace_username:
-    vault: aspace_vault_values
-  drexelmed_aspace_password:
-    vault: aspace_vault_values
