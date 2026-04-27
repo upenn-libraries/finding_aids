@@ -151,7 +151,7 @@ GEM
     docile (1.4.0)
     drb (2.2.3)
     dry-cli (0.7.0)
-    erb (6.0.0)
+    erb (6.0.4)
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
