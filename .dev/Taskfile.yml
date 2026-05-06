@@ -1,0 +1,13 @@
+version: "3"
+
+includes:
+  app:
+    taskfile: https://gitlab.library.upenn.edu/devops/taskfile/-/raw/expanded/DevEnvTasks.yml?ref_type=heads
+    flatten: true
+    vars:
+      PROJECT_NAME: "finding-aids"
+      DOMAIN: finding-aid-discovery-dev
+      DOCKER_NETWORK_SUBNET: 172.16.5.0/24
+      DOCKER_CONTAINER_IP: "172.16.5.10"
+      DOCKER_CONTAINER_NAME: "finding-aids"
+      ANSIBLE_REQUIREMENTS_FILE: "requirements.yml"

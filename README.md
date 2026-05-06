@@ -75,7 +75,7 @@ vagrant ssh
 
 > Note: The Traefik UI isn't properly exposed at this time.
 
-When running the development environment you can access the traefik web ui by navigating to: [https://finding-aid-discovery-dev.library.upenn.edu:8080/#](https://finding-aid-discovery-dev.library.upenn.edu:8080/#). The username and password are located in [ansible/inventories/vagrant/group_vars/docker_swarm_manager/traefik.yml](ansible/inventories/vagrant/group_vars/docker_swarm_manager/traefik.yml)
+When running the development environment you can access the traefik web ui by navigating to: [https://finding-aid-discovery-dev.library.upenn.edu:8080/#](https://finding-aid-discovery-dev.library.upenn.edu:8080/#). The username and password are located in [ansible/inventories/vagrant/group_vars/docker_swarm_managers/traefik.yml](ansible/inventories/vagrant/group_vars/docker_swarm_managers/traefik.yml)
 
 
 #### Rails Application

@@ -74,7 +74,7 @@ ArchivesSpace credentials are stored in Penn Libraries' HashiCorp Vault, in an e
 Steps for configuring these credentials in the application environments:
 
 1. Add appropriately-named values to the `aspace_credentials` vault.
-2. Add credential names to Ansible configuration for each environment, starting with the development environment (see `ansible/inventories/vagrant/group_vars/docker_swarm_manager/finding_aid_discovery.yml`).
+2. Add credential names to Ansible configuration for each environment, starting with the development environment (see `ansible/inventories/vagrant/group_vars/docker_swarm_managers/finding_aid_discovery.yml`).
 3. Re-provision your local Vagrant environment to read the secrets from Vault into Docker Secrets.
 
 ##### Legacy (webpage)

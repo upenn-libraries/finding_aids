@@ -1,13 +1,13 @@
 ---
-- name: "Provision Docker Swarm Cluster"
-  hosts: docker_swarm_manager
+- name: "Set up Docker and Docker Swarm"
+  hosts: all
   become: true
-  tasks:
-    - name: "Import docker provisioning tasks"
-      ansible.builtin.import_tasks: "provision_docker.yml"
-
+  gather_facts: true
+  roles:
+    - docker-swarm
+    
 - name: "Deploy application"
-  hosts: docker_swarm_manager
+  hosts: docker_swarm_managers
   become: true
   gather_facts: true
   tasks:
