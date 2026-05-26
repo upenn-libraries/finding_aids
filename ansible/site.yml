@@ -9,51 +9,64 @@
 - name: "Deploy application"
   hosts: docker_swarm_managers
   become: true
-  gather_facts: true
+  gather_facts: false
   tasks:
-    - name: "Import app symlink"
+    - name: Force latest version of requests
+      ansible.builtin.pip:
+        name: jsondiff
+        state: present
+    - name: Deploy Traefik
+      ansible.builtin.import_role:
+        name: traefik
+      tags:
+        - traefik
+    - name: Deploy Zookeeper
+      ansible.builtin.import_role:
+        name: zookeeper
+      tags: 
+        - zookeeper
+    - name: Deploy Solr
+      ansible.builtin.import_role:
+        name: solr
+      tags: 
+        - solr
+    - name: Force latest version of requests
+      ansible.builtin.pip:
+        name: requests
+        state: forcereinstall
+    - name: Deploy Redis
+      ansible.builtin.import_role:
+        name: redis
+      tags: 
+        - redis
+    - name: Deploy Postgres
+      ansible.builtin.import_role:
+        name: postgres
+      tags: 
+        -postgres
+    - name: Deploy app symlink
       ansible.builtin.import_role:
         name: finding_aid_discovery
         tasks_from: symlink_project
-      tags: finding_aid_discovery
-    - name: "Import traefik"
-      ansible.builtin.import_role:
-        name: traefik
-      tags: traefik
-    - name: "Import postgres"
-      ansible.builtin.import_role:
-        name: postgres
-      tags: postgres
-    - name: "Import zookeeper"
-      ansible.builtin.import_role:
-        name: zookeeper
-      tags: zookeeper
-    - name: "Import zoonavigator"
-      ansible.builtin.import_role:
-        name: zoonavigator
-      tags: zoonavigator
-      when: not is_development | default(false, true)
-    - name: "Import solr"
-      ansible.builtin.import_role:
-        name: solr
-      tags: solr
-    - name: "Import redis"
-      ansible.builtin.import_role:
-        name: redis
-      tags: redis
-    - name: "Import finding_aid_discovery"
+      tags: finding_aid_discovery    
+    - name: Deploy finding_aid_discovery
       ansible.builtin.import_role:
         name: finding_aid_discovery
       tags: finding_aid_discovery
-    - name: "Import sidekiq"
+    - name: Deploy sidekiq
       ansible.builtin.import_role:
         name: sidekiq
       tags: sidekiq
-    - name: "Import chrome"
+    - name: Deploy chrome
       ansible.builtin.import_role:
         name: chrome
       tags: chrome
       when: is_development | default(false, true)
+    - name: Deploy zoonavigator
+      ansible.builtin.import_role:
+        name: zoonavigator
+      tags: zoonavigator
+      when: not is_development | default(false, true)
   post_tasks:
     - name: Recursively remove project directory
       ansible.builtin.file:

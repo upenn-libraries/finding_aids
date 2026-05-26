@@ -1,4 +1,7 @@
 ---
+collections:
+  - name: community.docker
+
 roles:
   # the original repo can't handle python3 so we will use a fork until it can
   - name: docker-swarm
@@ -10,16 +13,21 @@ roles:
     src: https://gitlab.library.upenn.edu/devops/ansible/roles/postgres.git
     scm: git
     version: main
+  
+  - name: traefik
+    src: https://gitlab.library.upenn.edu/devops/ansible/roles/traefik.git
+    scm: git
+    version: 2.1.0
 
   - name: redis
     src: https://gitlab.library.upenn.edu/devops/ansible/roles/redis.git
     scm: git
-    version: 1.0.0
+    version: 1.2.1
 
   - name: solr
     src: https://gitlab.library.upenn.edu/devops/ansible/roles/solr.git
     scm: git
-    version: 1.2.1
+    version: dind
 
   - name: zoonavigator
     src: https://gitlab.library.upenn.edu/devops/ansible/roles/zoonavigator.git
