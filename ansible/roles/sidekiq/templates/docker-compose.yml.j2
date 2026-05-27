@@ -58,7 +58,7 @@ services:
     {% endfor %}
     volumes:
     {% if is_development == true %}
-      - /finding_aid_discovery/ansible/roles/finding_aid_discovery/files/src/:/home/app
+      - /home/app/ansible/roles/finding_aid_discovery/files/src/:/home/app
     {% else %}
       - fad_sitemap:/home/app/public/sitemap
     {% endif %}
