@@ -23,7 +23,7 @@ class CatalogController < ApplicationController
     # Include only the fields needed to render the search results - mostly, don't return stored XML field
     config.default_solr_params = {
       rows: 10,
-      fl: 'id title_tsi extent_ssim display_date_ssim abstract_scope_contents_tsi
+      fl: 'id title_tsi extent_ssim display_date_ssim abstract_scope_contents_tsi genre_form_ssim
            repository_ssi creators_ssim repository_name_component_1_ssi contact_emails_ssm'
     }
 
