@@ -91,7 +91,8 @@ RUN apk add --no-cache \
       postgresql-dev \
       shadow \
       su-exec \
-      tzdata && \
+      tzdata \
+	  yaml-dev && \
     addgroup -S app && adduser -S app -G app -h ${PROJECT_ROOT} -s /bin/ash && \
     mkdir -p ${PROJECT_ROOT}/tmp/pids
 
