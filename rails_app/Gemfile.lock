@@ -530,9 +530,6 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   jquery-rails
   listen (~> 3.3)
-  net-imap
-  net-pop
-  net-smtp
   omniauth
   omniauth-rails_csrf_protection
   omniauth-saml
