@@ -3,7 +3,7 @@
 ARG BUNDLE_HOME=vendor/bundle
 
 # Image tag
-ARG IMAGE_TAG=3.3.5-alpine3.19
+ARG IMAGE_TAG=3.4.9-alpine3.23
 
 # The root of our app
 ARG PROJECT_ROOT=/home/app
@@ -16,7 +16,7 @@ ARG RAILS_ENV=development
 FROM ruby:${IMAGE_TAG} AS base
 
 ARG RUBY_MAJOR
-ENV RUBY_MAJOR=3.3.0
+ENV RUBY_MAJOR=3.4.0
 
 ARG BUNDLE_HOME
 ENV BUNDLE_HOME=${BUNDLE_HOME}
@@ -35,7 +35,8 @@ WORKDIR ${PROJECT_ROOT}
 RUN apk add --no-cache --virtual build-dependencies \
       build-base \
       git  \
-      postgresql-dev
+      postgresql-dev \
+	  yaml-dev
 
 COPY Gemfile* ./
 
@@ -61,7 +62,7 @@ COPY . .
 FROM ruby:${IMAGE_TAG} AS development
 
 ARG RUBY_MAJOR
-ENV RUBY_MAJOR=3.3.0
+ENV RUBY_MAJOR=3.4.0
 
 ARG BUNDLE_HOME
 ENV BUNDLE_HOME=${BUNDLE_HOME}
@@ -120,7 +121,7 @@ CMD ["bundle", "exec", "puma", "-b", "tcp://0.0.0.0:3000"]
 FROM ruby:${IMAGE_TAG} AS production
 
 ARG RUBY_MAJOR
-ENV RUBY_MAJOR=3.3.0
+ENV RUBY_MAJOR=3.4.0
 
 ARG BUNDLE_HOME
 ENV BUNDLE_HOME=${BUNDLE_HOME}
