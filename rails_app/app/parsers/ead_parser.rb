@@ -166,7 +166,7 @@ class EadParser
   def date_added(doc)
     doc.at_xpath('/ead/eadheader/profiledesc/creation/date')
        .try(:text)
-      &.gsub(/T.*/, '')
+       &.gsub(/T.*/, '')
   end
 
   # https://www.loc.gov/ead/tglib/elements/prefercite.html
@@ -216,7 +216,7 @@ class EadParser
     # Remove emails, URLs and phone numbers from address.
     addresslines = addresslines.map { |a| a.try(:text).try(:strip) }
                                .delete_if { |a| a.match?(/\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}|@|URL|http/) }
-    addresslines.blank? ? nil : addresslines.join(', ')
+    addresslines.presence&.join(', ')
   end
 
   # https://www.loc.gov/ead/tglib/elements/origination.html
@@ -294,7 +294,7 @@ class EadParser
   def languages(doc)
     doc.xpath('/ead/archdesc/did/langmaterial/language/@langcode').map { |node|
       code = node.text.try(:strip).try(:downcase)
-      iso_entry = ISO_639.find_by_code code
+      iso_entry = ISO_639.find code
       iso_entry&.english_name || code
     }.uniq
   end
