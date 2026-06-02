@@ -16,7 +16,7 @@ class EadMarkupTranslationComponent < ViewComponent::Base
     node.present?
   end
 
-  # Note: `sanitize` here strips "unsafe" tags and attributes. See
+  # NOTE: `sanitize` here strips "unsafe" tags and attributes. See
   # ActionView::Base.sanitized_allowed_attributes and ActionView::Base.sanitized_allowed_tags
   # for preserved attributes and tags
   def call
