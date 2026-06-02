@@ -81,7 +81,7 @@ describe HarvestingService do
           'id' => 'not_here.xml',
           'status' => 'failed',
           'errors' => [
-            'Problem downloading file: the server responded with status 404 for GET https://www.test.com/not_here.xml'
+            'Problem downloading file: the server responded with status 404'
           ]
         }]
       end
