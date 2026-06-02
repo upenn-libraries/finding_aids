@@ -20,7 +20,14 @@ class CatalogController < ApplicationController
     # config.raw_endpoint.enabled = false
 
     ## Default parameters to send to solr for all search-like requests. See also SearchBuilder#processed_parameters
-    config.default_solr_params = { rows: 10 }
+    # Include only the fields needed to render the search results - mostly, don't return stored XML field
+    config.default_solr_params = {
+      rows: 10,
+      fl: 'id title_tsi extent_ssim display_date_ssim abstract_scope_contents_tsi genre_form_ssim
+           repository_ssi creators_ssim repository_name_component_1_ssi contact_emails_ssm'
+    }
+
+    config.default_document_solr_params = {} # Use default in solrconfig
 
     # disable tracking links since we don't allow paginating through a results set
     config.track_search_session = Blacklight::OpenStructWithHashAccess.new({ storage: false })
