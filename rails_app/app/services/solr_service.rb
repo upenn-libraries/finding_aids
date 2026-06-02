@@ -41,9 +41,7 @@ class SolrService
   # NOTE: autocommit behavior should be relied upon for development/production
   #       solr behavior. this commit method should only be used with tests, to
   #       avoid waiting for solr's autocommit
-  def commit
-    solr.commit
-  end
+  delegate :commit, to: :solr
 
   # Query for all documents related to an endpoint.
   #
