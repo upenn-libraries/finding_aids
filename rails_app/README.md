@@ -74,7 +74,7 @@ ArchivesSpace credentials are stored in Penn Libraries' HashiCorp Vault, in an e
 Steps for configuring these credentials in the application environments:
 
 1. Add appropriately-named values to the `aspace_credentials` vault.
-2. Add credential names to Ansible configuration for each environment, starting with the development environment (see `ansible/inventories/vagrant/group_vars/docker_swarm_manager/finding_aid_discovery.yml`).
+2. Add credential names to Ansible configuration for each environment, starting with the development environment (see `ansible/inventories/development/group_vars/docker_swarm_managers/finding_aid_discovery.yml`).
 3. Re-provision your local Vagrant environment to read the secrets from Vault into Docker Secrets.
 
 ##### Legacy (webpage)
@@ -100,24 +100,6 @@ The sitemap is generated via the [sitemap_generator](https://github.com/kjvarga/
 The robots.txt file is generate and added to the `public` folder at deploy time. A different `robots.txt` is generated based on the environment. To manually create the `robots.txt` run:
 ```ruby
 bundle exec rake tools:robotstxt
-```
-
-## Local Development
-
-Our local development environment uses vagrant in order to set up a consistent environment with the required services. Please see the [root README for instructions](../../../../../README.md#development)  on how to set up this environment.
-
-The Rails application will be available at [https://finding-aid-discovery-dev.library.upenn.edu](https://finding-aid-discovery-dev.library.upenn.edu).
-
-The Solr admin console will be available at [http://finding-aid-discovery-dev.library.upenn.int/solr/#/](http://finding-aid-discovery-dev.library.upenn.int/solr/#/).
-
-### Interacting with the Application
-
-Once your local development environment is set up you can ssh into the vagrant box to interact with the application:
-
-1. Enter the Vagrant VM by running `vagrant ssh` in the `/vagrant` directory
-2. Start a shell in the `finding_aid_discovery` container:
-```
-  docker exec -it fad_finding_aid_discovery.1.{whatever} sh
 ```
 
 ### Harvesting Sample Endpoints

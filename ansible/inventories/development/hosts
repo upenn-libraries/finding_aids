@@ -1,0 +1,24 @@
+docker_swarm_managers:
+  hosts:
+    finding-aids:
+      ansible_host: 127.0.0.1
+      ansible_connection: local
+      swarm_labels:
+        - finding_aid_discovery
+        - chrome
+        - postgres
+        - redis
+        - sidekiq
+        - solr-1
+        - solr-2
+        - solr-3
+        - traefik
+        - zookeeper-1
+        - zookeeper-2
+        - zookeeper-3
+
+swarm:
+  children:
+    finding-aids:
+  vars:
+    ansible_docker_privileged: "true"

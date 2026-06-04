@@ -12,10 +12,6 @@ if [ "$1" = "bundle" -a "$2" = "exec" -a "$3" = "puma" ] || [ "$1" = "bundle" -a
         bundle config set --local with 'development:test:assets'
         bundle config set --local gems.contribsys.com $(cat /run/secrets/sidekiq_pro_credentials)
         bundle install -j$(nproc) --retry 3
-
-        # since we are running a dev env we remove node_modules and install our dependencies
-        # this is commented out in more recent Vagrant environments that do not manifest the .node_modules issue during provisioning
-        # su - app -c $(rm -rf node_modules && yarn install --no-bin-links)
     fi
 
     # remove puma server.pid

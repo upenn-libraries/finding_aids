@@ -2,12 +2,11 @@
 
 - [Overview](#overview)
 - [Development](#development)
-  - [Starting](#starting)
-  - [Stopping](#stopping)
-  - [Destroying](#destroying)
-  - [SSH](#ssh)
-  - [Traefik](#traefik)
-  - [Rails Application](#rails-application)
+  - [Requirements](#requirements)
+  - [Starting the environment](#starting-the-environment)
+  - [Docker context](#docker-context)
+  - [Accessing the app container](#accessing-the-app-container)
+  - [Rails application](#rails-application)
   - [Solr Admin](#solr-admin)
 - [Deployment](#deployment)
   - [Staging](#staging)
@@ -16,103 +15,116 @@
 
 ## Overview
 
-This repository includes the infrastructure and application code that supports the PACSCL/Penn Libraries Finding Aids discovery site. Development occurs within a robust vagrant environment. Setup and initialization of this environment, as well as information about the deployed staging and production environments, is contained here. Information about the Rails app can be found [here](/rails_app/README.md).
+This repository contains the infrastructure and application code for the PACSCL/Penn Libraries Finding Aids discovery site.
+
+Development is done in a Docker-based environment managed by Taskfile. This README covers setup and deployment details for development, staging, and production.
+
+For Rails app-specific documentation, see [rails_app/README.md](/rails_app/README.md).
 
 ## Development
 
-In order to use the integrated development environment you will need to install [Vagrant](https://www.vagrantup.com/docs/installation) [do *not* use the Vagrant version that may be available for your distro repository - explicitly follow instructions at the Vagrant homepage] and the appropriate virtualization software. If you are running Linux or Mac x86 then install [VirtualBox](https://www.virtualbox.org/wiki/Linux_Downloads), if you are using a Mac with ARM processors then install [Parallels](https://www.parallels.com/).
+The development environment uses Taskfile and Docker. Running `task up` creates a Docker container that executes Ansible provisioning tasks.
 
-You may need to update the VirtualBox configuration for the creation of a host-only network. This can be done by creating a file `/etc/vbox/networks.conf` containing:
+### Requirements
 
+1. Install [Task](https://taskfile.dev/) (`go-task`):
+   - **Linux:** Follow the [Task installation instructions](https://taskfile.dev/docs/installation) for your package manager.
+   - **macOS:** `brew install go-task`
+
+2. Install Docker:
+   - **macOS:** [Install Docker Desktop](https://docs.docker.com/desktop/install/mac-install/).  
+     You should also request access to the Penn Libraries Docker Team license via [IT Helpdesk](https://ithelp.library.upenn.edu/support/home) for full functionality.
+   - **Linux:** [Install Docker Engine](https://docs.docker.com/engine/install/).
+
+### Starting the environment
+
+1. Change to the `.dev` directory:
+   ```bash
+   cd .dev
+   ```
+
+2. Start the environment:
+   ```bash
+   task up
+   ```
+
+   On first run, Task will fetch remote taskfiles and prompt for confirmation (`Y`).
+
+   During startup, you may be prompted for:
+    - your local machine password (to update `/etc/hosts`)
+    - your LDAP credentials (to retrieve secrets from HashiCorp Vault)
+
+3. After provisioning finishes, verify the app is running at:  
+   [https://finding-aid-discovery-dev.library.upenn.edu/](https://finding-aid-discovery-dev.library.upenn.edu/)
+
+### Docker context
+
+When the environment is running, switch Docker context to the app environment:
+```bash
+task docker:context:use:app
 ```
-* 10.0.0.0/8
+After switching, local Docker commands (for example, `docker ps`) operate against the development environment.
+
+When finished, switch back to your default context:
+```bash
+task docker:context:use:default
 ```
+### Accessing the app container
 
-#### Starting
+Once your environment is set up:
 
-From the [vagrant](vagrant) directory run:
+1. Switch Docker context (see [Docker context](#docker-context)):
+   ```bash
+   task docker:context:use:app
+   ```
 
+2. Open a shell in the app container:
+   ```bash
+   docker exec -it fad_finding_aid_discovery.1.{container-id} sh
+   ```
 
-if running with Virtualbox:
-```
-vagrant up --provision
-```
+## Rails application
 
-if running with Parallels:
-```
-vagrant up --provider=parallels --provision
-```
+For Rails application details (tests, harvesting tasks, style guide, and general app development), see [rails_app/README.md](/rails_app/README.md).
 
-This will run the [vagrant/Vagrantfile](vagrant/Vagrantfile) which will bring up an Ubuntu VM and run the Ansible script which will provision a single node Docker Swarm behind nginx with a self-signed certificate to mimic a load balancer. Your hosts file will be modified; the domain `finding-aid-discovery-dev.library.upenn.edu` will be added and mapped to the Ubuntu VM. Once the Ansible script has completed and the Docker Swarm is deployed you can access the application by navigating to [https://finding-aid-discovery-dev.library.upenn.edu](https://finding-aid-discovery-dev.library.upenn.edu).
+## Solr Admin
 
-During the provisioning process, you will be asked for you library Active Directory credentials in order to pull application secrets from HashiCorp Vault. If this doesn't work, contact the Ops team to ensure your access in Vault is properly configured.
+Solr runs in [SolrCloud mode](https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode), using Apache ZooKeeper for centralized cluster management.
 
-#### Stopping
+[ZooNavigator](https://github.com/elkozmon/zoonavigator) is used to manage ZooKeeper in deployed environments.
 
-To stop the development environment, from the `vagrant` directory run:
-
-```
-vagrant halt
-```
-
-#### Destroying
-
-To destroy the development environment, from the `vagrant` directory run:
-
-```
-vagrant destroy -f
-```
-
-#### SSH
-
-You may ssh into the Vagrant VM by running:
-
-```
-vagrant ssh
-```
-
-#### Traefik
-
-> Note: The Traefik UI isn't properly exposed at this time.
-
-When running the development environment you can access the traefik web ui by navigating to: [https://finding-aid-discovery-dev.library.upenn.edu:8080/#](https://finding-aid-discovery-dev.library.upenn.edu:8080/#). The username and password are located in [ansible/inventories/vagrant/group_vars/docker_swarm_manager/traefik.yml](ansible/inventories/vagrant/group_vars/docker_swarm_manager/traefik.yml)
-
-
-#### Rails Application
-
-For information about the Rails application, see the [README](/rails_app/README.md) in the Rails application root. This includes information about running the test suite, performing harvesting, development styleguide and general application information.
-
-#### Solr Admin
-
-Solr is running in [CloudMode](https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode) which uses Apache Zookeeper to provide centralized cluster management. Additionally, [ZooNavigator](https://github.com/elkozmon/zoonavigator) is used to manage the Zookeeper cluster in deployed environments.
-
-To access the Solr Admin UI, navigate to [http://finding-aid-discovery-dev.library.upenn.int/solr/#/](http://finding-aid-discovery-dev.library.upenn.int/solr/#/).
+Access Solr Admin at:  
+[http://finding-aid-discovery-dev.library.upenn.int/solr/#/](http://finding-aid-discovery-dev.library.upenn.int/solr/#/)
 
 ## Deployment
 
-Gitlab automatically deploys to both our staging and production environment under certain conditions.
+GitLab deploys to staging and production under specific conditions.
 
 ### Staging
 
-Gitlab deploys to our staging server every time new code gets merged into `main`. The staging site is available at [https://findingaids-staging.library.upenn.edu/](https://findingaids-staging.library.upenn.edu/).
-
-Code cannot be pushed directly onto `main`, new code must be merged via a merge request.
+- GitLab deploys to staging whenever new code is merged into `main`.
+- Staging URL: [https://findingaids-staging.library.upenn.edu/](https://findingaids-staging.library.upenn.edu/)
+- Direct pushes to `main` are not allowed; changes must be merged via merge request.
 
 ### Production
 
-Deployments are triggered when a new git tag is created that matches [semantic versioning](https://semver.org/), (e.g., v1.0.0). Git tags should be created via the creation of a new Release in Gitlab.
+Production deployments are triggered by creating a Git tag that matches [Semantic Versioning](https://semver.org/) (for example, `v1.0.0`).
 
-In order to deploy to production:
-1. Go to [https://gitlab.library.upenn.edu/dld/finding-aids/-/releases/new](https://gitlab.library.upenn.edu/dld/finding-aids/-/releases/new)
-2. Create a new tag that follows semantic versioning. Please use the next tag in the sequence.
-3. Relate a milestone to the release if there is one.
-4. Add a release title that is the same as the tag name.
-5. Submit by clicking "Create Release".
+Create production tags by creating a new GitLab Release:
 
-The production site is available at [https://findingaids.library.upenn.edu/](https://findingaids.library.upenn.edu/).
+1. Go to [Create Release](https://gitlab.library.upenn.edu/dld/finding-aids/-/releases/new)
+2. Create the next semantic version tag in sequence.
+3. Associate a milestone (if applicable).
+4. Set the release title to match the tag.
+5. Click **Create Release**.
+
+Production URL: [https://findingaids.library.upenn.edu/](https://findingaids.library.upenn.edu/)
 
 ## Harvesting
 
-In our production and staging environments we schedule harvesting jobs via [sidekiq-cron](https://github.com/ondrejbartas/sidekiq-cron). In production, all endpoints are harvested on Monday, Wednesday, Friday at 5am. In staging, all endpoints are harvested on Monday, Wednesday, Friday at 1am.
+Harvesting jobs are scheduled with [sidekiq-cron](https://github.com/ondrejbartas/sidekiq-cron):
 
-See `rails_app/config/schedule.yml` for the harvesting schedule configuration.
+- **Production:** Monday, Wednesday, Friday at 5:00 AM
+- **Staging:** Monday, Wednesday, Friday at 1:00 AM
+
+Schedule configuration lives in `rails_app/config/schedule.yml`.

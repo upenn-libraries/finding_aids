@@ -11,13 +11,9 @@ ansible/roles/finding_aid_discovery/files/src/*
 # exclude ansible collections
 ansible/collections
 
-# Ignore everything in the vagrant dir except the Vagrantfile
-vagrant/*
-!vagrant/Vagrantfile
-
 # Dont track IDE project settings
 .idea
 
-#Don't track Mac files
+# Don't track Mac files
 *.DS_Store
 * alias
