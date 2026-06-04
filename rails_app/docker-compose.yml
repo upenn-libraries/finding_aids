@@ -3,6 +3,7 @@ version: "3.8"
 services:
   finding_aid_discovery:
     image: gitlab.library.upenn.edu/dld/finding-aids
+    platform: linux/amd64 # TODO: is this required post-SCSS?
     build:
       args:
         PROJECT_ENV: production
