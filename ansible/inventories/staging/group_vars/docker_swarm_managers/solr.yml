@@ -9,7 +9,7 @@ solr_configsets:
   - name: "finding-aid-discovery"
     path: "roles/finding_aid_discovery/files/src/solr/conf/"
 
-solr_docker_image_tag: 9.3.0
+solr_docker_image_tag: 9.6.1
 
 solr_limits_cpu: 2
 solr_limits_mem: "8G"
@@ -17,5 +17,9 @@ solr_limits_mem: "8G"
 solr_proxy_host: "finaid-stg01.library.upenn.int"
 
 solr_custom_env_variables:
+  SOLR_ADMIN_USERNAME: "{{ finaids_vault_values.secret.solr_username }}"
+  SOLR_ADMIN_PASSWORD: "{{ finaids_vault_values.secret.solr_passdigital_collections_vault_valuesword }}"
+  SOLR_ENABLE_AUTHENTICATION: "yes"
   SOLR_HEAP: "6G"
   SOLR_JAVA_MEM: "-Xms4G -Xmx4G"
+  SOLR_MODULES: "analysis-extras"
