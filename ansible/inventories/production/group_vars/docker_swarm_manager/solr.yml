@@ -18,7 +18,7 @@ solr_proxy_host: "finaid-prod01.library.upenn.int"
 
 solr_custom_env_variables:
   SOLR_ADMIN_USERNAME: "{{ finaids_vault_values.secret.solr_username }}"
-  SOLR_ADMIN_PASSWORD: "{{ finaids_vault_values.secret.solr_passdigital_collections_vault_valuesword }}"
+  SOLR_ADMIN_PASSWORD: "{{ finaids_vault_values.secret.solr_password }}"
   SOLR_ENABLE_AUTHENTICATION: "yes"
   SOLR_HEAP: "10G"
   SOLR_JAVA_MEM: "-Xms4G -Xmx4G"
