@@ -43,12 +43,7 @@
       ansible.builtin.import_role:
         name: postgres
       tags: 
-        -postgres
-    - name: Deploy app symlink
-      ansible.builtin.import_role:
-        name: finding_aid_discovery
-        tasks_from: symlink_project
-      tags: finding_aid_discovery    
+        - postgres
     - name: Deploy finding_aid_discovery
       ansible.builtin.import_role:
         name: finding_aid_discovery
@@ -62,11 +57,6 @@
         name: chrome
       tags: chrome
       when: is_development | default(false, true)
-    - name: Deploy zoonavigator
-      ansible.builtin.import_role:
-        name: zoonavigator
-      tags: zoonavigator
-      when: not is_development | default(false, true)
   post_tasks:
     - name: Recursively remove project directory
       ansible.builtin.file:
