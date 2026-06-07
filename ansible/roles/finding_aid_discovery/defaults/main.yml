@@ -19,3 +19,7 @@ finding_aid_discovery_versioned_secrets:
     vault: finaids_vault_values
   upenn_aspace_password:
     vault: finaids_vault_values
+
+finding_aid_discovery_docker_buildx_config_path: "/tmp/buildkit"
+finding_aid_discovery_docker_buildx_config_file: "buildkitd.default.toml"
+finding_aid_discovery_docker_buildx_config: "{{ finding_aid_discovery_docker_buildx_config_path }}/{{ finding_aid_discovery_docker_buildx_config_file }}"
