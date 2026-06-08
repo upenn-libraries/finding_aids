@@ -58,9 +58,7 @@ Rails.application.routes.draw do
     get '/:id', to: 'status#show', as: :endpoint_status
   end
 
-  get 'repositories', to: 'catalog#repositories'
   get 'about', to: 'static_pages#about'
-  get 'how-to-use', to: 'static_pages#how_to_use'
 
   # Vanity route for Penn materials
   get 'upenn', to: 'catalog#upenn'
