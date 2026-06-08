@@ -39,12 +39,11 @@ class CatalogController < ApplicationController
     # items to show per page, each number in the array represent another option to choose from.
     config.per_page = [10, 20, 50, 100]
 
-    # Use local Document component to customize results and show page views
-    config.index.document_component = Catalog::ResultsDocumentComponent
+    # Use local Document component to customize show page view
     config.show.document_component = Catalog::ShowDocumentComponent
 
     # Use custom DocumentTitleComponent on results page
-    config.index.title_component = Catalog::DocumentTitleComponent
+    # config.index.title_component = Catalog::DocumentTitleComponent
     # TODO: we've found that setting this is required, even though it should be the default. otherwise the setting from
     #       above applies in show contexts as well. this could be a blacklight bug, or by using distinct
     #       DocumentComponents.
@@ -128,11 +127,11 @@ class CatalogController < ApplicationController
 
     config.add_index_field 'title_tsi', label: I18n.t('fields.title'), if: :json_request?
     config.add_index_field 'extent_ssim', label: I18n.t('fields.extent')
-    config.add_index_field 'display_date_ssim', label: I18n.t('fields.date'), if: :json_request?
+    config.add_index_field 'display_date_ssim', label: I18n.t('fields.date')
     config.add_index_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), if: :json_request?
     config.add_index_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), if: :json_request?
     config.add_index_field 'creators_ssim', label: I18n.t('fields.creators'), if: :json_request?
-    config.add_index_field 'repository_ssi', label: I18n.t('fields.repository'), if: :json_request?
+    config.add_index_field 'repository_ssi', label: I18n.t('fields.repository')
     config.add_index_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents'),
                                                           helper_method: :truncated_abstract
 
