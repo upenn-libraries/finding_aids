@@ -41,7 +41,6 @@ class CatalogController < ApplicationController
 
     # Use local Document component to customize results and show page views
     config.index.document_component = Catalog::ResultsDocumentComponent
-    config.show.document_component = Catalog::ShowDocumentComponent
 
     # Use custom DocumentTitleComponent on results page
     config.index.title_component = Catalog::DocumentTitleComponent
