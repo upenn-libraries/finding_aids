@@ -14,8 +14,6 @@ en:
       see_all: 'Show all records'
   document:
     links:
-      print: 'Print the finding aid'
-      submit_correction: 'Suggest a correction'
       contact_us: "Contact Us"
   about:
     page_title: 'About'
