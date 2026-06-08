@@ -23,66 +23,6 @@ describe 'Blacklight show page' do
 
   it 'shows the repository info' do
     expect(page).to have_content document_hash[:repository_ssi]
-  it 'shows the access clarification message' do
-    within('div#document div.document-main-section div#overview p.access-clarification') do
-      expect(page).to have_content(/This is a finding aid. It is a description of archival material/)
-    end
-  end
-
-  it 'shows the suggestion email' do
-    within('div#document div.document-main-section ul.show-page-links li.suggest') do
-      expect(page).to have_link I18n.t('document.links.submit_correction'),
-                                href: /#{document_hash[:contact_emails_ssm].first}/
-    end
-  end
-
-  it 'expands the collection overview' do
-    within('div#document div.document-main-section div#overview') do
-      expect(page).to have_css('div#collection-overview.show')
-    end
-  end
-
-  it 'shows the expected metadata in the collections overview' do
-    within('div#document div.document-main-section div#overview div#collection-overview dl.document-metadata') do
-      expect(page).to have_content document_hash[:pretty_unit_id_ss]
-      expect(page).to have_content document_hash[:creators_ssim].first
-    end
-  end
-
-  it 'expands the biography history overview' do
-    within('div#document div.document-main-section div#overview') do
-      expect(page).to have_css('div#biography-history.show')
-    end
-  end
-
-  it 'shows the expected metadata in the biography-history overview' do
-    within('div#document div.document-main-section div#overview div#biography-history') do
-      expect(page).to have_content 'This committee was established in...'
-    end
-  end
-
-  it 'expands the scope and contents overview' do
-    within('div#document div.document-main-section div#overview') do
-      expect(page).to have_css('div#scope-and-content.show')
-    end
-  end
-
-  it 'shows the expected metadata in the scope and contents overview' do
-    within('div#document div.document-main-section div#overview div#scope-and-content') do
-      expect(page).to have_content 'This collection contains...'
-    end
-  end
-
-  it 'expands the collection inventory' do
-    within('div#document div.document-main-section div#inventory') do
-      expect(page).to have_css('div#collection-1.show')
-    end
-  end
-
-  it 'expands the expected collection inventory' do
-    within('div#document div.document-main-section div#inventory div#collection-1') do
-      expect(page).to have_content 'Something Really Distinctive. Box 1 Another Really Distinctive Thing. Box 2'
-    end
   end
 
   context 'without language note' do

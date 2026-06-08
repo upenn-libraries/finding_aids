@@ -39,18 +39,6 @@ class CatalogController < ApplicationController
     # items to show per page, each number in the array represent another option to choose from.
     config.per_page = [10, 20, 50, 100]
 
-    # Use local Document component to customize show page view
-    config.show.document_component = Catalog::ShowDocumentComponent
-    # Use local Document component to customize results and show page views
-    config.index.document_component = Catalog::ResultsDocumentComponent
-
-    # Use custom DocumentTitleComponent on results page
-    # config.index.title_component = Catalog::DocumentTitleComponent
-    # TODO: we've found that setting this is required, even though it should be the default. otherwise the setting from
-    #       above applies in show contexts as well. this could be a blacklight bug, or by using distinct
-    #       DocumentComponents.
-    config.show.title_component = Blacklight::DocumentTitleComponent
-
     # solr field configuration for search results/index views
     config.index.title_field = :title_tsi
     # config.index.display_type_field = 'format'
@@ -179,5 +167,15 @@ class CatalogController < ApplicationController
 
   def json_request?
     request.format.json?
+  end
+
+  # render dynamically parsed language note if it's different from indexed language field
+  # @param document [SolrDocument]
+  # @return [Boolean]
+  def render_language_note?(_field_config, document)
+    note = document.language_note
+    languages = document.fetch(:languages_ssim, []).join
+
+    note.present? && languages.gsub(/[^0-9a-zA-Z]/, '') != note.gsub(/[^0-9a-zA-Z]/, '')
   end
 end
