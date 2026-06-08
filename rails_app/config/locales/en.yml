@@ -3,8 +3,6 @@ en:
     links:
       home: 'Home'
       about: 'About the site'
-      how_to: 'How to use this site'
-      browse_repositories: 'Browse Repositories'
       statement: 'Statement on Archival Description and Harmful Language'
       admin: 'Site Administration'
   homepage:
