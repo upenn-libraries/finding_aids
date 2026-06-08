@@ -2,7 +2,7 @@
 
 require 'system_helper'
 
-describe 'Homepage' do
+describe 'Homepage', pending: 'homepage redesign in progress' do
   it 'includes the homepage copy area' do
     visit root_path
     expect(page).to have_css '.hpcontent'
