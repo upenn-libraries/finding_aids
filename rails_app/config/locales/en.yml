@@ -7,11 +7,6 @@ en:
       browse_repositories: 'Browse Repositories'
       statement: 'Statement on Archival Description and Harmful Language'
       admin: 'Site Administration'
-  homepage:
-    page_title: 'Finding Aids - Philadelphia Area Archives'
-    header: 'About the site'
-    links:
-      see_all: 'Show all records'
   document:
     links:
       print: 'Print the finding aid'
