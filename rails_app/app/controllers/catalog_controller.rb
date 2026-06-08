@@ -170,17 +170,6 @@ class CatalogController < ApplicationController
     config.autocomplete_enabled = false
   end
 
-  def repositories
-    @facet_config = blacklight_config.facet_fields['repository_ssi']
-    raise ActionController::RoutingError, 'Not Found' unless @facet_config
-
-    @response = search_service.facet_field_response(@facet_config.key, { 'f.repository_ssi.facet.limit' => -1 })
-    @display_facet = @response.aggregations[@facet_config.field]
-
-    @presenter = @facet_config.presenter.new(@facet_config, @display_facet, view_context)
-    @pagination = @presenter.paginator
-  end
-
   def upenn
     redirect_to search_catalog_path({ 'f[record_source][]': 'upenn' })
   end
