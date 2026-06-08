@@ -23,24 +23,6 @@ describe 'Blacklight show page' do
     end
   end
 
-  it 'shows the repository info' do
-    within('div#document div.document-main-section div#overview p.repository-info') do
-      expect(page).to have_content "Held at: #{document_hash[:repository_ssi]}"
-    end
-  end
-
-  it 'shows repository address' do
-    within('div#document div.document-main-section div#overview p.repository-info span.repository-location') do
-      expect(page).to have_content document_hash[:repository_address_ssi]
-    end
-  end
-
-  it 'shows contact link' do
-    within('div#document div.document-main-section div#overview p.repository-info') do
-      expect(page).to have_link 'Contact Us', href: /#{document_hash[:contact_emails_ssm].first}/
-    end
-  end
-
   it 'shows the access clarification message' do
     within('div#document div.document-main-section div#overview p.access-clarification') do
       expect(page).to have_content(/This is a finding aid. It is a description of archival material/)

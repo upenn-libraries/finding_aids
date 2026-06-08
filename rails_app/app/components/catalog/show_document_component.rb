@@ -4,8 +4,6 @@ module Catalog
   # custom methods for our show page DocumentComponent
   # Copied from Blacklight 8.12.3
   class ShowDocumentComponent < Blacklight::DocumentComponent
-    # Slot for the location details
-    renders_one :repository_info, RepositoryInfoComponent
     # Slot for the collection inventory section
     renders_one :collection_inventory
 
@@ -28,7 +26,6 @@ module Catalog
 
     def before_render
       super
-      with_repository_info(document: @document).with_address unless repository_info
     end
 
     # Component for a collapsable metadata section
