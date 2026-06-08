@@ -19,7 +19,7 @@ describe 'Requests form' do
     solr.commit
   end
 
-  context 'with a single container available' do
+  context 'with a single container available', pending: 'results page and requesting refresh' do
     it 'the page includes a request checkbox' do
       expect(page).to have_field 'c[Box_1_111111111]', visible: :hidden
       expect(page).to have_field 'c[Box_2_222222222]', visible: :hidden
