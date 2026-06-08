@@ -41,7 +41,6 @@ class CatalogController < ApplicationController
 
     # Use local Document component to customize results and show page views
     config.index.document_component = Catalog::ResultsDocumentComponent
-    config.show.document_component = Catalog::ShowDocumentComponent
 
     # Use custom DocumentTitleComponent on results page
     config.index.title_component = Catalog::DocumentTitleComponent
@@ -168,17 +167,6 @@ class CatalogController < ApplicationController
 
     # Configuration for autocomplete suggester
     config.autocomplete_enabled = false
-  end
-
-  def repositories
-    @facet_config = blacklight_config.facet_fields['repository_ssi']
-    raise ActionController::RoutingError, 'Not Found' unless @facet_config
-
-    @response = search_service.facet_field_response(@facet_config.key, { 'f.repository_ssi.facet.limit' => -1 })
-    @display_facet = @response.aggregations[@facet_config.field]
-
-    @presenter = @facet_config.presenter.new(@facet_config, @display_facet, view_context)
-    @pagination = @presenter.paginator
   end
 
   def upenn
