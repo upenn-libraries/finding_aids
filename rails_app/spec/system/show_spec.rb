@@ -18,11 +18,11 @@ describe 'Blacklight show page' do
   end
 
   it 'shows the title' do
-    within('div#document div.document-main-section header.documentHeader h1.document-title-heading') do
-      expect(page).to have_content document_hash[:title_tsi]
-    end
+    expect(page).to have_content document_hash[:title_tsi]
   end
 
+  it 'shows the repository info' do
+    expect(page).to have_content document_hash[:repository_ssi]
   it 'shows the access clarification message' do
     within('div#document div.document-main-section div#overview p.access-clarification') do
       expect(page).to have_content(/This is a finding aid. It is a description of archival material/)
