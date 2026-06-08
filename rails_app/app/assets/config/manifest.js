@@ -1,4 +1,3 @@
-//= link_tree ../images
 //= link_directory ../stylesheets
 //= link jquery3.min.js
 //= link jquery_ujs.js
