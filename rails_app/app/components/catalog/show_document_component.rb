@@ -24,10 +24,6 @@ module Catalog
       RepositoryContactLinks.correction(document: @document, request_url: request.original_url)
     end
 
-    def before_render
-      super
-    end
-
     # Component for a collapsable metadata section
     class CollapsableMetadataSection < ViewComponent::Base
       attr_reader :title, :open
