@@ -1,6 +1,6 @@
 <%#
-  Overriding Blacklight v8.12.3 template in order to add additional fonts and google tag
-  manager snippets.
+  Overriding Blacklight v8.12.3 template in order to add additional fonts, design system
+  assets, and google tag manager snippets.
 %>
 
 <!DOCTYPE html>
@@ -16,14 +16,16 @@
     </script>
     <%= opensearch_description_tag application_name, opensearch_catalog_url(format: 'xml') %>
     <%= favicon_link_tag %>
+
+    <%# Typekit fonts (used by Penn Libraries design system) %>
+    <%= stylesheet_link_tag "https://use.typekit.net/gbh8cmg.css" %>
+
+    <%# Penn Libraries design system %>
+    <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/@penn-libraries/web@#{Settings.pennlibs_web_version}/dist/web/web.css" %>
+
     <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload"  %>
-    <% if defined? Importmap %>
-      <%= javascript_importmap_tags %>
-    <% elsif defined? Propshaft %>
-      <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-    <% else %>
-      <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-    <% end %>
+    <%= javascript_importmap_tags %>
+    <%= javascript_import_module_tag "https://cdn.jsdelivr.net/npm/@penn-libraries/web@#{Settings.pennlibs_web_version}/dist/web/web.esm.js" %>
     <%= render 'shared/fonts' %>
 
     <%= csrf_meta_tags %>
@@ -31,12 +33,14 @@
 
     <%= render 'shared/google_tag_manager/head_snippet' %>
   </head>
-  <body class="<%= render_body_class %>">
+  <body class="pl-reset pl-typeset <%= render_body_class %>">
   <%= render 'shared/google_tag_manager/body_snippet' %>
 
   <%= render blacklight_config.skip_link_component.new do %>
     <%= content_for(:skip_links) %>
   <% end %>
+
+  <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config, user: current_user) %>
 
   <main id="main-container" class="<%= container_classes %>" role="main" aria-label="<%= t('blacklight.main.aria.main_container') %>">
     <%= content_for(:container_header) %>
@@ -48,6 +52,7 @@
     </div>
   </main>
 
+  <%= render FooterComponent.new(user: current_user) %>
   <%= render partial: 'shared/modal' %>
   </body>
 <% end %>

@@ -1,0 +1,8 @@
+en:
+  urls:
+    pacscl: 'https://www.pacscl.org/'
+    hidden_coll_init: 'https://hsp.org/hcipsar'
+    disclaimer: 'https://docs.google.com/document/d/17iZV-mBIqeDbHWFu-8Z4PAwA_-0Xi8OrNFOPVCsKcQQ/'
+    privacy: 'https://www.library.upenn.edu/about/policies/privacy'
+    a11y: 'https://accessibility.web-resources.upenn.edu/get-help'
+    statement: 'https://pacscl.org/what-we-believe/statement-on-archival-description-and-harmful-language/'

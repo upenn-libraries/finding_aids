@@ -6,6 +6,7 @@ class CatalogController < ApplicationController
 
   configure_blacklight do |config|
     config.bootstrap_version = 4
+    config.header_component = HeaderComponent
 
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository
