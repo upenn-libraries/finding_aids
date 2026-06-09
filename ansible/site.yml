@@ -30,10 +30,6 @@
         name: solr
       tags: 
         - solr
-    - name: Force latest version of requests
-      ansible.builtin.pip:
-        name: requests
-        state: forcereinstall
     - name: Deploy Redis
       ansible.builtin.import_role:
         name: redis
