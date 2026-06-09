@@ -30,8 +30,8 @@ describe 'Blacklight search results' do
       it 'displays the expected century facets' do
         within('div.blacklight-era_facet') do
           click_on I18n.t('facets.era.label')
-          expect(page).to have_text("#{I18n.t('facets.era.century.eighteenth')} 2")
-          expect(page).to have_text("#{I18n.t('facets.era.century.nineteenth')} 1")
+          expect(page).to have_text("#{I18n.t('facets.era.century.eighteenth')}2")
+          expect(page).to have_text("#{I18n.t('facets.era.century.nineteenth')}1")
         end
       end
     end
