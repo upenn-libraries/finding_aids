@@ -4,8 +4,6 @@
 
   <% if user %>
     <%= button_to t('header.sign_out'), destroy_user_session_path, method: :delete %>
-  <% else %>
-    <%= link_to t('header.admin_login'), new_user_session_path %>
   <% end %>
 </pennlibs-header>
 

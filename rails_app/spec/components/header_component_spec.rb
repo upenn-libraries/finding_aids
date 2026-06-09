@@ -22,12 +22,6 @@ RSpec.describe HeaderComponent, type: :component do
     is_expected.to have_field 'q'
   end
 
-  context 'when not logged in' do
-    it 'shows the admin login link' do
-      is_expected.to have_link I18n.t('header.admin_login')
-    end
-  end
-
   context 'when logged in' do
     let(:user) { instance_double('User') }
 
