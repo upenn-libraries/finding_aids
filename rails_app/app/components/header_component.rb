@@ -7,11 +7,12 @@ class HeaderComponent < Blacklight::Component
     component.new(blacklight_config: blacklight_config)
   }
 
-  attr_reader :blacklight_config, :user
+  attr_reader :blacklight_config
 
-  def initialize(blacklight_config:, user: nil)
+  delegate :current_user, to: :helpers
+
+  def initialize(blacklight_config:)
     @blacklight_config = blacklight_config
-    @user = user
   end
 
   def before_render
