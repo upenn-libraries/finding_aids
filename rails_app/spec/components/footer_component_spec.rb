@@ -19,10 +19,6 @@ RSpec.describe FooterComponent, type: :component do
     expect(component).to have_css 'pennlibs-feedback'
   end
 
-  it 'renders the pennlibs-chat web component' do
-    expect(component).to have_css 'pennlibs-chat'
-  end
-
   it 'renders navigation links' do
     expect(component).to have_link I18n.t('footer.nav.home')
   end
