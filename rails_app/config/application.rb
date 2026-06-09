@@ -44,7 +44,7 @@ module FindingAidDiscovery
     # Read credentials key from Docker Secrets
     config.credentials.key_path = '/run/secrets/rails_master_key'
 
-    # Disable remote forms  to ease upgrade to hotwire
+    # Disable remote forms to ease upgrade to hotwire
     # See: https://github.com/hotwired/turbo-rails/blob/main/UPGRADING.md#upgrading-from-rails-ujs--turbolinks-to-turbo
     config.action_view.form_with_generates_remote_forms = false
   end
