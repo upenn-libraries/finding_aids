@@ -3,7 +3,6 @@ en:
     service_name: 'Philadelphia Area Archives'
     service_lede: 'Finding Aids at the University of Pennsylvania'
     sign_out: 'Sign Out'
-    admin_login: 'Admin Login'
 
   common:
     links:
