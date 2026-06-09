@@ -5,7 +5,7 @@
     <h2><%= t('footer.nav.heading') %></h2>
     <%= link_to t('footer.nav.home'), root_path %>
     <%= link_to t('footer.nav.about'), about_path %>
-    <% if current_user %>
+    <% if user %>
       <%= link_to t('footer.nav.admin'), admin_path %>
     <% end %>
   </section>
