@@ -1,4 +1,4 @@
-<%= bootstrap_form_for(@user) do |f| %>
+<%= bootstrap_form_for(@user, data: { turbo: false }) do |f| %>
   <%= f.text_field :uid, label: t('admin.users.uid') %>
   <%= f.email_field :email, disabled: true %>
   <%= f.check_box :active %>

@@ -28,7 +28,7 @@ class FerrumLogger
       when 'string'
         Kernel.puts arg['value']
       when 'object'
-        Kernel.puts arg['preview']['properties'].to_h do |x|
+        Kernel.puts arg['preview']['properties'] do |x|
           [x['name'], x['value']]
         end
       end
