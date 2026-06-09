@@ -1,0 +1,30 @@
+<%# Rewritten for Version 2.0 to use the Penn Libraries design system footer web components.
+    Replaces the previous hand-crafted footer with <pennlibs-footer> and related design system
+    web components. %>
+
+<pennlibs-feedback></pennlibs-feedback>
+
+<pennlibs-footer show-built-with>
+  <section>
+    <h2><%= t('footer.nav.heading') %></h2>
+    <%= link_to t('footer.nav.home'), root_path %>
+    <%= link_to t('footer.nav.about'), about_path %>
+    <% if current_user %>
+      <%= link_to t('footer.nav.admin'), admin_path %>
+    <% end %>
+  </section>
+  <section>
+    <h2><%= t('footer.organizations.heading') %></h2>
+    <%= link_to t('footer.organizations.pacscl'), t('urls.pacscl') %>
+    <%= link_to t('footer.organizations.hidden_coll_init'), t('urls.hidden_coll_init') %>
+  </section>
+  <section>
+    <h2><%= t('footer.policies.heading') %></h2>
+    <%= link_to t('footer.policies.disclaimer'), t('urls.disclaimer') %>
+    <%= link_to t('footer.policies.privacy'), t('urls.privacy') %>
+    <%= link_to t('footer.policies.a11y'), t('urls.a11y') %>
+    <%= link_to t('footer.policies.statement'), t('urls.statement') %>
+  </section>
+</pennlibs-footer>
+
+<pennlibs-chat></pennlibs-chat>

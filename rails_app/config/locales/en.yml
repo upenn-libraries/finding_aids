@@ -1,4 +1,10 @@
 en:
+  header:
+    service_name: 'Philadelphia Area Archives'
+    service_lede: 'Finding Aids at the University of Pennsylvania'
+    sign_out: 'Sign Out'
+    admin_login: 'Admin Login'
+
   common:
     links:
       home: 'Home'
@@ -12,15 +18,21 @@ en:
     page_title: 'About'
     header: 'About the Philadelphia Area Archives Site'
   footer:
-    links:
+    nav:
+      heading: 'Navigation'
+      home: 'Home'
+      about: 'About'
+      admin: 'Site Administration'
+    organizations:
+      heading: 'Organizations'
       pacscl: 'PACSCL'
       hidden_coll_init: 'Hidden Collections Initiative for Pennsylvania Small Archival Repositories'
+    policies:
+      heading: 'Policies'
       disclaimer: 'Disclaimer'
       privacy: 'Privacy Policy'
       a11y: 'Report Accessibility Issues and Get Help'
       statement: 'Archival Description and Harmful Language'
-    copyright: '© University of Pennsylvania'
-    delivered_by: 'Delivered by'
   legacy:
     redirect: 'The identifier for this item has been updated. Please use this page URL to access this item.'
   requests:

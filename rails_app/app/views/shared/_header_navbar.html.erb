@@ -1,0 +1,25 @@
+<%# Override of Blacklight partial from 7.x. Rewritten for Version 2.0 to use the Penn Libraries
+    design system header web component. The search bar remains separate from the header component
+    per the issue #284 discussion — search bar integration into the header will be considered
+    after the Blacklight 9 upgrade. %>
+
+<pennlibs-header href="<%= root_path %>"
+                 service-name="<%= t('header.service_name') %>"
+                 service-lede="<%= t('header.service_lede') %>">
+
+  <% if current_user %>
+    <%= button_to t('header.sign_out'), destroy_user_session_path, method: :delete %>
+  <% else %>
+    <%= link_to t('header.admin_login'), new_user_session_path %>
+  <% end %>
+</pennlibs-header>
+
+<%= content_tag :div, class: 'navbar-search navbar navbar-light bg-light', role: 'navigation', aria: { label: t('blacklight.search.header') } do %>
+  <div class="pl-viewport-margins">
+    <%= render((blacklight_config&.view_config(document_index_view_type)&.search_bar_component || Blacklight::SearchBarComponent).new(
+      url: search_action_url,
+      advanced_search_url: search_action_url(action: 'advanced_search'),
+      params: search_state.params_for_search.except(:qt),
+      autocomplete_path: search_action_path(action: :suggest))) %>
+  </div>
+<% end %>
