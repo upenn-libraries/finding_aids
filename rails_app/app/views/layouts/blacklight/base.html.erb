@@ -40,7 +40,7 @@
     <%= content_for(:skip_links) %>
   <% end %>
 
-  <%= render partial: 'shared/header_navbar' %>
+  <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config, user: current_user) %>
 
   <main id="main-container" class="<%= container_classes %>" role="main" aria-label="<%= t('blacklight.main.aria.main_container') %>">
     <%= content_for(:container_header) %>
@@ -52,7 +52,7 @@
     </div>
   </main>
 
-  <%= render partial: 'shared/footer' %>
+  <%= render FooterComponent.new %>
   <%= render partial: 'shared/modal' %>
   </body>
 <% end %>

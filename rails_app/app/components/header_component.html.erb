@@ -1,0 +1,12 @@
+<pennlibs-header href="<%= root_path %>"
+                 service-name="<%= t('header.service_name') %>"
+                 service-lede="<%= t('header.service_lede') %>">
+
+  <% if user %>
+    <%= button_to t('header.sign_out'), destroy_user_session_path, method: :delete %>
+  <% else %>
+    <%= link_to t('header.admin_login'), new_user_session_path %>
+  <% end %>
+</pennlibs-header>
+
+<%= search_bar %>
