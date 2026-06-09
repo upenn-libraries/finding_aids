@@ -3,30 +3,32 @@
 require 'rails_helper'
 
 RSpec.describe HeaderComponent, type: :component do
-  subject { page }
+  subject(:component) { page }
 
   let(:blacklight_config) { CatalogController.blacklight_config }
+  let(:user) { nil }
 
   before do
     render_inline(described_class.new(blacklight_config: blacklight_config, user: user))
   end
 
-  let(:user) { nil }
-
   it 'renders the pennlibs-header web component' do
-    is_expected.to have_css 'pennlibs-header'
+    expect(component).to have_css 'pennlibs-header'
   end
 
   it 'renders the search bar' do
-    is_expected.to have_css 'div.navbar-search'
-    is_expected.to have_field 'q'
+    expect(component).to have_css 'div.navbar-search'
+  end
+
+  it 'renders the search input' do
+    expect(component).to have_field 'q'
   end
 
   context 'when logged in' do
-    let(:user) { instance_double('User') }
+    let(:user) { instance_double(User) }
 
     it 'shows the sign out button' do
-      is_expected.to have_button I18n.t('header.sign_out')
+      expect(component).to have_button I18n.t('header.sign_out')
     end
   end
 end
