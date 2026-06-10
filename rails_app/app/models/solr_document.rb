@@ -12,12 +12,6 @@ class SolrDocument
 
   # self.unique_key = 'id'
 
-  # Email uses the semantic field mappings below to generate the body of an email.
-  SolrDocument.use_extension(Blacklight::Document::Email)
-
-  # SMS uses the semantic field mappings below to generate the body of an SMS email.
-  SolrDocument.use_extension(Blacklight::Document::Sms)
-
   # Support EAD XML export format
   SolrDocument.use_extension(Support::EadXmlExport)
 

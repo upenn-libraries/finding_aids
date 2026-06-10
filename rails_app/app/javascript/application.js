@@ -1,5 +1,5 @@
-import 'jquery';
+// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import 'bootstrap';
-import Blacklight from 'blacklight';
+import Blacklight from 'blacklight-frontend';
 import 'controllers';
 import '@hotwired/turbo-rails';
