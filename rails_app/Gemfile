@@ -17,8 +17,6 @@ gem 'faraday-retry'
 gem 'honeybadger'
 gem 'importmap-rails'
 gem 'iso-639'
-gem 'jbuilder', '~> 2.7'
-gem 'jquery-rails'
 gem 'omniauth'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-saml'
@@ -32,7 +30,6 @@ gem 'sidekiq-cron'
 gem 'sidekiq-pro', source: 'https://gems.contribsys.com'
 gem 'sitemap_generator'
 gem 'turbolinks', '~> 5'
-gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'upennlib-rubocop', require: false
 
