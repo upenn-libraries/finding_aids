@@ -23,12 +23,12 @@
   }
 }
 
-.faa-home-lede {
+.fa-home-lede {
   font-size: var(--pl-font-size-l);
 }
 
 /* Cards — mirrors the Digital Collections pattern */
-.faa-cards {
+.fa-cards {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -37,12 +37,12 @@
   grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
 }
 
-.faa-cards__card {
+.fa-cards__card {
   position: relative;
   width: 100%;
 }
 
-.faa-cards__card-img {
+.fa-cards__card-img {
   box-shadow: rgba(140, 149, 159, 0.3) 0px 3px 6px 0px;
   border-radius: var(--pl-border-radius-subtle);
   width: 100%;
@@ -52,7 +52,7 @@
   display: block;
 }
 
-.faa-cards__card-placeholder {
+.fa-cards__card-placeholder {
   border-radius: var(--pl-border-radius-subtle);
   aspect-ratio: 3 / 2;
   background: var(--pl-color-bg-subtle-brand);
@@ -60,7 +60,7 @@
   width: 100%;
 }
 
-.faa-cards__card-heading {
+.fa-cards__card-heading {
   margin: 0;
   padding-top: var(--pl-space-s);
   font-size: var(--pl-font-size-m);
@@ -72,13 +72,13 @@
   }
 }
 
-.faa-cards__card-sub {
+.fa-cards__card-sub {
   margin: 0.25rem 0 0;
   color: var(--pl-color-fg-subtle);
   font-size: var(--pl-font-size-s);
 }
 
-.faa-cards__card-link {
+.fa-cards__card-link {
   &::after {
     content: '';
     position: absolute;
@@ -88,43 +88,43 @@
 
 /* Capped card grids — limit visible cards to one or two rows per breakpoint.
    Used by both the homepage guides list and the regional-partnership band. */
-.faa-cards--capped {
+.fa-cards--capped {
   grid-template-columns: repeat(2, 1fr);
 
-  & .faa-cards__card { display: none; }
-  & .faa-cards__card:nth-child(-n+4) { display: block; }
+  & .fa-cards__card { display: none; }
+  & .fa-cards__card:nth-child(-n+4) { display: block; }
 
   @media (min-width: 520px) {
     grid-template-columns: repeat(3, 1fr);
-    & .faa-cards__card:nth-child(-n+6) { display: block; }
-    & .faa-cards__card:nth-child(n+7) { display: none; }
+    & .fa-cards__card:nth-child(-n+6) { display: block; }
+    & .fa-cards__card:nth-child(n+7) { display: none; }
   }
 
   @media (min-width: 720px) {
     grid-template-columns: repeat(4, 1fr);
-    & .faa-cards__card:nth-child(-n+8) { display: block; }
-    & .faa-cards__card:nth-child(n+9) { display: none; }
+    & .fa-cards__card:nth-child(-n+8) { display: block; }
+    & .fa-cards__card:nth-child(n+9) { display: none; }
   }
 
   @media (min-width: 1000px) {
     grid-template-columns: repeat(5, 1fr);
-    & .faa-cards__card:nth-child(-n+5) { display: block; }
-    & .faa-cards__card:nth-child(n+6) { display: none; }
+    & .fa-cards__card:nth-child(-n+5) { display: block; }
+    & .fa-cards__card:nth-child(n+6) { display: none; }
   }
 
   @media (min-width: 1200px) {
     grid-template-columns: repeat(6, 1fr);
-    & .faa-cards__card:nth-child(-n+6) { display: block; }
-    & .faa-cards__card:nth-child(n+7) { display: none; }
+    & .fa-cards__card:nth-child(-n+6) { display: block; }
+    & .fa-cards__card:nth-child(n+7) { display: none; }
   }
 }
 
 /* Regional-partnership band (site-wide, above the footer). Order: map, then heading + cards. */
-.faa-regional-partnership__map {
+.fa-regional-partnership__map {
   height: 20rem;
   width: 100%;
 }
 
-.faa-regional-partnership__body {
+.fa-regional-partnership__body {
   background: var(--pl-color-bg-default);
 }

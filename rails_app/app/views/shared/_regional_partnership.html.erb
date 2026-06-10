@@ -20,9 +20,9 @@
      { name: 'Bryn Mawr College', count: 262, lat: 40.0282, lng: -75.3155 }
    ] %>
 
-<section class="faa-regional-partnership" aria-labelledby="regional-partnership-heading">
+<section class="fa-regional-partnership" aria-labelledby="regional-partnership-heading">
   <%# Map first — appears above the heading. %>
-  <div id="partnership-map" class="faa-regional-partnership__map"></div>
+  <div id="partnership-map" class="fa-regional-partnership__map"></div>
   <script>
     (function () {
       // TODO: wire — for production, move this into a Stimulus controller.
@@ -59,7 +59,7 @@
     })();
   </script>
 
-  <div class="faa-regional-partnership__body pl-padding-y-2xl">
+  <div class="fa-regional-partnership__body pl-padding-y-2xl">
     <div class="pl-viewport-margins">
       <h2 id="regional-partnership-heading" class="pl-margin-b-m">A regional partnership</h2>
       <p class="pl-line-length pl-margin-b-m">
@@ -70,14 +70,14 @@
       </p>
 
       <%# TODO: wire — replace sample_repositories with real repository facet counts. %>
-      <ol class="faa-cards faa-cards--capped">
+      <ol class="fa-cards fa-cards--capped">
         <% sample_repositories.each do |repo| %>
-          <li class="faa-cards__card">
-            <h3 class="faa-cards__card-heading">
+          <li class="fa-cards__card">
+            <h3 class="fa-cards__card-heading">
               <%# TODO: wire — confirm this filters by the real repository_ssi facet value. %>
-              <%= link_to repo[:name], search_catalog_path('f[repository_ssi][]' => repo[:name]), class: 'faa-cards__card-link' %>
+              <%= link_to repo[:name], search_catalog_path('f[repository_ssi][]' => repo[:name]), class: 'fa-cards__card-link' %>
             </h3>
-            <p class="faa-cards__card-sub"><%= number_with_delimiter(repo[:count]) %> guides</p>
+            <p class="fa-cards__card-sub"><%= number_with_delimiter(repo[:count]) %> guides</p>
           </li>
         <% end %>
       </ol>

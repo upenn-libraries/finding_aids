@@ -39,7 +39,7 @@
 <% end %>
 
 <%# --- Home sections --------------------------------------------------------- %>
-<div class="faa-home-sections">
+<div class="fa-home-sections">
   <section class="pl-padding-y-2xl">
     <div class="pl-viewport-margins">
       <h2 class="pl-margin-b-m">Collection guides</h2>
@@ -49,14 +49,14 @@
       </p>
 
       <%# TODO: wire — replace sample_guides with real featured/recent collection guides. %>
-      <ol class="faa-cards faa-cards--capped">
+      <ol class="fa-cards fa-cards--capped">
         <% sample_guides.each do |guide| %>
-          <li class="faa-cards__card">
-            <h3 class="faa-cards__card-heading">
+          <li class="fa-cards__card">
+            <h3 class="fa-cards__card-heading">
               <%# TODO: wire — link to the real record path, e.g. solr_document_path(guide.id) %>
-              <%= link_to guide[:title], '#', class: 'faa-cards__card-link' %>
+              <%= link_to guide[:title], '#', class: 'fa-cards__card-link' %>
             </h3>
-            <p class="faa-cards__card-sub"><%= guide[:sub] %></p>
+            <p class="fa-cards__card-sub"><%= guide[:sub] %></p>
           </li>
         <% end %>
       </ol>
