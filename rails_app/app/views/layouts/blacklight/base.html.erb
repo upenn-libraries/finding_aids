@@ -39,9 +39,16 @@
     <%= content_for(:skip_links) %>
   <% end %>
 
-  <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config, user: current_user) %>
+  <%# Allow homepage to provide its own hero-integrated header via content_for(:header). %>
+  <% if content_for?(:header) %>
+    <%= yield :header %>
+  <% else %>
+    <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config, user: current_user) %>
+  <% end %>
 
-  <main id="main-container" class="<%= container_classes %>" aria-label="<%= t('blacklight.main.aria.main_container') %>">
+  <%# Use fluid container on homepage so background sections span full width (matches DC). %>
+  <% main_class = (controller_name == 'catalog' && action_name == 'index' && !has_search_parameters?) ? 'container-fluid' : container_classes %>
+  <main id="main-container" class="<%= main_class %>" aria-label="<%= t('blacklight.main.aria.main_container') %>">
     <%= content_for(:container_header) %>
 
     <%= render 'shared/flash_msg', layout: 'shared/flash_messages' if flash.any? %>

@@ -1,0 +1,32 @@
+# Sample collection guides for homepage card grid.
+# Fields: name (collection title), collection (holding institution), identifier (record ID).
+- name: John Wilbur papers
+  collection: Haverford College Quaker & Special Collections
+  identifier: "HC.JWP.001"
+- name: Marian Anderson papers
+  collection: "University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts"
+  identifier: "UPENN.MA.001"
+- name: League of Women Voters of Pennsylvania records
+  collection: Historical Society of Pennsylvania
+  identifier: "HSP.LWV.001"
+- name: Carrie Chapman Catt papers
+  collection: Bryn Mawr College
+  identifier: "BMC.CCC.001"
+- name: Hannah J. Bailey papers
+  collection: Swarthmore College Peace Collection
+  identifier: "SCPC.HJB.001"
+- name: Frank Weise architectural records
+  collection: "University of Pennsylvania: Architectural Archives"
+  identifier: "UPENN.FW.001"
+- name: Beecher Family collection
+  collection: "Princeton University Library: Manuscripts Division"
+  identifier: "PUL.BEECHER.001"
+- name: George W. Hewitt glass plates
+  collection: "The Historical and Interpretive Collections of The Franklin Institute"
+  identifier: "FI.GWH.001"
+- name: Anna T. Jeanes collection
+  collection: "Swarthmore College: Friends Historical Library"
+  identifier: "FHL.ATJ.001"
+- name: Henry J. Cadbury papers
+  collection: "Haverford College Quaker & Special Collections"
+  identifier: "HC.HJC.001"

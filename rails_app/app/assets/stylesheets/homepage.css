@@ -1,0 +1,229 @@
+/* Homepage styles for Finding Aids redesign.
+   Uses Penn Libraries Design System CSS custom properties and utility classes.
+   References: https://philadelphia-area-archives-designs.netlify.app/css/styles.css */
+
+/* ===== Hero — full viewport width (rendered outside <main>, so naturally full-width) ===== */
+
+/* ===== Homepage layout: sidebar hidden ===== */
+body.blacklight-catalog-index #sidebar {
+  display: none;
+}
+
+body.blacklight-catalog-index #content {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body.blacklight-catalog-index #main-container.container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body.blacklight-catalog-index #main-container > .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* ===== Card grid — mirrors Digital Collections pattern ===== */
+.faa-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--pl-space-m) var(--pl-space-s);
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+}
+
+.faa-cards__card {
+  position: relative;
+  width: 100%;
+}
+
+.faa-cards__card-heading {
+  margin: 0;
+  padding-top: var(--pl-space-s);
+  font-size: var(--pl-font-size-m);
+  font-family: var(--pl-font-family);
+  line-height: 1.4;
+}
+
+.faa-cards__card-heading::after {
+  content: none;
+}
+
+.faa-cards__card-sub {
+  margin: 0.25rem 0 0;
+  color: var(--pl-color-fg-subtle);
+  font-size: var(--pl-font-size-s);
+}
+
+.faa-cards__card-link {
+  color: var(--pl-color-fg-accent);
+  text-decoration: underline;
+  text-underline-offset: var(--pl-link-text-underline-offset);
+  text-decoration-thickness: var(--pl-link-text-decoration-thickness);
+  font-weight: 500;
+}
+
+/* Full-card click target overlay */
+.faa-cards__card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* ===== Home sections — responsive cards =====
+   Grid columns and visible card count change at each breakpoint.
+   Cards default to hidden; only the first N per breakpoint are shown. */
+.faa-home-sections .faa-cards {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.faa-home-sections .faa-cards .faa-cards__card {
+  display: none;
+}
+
+.faa-home-sections .faa-cards .faa-cards__card:nth-child(-n+4) {
+  display: block;
+}
+
+@media (min-width: 520px) {
+  .faa-home-sections .faa-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .faa-home-sections .faa-cards .faa-cards__card:nth-child(-n+6) {
+    display: block;
+  }
+}
+
+@media (min-width: 720px) {
+  .faa-home-sections .faa-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .faa-home-sections .faa-cards .faa-cards__card:nth-child(-n+8) {
+    display: block;
+  }
+}
+
+@media (min-width: 1000px) {
+  .faa-home-sections .faa-cards {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .faa-home-sections .faa-cards .faa-cards__card:nth-child(-n+5) {
+    display: block;
+  }
+}
+
+@media (min-width: 1200px) {
+  .faa-home-sections .faa-cards {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .faa-home-sections .faa-cards .faa-cards__card:nth-child(-n+6) {
+    display: block;
+  }
+}
+
+/* ===== Search box — pill-shaped inline search ===== */
+.paa-search-box {
+  width: 100%;
+  background: var(--pl-color-bg-default);
+  flex-grow: 1;
+  border-radius: 1.25rem;
+  padding: var(--pl-space-2xs);
+  box-shadow: rgba(140, 149, 159, 0.2) 0px 3px 6px 0px;
+  border: solid 1px var(--pl-color-penn-blue);
+  padding-left: var(--pl-space-m);
+  display: flex;
+  gap: var(--pl-space-s);
+  max-width: 100%;
+}
+
+@media (max-width: 1000px) {
+  .paa-search-box {
+    margin-top: var(--pl-space-m);
+  }
+}
+
+pennlibs-header[theme=dark] .paa-search-box {
+  background: var(--pl-color-bg-subtle);
+}
+
+.paa-search-box__input-label {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.paa-search-box__input {
+  all: unset;
+  flex-grow: 1;
+  box-sizing: border-box;
+  padding: var(--pl-space-xs) var(--pl-space-2xs);
+  cursor: text;
+  width: 100%;
+}
+
+.paa-search-box__input::placeholder {
+  color: var(--pl-color-fg-subtle);
+}
+
+.paa-search-box__button {
+  text-wrap: nowrap;
+}
+
+/* ===== Skip link — prevent DS pl-reset from neutralizing Bootstrap sr-only ===== */
+#skip-link.sr-only.sr-only-focusable {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+#skip-link.sr-only.sr-only-focusable:focus-within,
+#skip-link.sr-only.sr-only-focusable a:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 0.75rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  background: var(--pl-color-bg-default);
+  color: var(--pl-color-fg-default);
+  z-index: 10000;
+}
+
+/* ===== Map ===== */
+#map a {
+  color: var(--pl-color-fg-default);
+}
+
+/* ===== Visually hidden (screen-reader only) ===== */
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/* ===== Utility overrides for hero inside home ===== */
+.faa-home-hero pennlibs-header .paa-search-box {
+  width: 28rem;
+}
+
+@media (max-width: 1000px) {
+  .faa-home-hero pennlibs-header .paa-search-box {
+    width: 100%;
+  }
+}

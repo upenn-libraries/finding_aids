@@ -5,6 +5,10 @@
 # Set a custom search bar in the catalog controller via:
 #   config.index.search_bar_component = MySearchBarComponent
 class SearchNavbarComponent < Blacklight::SearchNavbarComponent
+  # Instantiate the search bar component with the current search action URL
+  # and params (minus +qt+).
+  #
+  # @return [Blacklight::SearchBarComponent] the search bar component instance
   def search_bar_component
     search_bar_component_class.new(
       url: helpers.search_action_url,

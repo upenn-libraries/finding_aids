@@ -1,1 +1,94 @@
-<%# Copied from Blacklight 9.0.0. Gutted for Version 2.0 redesign — design system homepage components will be added in Phase 3. %>
+<%# Homepage redesign — Version 2.0 %>
+<%# Uses Penn Libraries Design System web components (@penn-libraries/web version configured in Settings) %>
+
+<%# Load Leaflet CSS only on homepage %>
+<% content_for(:head) do %>
+  <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/leaflet@1/dist/leaflet.min.css" %>
+<% end %>
+
+<%# Hero with integrated dark header — rendered outside <main> via content_for(:header), matching DC pattern %>
+<% content_for(:header) do %>
+  <section class="faa-home-hero">
+    <pennlibs-hero>
+      <picture hero="art-direction">
+        <source srcset="<%= asset_path('hero/moelis-reading-room.webp') %>" type="image/webp" media="(min-width: 620px)">
+        <source srcset="<%= asset_path('hero/moelis-reading-room.jpg') %>" type="image/jpeg" media="(min-width: 620px)">
+        <source srcset="<%= asset_path('hero/moelis-reading-room.webp') %>" type="image/webp">
+        <img src="<%= asset_path('hero/moelis-reading-room.jpg') %>" alt="An archival reading room" />
+      </picture>
+
+      <pennlibs-header slot="start"
+                       service-name="Philadelphia Area Archives"
+                       service-lede="Finding Aids at the University of Pennsylvania"
+                       theme="dark">
+        <div slot="end" class="pl-flex pl-gap-m" style="align-items: center;">
+          <form class="paa-search-box" action="<%= search_action_path %>" method="get" role="search">
+            <label class="paa-search-box__input-label">
+              <span class="visually-hidden">Search</span>
+              <input type="search"
+                     name="q"
+                     placeholder="Search collection guides"
+                     class="paa-search-box__input"
+                     aria-label="Search collection guides" />
+            </label>
+            <button class="pl-button pl-button--accent paa-search-box__button" type="submit">Find it</button>
+          </form>
+        </div>
+      </pennlibs-header>
+
+      <h1 hero="heading">Stories held in archives</h1>
+      <p hero="sub-heading">Find your way into the primary sources held by archives in the Philadelphia area.</p>
+    </pennlibs-hero>
+  </section>
+<% end %>
+
+<div class="faa-home-sections">
+  <section class="pl-padding-y-2xl">
+    <div class="pl-viewport-margins">
+      <h2 class="pl-margin-b-m">Collection guides</h2>
+      <p class="pl-line-length pl-margin-b-m">
+        A collection guide, sometimes called a finding aid, describes a single archival collection. It tells you where the collection came from, what's inside, and how it's arranged.
+      </p>
+
+      <ol class="faa-cards">
+        <% sample_collection_guides(8).each do |guide| %>
+          <li class="faa-cards__card">
+            <h3 class="faa-cards__card-heading">
+              <a href="<%= search_action_path(q: guide.name) %>" class="faa-cards__card-link"><%= guide.name %></a>
+            </h3>
+            <p class="faa-cards__card-sub"><%= guide.collection %></p>
+          </li>
+        <% end %>
+      </ol>
+    </div>
+  </section>
+
+  <section class="pl-padding-t-2xl" style="background: var(--pl-color-bg-subtle)">
+    <div class="pl-viewport-margins">
+      <h2 class="pl-margin-b-m">A regional partnership</h2>
+      <p class="pl-line-length pl-margin-b-m">
+        When you search here, you're searching across many archival institutions at once. Focus in on a single institution from the sample to see what it holds, or <a href="<%= search_action_path %>">browse all institutions</a>.
+      </p>
+
+      <ol class="faa-cards">
+        <% all_repositories.each do |repo| %>
+          <li class="faa-cards__card">
+            <h3 class="faa-cards__card-heading">
+              <a href="<%= repository_facet_path(repo.name) %>" class="faa-cards__card-link"><%= repo.name %></a>
+            </h3>
+            <p class="faa-cards__card-sub"><%= number_with_delimiter(repo.count) %> guides</p>
+          </li>
+        <% end %>
+      </ol>
+    </div>
+
+    <div id="map"
+         data-controller="map"
+         data-map-repos-value="<%= all_repositories.map(&:to_h).to_json %>"
+         class="pl-margin-t-2xl"
+         style="height: 20rem;"></div>
+  </section>
+</div>
+
+<%# Leaflet CDN script — loaded before Stimulus controller connects %>
+<%= javascript_include_tag "https://cdn.jsdelivr.net/npm/leaflet@1/dist/leaflet.min.js" %>
