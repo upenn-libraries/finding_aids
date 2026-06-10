@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.4.9'
 
 gem 'archivesspace-client'
-gem 'blacklight', '~> 8'
+gem 'blacklight', '~> 9'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'bootstrap_form', '~> 4.0'
 gem 'config'
@@ -53,6 +53,7 @@ end
 group :test do
   gem 'capybara'
   gem 'cuprite'
+  gem 'ferrum', '0.17.1' # Locking because otherwise we get testing errors.
   gem 'simplecov', require: false
   gem 'webmock'
 end
