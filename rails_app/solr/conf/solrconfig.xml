@@ -45,6 +45,10 @@
      <lst name="defaults">
        <str name="defType">edismax</str>
        <str name="echoParams">explicit</str>
+       <!-- make all clauses mandatory unless boolean operators specified.
+           when q.op is "AND", mm defaults to 100%. see solr docs for more on the mm param:
+           https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#mm-minimum-should-match-parameter -->
+       <str name="q.op">AND</str>
        <str name="q.alt">*:*</str>
        <str name="mm">2&lt;-1 5&lt;-2 6&lt;90%</str>
        <int name="qs">1</int>
