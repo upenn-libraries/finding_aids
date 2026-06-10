@@ -1,0 +1,180 @@
+.document-counter {
+  font-size: var(--pl-font-size-m);
+  color: var(--pl-color-fg-subtle);
+}
+
+.document-title-heading {
+  font-size: var(--pl-font-size-xl);
+  margin-bottom: var(--pl-space-xs);
+}
+
+.documents-list {
+  margin-bottom: var(--pl-space-xl);
+}
+
+.documents-list .document {
+  --bl-results-document-margin-top: var(--pl-space-l);
+  --bl-results-document-padding-top: 0;
+
+  border-bottom: 0;
+
+  &:first-child {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  & .document-title-heading a {
+    font-weight: 600;
+    text-decoration: none;
+    font-size: var(--pl-font-size-xl);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  & .pl-dl--inline {
+    margin-bottom: 0;
+  }
+}
+
+.documents-list .document .document-main-section {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.document-metadata dt {
+  text-align: left;
+  font-weight: 600;
+  color: var(--pl-color-fg-default);
+}
+
+.document-metadata dd a {
+  color: var(--pl-color-fg-default);
+  text-decoration-style: dotted;
+  font-weight: 400;
+  text-decoration-color: var(--pl-color-fg-subtle);
+
+  &:hover {
+    text-decoration-style: solid;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--pl-color-fg-default);
+  }
+}
+
+.document-thumbnail > a {
+  display: block;
+}
+
+.documents-gallery {
+  display: grid;
+  gap: var(--pl-space-l) var(--pl-space-m);
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-start: 2;
+  list-style: none;
+  padding-left: 0;
+
+  & .document-thumbnail img {
+    width: 100%;
+    margin-bottom: var(--pl-space-s);
+    box-shadow: rgba(140, 149, 159, 0.3) 0px 3px 6px 0px;
+    border-radius: var(--pl-border-radius-subtle);
+  }
+
+  & .document-title-heading {
+    margin-bottom: 0;
+    font-size: var(--pl-font-size-m);
+    line-height: 1.4;
+
+    & a {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  & .document-metadata {
+    display: block;
+    padding-right: 0;
+    padding-left: 0;
+
+    & dt {
+      clip: rect(0 0 0 0); 
+      clip-path: inset(50%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap; 
+      width: 1px; 
+    }
+
+    & dd {
+      display: inline;
+      margin: 0;
+      padding: 0;
+      padding-right: 0.25rem;
+    }
+
+    & dd a {
+      color: var(--pl-color-fg-subtle);
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      font-weight: 400;
+
+      &:hover {
+        text-decoration-thickness: 2px;
+        text-decoration-style: solid;
+      }
+    }
+  }
+
+  .document-counter {
+    display: inline;
+  }
+}
+
+@media (min-width: 520px) {
+  .documents-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  }
+}
+
+/* Blur-up preview wrapper rendered by Catalog::ThumbnailComponent. Sits inside
+   the Blacklight-provided link in both list and gallery views. Stacks two
+   <img> elements in the same grid cell: a tiny base64 WebP LQIP and the real
+   preview. The LQIP is blurred via CSS filter; the full image lands on top
+   when it loads.
+
+   Mirrors the design system's pl-img-blur-up pattern. Class names match so
+   the two can be unified later without markup changes. */
+.pl-img-blur-up {
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1; /* fallback when the source aspect isn't known yet */
+  border-radius: var(--pl-border-radius-subtle);
+  overflow: hidden;
+  background: var(--pl-color-bg-subtle);
+  content-visibility: auto;
+  box-shadow: rgba(140, 149, 159, 0.3) 0 3px 6px 0;
+  border: solid 2px var(--pl-color-fg-default);
+}
+
+.pl-img-blur-up > img {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  isolation: isolate;
+  border-radius: var(--pl-border-radius-subtle);
+}
+
+.pl-img-blur-up > img.pl-img-blur-up__lqip {
+  filter: blur(0.5rem) saturate(1.05) contrast(1.05);
+  transform: scale(1.05);
+}
+
+.documents-gallery .pl-img-blur-up {
+  margin-bottom: var(--pl-space-s);
+}

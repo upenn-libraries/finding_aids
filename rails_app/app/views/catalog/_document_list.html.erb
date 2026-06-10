@@ -1,0 +1,10 @@
+<%# Overriding view from Blacklight v9.0.0 to add custom class on the metadata slot component %>
+
+<% # container for all documents in index list view  -%>
+<% view_config = local_assigns[:view_config] || blacklight_config&.view_config(document_index_view_type) %>
+<div id="documents" class="documents-<%= view_config&.key || document_index_view_type %>">
+  <% document_presenters = documents.map { |doc| document_presenter(doc) } -%>
+  <%= render view_config.document_component.with_collection(document_presenters, partials: view_config.partials, counter_offset: @response&.start || 0) do |component| %>
+    <% component.with_metadata(classes: 'pl-dl--inline') %>
+  <% end %>
+</div>

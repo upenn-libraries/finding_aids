@@ -1,0 +1,14 @@
+body {
+  --bs-border-radius: var(--pl-space-m);
+  --bs-gray-100: var(--pl-color-bg-subtle);
+  --bs-gray-200: var(--pl-color-bg-subtle);
+}
+
+main {
+  padding-block: 0;
+}
+
+.btn,
+.form-control {
+  transition: none;
+}

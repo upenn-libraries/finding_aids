@@ -1,0 +1,32 @@
+<%# Overrides template from Blacklight v9.0 to add an "All" constraint pill
+    when no search constraints are present. %>
+
+<%= content_tag @tag || :div, id: @id, class: @classes do %>
+  <%= constraints_heading %>
+
+  <% if no_constraints? && @show_all_constraint %>
+    <%= all_constraint %>
+  <% elsif query_constraints_area.present? %>
+    <% query_constraints_area.each do |constraint| %>
+      <%= constraint %>
+    <% end %>
+  <% else %>
+    <%= query_constraints %>
+  <% end %>
+
+  <% if facet_constraints_area.present? %>
+    <% facet_constraints_area.each do |constraint| %>
+      <%= constraint %>
+    <% end %>
+  <% else %>
+    <%= facet_constraints %>
+  <% end %>
+
+  <% additional_constraints.each do |constraints| %>
+    <%= constraints %>
+  <% end %>
+
+  <div>
+    <%= render @start_over_component.new if @start_over_component %>
+  </div>
+<% end %>

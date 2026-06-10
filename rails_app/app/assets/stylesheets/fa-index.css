@@ -1,0 +1,103 @@
+/* Search results page layout.
+ *
+ * Blacklight renders the sidebar and results as Bootstrap columns inside a `.row`
+ * (#main-container > .row > #content + #sidebar). We replace that with a CSS grid
+ * (sidebar | content) and dissolve the intermediate `.row` wrappers with
+ * `display: contents` so #sidebar/#content become direct grid items of #main-container.
+ * The results count <h1> and the constraints/sort nav sit in the top row.
+ */
+
+.blacklight-catalog-index {
+  /* Scope the results grid to pages that have a #content section (i.e. search results).
+     The homepage has no #content, so its #main-container is left as a default block. */
+  & #main-container:has(#content) {
+    display: flex;
+    gap: var(--pl-space-l) var(--pl-space-xl);
+    flex-direction: column;
+
+    width: 100%;
+    margin: 0px auto;
+    margin-top: var(--pl-space-m);
+    padding: 0 var(--pl-viewport-margins-gutter, 1em);
+
+    @media (min-width: 820px) {
+      display: grid;
+      grid-template-columns: 18rem 1fr;
+      align-items: start;
+    }
+
+    & h1 {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    & #sidebar {
+      width: 100%;
+      grid-column: 1;
+      grid-row: 2;
+      order: initial !important;
+    }
+
+    & #content {
+      grid-column: 2;
+      grid-row: 2;
+      width: 100%;
+    }
+
+    & .sort-pagination {
+      border-bottom: none;
+    }
+  }
+
+  /* Dissolve Bootstrap's row wrappers so their children join the #main-container grid. */
+  & .row:has(#content) {
+    display: contents;
+  }
+
+  & .row:has(#main-flashes) {
+    display: contents;
+
+    & > * {
+      display: contents;
+    }
+  }
+
+  & #sidebar,
+  & #content,
+  & .sort-pagination,
+  & #content > .container {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+/* Mobile facets: below the grid breakpoint, hide the desktop sidebar and surface
+ * facets in an offcanvas panel instead. The filter button (in _sort_and_per_page)
+ * toggles #facets-offcanvas; both the button and panel are hidden on desktop. */
+@media (max-width: 819px) {
+  .blacklight-catalog-index #main-container #sidebar {
+    display: none;
+  }
+}
+
+.fa-filter-btn {
+  display: flex;
+}
+
+.fa-facets-offcanvas {
+  --bs-offcanvas-width: min(90vw, 400px);
+
+  & .offcanvas-body {
+    display: block;
+  }
+}
+
+@media (min-width: 820px) {
+  .fa-filter-btn {
+    display: none;
+  }
+
+  .fa-facets-offcanvas {
+    display: none;
+  }
+}

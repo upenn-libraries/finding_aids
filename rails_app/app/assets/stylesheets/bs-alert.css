@@ -1,0 +1,4 @@
+.alert {
+  --bs-alert-padding-x: var(--pl-space-l);
+  --bs-alert-padding-y: var(--pl-space-m);
+}

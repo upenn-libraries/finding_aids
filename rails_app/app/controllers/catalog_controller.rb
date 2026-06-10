@@ -4,9 +4,16 @@
 class CatalogController < ApplicationController
   include Blacklight::Catalog
 
+  # Number of facet values to show in the sidebar before the "more" link / modal.
+  FACET_LIMIT = 7
+
   configure_blacklight do |config|
     config.bootstrap_version = 5
     config.header_component = HeaderComponent
+    config.index.search_bar_component = SearchBarComponent
+    config.index.constraints_component = Catalog::ConstraintsComponent
+    config.index.search_header_component = Catalog::SearchHeaderComponent
+    config.index.document_metadata_component = Catalog::DocumentMetadataComponent
     config.advanced_search.enabled = false
 
     ## Class for sending and receiving requests from a search index
@@ -39,7 +46,8 @@ class CatalogController < ApplicationController
     # config.document_solr_path = 'get'
 
     # items to show per page, each number in the array represent another option to choose from.
-    config.per_page = [10, 20, 50, 100]
+    # First value is the default page size (no default_per_page set), matching Digital Collections.
+    config.per_page = [25, 50, 100]
 
     # solr field configuration for search results/index views
     config.index.title_field = :title_tsi
@@ -80,7 +88,7 @@ class CatalogController < ApplicationController
     # :index_range can be an array or range of prefixes that will be used to create the navigation
     #              (note: It is case sensitive when searching values)
 
-    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true
+    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: FACET_LIMIT
     config.add_facet_field 'record_source', label: I18n.t('fields.record_source'), query: {
       upenn: { label: 'University of Pennsylvania', fq: 'upenn_record_bsi:true' },
       non_upenn: { label: 'Other PACSCL Partners', fq: 'upenn_record_bsi:false' }
@@ -89,15 +97,15 @@ class CatalogController < ApplicationController
       yes: { label: 'Has Online Content', fq: 'online_content_bsi:true' },
       no: { label: 'Not Available', fq: 'online_content_bsi:false' }
     }
-    config.add_facet_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), limit: true
-    config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.topics.corpnames'), limit: true
-    config.add_facet_field 'people_ssim', label: I18n.t('fields.topics.people'), limit: true
-    config.add_facet_field 'places_ssim', label: I18n.t('fields.topics.places'), limit: true
-    config.add_facet_field 'occupations_ssim', label: I18n.t('fields.topics.occupations'), limit: true
-    config.add_facet_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), limit: true
-    config.add_facet_field 'creators_ssim', label: I18n.t('fields.creators'), limit: true
-    config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors'), limit: true
-    config.add_facet_field 'languages_ssim', label: I18n.t('fields.language'), limit: true
+    config.add_facet_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), limit: FACET_LIMIT
+    config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.topics.corpnames'), limit: FACET_LIMIT
+    config.add_facet_field 'people_ssim', label: I18n.t('fields.topics.people'), limit: FACET_LIMIT
+    config.add_facet_field 'places_ssim', label: I18n.t('fields.topics.places'), limit: FACET_LIMIT
+    config.add_facet_field 'occupations_ssim', label: I18n.t('fields.topics.occupations'), limit: FACET_LIMIT
+    config.add_facet_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), limit: FACET_LIMIT
+    config.add_facet_field 'creators_ssim', label: I18n.t('fields.creators'), limit: FACET_LIMIT
+    config.add_facet_field 'donors_ssim', label: I18n.t('fields.donors'), limit: FACET_LIMIT
+    config.add_facet_field 'languages_ssim', label: I18n.t('fields.language'), limit: FACET_LIMIT
     config.add_facet_field 'era_facet', label: I18n.t('facets.era.label'), solr_params:
       { 'facet.mincount': 1 }, query: {
         first_millennium: { label: I18n.t('facets.era.millennium.first'), fq: 'years_iim:[0001 TO 1000]' },
@@ -113,7 +121,7 @@ class CatalogController < ApplicationController
         twentieth_century: { label: I18n.t('facets.era.century.twentieth'), fq: 'years_iim:[1901 TO 2000]' },
         twenty_first_century: { label: I18n.t('facets.era.century.twenty-first'), fq: 'years_iim:[2001 TO 2100]' }
       }
-    config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint'), limit: true, unless: Rails.env.production?
+    config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint'), limit: FACET_LIMIT, unless: Rails.env.production?
 
     config.add_facet_fields_to_solr_request!
 
@@ -123,7 +131,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), if: :json_request?
     config.add_index_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), if: :json_request?
     config.add_index_field 'creators_ssim', label: I18n.t('fields.creators'), if: :json_request?
-    config.add_index_field 'repository_ssi', label: I18n.t('fields.repository')
+    config.add_index_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
     config.add_index_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents'),
                                                           helper_method: :truncated_abstract
 

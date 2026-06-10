@@ -1,0 +1,130 @@
+/* Homepage + shared section styling — ported from the finding-aids-prototype.
+ * Covers the card grids (used on the homepage and in the site-wide regional-partnership
+ * band, shared/_regional_partnership), and the homepage full-bleed layout.
+ * The hero (<pennlibs-hero>) is styled by the Penn Libraries design system. */
+
+/* The homepage spans full width so sections can be full-bleed (the second section has a
+ * subtle background that should reach the viewport edges). Standard pages keep Blacklight's
+ * centered .container. The home main-container has no #content section (unlike search results),
+ * which is how we target it here. Inner width is controlled by .pl-viewport-margins. */
+.blacklight-catalog-index #main-container:not(:has(#content)) {
+  max-width: none;
+  width: 100%;
+  padding: 0;
+
+  & > .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  & > .row > * {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.faa-home-lede {
+  font-size: var(--pl-font-size-l);
+}
+
+/* Cards — mirrors the Digital Collections pattern */
+.faa-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--pl-space-m) var(--pl-space-s);
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+}
+
+.faa-cards__card {
+  position: relative;
+  width: 100%;
+}
+
+.faa-cards__card-img {
+  box-shadow: rgba(140, 149, 159, 0.3) 0px 3px 6px 0px;
+  border-radius: var(--pl-border-radius-subtle);
+  width: 100%;
+  border: solid 2px var(--pl-color-fg-default);
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+}
+
+.faa-cards__card-placeholder {
+  border-radius: var(--pl-border-radius-subtle);
+  aspect-ratio: 3 / 2;
+  background: var(--pl-color-bg-subtle-brand);
+  display: block;
+  width: 100%;
+}
+
+.faa-cards__card-heading {
+  margin: 0;
+  padding-top: var(--pl-space-s);
+  font-size: var(--pl-font-size-m);
+  font-family: var(--pl-font-family);
+  line-height: 1.4;
+
+  &::after {
+    content: none;
+  }
+}
+
+.faa-cards__card-sub {
+  margin: 0.25rem 0 0;
+  color: var(--pl-color-fg-subtle);
+  font-size: var(--pl-font-size-s);
+}
+
+.faa-cards__card-link {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+}
+
+/* Capped card grids — limit visible cards to one or two rows per breakpoint.
+   Used by both the homepage guides list and the regional-partnership band. */
+.faa-cards--capped {
+  grid-template-columns: repeat(2, 1fr);
+
+  & .faa-cards__card { display: none; }
+  & .faa-cards__card:nth-child(-n+4) { display: block; }
+
+  @media (min-width: 520px) {
+    grid-template-columns: repeat(3, 1fr);
+    & .faa-cards__card:nth-child(-n+6) { display: block; }
+    & .faa-cards__card:nth-child(n+7) { display: none; }
+  }
+
+  @media (min-width: 720px) {
+    grid-template-columns: repeat(4, 1fr);
+    & .faa-cards__card:nth-child(-n+8) { display: block; }
+    & .faa-cards__card:nth-child(n+9) { display: none; }
+  }
+
+  @media (min-width: 1000px) {
+    grid-template-columns: repeat(5, 1fr);
+    & .faa-cards__card:nth-child(-n+5) { display: block; }
+    & .faa-cards__card:nth-child(n+6) { display: none; }
+  }
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(6, 1fr);
+    & .faa-cards__card:nth-child(-n+6) { display: block; }
+    & .faa-cards__card:nth-child(n+7) { display: none; }
+  }
+}
+
+/* Regional-partnership band (site-wide, above the footer). Order: map, then heading + cards. */
+.faa-regional-partnership__map {
+  height: 20rem;
+  width: 100%;
+}
+
+.faa-regional-partnership__body {
+  background: var(--pl-color-bg-default);
+}

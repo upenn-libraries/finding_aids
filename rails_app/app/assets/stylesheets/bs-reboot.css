@@ -1,0 +1,12 @@
+input,
+button,
+select,
+optgroup,
+textarea {
+  font-family: var(--pl-font-family);
+}
+
+body {
+  --bs-body-font-family: var(--pl-font-family);
+  --bs-body-color: var(--pl-color-fg-default);
+}
