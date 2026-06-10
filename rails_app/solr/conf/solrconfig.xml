@@ -51,7 +51,7 @@
        <str name="q.op">AND</str>
        <str name="q.alt">*:*</str>
        <int name="qs">1</int>
-       <int name="ps">2</int>
+       <int name="ps">1</int>
        <float name="tie">0.01</float>
 
        <str name="qf">
@@ -62,11 +62,22 @@
          source_xml
        </str>
        <str name="pf">
-         unit_id_tsi^1000
          title_tsi^500
          abstract_scope_contents_tsi^250
          subject_tsim^100
          source_xml
+       </str>
+       <str name="pf2">
+         title_tsi^2000
+         abstract_scope_contents_tsi^1000
+         subject_tsim^300
+         source_xml^100
+       </str>
+       <str name="pf3">
+         title_tsi^5000
+         abstract_scope_contents_tsi^2500
+         subject_tsim^500
+         source_xml^300
        </str>
 
        <str name="fl">
