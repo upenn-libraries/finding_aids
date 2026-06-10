@@ -55,7 +55,7 @@ The development environment uses Taskfile and Docker. Running `task up` creates 
     - your LDAP credentials (to retrieve secrets from HashiCorp Vault)
 
 3. After provisioning finishes, verify the app is running at:  
-   [https://finding-aid-discovery-dev.library.upenn.edu/](https://finding-aid-discovery-dev.library.upenn.edu/)
+   [https://findingaids-dev.library.upenn.edu/](https://findingaids-dev.library.upenn.edu/)
 
 ### Docker context
 
@@ -94,7 +94,7 @@ Solr runs in [SolrCloud mode](https://solr.apache.org/guide/solr/latest/deployme
 [ZooNavigator](https://github.com/elkozmon/zoonavigator) is used to manage ZooKeeper in deployed environments.
 
 Access Solr Admin at:  
-[http://finding-aid-discovery-dev.library.upenn.int/solr/#/](http://finding-aid-discovery-dev.library.upenn.int/solr/#/)
+[http://findingaids-dev.library.upenn.int/solr/#/](http://findingaids-dev.library.upenn.int/solr/#/)
 
 ## Deployment
 

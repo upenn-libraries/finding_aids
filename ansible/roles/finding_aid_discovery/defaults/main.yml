@@ -8,7 +8,7 @@ finding_aid_discovery_rails_env: "development"
 finding_aid_discovery_replicas: 1
 finding_aid_discovery_solr_url: "http://solr-1:8983/solr/finding-aid-discovery-development"
 finding_aid_discovery_solr_test_url: "http://solr-1:8983/solr/finding-aid-discovery-test"
-finding_aid_discovery_url: "finding-aid-discovery-dev.library.upenn.edu"
+finding_aid_discovery_url: "findingaids-dev.library.upenn.edu"
 
 finding_aid_discovery_versioned_secrets:
   slack_notification_email_address:
