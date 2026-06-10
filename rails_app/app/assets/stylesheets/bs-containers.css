@@ -3,6 +3,20 @@
    so containers match the design system's layout grid.
    Matches Digital Collections approach (bs-containers.css). */
 
+/* Baseline: DS web components don't provide global link styling (scoped to Shadow DOM),
+   so apply DS link tokens to all <a> tags in the pl-typeset content area. */
+body a {
+  color: var(--pl-color-fg-accent);
+  text-decoration: underline;
+  text-underline-offset: var(--pl-link-text-underline-offset);
+  text-decoration-thickness: var(--pl-link-text-decoration-thickness);
+  font-weight: 500;
+}
+
+body a:hover {
+  text-decoration-thickness: var(--pl-link-hover-text-decoration-thickness);
+}
+
 /* Baseline: DS pl-reset doesn't reset the body element itself, so zero the default 8px browser margin */
 body {
   margin: 0;

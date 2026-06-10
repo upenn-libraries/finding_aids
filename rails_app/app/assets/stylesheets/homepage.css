@@ -59,14 +59,6 @@ body.blacklight-catalog-index #main-container > .row {
   font-size: var(--pl-font-size-s);
 }
 
-.faa-cards__card-link {
-  color: var(--pl-color-fg-accent);
-  text-decoration: underline;
-  text-underline-offset: var(--pl-link-text-underline-offset);
-  text-decoration-thickness: var(--pl-link-text-decoration-thickness);
-  font-weight: 500;
-}
-
 /* Full-card click target overlay */
 .faa-cards__card-link::after {
   content: '';
@@ -199,11 +191,6 @@ pennlibs-header[theme=dark] .paa-search-box {
   background: var(--pl-color-bg-default);
   color: var(--pl-color-fg-default);
   z-index: 10000;
-}
-
-/* ===== Map ===== */
-#map a {
-  color: var(--pl-color-fg-default);
 }
 
 /* ===== Visually hidden (screen-reader only) ===== */
