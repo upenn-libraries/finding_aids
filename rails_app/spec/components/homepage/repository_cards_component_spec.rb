@@ -17,11 +17,11 @@ RSpec.describe Homepage::RepositoryCardsComponent, type: :component do
   end
 
   it 'renders the section heading' do
-    expect(component).to have_css('h2', text: 'A regional partnership')
+    expect(component).to have_css('h2', text: I18n.t('homepage.regional_partnership.heading'))
   end
 
   it 'renders the intro paragraph with a browse-all link' do
-    expect(component).to have_link('browse all institutions')
+    expect(component).to have_link(I18n.t('homepage.regional_partnership.browse_all'))
   end
 
   it 'renders the card grid' do

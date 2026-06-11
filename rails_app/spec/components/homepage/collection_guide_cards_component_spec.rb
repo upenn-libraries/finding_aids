@@ -17,11 +17,11 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
   end
 
   it 'renders the section heading' do
-    expect(component).to have_css('h2', text: 'Collection guides')
+    expect(component).to have_css('h2', text: I18n.t('homepage.collection_guides.heading'))
   end
 
   it 'renders the intro paragraph' do
-    expect(component).to have_css('p.pl-line-length', text: /collection guide, sometimes called a finding aid/)
+    expect(component).to have_css('p.pl-line-length', text: /#{I18n.t('homepage.collection_guides.intro').truncate(30)}/)
   end
 
   it 'renders the card grid' do

@@ -1,10 +1,7 @@
 <section class="pl-padding-y-2xl">
   <div class="pl-viewport-margins">
-    <h2 class="pl-margin-b-m">Collection guides</h2>
-    <p class="pl-line-length pl-margin-b-m">
-      A collection guide, sometimes called a finding aid, describes a single archival collection.
-      It tells you where the collection came from, what's inside, and how it's arranged.
-    </p>
+    <h2 class="pl-margin-b-m"><%= t('homepage.collection_guides.heading') %></h2>
+    <p class="pl-line-length pl-margin-b-m"><%= t('homepage.collection_guides.intro') %></p>
 
     <ol class="fa-cards fa-cards--capped">
       <% @guides.each do |guide| %>

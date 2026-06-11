@@ -1,11 +1,7 @@
 <div class="fa-regional-partnership__body pl-padding-y-2xl">
   <div class="pl-viewport-margins">
-    <h2 id="regional-partnership-heading" class="pl-margin-b-m">A regional partnership</h2>
-    <p class="pl-line-length pl-margin-b-m">
-      When you search here, you're searching across many archival institutions at once. Focus in on
-      a single institution from the sample to see what it holds, or
-      <%= link_to 'browse all institutions', browse_all_url %>.
-    </p>
+    <h2 id="regional-partnership-heading" class="pl-margin-b-m"><%= t('homepage.regional_partnership.heading') %></h2>
+    <p class="pl-line-length pl-margin-b-m"><%= browse_all_intro %></p>
 
     <ol class="fa-cards fa-cards--capped">
       <% @repos.each do |repo| %>
@@ -13,7 +9,7 @@
           <h3 class="fa-cards__card-heading">
             <%= link_to repo.name, repository_facet_url(repo.name), class: 'fa-cards__card-link' %>
           </h3>
-          <p class="fa-cards__card-sub"><%= number_with_delimiter(repo.count) %> guides</p>
+          <p class="fa-cards__card-sub"><%= guides_count(repo) %></p>
         </li>
       <% end %>
     </ol>
