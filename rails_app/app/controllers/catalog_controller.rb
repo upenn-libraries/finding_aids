@@ -6,6 +6,10 @@ class CatalogController < ApplicationController
 
   before_action :load_homepage_data, only: :index
 
+  def index
+    super
+  end
+
   # Number of facet values to show in the sidebar before the "more" link / modal.
   FACET_LIMIT = 7
 
@@ -123,7 +127,8 @@ class CatalogController < ApplicationController
         twentieth_century: { label: I18n.t('facets.era.century.twentieth'), fq: 'years_iim:[1901 TO 2000]' },
         twenty_first_century: { label: I18n.t('facets.era.century.twenty-first'), fq: 'years_iim:[2001 TO 2100]' }
       }
-    config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint'), limit: FACET_LIMIT, unless: Rails.env.production?
+    config.add_facet_field 'endpoint_ssi', label: I18n.t('fields.endpoint'),
+                                           limit: FACET_LIMIT, unless: Rails.env.production?
 
     config.add_facet_fields_to_solr_request!
 
@@ -196,6 +201,6 @@ class CatalogController < ApplicationController
   def load_homepage_data
     return if has_search_parameters?
 
-    @homepage_guides = HomepageData.new.collection_guides.sample(8)
+    @homepage_guides = HomepageData.collection_guides.sample(8)
   end
 end

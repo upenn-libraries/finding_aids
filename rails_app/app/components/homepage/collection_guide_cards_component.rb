@@ -8,8 +8,6 @@ module Homepage
   # @example
   #   render Homepage::CollectionGuideCardsComponent.new(guides: @homepage_guides)
   class CollectionGuideCardsComponent < ViewComponent::Base
-    attr_reader :guides
-
     # @param guides [Array<OpenStruct>] guide objects with +name+, +collection+
     def initialize(guides:)
       @guides = guides

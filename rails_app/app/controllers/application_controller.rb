@@ -30,6 +30,6 @@ class ApplicationController < ActionController::Base
   private
 
   def load_regional_repos
-    @regional_repos = HomepageData.new.repositories
+    @regional_repos = HomepageData.repositories
   end
 end

@@ -9,8 +9,6 @@ module Homepage
   # @example
   #   render Homepage::RepositoryCardsComponent.new(repos: @regional_repos)
   class RepositoryCardsComponent < ViewComponent::Base
-    attr_reader :repos
-
     # @param repos [Array<HomepageData::Repository>] repo objects with +name+, +count+, +lat+, +lng+
     def initialize(repos:)
       @repos = repos

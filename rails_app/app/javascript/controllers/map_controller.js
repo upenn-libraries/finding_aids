@@ -9,26 +9,9 @@ export default class extends Controller {
   connect() {
     if (!this.reposValue || this.reposValue.length === 0) return
 
-    this.map = L.map(this.element, {
-      scrollWheelZoom: false
-    }).setView([39.98, -75.19], 11)
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map)
-
-    this.reposValue.forEach((repo) => {
-      if (repo.lat && repo.lng) {
-        const content =
-          '<strong>' + this._escapeHtml(repo.name) + '</strong><br />' +
-          Number(repo.count).toLocaleString() + ' guides'
-
-        L.marker([repo.lat, repo.lng])
-          .addTo(this.map)
-          .bindPopup(content)
-      }
-    })
+    this._initMap()
+    this._addTileLayer()
+    this._addMarkers()
   }
 
   disconnect() {
@@ -38,9 +21,38 @@ export default class extends Controller {
     }
   }
 
-  _escapeHtml(str) {
-    const div = document.createElement('div')
-    div.appendChild(document.createTextNode(str))
-    return div.innerHTML
+  _initMap() {
+    this.map = L.map(this.element, {
+      scrollWheelZoom: false
+    }).setView([39.98, -75.19], 11)
   }
+
+  _addTileLayer() {
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this.map)
+  }
+
+  _addMarkers() {
+    this.reposValue.forEach((repo) => {
+      if (repo.lat && repo.lng) {
+        L.marker([repo.lat, repo.lng])
+          .addTo(this.map)
+          .bindPopup(markerContent(repo))
+      }
+    })
+  }
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div')
+  div.appendChild(document.createTextNode(str))
+  return div.innerHTML
+}
+
+function markerContent(repo) {
+  const name = escapeHtml(repo.name)
+  const count = Number(repo.count).toLocaleString()
+  return `<strong>${name}</strong><br />${count} guides`
 }

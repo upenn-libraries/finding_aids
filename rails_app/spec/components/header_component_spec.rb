@@ -17,7 +17,7 @@ RSpec.describe HeaderComponent, type: :component do
   end
 
   it 'renders the search bar' do
-    expect(component).to have_css 'div.navbar-search'
+    expect(component).to have_css 'div.fa-header-search'
   end
 
   it 'renders the search input' do

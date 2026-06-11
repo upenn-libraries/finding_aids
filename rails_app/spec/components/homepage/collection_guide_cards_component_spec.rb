@@ -21,7 +21,8 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
   end
 
   it 'renders the intro paragraph' do
-    expect(component).to have_css('p.pl-line-length', text: /#{I18n.t('homepage.collection_guides.intro').truncate(30)}/)
+    expect(component).to have_css('p.pl-line-length',
+                                  text: /#{I18n.t('homepage.collection_guides.intro').truncate(30)}/)
   end
 
   it 'renders the card grid' do
