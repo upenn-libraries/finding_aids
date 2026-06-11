@@ -150,8 +150,8 @@ rspec_app_test:
         - /bin/bash
         - -c
         - |
-          solr auth enable -type basicAuth -credentials ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} -z 127.0.0.1:${ZOOKEEPER_PORT} &&
-          solr zk upconfig -n finding-aid-discovery -d ${CI_PROJECT_DIR}/rails_app/solr/conf/ -z 127.0.0.1:${ZOOKEEPER_PORT} &&
+          solr auth enable -type basicAuth -credentials ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} -z ${SOLR_HOST}:${ZOOKEEPER_PORT} &&
+          solr zk upconfig -n finding-aid-discovery -d ${CI_PROJECT_DIR}/rails_app/solr/conf/ -z ${SOLR_HOST}:${ZOOKEEPER_PORT} &&
           solr create_collection -c finding-aid-discovery-test -n finding-aid-discovery
       variables:
         SOLR_HOST: "solr"
