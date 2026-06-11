@@ -1,29 +1,10 @@
 #!/bin/bash
 # Force Docker Swarm to restart the Rails service.
-# Note: Swarm health check will replace the container, which may leave
-# stale containers behind. Run this script again to clean them up.
 # Usage: bin/rails-restart
 
 set -euo pipefail
 
 SERVICE="fad_finding_aid_discovery"
 echo "Forcing Swarm service update: $SERVICE"
-
-# Trigger rolling update
-docker exec finding-aids docker service update --force --detach=false "$SERVICE" 2>&1 || true
-
-# Clean up stale containers (Swarm often doesn't prune old tasks in dind)
-echo "Cleaning up stale containers..."
-CURRENT=$(docker exec finding-aids docker service ps "$SERVICE" \
-  --format "{{.ID}}" --filter desired-state=running 2>/dev/null | head -1 || echo "")
-
-docker exec finding-aids docker ps --filter "name=fad_finding_aid_discovery" \
-  --format "{{.ID}}" --no-trunc 2>/dev/null | while read -r ID; do
-  TASK_ID=$(docker exec finding-aids docker inspect "$ID" \
-    --format '{{index .Config.Labels "com.docker.swarm.task.id"}}' 2>/dev/null || echo "")
-  if [ -n "$TASK_ID" ] && [ "$TASK_ID" != "$CURRENT" ]; then
-    docker exec finding-aids docker rm -f "$ID" 2>/dev/null || true
-  fi
-done
-
+docker exec finding-aids docker service update --force "$SERVICE"
 echo "Done."
