@@ -20,4 +20,24 @@ if [ -z "$CONTAINER" ]; then
   exit 1
 fi
 
-exec docker exec finding-aids docker exec "$CONTAINER" "$@"
+# Extract leading KEY=VALUE pairs into -e flags; rest pass through as args
+ENV_FLAGS=()
+CMD_ARGS=()
+seeking_env=true
+for arg in "$@"; do
+  if [ "$seeking_env" = true ] && [[ "$arg" =~ ^[A-Za-z_][A-Za-z0-9_]*= ]]; then
+    ENV_FLAGS+=(-e "$arg")
+  else
+    seeking_env=false
+    CMD_ARGS+=("$arg")
+  fi
+done
+
+if [ ${#CMD_ARGS[@]} -eq 0 ]; then
+  echo "Error: No command specified" >&2
+  exit 1
+fi
+
+# bash 3.2 (macOS default) treats empty arrays as unbound under set -u
+# so we use the "${array[@]+...}" idiom for safe expansion
+exec docker exec finding-aids docker exec ${ENV_FLAGS[@]+"${ENV_FLAGS[@]}"} "$CONTAINER" "${CMD_ARGS[@]}"
