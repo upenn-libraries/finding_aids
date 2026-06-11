@@ -18,8 +18,6 @@ gem 'honeybadger'
 gem 'hotwire-rails'
 gem 'importmap-rails'
 gem 'iso-639'
-gem 'jbuilder', '~> 2.7'
-gem 'jquery-rails'
 gem 'omniauth', '~> 2'
 gem 'omniauth-saml'
 gem 'pg', '~> 1.1'
@@ -31,7 +29,6 @@ gem 'rsolr', '>= 1.0', '< 3'
 gem 'sidekiq-cron'
 gem 'sidekiq-pro', source: 'https://gems.contribsys.com'
 gem 'sitemap_generator'
-gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'upennlib-rubocop', require: false
 
