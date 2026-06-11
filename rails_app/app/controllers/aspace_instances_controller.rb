@@ -27,7 +27,7 @@ class ASpaceInstancesController < ApplicationController
     else
       alert_failure action: :create, class_name: @aspace_instance.class, identifier: @aspace_instance.slug,
                     error: @aspace_instance.errors.map(&:full_message).join(', ')
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -38,7 +38,7 @@ class ASpaceInstancesController < ApplicationController
     else
       alert_failure action: :update, class_name: @aspace_instance.class, identifier: @aspace_instance.slug,
                     error: @aspace_instance.errors.map(&:full_message).join(', ')
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -49,7 +49,7 @@ class ASpaceInstancesController < ApplicationController
   rescue StandardError => e
     alert_failure action: :destroy, class_name: @aspace_instance.class, identifier: @aspace_instance.slug,
                   error: e.message
-    render :show
+    render :show, status: :unprocessable_entity
   end
 
   private

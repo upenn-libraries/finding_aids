@@ -27,7 +27,7 @@ class UsersController < ApplicationController
     else
       alert_failure action: :create, class_name: @user.class, identifier: @user.email,
                     error: @user.errors.map(&:full_message).join(', ')
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     else
       alert_failure action: :update, class_name: @user.class, identifier: @user.email,
                     error: @user.errors.map(&:full_message).join(', ')
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -49,7 +49,7 @@ class UsersController < ApplicationController
   rescue StandardError => e
     alert_failure action: :destroy, class_name: @user.class, identifier: @user.slug,
                   error: e.message
-    render :show
+    render :show, status: :unprocessable_entity
   end
 
   private
