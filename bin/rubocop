@@ -1,0 +1,14 @@
+#!/bin/bash
+# Run RuboCop inside the Rails container.
+# Usage: bin/rubocop [path]
+#   bin/rubocop              # all files
+#   bin/rubocop app/models/  # specific directory or file
+
+set -euo pipefail
+
+CONTAINER=$(docker exec finding-aids docker ps \
+  --filter "name=fad_finding_aid_discovery" -q | head -1)
+
+[ -n "$CONTAINER" ] || { echo "No Rails container found" >&2; exit 1; }
+
+exec docker exec finding-aids docker exec "$CONTAINER" bundle exec rubocop "$@"
