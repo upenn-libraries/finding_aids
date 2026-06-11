@@ -143,24 +143,19 @@ rspec_app_test:
         POSTGRES_DB: "${DATABASE_NAME}"
         POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
         POSTGRES_USER: "${DATABASE_USER}"
-    - name: bitnami/solr:9.3.0
+    - name: solr:9.3.0
       alias: solr
       command:
         - /bin/bash
         - -c
         - |
-          source /opt/bitnami/scripts/libsolr.sh;solr_start_bg &&
-          /opt/bitnami/solr/bin/solr auth enable -type basicAuth -credentials ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} -z 127.0.0.1:9983 &&
-          /opt/bitnami/solr/bin/solr zk upconfig -n finding-aid-discovery -d ${CI_PROJECT_DIR}/rails_app/solr/conf/ -z 127.0.0.1:9983 &&
-          /opt/bitnami/solr/bin/solr create_collection -c finding-aid-discovery-test -n finding-aid-discovery &&
-          source /opt/bitnami/scripts/libsolr.sh;solr_stop &&
-          /opt/bitnami/scripts/solr/run.sh
+          solr auth enable -type basicAuth -credentials ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} -z 127.0.0.1:${SOLR_PORT} &&
+          solr zk upconfig -n finding-aid-discovery -d ${CI_PROJECT_DIR}/rails_app/solr/conf/ -z 127.0.0.1:${SOLR_PORT} &&
+          solr create_collection -c finding-aid-discovery-test -n finding-aid-discovery
       variables:
-        SOLR_CLOUD_BOOTSTRAP: "yes"
         SOLR_HOST: "solr"
         SOLR_JAVA_MEM: "-Xms4g -Xmx4g"
         SOLR_MODE: "solrcloud"
-        SOLR_ENABLE_AUTHENTICATION: "yes"
         SOLR_AUTHENTICATION_OPTS: "-Dbasicauth=${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}"
         SOLR_AUTH_TYPE: "basic"
   extends:
@@ -177,7 +172,8 @@ rspec_app_test:
     RAILS_SYSTEM_TESTING_SCREENSHOT_HTML: "1"
     SOLR_ADMIN_USERNAME: admin
     SOLR_ADMIN_PASSWORD: password
-    SOLR_TEST_URL: "http://${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}@solr:8983/solr/finding-aid-discovery-test"
+    SOLR_PORT: "8983"
+    SOLR_TEST_URL: "http://${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}@solr:${SOLR_PORT}/solr/finding-aid-discovery-test"
   script:
     - cd ${CI_PROJECT_DIR}/rails_app/
     - bundle add rspec_junit_formatter
@@ -186,9 +182,9 @@ rspec_app_test:
     - >
       while [ $i -le 9 ]; do
         i=$((i+1))
-        curl --silent --user ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} "http://solr:8983/api/" "-H" "'Content-type:application/json'" && break
+        curl --silent --user ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} "http://solr:${SOLR_PORT}/api/" "-H" "'Content-type:application/json'" && break
         echo "Waiting for solr api to be ready"
-        sleep "30s"
+        sleep "15s"
       done
     - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
   needs:
