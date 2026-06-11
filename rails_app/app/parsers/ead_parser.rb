@@ -356,7 +356,7 @@ class EadParser
       unit_id_tsi: unit_id(doc), # in qf/pf
       pretty_unit_id_ss: pretty_unit_id(doc), # SHOW
       contact_emails_ssm: contact_emails, # displayed
-      title_tsi: title(doc), # in qf/pf, displayed, sort via sopyfield
+      title_tsi: title(doc), # in qf/pf, displayed, sort via copyfield
       extent_ssim: extent(doc), # displayed, SHOW
       display_date_ssim: display_date(doc), # displayed, SHOW
       years_iim: years(doc), # facet, sort
