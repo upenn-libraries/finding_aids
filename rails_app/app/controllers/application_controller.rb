@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include Blacklight::Controller
   layout :determine_layout if respond_to? :layout
 
-  before_action :load_regional_repos
+  before_action :load_regional_repos, unless: -> { request.format.json? || request.xhr? || devise_controller? }
 
   # Path to redirect users to after successful authentication
   def after_sign_in_path_for(_resource)
@@ -29,8 +29,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # Load repository data for the site-wide regional-partnership band.
-  # Executes on every page request.
   def load_regional_repos
     @regional_repos = HomepageData.new.repositories
   end

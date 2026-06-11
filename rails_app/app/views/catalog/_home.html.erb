@@ -27,5 +27,5 @@
 
 <%# --- Home sections --------------------------------------------------------- %>
 <div class="fa-home-sections">
-  <%= render Homepage::CollectionGuideCardsComponent.new(guides: @homepage_guides) %>
+  <%= render Homepage::CollectionGuideCardsComponent.new(guides: @homepage_guides || []) %>
 </div>

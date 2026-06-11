@@ -1,43 +1,55 @@
 # frozen_string_literal: true
 
 # Loads and caches homepage data from YAML files.
-# Separated from HomepageHelper so the helper owns only URL/facet concerns.
+# Uses a class-level cache so YAML is parsed once per process start,
+# not once per request.
 class HomepageData
   COLLECTION_GUIDES_PATH = Rails.root.join('data/collection_guides.yml')
   REPOSITORIES_PATH = Rails.root.join('data/repositories.yml')
 
+  CollectionGuide = Data.define(:name, :collection)
+  Repository = Data.define(:name, :slug, :count, :lat, :lng)
+
   # Load all collection guides from YAML.
   #
-  # @return [Array<OpenStruct>] guide objects with +name+, +collection+, +identifier+
+  # @return [Array<CollectionGuide>] guide objects with +name+, +collection+
   def collection_guides
-    load(COLLECTION_GUIDES_PATH, %w[name collection identifier])
+    load(COLLECTION_GUIDES_PATH, CollectionGuide)
   end
 
   # Load all repositories from YAML.
   #
-  # @return [Array<OpenStruct>] repo objects with +name+, +slug+, +count+, +lat+, +lng+
+  # @return [Array<Repository>] repo objects with +name+, +slug+, +count+, +lat+, +lng+
   def repositories
-    load(REPOSITORIES_PATH, %w[name slug count lat lng])
+    load(REPOSITORIES_PATH, Repository)
+  end
+
+  # Class-level cache so YAML is parsed once per process, not per request.
+  @cache = {}
+  class << self
+    attr_reader :cache
   end
 
   private
 
-  # Load and cache a YAML file, wrapping each entry in OpenStruct for
-  # named accessor methods instead of raw hash keys.
+  # Load and cache a YAML file, wrapping each entry in the given Data class.
   #
   # @param path [Pathname] absolute path to the YAML file
-  # @param expected_keys [Array<String>] keys that must be present in each entry
-  # @return [Array<OpenStruct>] parsed entries as OpenStruct objects
-  def load(path, expected_keys)
-    @cache ||= {}
-    @cache[path] ||= begin
-      raise Errno::ENOENT, path unless path.exist?
-
-      entries = YAML.load_file(path)
-      entries.map { |entry| OpenStruct.new(entry.slice(*expected_keys)) }
-    end
+  # @param struct_class [Class] Data.define class whose members match the YAML keys
+  # @return [Array] parsed entries as Data objects
+  def load(path, struct_class)
+    self.class.cache[path] ||= parse_yaml(path).map { |entry| build_entry(entry, struct_class) }
   rescue Errno::ENOENT, Psych::SyntaxError => e
     Rails.logger.warn "Homepage data file missing or malformed: #{path} — #{e.message}"
-    @cache[path] = []
+    self.class.cache[path] || []
+  end
+
+  def parse_yaml(path)
+    YAML.safe_load_file(path, permitted_classes: [], symbolize_names: true)
+  end
+
+  def build_entry(entry, struct_class)
+    keys = struct_class.members
+    struct_class.new(**entry.slice(*keys))
   end
 end

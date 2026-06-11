@@ -1,13 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 
+
 // Leaflet map controller for the regional-partnership band.
-// Reads repository data from a data-map-repos-value attribute,
-// initializes a Leaflet map with pinned markers and popup links.
-//
-// Usage:
-//   <div data-controller="map"
-//        data-map-repos-value="[{&quot;name&quot;:&quot;Repo&quot;,&quot;lat&quot;:39.95,&quot;lng&quot;:-75.16,&quot;count&quot;:100}]">
-//   </div>
+// Repository data comes from data-map-repos-value attribute set in _regional_partnership.html.erb.
 export default class extends Controller {
   static values = { repos: Array }
 
