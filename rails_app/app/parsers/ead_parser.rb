@@ -348,38 +348,38 @@ class EadParser
     doc.remove_namespaces!
     {
       id: id(doc),
-      legacy_ids_ssim: legacy_ids(doc),
-      endpoint_ssi: @endpoint.slug,
-      xml_ss: xml,
-      link_url_ss: link_url(doc),
-      ead_id_ssi: ead_id(doc),
-      unit_id_tsi: unit_id(doc),
-      pretty_unit_id_ss: pretty_unit_id(doc),
-      contact_emails_ssm: contact_emails,
-      title_tsi: title(doc),
-      extent_ssim: extent(doc),
-      display_date_ssim: display_date(doc),
-      years_iim: years(doc),
-      date_added_ss: date_added(doc),
-      languages_ssim: languages(doc),
-      abstract_scope_contents_tsi: abstract_scope_contents(doc),
-      preferred_citation_ss: preferred_citation(doc),
-      repository_ssi: repository(doc),
-      repository_address_ssi: repository_address(doc),
-      creators_ssim: creators(doc),
-      people_ssim: people(doc),
-      places_ssim: places(doc),
-      occupations_ssim: occupations(doc),
-      corpnames_ssim: corp_names(doc),
-      subjects_ssim: subjects(doc),
-      upenn_record_bsi: upenn_record(doc),
-      online_content_bsi: online_content(doc),
-      repository_name_component_1_ssi: split_repositories(doc)[0],
+      legacy_ids_ssim: legacy_ids(doc), # used for legacy id lookup
+      endpoint_ssi: @endpoint.slug, # facet
+      xml_ss: xml, # SHOW(json)
+      link_url_ss: link_url(doc), # SHOW (currently not working)
+      ead_id_ssi: ead_id(doc), # TODO: appears unused
+      unit_id_tsi: unit_id(doc), # in qf/pf
+      pretty_unit_id_ss: pretty_unit_id(doc), # SHOW
+      contact_emails_ssm: contact_emails, # displayed
+      title_tsi: title(doc), # in qf/pf, displayed, sort via sopyfield
+      extent_ssim: extent(doc), # displayed, SHOW
+      display_date_ssim: display_date(doc), # displayed, SHOW
+      years_iim: years(doc), # facet, sort
+      date_added_ss: date_added(doc), # TODO: not used - intended for sorting?
+      languages_ssim: languages(doc), # facet, SHOW
+      abstract_scope_contents_tsi: abstract_scope_contents(doc), # in qf/pf, displayed, SHOW
+      preferred_citation_ss: preferred_citation(doc), # SHOW
+      repository_ssi: repository(doc), # displayed, facet, SHOW
+      repository_address_ssi: repository_address(doc), # fetched at display time
+      creators_ssim: creators(doc), # displayed, facet, SHOW
+      people_ssim: people(doc), # facet
+      places_ssim: places(doc), # facet
+      occupations_ssim: occupations(doc), # facet
+      corpnames_ssim: corp_names(doc), # facet
+      subjects_ssim: subjects(doc), # in qf/pf as _tsim, copyField added, facet on _ssim
+      upenn_record_bsi: upenn_record(doc), # facet
+      online_content_bsi: online_content(doc), # facet
+      repository_name_component_1_ssi: split_repositories(doc)[0], # displayed
       repository_name_component_2_ssi: split_repositories(doc)[1],
       repository_name_component_3_ssi: split_repositories(doc)[2],
-      donors_ssim: donor(doc),
-      genre_form_ssim: genre_form(doc),
-      names_ssim: names(doc)
+      donors_ssim: donor(doc), # facet, SHOW
+      genre_form_ssim: genre_form(doc), # displayed, facet, SHOW
+      names_ssim: names(doc) # TODO: does not appear to be used
     }
   end
 

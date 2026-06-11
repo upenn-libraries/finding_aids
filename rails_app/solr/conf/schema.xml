@@ -201,6 +201,7 @@
   <!-- copyField declarations -->
   <copyField source="xml_ss" dest="source_xml"/>
   <copyField source="title_tsi" dest="title_ssort"/>
+  <copyField source="subjects_ssim" dest="subjects_tsim"/>
 
   <types>
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" />

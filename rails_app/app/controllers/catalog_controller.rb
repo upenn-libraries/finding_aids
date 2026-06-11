@@ -138,7 +138,7 @@ class CatalogController < ApplicationController
 
     config.add_show_field 'pretty_unit_id_ss', label: I18n.t('fields.pretty_unit_id')
     config.add_show_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
-    config.add_show_field 'url_ss', label: I18n.t('fields.url')
+    config.add_show_field 'url_ss', label: I18n.t('fields.url') # TODO: this field is link_url_ss
     config.add_show_field 'extent_ssim', label: I18n.t('fields.extent'), helper_method: :extent_display
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
     config.add_show_field 'language_note', label: I18n.t('fields.language_note'), accessor: :language_note,
