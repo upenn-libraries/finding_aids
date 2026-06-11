@@ -4,6 +4,8 @@
 class CatalogController < ApplicationController
   include Blacklight::Catalog
 
+  before_action :load_homepage_data, only: :index
+
   # Number of facet values to show in the sidebar before the "more" link / modal.
   FACET_LIMIT = 7
 
@@ -187,5 +189,13 @@ class CatalogController < ApplicationController
     languages = document.fetch(:languages_ssim, []).join
 
     note.present? && languages.gsub(/[^0-9a-zA-Z]/, '') != note.gsub(/[^0-9a-zA-Z]/, '')
+  end
+
+  # Load collection guide data for the homepage. Only executes when no
+  # search parameters are present (i.e. the landing page).
+  def load_homepage_data
+    return if has_search_parameters?
+
+    @homepage_guides = HomepageData.new.collection_guides.sample(8)
   end
 end

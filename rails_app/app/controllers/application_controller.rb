@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
   include Blacklight::Controller
   layout :determine_layout if respond_to? :layout
 
+  before_action :load_regional_repos
+
   # Path to redirect users to after successful authentication
   def after_sign_in_path_for(_resource)
     admin_path
@@ -23,5 +25,13 @@ class ApplicationController < ActionController::Base
   # @param [String] error error message
   def alert_failure(action:, class_name:, identifier:, error:)
     flash.alert = I18n.t("admin.flash.#{action}.failure", class_name: class_name, identifier: identifier, error: error)
+  end
+
+  private
+
+  # Load repository data for the site-wide regional-partnership band.
+  # Executes on every page request.
+  def load_regional_repos
+    @regional_repos = HomepageData.new.repositories
   end
 end

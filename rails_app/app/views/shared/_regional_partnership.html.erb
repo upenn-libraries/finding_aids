@@ -2,85 +2,18 @@
     Regional-partnership band — shown above the footer on EVERY page.
     Ported from the finding-aids-prototype. Order: map, then heading + cards.
 
-    NOTE FOR BACKEND DEVELOPERS:
-    `sample_repositories` is PLACEHOLDER data so the band renders. Replace it with
-    real repository facet counts + coordinates. The map JS below is a lightweight
-    mockup — for production it should be extracted into a Stimulus controller rather
-    than an inline script. Spots to wire are marked "TODO: wire".
+    Repository data is loaded by ApplicationController and rendered by
+    Homepage::RepositoryCardsComponent. The map uses a Stimulus controller
+    (map_controller.js) instead of inline script.
     ============================================================================ %>
 
-<% sample_repositories = [
-     { name: 'Haverford College Quaker & Special Collections', count: 2065, lat: 40.0087, lng: -75.3068 },
-     { name: 'Princeton University Library: Manuscripts Division', count: 1868, lat: 40.3497, lng: -74.6593 },
-     { name: 'University of Pennsylvania: Kislak Center for Special Collections', count: 1464, lat: 39.9522, lng: -75.1932 },
-     { name: 'Academy of Natural Sciences Archives', count: 1205, lat: 39.9576, lng: -75.1710 },
-     { name: 'Swarthmore College Peace Collection', count: 1147, lat: 39.9026, lng: -75.3548 },
-     { name: 'Temple University Libraries: Special Collections Research Center', count: 1054, lat: 39.9812, lng: -75.1553 },
-     { name: 'Historical Society of Pennsylvania', count: 285, lat: 39.9574, lng: -75.1636 },
-     { name: 'Bryn Mawr College', count: 262, lat: 40.0282, lng: -75.3155 }
-   ] %>
-
 <section class="fa-regional-partnership" aria-labelledby="regional-partnership-heading">
-  <%# Map first — appears above the heading. %>
-  <div id="partnership-map" class="fa-regional-partnership__map"></div>
-  <script>
-    (function () {
-      // TODO: wire — for production, move this into a Stimulus controller.
-      function initPartnershipMap() {
-        var el = document.getElementById('partnership-map');
-        if (typeof L === 'undefined' || !el || el.dataset.mapInit) return;
-        el.dataset.mapInit = 'true';
-
-        var map = L.map(el, { scrollWheelZoom: false }).setView([39.98, -75.19], 11);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        // TODO: wire — replace with real repository coordinates + counts.
-        var repos = <%= raw sample_repositories.to_json %>;
-        repos.forEach(function (repo) {
-          if (repo.lat && repo.lng) {
-            L.marker([repo.lat, repo.lng])
-              .addTo(map)
-              .bindPopup('<strong>' + repo.name + '</strong><br>' + repo.count.toLocaleString() + ' guides');
-          }
-        });
-      }
-
-      // This app does full page loads (Turbolinks JS isn't started), so init on DOMContentLoaded —
-      // or immediately if the DOM is already parsed. The dataset guard prevents double-init.
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPartnershipMap);
-      } else {
-        initPartnershipMap();
-      }
-      // Harmless if Turbolinks/Turbo navigation is enabled later (the event simply won't fire otherwise).
-      document.addEventListener('turbolinks:load', initPartnershipMap);
-    })();
-  </script>
-
-  <div class="fa-regional-partnership__body pl-padding-y-2xl">
-    <div class="pl-viewport-margins">
-      <h2 id="regional-partnership-heading" class="pl-margin-b-m">A regional partnership</h2>
-      <p class="pl-line-length pl-margin-b-m">
-        When you search here, you're searching across many archival institutions at once. Focus in on
-        a single institution from the sample to see what it holds, or
-        <%# TODO: wire — link to a browse-all-institutions page or the repository facet. %>
-        <%= link_to 'browse all institutions', search_catalog_path %>.
-      </p>
-
-      <%# TODO: wire — replace sample_repositories with real repository facet counts. %>
-      <ol class="fa-cards fa-cards--capped">
-        <% sample_repositories.each do |repo| %>
-          <li class="fa-cards__card">
-            <h3 class="fa-cards__card-heading">
-              <%# TODO: wire — confirm this filters by the real repository_ssi facet value. %>
-              <%= link_to repo[:name], search_catalog_path('f[repository_ssi][]' => repo[:name]), class: 'fa-cards__card-link' %>
-            </h3>
-            <p class="fa-cards__card-sub"><%= number_with_delimiter(repo[:count]) %> guides</p>
-          </li>
-        <% end %>
-      </ol>
-    </div>
+  <%# Map — powered by Stimulus map_controller.js %>
+  <div id="partnership-map"
+       class="fa-regional-partnership__map"
+       data-controller="map"
+       data-map-repos-value="<%= @regional_repos.map(&:to_h).to_json %>">
   </div>
+
+  <%= render Homepage::RepositoryCardsComponent.new(repos: @regional_repos) %>
 </section>

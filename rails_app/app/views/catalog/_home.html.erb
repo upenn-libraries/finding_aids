@@ -1,25 +1,12 @@
 <%# ============================================================================
     HOMEPAGE — UI ported from the finding-aids-prototype (Eleventy mockup).
 
-    NOTE FOR BACKEND DEVELOPERS:
-    The `sample_guides` data below is PLACEHOLDER markup so the layout renders.
-    Replace it with real data (e.g. featured/recent collection guides). Spots to
-    wire are marked "TODO: wire".
+    Collection guides data is loaded by CatalogController and rendered by
+    Homepage::CollectionGuideCardsComponent.
 
     The "A regional partnership" section (repositories + map) lives in the site-wide
     pre-footer band: app/views/shared/_regional_partnership.html.erb.
     ============================================================================ %>
-
-<%# --- Sample data (replace with real data) --------------------------------- %>
-<% sample_guides = [
-     { title: 'John Wilbur papers',                          sub: 'Haverford College Quaker & Special Collections, 1831–1873' },
-     { title: 'Marian Anderson papers',                      sub: 'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts, circa 1900–1993' },
-     { title: 'League of Women Voters of Pennsylvania records', sub: 'Historical Society of Pennsylvania, 1867–1991' },
-     { title: 'Carrie Chapman Catt papers',                  sub: 'Bryn Mawr College, 1840–1947' },
-     { title: 'Hannah J. Bailey papers',                     sub: 'Swarthmore College Peace Collection, 1836–1923' },
-     { title: 'Frank Weise architectural records',           sub: 'University of Pennsylvania: Architectural Archives, 1940–2002' },
-     { title: 'Beecher Family collection',                   sub: 'Princeton University Library: Manuscripts Division, 1845–1886' }
-   ] %>
 
 <%# --- Hero (replaces the standard header on the homepage) ------------------- %>
 <% content_for(:header) do %>
@@ -40,26 +27,5 @@
 
 <%# --- Home sections --------------------------------------------------------- %>
 <div class="fa-home-sections">
-  <section class="pl-padding-y-2xl">
-    <div class="pl-viewport-margins">
-      <h2 class="pl-margin-b-m">Collection guides</h2>
-      <p class="pl-line-length pl-margin-b-m">
-        A collection guide, sometimes called a finding aid, describes a single archival collection.
-        It tells you where the collection came from, what's inside, and how it's arranged.
-      </p>
-
-      <%# TODO: wire — replace sample_guides with real featured/recent collection guides. %>
-      <ol class="fa-cards fa-cards--capped">
-        <% sample_guides.each do |guide| %>
-          <li class="fa-cards__card">
-            <h3 class="fa-cards__card-heading">
-              <%# TODO: wire — link to the real record path, e.g. solr_document_path(guide.id) %>
-              <%= link_to guide[:title], '#', class: 'fa-cards__card-link' %>
-            </h3>
-            <p class="fa-cards__card-sub"><%= guide[:sub] %></p>
-          </li>
-        <% end %>
-      </ol>
-    </div>
-  </section>
+  <%= render Homepage::CollectionGuideCardsComponent.new(guides: @homepage_guides) %>
 </div>
