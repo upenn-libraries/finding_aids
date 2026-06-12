@@ -27,6 +27,10 @@
     <%= javascript_importmap_tags %>
     <%= javascript_import_module_tag "https://cdn.jsdelivr.net/npm/@penn-libraries/web@#{Settings.pennlibs_web_version}/dist/web/web.esm.js" %>
 
+    <%# Leaflet — powers the institutions map in the site-wide regional-partnership band (shared/_regional_partnership). %>
+    <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/leaflet@1/dist/leaflet.min.css" %>
+    <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/leaflet@1/dist/leaflet.min.js" %>
+
     <%= csrf_meta_tags %>
     <%= content_for(:head) %>
 
@@ -39,7 +43,12 @@
     <%= content_for(:skip_links) %>
   <% end %>
 
-  <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config, user: current_user) %>
+  <%# Pages may supply their own header region (e.g. the homepage hero). Otherwise render the standard header. %>
+  <% if content_for?(:header) %>
+    <%= yield :header %>
+  <% else %>
+    <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config, user: current_user) %>
+  <% end %>
 
   <main id="main-container" class="<%= container_classes %>" aria-label="<%= t('blacklight.main.aria.main_container') %>">
     <%= content_for(:container_header) %>
@@ -51,7 +60,10 @@
     </div>
   </main>
 
+  <%# Site-wide regional-partnership band (map + repositories), shown above the footer on every page. %>
+  <%= render 'shared/regional_partnership' %>
   <%= render FooterComponent.new(user: current_user) %>
   <%= render partial: 'shared/modal' %>
+  <%= content_for(:offcanvas) %>
   </body>
 <% end %>

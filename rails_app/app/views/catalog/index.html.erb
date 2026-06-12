@@ -1,0 +1,40 @@
+<%# Copied from Blacklight v9.0 and extended to provide a mobile facets offcanvas.
+    On small screens (< 820px) the desktop #sidebar is hidden (see fa-index.css) and
+    facets are shown in an offcanvas panel triggered by the filter button in
+    _sort_and_per_page. %>
+
+<% content_for(:head) do %>
+  <meta name="blacklight-search-storage" content="<%= blacklight_config.track_search_session.storage %>">
+<% end %>
+
+<% conf = blacklight_config.view_config(document_index_view_type) %>
+
+<% unless has_search_parameters? %>
+  <%# if there are no input/search related params, display the "home" partial -%>
+  <%= render 'home' %>
+<% else %>
+  <%# Sidebar + offcanvas facets only on search results (not the homepage), so the
+      results grid layout in fa-index.css doesn't apply to the home page. %>
+  <% content_for(:sidebar) do %>
+    <%= render conf.sidebar_component.new(blacklight_config: blacklight_config,
+                                          response: @response,
+                                          view_config: conf) %>
+  <% end %>
+
+  <%# Offcanvas facets for small screens - triggered by the filter button in _sort_and_per_page %>
+  <% content_for(:offcanvas) do %>
+    <div class="offcanvas offcanvas-end fa-facets-offcanvas" tabindex="-1" id="facets-offcanvas" aria-labelledby="facets-offcanvas-label">
+      <div class="offcanvas-header">
+        <h3 class="offcanvas-title" id="facets-offcanvas-label"><%= t('blacklight.search.facets.title') %></h3>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#facets-offcanvas" aria-label="<%= t('blacklight.modal.close') %>"></button>
+      </div>
+      <div class="offcanvas-body">
+        <%= render conf.sidebar_component.new(blacklight_config: blacklight_config,
+                                              response: @response,
+                                              view_config: conf) %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= render 'search_results' %>
+<% end %>

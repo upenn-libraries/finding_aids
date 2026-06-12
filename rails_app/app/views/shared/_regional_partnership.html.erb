@@ -1,0 +1,19 @@
+<%# ============================================================================
+    Regional-partnership band — shown above the footer on EVERY page.
+    Ported from the finding-aids-prototype. Order: map, then heading + cards.
+
+    Repository data is loaded by ApplicationController and rendered by
+    Homepage::RepositoryCardsComponent. The map uses a Stimulus controller
+    (map_controller.js) instead of inline script.
+    ============================================================================ %>
+
+<section class="fa-regional-partnership" aria-labelledby="regional-partnership-heading">
+  <%# Map — powered by Stimulus map_controller.js %>
+  <div id="partnership-map"
+       class="fa-regional-partnership__map"
+       data-controller="map"
+       data-map-repos-value="<%= @regional_repos.map(&:to_h).to_json %>">
+  </div>
+
+  <%= render Homepage::RepositoryCardsComponent.new(repos: @regional_repos) %>
+</section>

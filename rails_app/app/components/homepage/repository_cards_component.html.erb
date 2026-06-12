@@ -1,0 +1,22 @@
+<div class="fa-regional-partnership__body pl-padding-y-2xl">
+  <div class="pl-viewport-margins">
+    <h2 id="regional-partnership-heading" class="pl-margin-b-m"><%= t('homepage.regional_partnership.heading') %></h2>
+    <p class="pl-line-length pl-margin-b-m">
+      <%= t('homepage.regional_partnership.intro_html',
+            browse_all_link: link_to(t('homepage.regional_partnership.browse_all'),
+                                     helpers.search_action_path)) %>
+    </p>
+
+    <ol class="fa-cards fa-cards--capped">
+      <% @repos.each do |repo| %>
+        <li class="fa-cards__card">
+          <h3 class="fa-cards__card-heading">
+            <%= link_to repo.name, repository_facet_url(repo.name), class: 'fa-cards__card-link' %>
+          </h3>
+          <p class="fa-cards__card-sub"><%= t('homepage.regional_partnership.guides_count',
+                                              count: number_with_delimiter(repo.count)) %></p>
+        </li>
+      <% end %>
+    </ol>
+  </div>
+</div>
