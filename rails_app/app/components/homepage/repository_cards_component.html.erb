@@ -4,7 +4,8 @@
     <p class="pl-line-length pl-margin-b-m">
       <%= t('homepage.regional_partnership.intro_html',
             browse_all_link: link_to(t('homepage.regional_partnership.browse_all'),
-                                     helpers.search_action_path)) %>
+                                     helpers.facet_catalog_path('repository_ssi'),
+                                     data: { blacklight_modal: 'trigger', turbo: false })) %>
     </p>
 
     <ol class="fa-cards fa-cards--capped">
