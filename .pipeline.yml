@@ -180,6 +180,7 @@ rspec_app_test:
     SOLR_TEST_URL: "http://${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}@solr:${SOLR_PORT}/solr/${SOLR_COLLECTION_NAME}"
     ZOOKEEPER_PORT: "9983"
   script:
+    - apk update && apk add zip
     - cd ${CI_PROJECT_DIR}/rails_app/
     - bundle add rspec_junit_formatter
     - bundle exec rake db:reset
@@ -187,7 +188,7 @@ rspec_app_test:
       attempts=0
       until curl -sf -u "${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}" "http://solr:${SOLR_PORT}/api/"; do
         attempts=$((attempts + 1))
-        [ "$attempts" -ge 10 ] && { echo "Solr never came up"; exit 1; }
+        [ "$attempts" -ge 10 ] && { echo "Solr never started"; exit 1; }
         echo "Waiting for Solr API... (attempt $attempts/10)"
         sleep 15
       done
