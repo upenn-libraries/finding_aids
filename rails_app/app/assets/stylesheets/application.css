@@ -38,26 +38,6 @@
 */
 @import url('bs-root.css');
 @import url('bs-link.css');
-@import url('bs-reboot.css');
-@import url('bs-btn.css');
-@import url('bs-pagination.css');
-@import url('bs-dropdown-menu.css');
-@import url('bs-containers.css');
-@import url('bs-accordion.css');
-@import url('bs-alert.css');
-@import url('bs-form.css');
-@import url('bs-modal.css');
-@import url('bs-tooltip.css');
-
-/**
-* Blacklight (prefix: "bl-")
-*
-* Custom Blacklight overrides and extensions for this application.
-*/
-@import url('bl-constraint.css');
-@import url('bl-facet.css');
-@import url('bl-flash-messages.css');
-@import url('bl-document.css');
 
 /**
 * Finding Aids Application Styles (prefix: "fa-")
@@ -68,5 +48,4 @@
 @import url('fa-root.css');
 @import url('fa-search-bar.css');
 @import url('fa-index.css');
-@import url('fa-results.css');
 @import url('fa-home.css');
