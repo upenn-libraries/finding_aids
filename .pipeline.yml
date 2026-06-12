@@ -150,9 +150,10 @@ rspec_app_test:
         - /bin/bash
         - -c
         - |
-          solr auth enable -type basicAuth -credentials ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} -z ${SOLR_HOST}:${ZOOKEEPER_PORT} &&
-          solr zk upconfig -n finding-aid-discovery -d ${CI_PROJECT_DIR}/rails_app/solr/conf/ -z ${SOLR_HOST}:${ZOOKEEPER_PORT} &&
-          solr create_collection -c finding-aid-discovery-test -n finding-aid-discovery
+          solr-foreground -c &
+          until curl -sf "http://localhost:{SOLR_PORT}/solr/admin/info/system" >/dev/null 2>&1; do sleep 2; done
+          solr auth enable -type basicAuth -credentials ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} -z localhost:${ZOOKEEPER_PORT}
+          wait
       variables:
         SOLR_HOST: "solr"
         SOLR_JAVA_MEM: "-Xms4g -Xmx4g"
@@ -173,21 +174,19 @@ rspec_app_test:
     RAILS_SYSTEM_TESTING_SCREENSHOT_HTML: "1"
     SOLR_ADMIN_USERNAME: admin
     SOLR_ADMIN_PASSWORD: password
+    SOLR_COLLECTION_NAME: "finding-aid-discovery-test"
+    SOLR_CONFIGSET_NAME: "finding-aid-discovery"
     SOLR_PORT: "8983"
-    SOLR_TEST_URL: "http://${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}@solr:${SOLR_PORT}/solr/finding-aid-discovery-test"
+    SOLR_TEST_URL: "http://${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}@solr:${SOLR_PORT}/solr/${SOLR_COLLECTION_NAME}"
     ZOOKEEPER_PORT: "9983"
   script:
     - cd ${CI_PROJECT_DIR}/rails_app/
     - bundle add rspec_junit_formatter
     - bundle exec rake db:reset
-    - i=0
-    - >
-      while [ $i -le 9 ]; do
-        i=$((i+1))
-        curl --silent --user ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} "http://solr:${SOLR_PORT}/api/" "-H" "'Content-type:application/json'" && break
-        echo "Waiting for solr api to be ready"
-        sleep "15s"
-      done
+    - until curl -sf "http://solr:{SOLR_PORT}/solr/admin/info/system" >/dev/null 2>&1; do sleep 2; done
+    - (cd ${CI_PROJECT_DIR}/rails_app/solr/conf && zip -r - *) > configset.zip
+    - curl -X POST -u "${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}" -H "Content-Type:application/octet-stream" --data-binary @configset.zip "http://solr:{SOLR_PORT}/solr/admin/configs?action=UPLOAD&name=${SOLR_CONFIGSET_NAME}"
+    - curl -v -u "${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}" "http://solr:${SOLR_PORT}/solr/admin/collections?action=CREATE&name=${SOLR_COLLECTION_NAME}&collection.configName=${SOLR_CONFIGSET_NAME}&numShards=1"
     - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
   needs:
     - amend_tmp_base_dev_images
