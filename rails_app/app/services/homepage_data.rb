@@ -33,7 +33,7 @@ module HomepageData
     def load_yaml(path, struct_class)
       YAML.safe_load_file(path, symbolize_names: true)
           .map { |entry| struct_class.new(**entry.slice(*struct_class.members)) }
-    rescue Errno::ENOENT, Psych::SyntaxError => e
+    rescue Errno::ENOENT, Psych::SyntaxError, ArgumentError => e
       Rails.logger.warn "Homepage data file missing or malformed: #{path} — #{e.message}"
       []
     end

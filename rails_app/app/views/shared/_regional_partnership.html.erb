@@ -7,6 +7,7 @@
     (map_controller.js) instead of inline script.
     ============================================================================ %>
 
+<% if @regional_repos.present? %>
 <section class="fa-regional-partnership" aria-labelledby="regional-partnership-heading">
   <%# Map — powered by Stimulus map_controller.js %>
   <div id="partnership-map"
@@ -17,3 +18,4 @@
 
   <%= render Homepage::RepositoryCardsComponent.new(repos: @regional_repos) %>
 </section>
+<% end %>

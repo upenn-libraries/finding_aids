@@ -4,7 +4,7 @@
 # full-bleed image. Used on the homepage (see catalog/_home.html.erb) via the base
 # layout's :header content slot. Mirrors Digital Collections' HeaderHeroComponent.
 class HeaderHeroComponent < Blacklight::Component
-  attr_accessor :blacklight_config
+  attr_reader :blacklight_config
 
   renders_one :header, lambda {
     HeaderComponent.new(blacklight_config: blacklight_config, theme: :dark)
