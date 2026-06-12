@@ -4,9 +4,16 @@
 class CatalogController < ApplicationController
   include Blacklight::Catalog
 
+  before_action :load_homepage_data, only: :index
+
+  def index
+    super
+  end
+
   configure_blacklight do |config|
     config.bootstrap_version = 5
     config.header_component = HeaderComponent
+    config.index.search_bar_component = SearchBarComponent
     config.advanced_search.enabled = false
 
     ## Class for sending and receiving requests from a search index
@@ -179,5 +186,13 @@ class CatalogController < ApplicationController
     languages = document.fetch(:languages_ssim, []).join
 
     note.present? && languages.gsub(/[^0-9a-zA-Z]/, '') != note.gsub(/[^0-9a-zA-Z]/, '')
+  end
+
+  private
+
+  def load_homepage_data
+    return if has_search_parameters?
+
+    @homepage_guides = HomepageData.collection_guides.sample(8)
   end
 end
