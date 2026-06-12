@@ -6,6 +6,10 @@ class CatalogController < ApplicationController
 
   before_action :load_homepage_data, only: :index
 
+  def index
+    super
+  end
+
   configure_blacklight do |config|
     config.bootstrap_version = 5
     config.header_component = HeaderComponent
@@ -183,8 +187,6 @@ class CatalogController < ApplicationController
 
     note.present? && languages.gsub(/[^0-9a-zA-Z]/, '') != note.gsub(/[^0-9a-zA-Z]/, '')
   end
-
-  private
 
   def load_homepage_data
     return if has_search_parameters?
