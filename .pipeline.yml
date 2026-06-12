@@ -193,7 +193,7 @@ rspec_app_test:
         sleep 15
       done
     - (cd ${CI_PROJECT_DIR}/rails_app/solr/conf && zip -r - *) > configset.zip
-    - curl -X POST -u "${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}" -H "Content-Type:application/octet-stream" --data-binary @configset.zip "http://solr:{SOLR_PORT}/solr/admin/configs?action=UPLOAD&name=${SOLR_CONFIGSET_NAME}"
+    - curl -X POST -u "${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}" -H "Content-Type:application/octet-stream" --data-binary @configset.zip "http://solr:${SOLR_PORT}/solr/admin/configs?action=UPLOAD&name=${SOLR_CONFIGSET_NAME}"
     - curl -v -u "${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}" "http://solr:${SOLR_PORT}/solr/admin/collections?action=CREATE&name=${SOLR_COLLECTION_NAME}&collection.configName=${SOLR_CONFIGSET_NAME}&numShards=1"
     - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
   needs:
