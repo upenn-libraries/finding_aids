@@ -156,7 +156,7 @@ rspec_app_test:
           wait
       variables:
         SOLR_HOST: "solr"
-        SOLR_JAVA_MEM: "-Xms4g -Xmx4g"
+        SOLR_HEAP: "6g"
         SOLR_MODE: "solrcloud"
         SOLR_AUTHENTICATION_OPTS: "-Dbasicauth=${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}"
         SOLR_AUTH_TYPE: "basic"
