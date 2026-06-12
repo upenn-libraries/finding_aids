@@ -38,6 +38,17 @@
 */
 @import url('bs-root.css');
 @import url('bs-link.css');
+@import url('bs-btn.css');
+@import url('bs-dropdown-menu.css');
+@import url('bs-form.css');
+@import url('bs-modal.css');
+
+/**
+* Blacklight (prefix: "bl-")
+*
+* Custom Blacklight overrides and extensions for this application.
+*/
+@import url('bl-facet.css');
 
 /**
 * Finding Aids Application Styles (prefix: "fa-")
