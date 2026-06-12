@@ -151,7 +151,7 @@ rspec_app_test:
         - -c
         - |
           solr-foreground -c &
-          until curl -sf "http://localhost:{SOLR_PORT}/solr/admin/info/system" >/dev/null 2>&1; do sleep 2; done
+          wait-for-solr.sh --max-attempts 60 --wait-seconds 2
           solr auth enable -type basicAuth -credentials ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} -z localhost:${ZOOKEEPER_PORT}
           wait
       variables:
@@ -183,7 +183,14 @@ rspec_app_test:
     - cd ${CI_PROJECT_DIR}/rails_app/
     - bundle add rspec_junit_formatter
     - bundle exec rake db:reset
-    - until curl -sf "http://solr:{SOLR_PORT}/solr/admin/info/system" >/dev/null 2>&1; do sleep 2; done
+    - |
+      attempts=0
+      until curl -sf -u "${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}" "http://solr:${SOLR_PORT}/api/"; do
+        attempts=$((attempts + 1))
+        [ "$attempts" -ge 10 ] && { echo "Solr never came up"; exit 1; }
+        echo "Waiting for Solr API... (attempt $attempts/10)"
+        sleep 15
+      done
     - (cd ${CI_PROJECT_DIR}/rails_app/solr/conf && zip -r - *) > configset.zip
     - curl -X POST -u "${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}" -H "Content-Type:application/octet-stream" --data-binary @configset.zip "http://solr:{SOLR_PORT}/solr/admin/configs?action=UPLOAD&name=${SOLR_CONFIGSET_NAME}"
     - curl -v -u "${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}" "http://solr:${SOLR_PORT}/solr/admin/collections?action=CREATE&name=${SOLR_COLLECTION_NAME}&collection.configName=${SOLR_CONFIGSET_NAME}&numShards=1"
