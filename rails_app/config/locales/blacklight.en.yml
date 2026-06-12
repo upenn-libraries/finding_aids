@@ -1,3 +1,7 @@
 en:
+  views:
+    pagination:
+      previous: 'Previous'
+      next: 'Next'
   blacklight:
     application_name: 'Philadelphia Area Archives'
