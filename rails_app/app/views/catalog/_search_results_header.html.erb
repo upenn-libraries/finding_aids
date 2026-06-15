@@ -1,9 +1,0 @@
-<%# Overriding view from Blacklight v9.0.0 to replace default header with search results count %>
-
-<h1 class="pl-h2 pl-margin-b-0">
-  <% if @response.total_count > 0 %>
-    <%= pluralize(number_with_delimiter(@response.total_count), t('results.h1.singular')) %>
-  <% else %>
-    <%= t('results.h1.none') %>
-  <% end %>
-</h1>

@@ -13,14 +13,14 @@
   <%= render HeaderHeroComponent.new(blacklight_config: blacklight_config) do |hero| %>
     <% hero.with_picture do %>
       <picture hero="art-direction">
-        <%= image_tag 'moelis-reading-room.jpg', alt: 'An archival reading room' %>
+        <%= image_tag 'moelis-reading-room.jpg', alt: t('homepage.hero.alt') %>
       </picture>
     <% end %>
     <% hero.with_heading do %>
-      <h1 hero="heading">Stories held in archives</h1>
+      <h1 hero="heading"><%= t('homepage.hero.heading') %></h1>
     <% end %>
     <% hero.with_subheading do %>
-      <p hero="sub-heading">Find your way into the primary sources held by archives in the Philadelphia area.</p>
+      <p hero="sub-heading"><%= t('homepage.hero.subheading') %></p>
     <% end %>
   <% end %>
 <% end %>
