@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# Overriding component from Blacklight v9.0.0 to support:
-#   - combination of constraints/sort into one nav
-#   - removal of "did you mean" spellcheck suggestions area
-#   - usage of local StartOverButton component
 module Catalog
+  # Overriding component from Blacklight v9.0.0 to support:
+  #   - combination of constraints/sort into one nav
+  #   - removal of "did you mean" spellcheck suggestions area
+  #   - usage of local StartOverButton component
   class SearchHeaderComponent < Blacklight::SearchHeaderComponent
     def call
       tag.nav(class: 'fa-constraints-and-sort') do
@@ -19,8 +19,8 @@ module Catalog
              .view_config(helpers.document_index_view_type)
              .constraints_component
              .new(
-                search_state: helpers.search_state,
-                start_over_component: Catalog::StartOverButtonComponent
+               search_state: helpers.search_state,
+               start_over_component: Catalog::StartOverButtonComponent
              )
     end
   end
