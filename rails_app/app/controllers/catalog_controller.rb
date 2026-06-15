@@ -9,7 +9,6 @@ class CatalogController < ApplicationController
     config.header_component = HeaderComponent
     config.index.constraints_component = Catalog::ConstraintsComponent
     config.index.search_header_component = Catalog::SearchHeaderComponent
-    config.index.document_metadata_component = Catalog::DocumentMetadataComponent
     config.advanced_search.enabled = false
 
     ## Class for sending and receiving requests from a search index
