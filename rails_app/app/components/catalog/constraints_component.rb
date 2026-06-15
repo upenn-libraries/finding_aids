@@ -4,7 +4,6 @@ module Catalog
   # Override component from Blacklight v9.0.0 to add an "All" constraint pill
   # when no search constraints are present.
   class ConstraintsComponent < Blacklight::ConstraintsComponent
-
     # @return [Boolean]
     def render?
       true
