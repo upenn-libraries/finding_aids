@@ -4,8 +4,8 @@
 <%= content_tag @tag || :div, id: @id, class: @classes do %>
   <%= constraints_heading %>
 
-  <% if no_constraints? && @show_all_constraint %>
-    <%= all_constraint %>
+  <% if !constraints? %>
+    <%= render all_constraint %>
   <% elsif query_constraints_area.present? %>
     <% query_constraints_area.each do |constraint| %>
       <%= constraint %>

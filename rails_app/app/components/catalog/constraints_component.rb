@@ -2,36 +2,33 @@
 
 module Catalog
   # Override component from Blacklight v9.0.0 to add an "All" constraint pill
-  # when no search constraints are present.
+  # when no search constraints are present. Also, override the heading_classes ivar
+  # set by default in the parent.
   class ConstraintsComponent < Blacklight::ConstraintsComponent
-    def initialize(show_all_constraint: true, **)
+    def initialize(**)
       super(**)
 
-      @show_all_constraint = show_all_constraint
       @heading_classes = nil
     end
 
+    # @return [Boolean]
     def render?
-      !no_constraints? || @show_all_constraint
+      true
     end
 
-    def no_constraints?
-      @search_state.query_param.blank? && @search_state.filters.empty?
+    # @return [Boolean]
+    def constraints?
+      @search_state.has_constraints?
     end
 
+    # Return a constraint component representing the anti-constraint "All"
+    # @return [Blacklight::ConstraintLayoutComponent]
     def all_constraint
-      tag.span(class: 'btn-group applied-filter constraint filter mx-1') do
-        tag.span(class: 'constraint-value btn btn-outline-secondary') {
-          tag.span(t('blacklight.search.filters.all'), class: 'filter-value')
-        } + all_constraint_remove_button
-      end
-    end
-
-    def all_constraint_remove_button
-      helpers.link_to(helpers.root_path, class: 'btn btn-outline-secondary remove') do
-        render(Blacklight::Icons::RemoveComponent.new(aria_hidden: true)) +
-          tag.span(t('blacklight.search.filters.remove.value', value: 'All'), class: 'visually-hidden')
-      end
+      @query_constraint_component.new(
+        value: t('blacklight.search.filters.all'),
+        remove_path: helpers.root_path,
+        classes: 'mx-1'
+      )
     end
   end
 end
