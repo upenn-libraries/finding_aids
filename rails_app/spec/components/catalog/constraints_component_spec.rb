@@ -17,11 +17,6 @@ RSpec.describe Catalog::ConstraintsComponent, type: :component do
   end
   let(:query_params) { {} }
 
-  it 'renders a heading with no CSS classes' do
-    heading = page.find('h2')
-    expect(heading[:class].to_s).to be_empty
-  end
-
   context 'with no constraints' do
     describe '#render?' do
       it 'is true' do

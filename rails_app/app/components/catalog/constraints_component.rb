@@ -2,14 +2,8 @@
 
 module Catalog
   # Override component from Blacklight v9.0.0 to add an "All" constraint pill
-  # when no search constraints are present. Also, override the heading_classes ivar
-  # set by default in the parent.
+  # when no search constraints are present.
   class ConstraintsComponent < Blacklight::ConstraintsComponent
-    def initialize(**)
-      super(**)
-
-      @heading_classes = nil
-    end
 
     # @return [Boolean]
     def render?

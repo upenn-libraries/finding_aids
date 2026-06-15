@@ -5,6 +5,7 @@ module Catalog
   #   - combination of constraints/sort into one nav
   #   - removal of "did you mean" spellcheck suggestions area
   #   - usage of local StartOverButton component
+  #   - remove heading_classes from the rendered constraints area
   class SearchHeaderComponent < Blacklight::SearchHeaderComponent
     def call
       tag.nav(class: 'fa-constraints-and-sort') do
@@ -20,6 +21,7 @@ module Catalog
              .constraints_component
              .new(
                search_state: helpers.search_state,
+               heading_classes: nil,
                start_over_component: Catalog::StartOverButtonComponent
              )
     end
