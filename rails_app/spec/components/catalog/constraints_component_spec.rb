@@ -34,7 +34,7 @@ RSpec.describe Catalog::ConstraintsComponent, type: :component do
     end
 
     it 'links to the home page when "All" constraint is removed' do
-      expect(page).to have_css("a.remove[href='#{component.helpers.root_path}']")
+      expect(page).to have_css("a.remove[href='#{Rails.application.routes.url_helpers.root_path}']")
     end
   end
 
