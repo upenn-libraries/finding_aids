@@ -6,6 +6,10 @@ class CatalogController < ApplicationController
 
   before_action :load_homepage_data, only: :index
 
+  def index
+    super
+  end
+
   configure_blacklight do |config|
     config.bootstrap_version = 5
     config.header_component = HeaderComponent
