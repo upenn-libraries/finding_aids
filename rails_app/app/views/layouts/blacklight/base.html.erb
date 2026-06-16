@@ -33,9 +33,10 @@
 
     <%= csrf_meta_tags %>
     <%= content_for(:head) %>
+
+    <%= render('shared/ms_clarity/script', id: Settings.ms_clarity.id) if render_clarity_script? %>
   </head>
   <body class="pl-reset pl-typeset <%= render_body_class %>">
-  <%= render('shared/ms_clarity/script', id: Settings.ms_clarity.id) if render_clarity_script? %>
 
   <%= render blacklight_config.skip_link_component.new do %>
     <%= content_for(:skip_links) %>
