@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 describe HomepageData do
+  before do
+    # Reset memoized instance variables between tests
+    described_class.instance_variable_set(:@collection_guides, nil)
+    described_class.instance_variable_set(:@repositories, nil)
+  end
+
   describe '.collection_guides' do
     it 'returns an array of CollectionGuide objects' do
       guides = described_class.collection_guides

@@ -7,8 +7,12 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
 
   let(:guides) do
     [
-      HomepageData::CollectionGuide.new(identifier: 'TEST.001', name: 'Test Collection', collection: 'Test Institution'),
-      HomepageData::CollectionGuide.new(identifier: 'TEST.002', name: 'Another Collection', collection: 'Another Institution')
+      HomepageData::CollectionGuide.new(
+        identifier: 'TEST.001', name: 'Test Collection', collection: 'Test Institution'
+      ),
+      HomepageData::CollectionGuide.new(
+        identifier: 'TEST.002', name: 'Another Collection', collection: 'Another Institution'
+      )
     ]
   end
 
@@ -34,8 +38,8 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
   end
 
   it 'renders guide names as links to records' do
-    expect(component).to have_link('Test Collection', href: '/catalog/TEST.001')
-    expect(component).to have_link('Another Collection', href: '/catalog/TEST.002')
+    expect(component).to have_link('Test Collection', href: '/records/TEST.001')
+    expect(component).to have_link('Another Collection', href: '/records/TEST.002')
   end
 
   it 'renders guide collection names as subtitle text' do

@@ -17,7 +17,7 @@ module Homepage
     # @param guide [HomepageData::CollectionGuide] guide object responding to +identifier+
     # @return [String] URL to the catalog record
     def guide_record_url(guide)
-      helpers.catalog_path(guide.identifier)
+      helpers.solr_document_path(guide.identifier)
     end
   end
 end
