@@ -21,9 +21,10 @@ en:
       about: 'About the site'
       statement: 'Statement on Archival Description and Harmful Language'
       admin: 'Site Administration'
-  pagination:
-    previous: 'Previous'
-    next: 'Next'
+  views:
+    pagination:
+      previous: 'Previous'
+      next: 'Next'
   document:
     links:
       contact_us: "Contact Us"
