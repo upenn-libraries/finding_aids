@@ -8,7 +8,7 @@ module HomepageData
   COLLECTION_GUIDES_PATH = Rails.root.join('data/collection_guides.yml')
   REPOSITORIES_PATH      = Rails.root.join('data/repositories.yml')
 
-  CollectionGuide = Data.define(:name, :collection)
+  CollectionGuide = Data.define(:identifier, :name, :collection)
   Repository = Data.define(:name, :slug, :count, :lat, :lng)
 
   class << self

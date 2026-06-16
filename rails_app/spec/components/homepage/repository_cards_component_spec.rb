@@ -7,8 +7,8 @@ RSpec.describe Homepage::RepositoryCardsComponent, type: :component do
 
   let(:repos) do
     [
-      OpenStruct.new(name: 'Test Repository', count: 100, lat: 39.95, lng: -75.16, slug: 'test'),
-      OpenStruct.new(name: 'Another Repository', count: 200, lat: 40.0, lng: -75.19, slug: 'another')
+      HomepageData::Repository.new(name: 'Test Repository', slug: 'test', count: 100, lat: 39.95, lng: -75.16),
+      HomepageData::Repository.new(name: 'Another Repository', slug: 'another', count: 200, lat: 40.0, lng: -75.19)
     ]
   end
 
@@ -32,9 +32,15 @@ RSpec.describe Homepage::RepositoryCardsComponent, type: :component do
     expect(component).to have_css('.fa-cards__card', count: 2)
   end
 
-  it 'renders repository names as links' do
+  it 'renders repository names as links to filtered search' do
     expect(component).to have_link('Test Repository')
     expect(component).to have_link('Another Repository')
+  end
+
+  it 'links to repository facet filter' do
+    test_link = component.find_link('Test Repository')
+    expect(test_link['href']).to include('repository_ssi')
+    expect(test_link['href']).to include('Test+Repository')
   end
 
   it 'renders repository guide counts as subtitle text' do

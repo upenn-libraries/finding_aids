@@ -7,8 +7,8 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
 
   let(:guides) do
     [
-      OpenStruct.new(name: 'Test Collection', collection: 'Test Institution', identifier: 'TEST.001'),
-      OpenStruct.new(name: 'Another Collection', collection: 'Another Institution', identifier: 'TEST.002')
+      HomepageData::CollectionGuide.new(identifier: 'TEST.001', name: 'Test Collection', collection: 'Test Institution'),
+      HomepageData::CollectionGuide.new(identifier: 'TEST.002', name: 'Another Collection', collection: 'Another Institution')
     ]
   end
 
@@ -33,9 +33,9 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
     expect(component).to have_css('.fa-cards__card', count: 2)
   end
 
-  it 'renders guide names as links' do
-    expect(component).to have_link('Test Collection')
-    expect(component).to have_link('Another Collection')
+  it 'renders guide names as links to records' do
+    expect(component).to have_link('Test Collection', href: '/catalog/TEST.001')
+    expect(component).to have_link('Another Collection', href: '/catalog/TEST.002')
   end
 
   it 'renders guide collection names as subtitle text' do

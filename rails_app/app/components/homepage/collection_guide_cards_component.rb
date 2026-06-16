@@ -13,11 +13,11 @@ module Homepage
       @guides = guides
     end
 
-    # Build a search URL for a given guide by name.
-    # @param guide [HomepageData::CollectionGuide] guide object responding to +name+
-    # @return [String] search URL with name as query parameter
-    def guide_search_url(guide)
-      helpers.search_action_path(q: guide.name)
+    # Build a record URL for a given guide by identifier.
+    # @param guide [HomepageData::CollectionGuide] guide object responding to +identifier+
+    # @return [String] URL to the catalog record
+    def guide_record_url(guide)
+      helpers.catalog_path(guide.identifier)
     end
   end
 end

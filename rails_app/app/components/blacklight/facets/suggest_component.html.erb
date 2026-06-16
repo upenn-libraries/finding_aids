@@ -1,4 +1,7 @@
-<%# Copied from Blacklight v9.0 %>
+<%#
+  Overriding Blacklight 9.0.0 component to customize facet suggestion search field.
+  Changes: Custom placeholder text and data attributes for autocomplete behavior.
+%>
 <label class="input-group-text visually-hidden" for="facet_suggest_<%= key %>">
   <%= I18n.t('blacklight.search.facets.suggest.label', field_label: label.downcase.pluralize) %>
 </label>
