@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  # @return [Boolean]
+  def render_clarity_script?
+    Settings.ms_clarity&.id.present?
+  end
+
   # Custom helper method use by Blacklight to truncate abstract.
   # @param [Hash] options
   # @return [ActiveSupport::SafeBuffer]

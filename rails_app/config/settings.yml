@@ -1,7 +1,8 @@
 pennlibs_web_version: '1.4.0-dev.4'
 
-# MS Clarity project ID (nil disables tracking)
-clarity_project_id: nil
+# MS Clarity configuration (nil disables tracking)
+ms_clarity:
+  id: nil
 
 solr:
   url: <%= ENV['SOLR_URL'] %>

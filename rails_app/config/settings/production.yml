@@ -1,3 +1,4 @@
 # MS Clarity project ID for production environment
 # Replace with actual project ID from Clarity UI
-clarity_project_id: nil
+ms_clarity:
+  id: nil
