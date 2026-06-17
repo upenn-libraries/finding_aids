@@ -3,13 +3,28 @@ en:
     service_name: 'Philadelphia Area Archives'
     service_lede: 'Finding Aids at the University of Pennsylvania'
     sign_out: 'Sign Out'
-
+  results:
+    h1:
+      singular: 'result'
+      none: 'No results'
+    none:
+      h2: 'Your search found no results'
+      check_spelling: 'Check your spelling.'
+      adjust_search: 'Adjust what you searched for.'
+      different_keywords: 'Try different keywords that mean the same thing.'
+      contact_us:
+        link_text: 'Contact us'
+        remaining_text: "to get help finding what you're looking for."
   common:
     links:
       home: 'Home'
       about: 'About the site'
       statement: 'Statement on Archival Description and Harmful Language'
       admin: 'Site Administration'
+  views:
+    pagination:
+      previous: 'Previous'
+      next: 'Next'
   document:
     links:
       contact_us: "Contact Us"

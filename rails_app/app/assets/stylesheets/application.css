@@ -1,2 +1,19 @@
 @import url(rails_bootstrap_forms.css);
 @import url(blacklight.css);
+
+/**
+* Bootstrap overrides (prefix: "bs-")
+*/
+@import url('bs-pagination.css');
+
+/**
+* Blacklight overrides (prefix: "bl-")
+*/
+@import url('bl-constraint.css');
+@import url('bl-document.css');
+
+/**
+* Finding Aids results-page styles (prefix: "fa-")
+*/
+@import url('fa-index.css');
+@import url('fa-results.css');

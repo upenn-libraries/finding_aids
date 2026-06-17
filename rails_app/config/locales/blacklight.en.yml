@@ -1,3 +1,6 @@
 en:
   blacklight:
     application_name: 'Philadelphia Area Archives'
+    search:
+      filters:
+        all: 'All'
