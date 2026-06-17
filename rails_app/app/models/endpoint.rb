@@ -140,19 +140,6 @@ class Endpoint < ApplicationRecord
     "#{source_type.camelize}Extractor".constantize
   end
 
-  # @return [Object]
-  def parser
-    @parser ||= parser_class.new(self)
-  end
-
-  # Return Class for parsing xml_urls for this Endpoint
-  # @note This function was originally written to extract the "parser" value from the harvest_config with the idea
-  #   that we may need different parser classes for different records. The method will stay in place in case we
-  #   need this functionality down the road.
-  def parser_class
-    EadParser
-  end
-
   def reload
     @last_harvest = nil # Resetting last_harvest so the object is re-instantiated with fresh data.
     super

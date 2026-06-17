@@ -12,7 +12,6 @@ class HarvestingService
   # @param [Endpoint] endpoint
   def initialize(endpoint, solr_service = SolrService.new, limit: nil)
     @endpoint = endpoint
-    @parser = endpoint.parser
     @solr = solr_service
     @limit = limit
     @existing_record_ids = @solr.find_ids_by_endpoint(@endpoint.slug)
@@ -39,7 +38,7 @@ class HarvestingService
     xml_files.each_slice(500) do |slice|
       documents = []
       slice.each do |ead|
-        document = @parser.parse(ead.xml)
+        document = RecordIndexer.new(parsed_ead: EadParser.new(ead.xml, @endpoint), endpoint: @endpoint).build
         validate_identifier!(ead, document[:id])
         documents << document
         document_ids << document[:id]
