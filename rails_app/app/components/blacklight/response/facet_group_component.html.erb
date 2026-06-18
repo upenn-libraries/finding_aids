@@ -1,0 +1,21 @@
+<%#
+  Overrides Blacklight 9.0.0 to wrap the facet list in the Penn design-system
+  <pennlibs-accordion> (which enhances the .pl-details children rendered by
+  blacklight/facets/field_component) instead of relying on the Bootstrap
+  `.accordion` class. The `accordion` body class is dropped, but the panel div
+  (the @panel_id collapse target) and its remaining classes are kept so the
+  mobile "Show facets" toggle still works unchanged.
+%>
+<%= content_tag :div, id: @id, class: container_classes do %>
+  <div class="facets-header">
+    <%= content_tag :h2, @title, class: header_classes if @title %>
+
+    <%= collapse_toggle_button(@panel_id) %>
+  </div>
+
+  <div id="<%= @panel_id %>" class="<%= body_classes.to_s.gsub(/\baccordion\b/, '').squish %>">
+    <pennlibs-accordion class="pl-flex pl-flex-col pl-gap-m">
+      <%= body %>
+    </pennlibs-accordion>
+  </div>
+<% end %>

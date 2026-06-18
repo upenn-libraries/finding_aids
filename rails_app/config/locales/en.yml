@@ -112,7 +112,7 @@ en:
           first: 'First Millennium'
   fields:
     endpoint: 'Endpoint'
-    repository: 'Repository'
+    repository: 'Archive'
     record_source: 'Record Source'
     online_content: 'Online Content'
     title: 'Title'

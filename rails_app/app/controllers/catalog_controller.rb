@@ -41,6 +41,10 @@ class CatalogController < ApplicationController
 
     config.default_document_solr_params = {} # Use default in solrconfig
 
+    # Render at most 7 values per facet before the "more" link, matching DC and Find.
+    # Facets configured with `limit: true` use this default.
+    config.default_facet_limit = 7
+
     # disable tracking links since we don't allow paginating through a results set
     config.track_search_session = Blacklight::OpenStructWithHashAccess.new({ storage: false })
 

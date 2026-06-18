@@ -1,0 +1,40 @@
+<%#
+  Overrides Blacklight 9.0.0 to render each facet with the Penn design-system
+  accordion instead of a Bootstrap collapse accordion item. Each facet is a
+  native <details> disclosure (.pl-details), enhanced by the surrounding
+  <pennlibs-accordion> (see blacklight/response/facet_group_component) for
+  keyboard navigation and expand/collapse-all. The open-by-default state is
+  driven from the server via the facet field's `collapsed?`, mapped to the
+  native `open` attribute. The design system styles .pl-details,
+  .pl-details__summary and .pl-details__content (loaded from web.css).
+
+  Why use the design-system accordion here:
+  - Consistency: facets behave and look identical to accordions on the show
+    page and everywhere else we use accordions, since they all share the one
+    <pennlibs-accordion> component rather than a Blacklight-specific Bootstrap
+    implementation.
+  - Accessibility: the component implements the WAI-ARIA accordion/disclosure
+    pattern (correct roles, state, and keyboard interaction), so the facets are
+    spec-compliant and accessible out of the box.
+%>
+<details
+  id="<%= html_id %>"
+  class="pl-details facet-limit blacklight-<%= @facet_field.key %><%= ' facet-limit-active' if @facet_field.active? %>"
+  <%= 'open' unless @facet_field.collapsed? %>
+>
+  <summary id="<%= header_html_id %>" class="pl-details__summary facet-field-heading h6">
+    <%= label %>
+  </summary>
+
+  <div role="region" aria-labelledby="<%= header_html_id %>" class="pl-details__content facet-content">
+    <%= body %>
+
+    <% if @facet_field.modal_path %>
+      <div class="more_facets">
+        <%= link_to t("more_#{@facet_field.key}_html", scope: 'blacklight.search.facets', default: :more_html, field_name: @facet_field.label.downcase.pluralize),
+          @facet_field.modal_path,
+          data: { blacklight_modal: 'trigger', turbo: false } %>
+      </div>
+    <% end %>
+  </div>
+</details>
