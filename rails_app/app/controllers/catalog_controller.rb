@@ -14,7 +14,9 @@ class CatalogController < ApplicationController
   configure_blacklight do |config|
     config.bootstrap_version = 5
     config.header_component = HeaderComponent
-    config.index.search_bar_component = SearchBarComponent
+    config.index.search_bar_component = Catalog::SearchBarComponent
+    config.index.constraints_component = Catalog::ConstraintsComponent
+    config.index.search_header_component = Catalog::SearchHeaderComponent
     config.advanced_search.enabled = false
 
     ## Class for sending and receiving requests from a search index
@@ -47,7 +49,8 @@ class CatalogController < ApplicationController
     # config.document_solr_path = 'get'
 
     # items to show per page, each number in the array represent another option to choose from.
-    config.per_page = [10, 20, 50, 100]
+    # First value is the default page size (no default_per_page set), matching our other Blacklight apps.
+    config.per_page = [25, 50, 100]
 
     # solr field configuration for search results/index views
     config.index.title_field = :title_tsi
@@ -131,7 +134,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), if: :json_request?
     config.add_index_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), if: :json_request?
     config.add_index_field 'creators_ssim', label: I18n.t('fields.creators'), if: :json_request?
-    config.add_index_field 'repository_ssi', label: I18n.t('fields.repository')
+    config.add_index_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
     config.add_index_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents'),
                                                           helper_method: :truncated_abstract
 

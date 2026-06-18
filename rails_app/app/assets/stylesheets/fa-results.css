@@ -1,0 +1,51 @@
+/* Search results header: constraints + sort/per-page controls combined in one nav.
+   See Catalog::SearchHeaderComponent. */
+
+.fa-constraints-and-sort {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--pl-space-m);
+  flex-wrap: wrap;
+  align-self: end;
+  width: 100%;
+  align-items: center;
+
+  & .sort-pagination {
+    display: flex;
+    gap: var(--pl-space-xs);
+    border-bottom: none;
+
+    @media (min-width: 819px) {
+      margin-left: auto !important;
+    }
+
+    /* Pagination and per-page show at the bottom of the results (see _results_pagination). */
+    & .paginate-section,
+    & .per_page-dropdown {
+      display: none;
+    }
+  }
+
+  & .view-type-group .btn.active {
+    --bs-btn-active-bg: var(--pl-color-bg-accent-emphasis);
+    --bs-btn-active-border-color: var(--pl-color-bg-accent-emphasis);
+    --bs-btn-active-color: var(--pl-color-fg-on-emphasis);
+  }
+}
+
+.sort-dropdown {
+  margin: 0 !important;
+}
+
+.search-widgets {
+  gap: var(--pl-space-s);
+  align-items: center;
+}
+
+.search-widgets .btn {
+  --bs-btn-padding-y: var(--pl-space-2xs);
+}
+
+.view-type-group .btn {
+  --bs-btn-padding-x: var(--pl-space-s);
+}

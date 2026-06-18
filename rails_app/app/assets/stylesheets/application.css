@@ -42,6 +42,7 @@
 @import url('bs-dropdown-menu.css');
 @import url('bs-form.css');
 @import url('bs-modal.css');
+@import url('bs-pagination.css');
 
 /**
 * Blacklight (prefix: "bl-")
@@ -49,6 +50,8 @@
 * Custom Blacklight overrides and extensions for this application.
 */
 @import url('bl-facet.css');
+@import url('bl-constraint.css');
+@import url('bl-document.css');
 
 /**
 * Finding Aids Application Styles (prefix: "fa-")
@@ -60,3 +63,4 @@
 @import url('fa-search-bar.css');
 @import url('fa-index.css');
 @import url('fa-home.css');
+@import url('fa-results.css');

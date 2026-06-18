@@ -24,3 +24,5 @@ en:
           label: 'Sort by %{sort}'
           index: 'A-Z'
           count: 'Frequency'
+      filters:
+        all: 'All'
