@@ -64,7 +64,7 @@
 .more_facets {
   padding: var(--pl-space-m);
   padding-top: var(--pl-space-xs);
-  padding-bottom: clac(var(--pl-space-xs) + var(--pl-space-m));
+  padding-bottom: calc(var(--pl-space-xs) + var(--pl-space-m));
 }
 
 .blacklight-year_isim {
