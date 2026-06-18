@@ -1,10 +1,10 @@
+<%# Override from Blacklight 9.0.0 to remove display of sidebar when not showing results %>
+
 <% content_for(:head) do %>
   <meta name="blacklight-search-storage" content="<%= blacklight_config.track_search_session.storage %>">
 <% end %>
-<% unless has_search_parameters? %>
-  <%# Homepage renders when no search parameters %>
-  <%= render 'home' %>
-<% else %>
+
+<% if has_search_parameters? %>
   <% content_for(:sidebar) do %>
     <% conf = blacklight_config.view_config(document_index_view_type) %>
     <%= render conf.sidebar_component.new(blacklight_config: blacklight_config,
@@ -13,4 +13,7 @@
   <% end %>
   <%# Search results use Blacklight defaults %>
   <%= render 'search_results' %>
+<% else %>
+  <%# Homepage renders when no search parameters %>
+  <%= render 'home' %>
 <% end %>
