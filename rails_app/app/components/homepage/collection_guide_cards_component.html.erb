@@ -1,0 +1,17 @@
+<section class="pl-padding-y-2xl">
+  <div class="pl-viewport-margins">
+    <h2 class="pl-margin-b-m"><%= t('homepage.collection_guides.heading') %></h2>
+    <p class="pl-line-length pl-margin-b-m"><%= t('homepage.collection_guides.intro') %></p>
+
+    <ol class="fa-cards fa-cards--capped">
+      <% @guides.each do |guide| %>
+        <li class="fa-cards__card">
+          <h3 class="fa-cards__card-heading">
+            <%= link_to guide.name, guide_record_url(guide), class: 'fa-cards__card-link' %>
+          </h3>
+          <p class="fa-cards__card-sub"><%= guide.collection %></p>
+        </li>
+      <% end %>
+    </ol>
+  </div>
+</section>

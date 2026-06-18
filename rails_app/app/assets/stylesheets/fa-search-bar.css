@@ -1,0 +1,90 @@
+/* Search bar that sits in the design system header (HeaderComponent slot="end"). */
+
+.fa-header-search {
+  flex: 1;
+  min-width: 0;
+
+  margin-top: var(--pl-space-m);
+  margin-left: 0;
+
+  @media (min-width: 1001px) {
+    margin-top: 0;
+    margin-left: var(--pl-space-3xl);
+  }
+}
+
+@media (max-width: 1001px) {
+  .fa-header-search {
+    width: 100%;
+  }
+}
+
+.fa-search-box {
+  background: var(--pl-color-bg-subtle);
+  flex-grow: 1;
+  border-radius: 1.25rem;
+  padding: var(--pl-space-2xs);
+  box-shadow: rgba(140, 149, 159, 0.2) 0px 3px 6px 0px;
+  border: solid 1px var(--pl-color-penn-blue);
+  padding-left: var(--pl-space-l);
+  margin-left: auto;
+
+  @media (min-width: 1001px) {
+    max-width: 28rem;
+  }
+
+  & .search-query-form {
+    width: 100%;
+    border-radius: 1rem;
+  }
+
+  & auto-complete {
+    border: none;
+    border-radius: 1rem !important;
+    background: none;
+  }
+
+  & .input-group {
+    gap: var(--pl-space-m);
+  }
+
+  &:focus-within {
+    box-shadow: 0 0 0 1px var(--pl-color-fg-default), 0 0 0 3px var(--pl-color-bg-accent);
+  }
+
+  & .search-q {
+    border-radius: 1.125rem !important;
+    border: none;
+    background: none;
+    font-size: var(--pl-font-size-m);
+    padding: 0 !important;
+    color: #0d1015; /* slightly darker shade */
+
+    &::placeholder {
+      color: var(--pl-color-fg-subtle) !important;
+      opacity: 1 !important;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  & button.search-btn {
+    border-radius: var(--pl-border-radius) !important;
+    padding: var(--pl-space-xs) var(--pl-space-m);
+    font-size: var(--pl-font-size-m);
+
+    @media (min-width: 768px) {
+      & .blacklight-icons-search {
+        display: none;
+      }
+    }
+
+    &:focus {
+      box-shadow: none;
+      text-decoration: underline;
+      text-underline-offset: var(--pl-link-text-underline-offset);
+    }
+  }
+}

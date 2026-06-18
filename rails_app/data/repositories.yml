@@ -1,0 +1,97 @@
+# Sample repositories for homepage "A Regional Partnership" section and Leaflet map.
+# Fields: name (institution name), slug (URL-friendly identifier), count (guide count), lat/lng (map coordinates).
+- name: "Haverford College Quaker & Special Collections"
+  slug: haverford-quaker
+  count: 2065
+  lat: 40.0087
+  lng: -75.3068
+- name: "Princeton University Library: Manuscripts Division"
+  slug: princeton-manuscripts
+  count: 1868
+  lat: 40.3497
+  lng: -74.6593
+- name: "University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts"
+  slug: penn-kislak
+  count: 1464
+  lat: 39.9522
+  lng: -75.1932
+- name: "Academy of Natural Sciences Archives"
+  slug: ansp
+  count: 1205
+  lat: 39.9576
+  lng: -75.171
+- name: "Swarthmore College Peace Collection"
+  slug: swarthmore-peace
+  count: 1147
+  lat: 39.9026
+  lng: -75.3548
+- name: "Friends Historical Library of Swarthmore College"
+  slug: swarthmore-friends
+  count: 1134
+  lat: 39.9026
+  lng: -75.3548
+- name: "Temple University Libraries: Special Collections Research Center"
+  slug: temple-scrc
+  count: 1054
+  lat: 39.9812
+  lng: -75.1553
+- name: "Historical Medical Library of The College of Physicians of Philadelphia"
+  slug: college-physicians
+  count: 804
+  lat: 39.9571
+  lng: -75.1765
+- name: "Science History Institute Archives"
+  slug: science-history
+  count: 705
+  lat: 39.9488
+  lng: -75.1488
+- name: "University of Pennsylvania: University Archives and Records Center"
+  slug: penn-archives
+  count: 695
+  lat: 39.9522
+  lng: -75.1932
+- name: "Princeton University Library: University Archives"
+  slug: princeton-archives
+  count: 472
+  lat: 40.3497
+  lng: -74.6593
+- name: "Drexel University: College of Medicine Legacy Center"
+  slug: drexel-medicine
+  count: 351
+  lat: 39.9566
+  lng: -75.1899
+- name: "Princeton University Library: Public Policy Papers"
+  slug: princeton-policy
+  count: 338
+  lat: 40.3497
+  lng: -74.6593
+- name: "Historical Society of Pennsylvania"
+  slug: hsp
+  count: 285
+  lat: 39.9574
+  lng: -75.1636
+- name: "Bryn Mawr College"
+  slug: bryn-mawr
+  count: 262
+  lat: 40.0282
+  lng: -75.3155
+- name: "Drexel University Archives"
+  slug: drexel-archives
+  count: 238
+  lat: 39.9566
+  lng: -75.1899
+- name: "University of Pennsylvania: Penn Museum Archives"
+  slug: penn-museum
+  count: 205
+  lat: 39.9492
+  lng: -75.1911
+- name: "University of Pennsylvania: Barbara Bates Center for the Study of The History of Nursing"
+  slug: penn-nursing-history
+  count: 191
+  lat: 39.9502
+  lng: -75.194
+- name: "University of Pennsylvania: Biddle Law Library"
+  slug: penn-biddle-law
+  count: 166
+  lat: 39.953
+  lng: -75.1935

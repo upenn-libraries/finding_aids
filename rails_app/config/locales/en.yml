@@ -1,8 +1,32 @@
 en:
   header:
     service_name: 'Philadelphia Area Archives'
-    service_lede: 'Finding Aids at the University of Pennsylvania'
     sign_out: 'Sign Out'
+
+  homepage:
+    hero:
+      heading: 'Stories held in archives'
+      subheading: 'Find your way into the primary sources held by archives in the Philadelphia area.'
+      alt: 'An archival reading room'
+    collection_guides:
+      heading: 'Collection guides'
+      intro: >-
+        A collection guide, sometimes called a finding aid, describes a single
+        archival collection. It tells you where the collection came from, what's
+        inside, and how it's arranged.
+    regional_partnership:
+      heading: 'A regional partnership'
+      intro_html: >-
+        When you search here, you're searching across many archival institutions
+        at once. Focus in on a single institution from the sample to see what it
+        holds, or %{browse_all_link}.
+      browse_all: 'browse all institutions'
+      guides_count: '%{count} guides'
+
+  search:
+    button:
+      label: 'Find it'
+
   results:
     h1:
       singular: 'result'
@@ -21,13 +45,10 @@ en:
       about: 'About the site'
       statement: 'Statement on Archival Description and Harmful Language'
       admin: 'Site Administration'
-  views:
-    pagination:
-      previous: 'Previous'
-      next: 'Next'
   document:
     links:
       contact_us: "Contact Us"
+      submit_correction: "Suggest a correction"
   about:
     page_title: 'About'
     header: 'About the Philadelphia Area Archives Site'
@@ -197,5 +218,3 @@ en:
       harvest:
         success: "Successfully enqueued harvest job for %{class_name} %{identifier}."
         failure: "Failed to enqueue harvest for %{class_name} %{identifier}: %{error}."
-
-

@@ -8,7 +8,9 @@
  */
 
 .blacklight-catalog-index {
-  & #main-container {
+  /* Scope the results grid to pages that have a #content section (i.e. search results).
+     The homepage has no #content, so its #main-container is left as a default block. */
+  & #main-container:has(#content) {
     display: flex;
     gap: var(--pl-space-l) var(--pl-space-xl);
     flex-direction: column;
@@ -66,5 +68,36 @@
   & #content > .container {
     padding: 0 !important;
     margin: 0 !important;
+  }
+}
+
+/* Mobile facets: below the grid breakpoint, hide the desktop sidebar and surface
+ * facets in an offcanvas panel instead. The filter button (in _sort_and_per_page)
+ * toggles #facets-offcanvas; both the button and panel are hidden on desktop. */
+@media (max-width: 819px) {
+  .blacklight-catalog-index #main-container #sidebar {
+    display: none;
+  }
+}
+
+.fa-filter-btn {
+  display: flex;
+}
+
+.fa-facets-offcanvas {
+  --bs-offcanvas-width: min(90vw, 400px);
+
+  & .offcanvas-body {
+    display: block;
+  }
+}
+
+@media (min-width: 820px) {
+  .fa-filter-btn {
+    display: none;
+  }
+
+  .fa-facets-offcanvas {
+    display: none;
   }
 }

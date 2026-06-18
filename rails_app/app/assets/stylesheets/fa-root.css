@@ -1,0 +1,15 @@
+/* Foundational app-wide styles (prefix: "fa-"). */
+
+/* Focus indicator — the Penn Libraries design system focus pattern, applied globally to
+ * every interactive element (buttons, links, form controls, etc.).
+ * See https://designsystem.library.upenn.edu/patterns/focus/
+ * The box-shadow provides two contrasting borders; outline is removed in favor of it. */
+*:focus {
+  box-shadow: var(--pl-focus-box-shadow);
+  outline: none;
+}
+
+/* The header web component manages its own focus styling. */
+pennlibs-header:focus {
+  box-shadow: none;
+}
