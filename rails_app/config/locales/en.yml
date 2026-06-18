@@ -1,7 +1,6 @@
 en:
   header:
     service_name: 'Philadelphia Area Archives'
-    service_lede: 'Finding Aids at the University of Pennsylvania'
     sign_out: 'Sign Out'
 
   homepage:
@@ -28,15 +27,10 @@ en:
     button:
       label: 'Find it'
 
-  common:
-    links:
-      home: 'Home'
-      about: 'About the site'
-      statement: 'Statement on Archival Description and Harmful Language'
-      admin: 'Site Administration'
   document:
     links:
       contact_us: "Contact Us"
+      submit_correction: "Suggest a correction"
   about:
     page_title: 'About'
     header: 'About the Philadelphia Area Archives Site'

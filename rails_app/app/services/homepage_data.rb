@@ -22,6 +22,11 @@ module HomepageData
       @repositories ||= load_yaml(REPOSITORIES_PATH, Repository)
     end
 
+    # @return [String] pre-serialized JSON of repository data for Stimulus data attributes
+    def repositories_json
+      @repositories_json ||= repositories.map(&:to_h).to_json
+    end
+
     private
 
     # Parses a YAML file and wraps each entry in the given Data class.
