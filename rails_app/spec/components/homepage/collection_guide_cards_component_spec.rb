@@ -37,9 +37,11 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
     expect(component).to have_css('.fa-cards__card', count: 2)
   end
 
-  it 'renders guide names as links to records' do
-    expect(component).to have_link('Test Collection', href: '/records/TEST.001')
-    expect(component).to have_link('Another Collection', href: '/records/TEST.002')
+  it 'renders guide names as search links' do
+    expect(component).to have_link('Test Collection',
+                                   href: '/records?q=Test+Collection')
+    expect(component).to have_link('Another Collection',
+                                   href: '/records?q=Another+Collection')
   end
 
   it 'renders guide collection names as subtitle text' do
