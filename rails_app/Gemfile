@@ -11,6 +11,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'bootstrap_form', '~> 4.0'
 gem 'config'
 gem 'devise'
+gem 'geocoder'
 gem 'faraday'
 gem 'faraday-follow_redirects'
 gem 'faraday-retry'
