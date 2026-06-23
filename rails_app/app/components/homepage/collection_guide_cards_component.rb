@@ -13,11 +13,10 @@ module Homepage
       @guides = guides
     end
 
-    # Build a record URL for a given guide by identifier.
-    # @param guide [HomepageData::CollectionGuide] guide object responding to +identifier+
-    # @return [String] URL to the catalog record
-    def guide_record_url(guide)
-      helpers.solr_document_path(guide.identifier)
+    # @param guide [HomepageData::CollectionGuide]
+    # @return [String]
+    def guide_search_url(guide)
+      helpers.search_action_path(q: guide.name)
     end
   end
 end

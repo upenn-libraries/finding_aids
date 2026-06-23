@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-# Loads and caches homepage data from YAML files.
+# Loads and caches homepage data from YAML files and Solr.
 #
-# YAML is parsed once per process via memoized module-level instance variables,
-# not on every request.
+# Repository counts come from live Solr facet queries; coordinates are
+# geocoded from repository addresses already indexed in Solr. Collection
+# guides are loaded from YAML.
 module HomepageData
   COLLECTION_GUIDES_PATH = Rails.root.join('data/collection_guides.yml')
-  REPOSITORIES_PATH      = Rails.root.join('data/repositories.yml')
 
   CollectionGuide = Data.define(:identifier, :name, :collection)
   Repository = Data.define(:name, :slug, :count, :lat, :lng)
@@ -19,26 +19,70 @@ module HomepageData
 
     # @return [Array<Repository>]
     def repositories
-      @repositories ||= load_yaml(REPOSITORIES_PATH, Repository)
+      @repositories ||= fetch_repositories_from_solr
     end
 
-    # @return [String] pre-serialized JSON of repository data for Stimulus data attributes
+    # @return [String]
     def repositories_json
       @repositories_json ||= repositories.map(&:to_h).to_json
     end
 
     private
 
-    # Parses a YAML file and wraps each entry in the given Data class.
-    # Returns an empty array and logs a warning if the file is missing or malformed.
-    #
-    # @param path [Pathname] absolute path to the YAML file
-    # @param struct_class [Class] a +Data.define+ class whose members match the YAML keys
+    # @return [Array<Repository>]
+    def fetch_repositories_from_solr
+      repos = RepositoryQueries.facet_counts
+      addresses = fetch_addresses
+
+      repos.filter_map do |repo|
+        coords = coordinates_for(repo[:name], addresses[repo[:name]])
+        Repository.new(name: repo[:name], slug: repo[:name].parameterize,
+                       count: repo[:count], **coords)
+      end
+    end
+
+    # @return [Hash{String => String}]
+    def fetch_addresses
+      RepositoryQueries.addresses
+    rescue StandardError => e
+      Rails.logger.warn "HomepageData: address lookup failed — #{e.class}: #{e.message}"
+      {}
+    end
+
+    # @param name [String]
+    # @param address [String, nil]
+    # @return [Hash]
+    def coordinates_for(name, address)
+      return nil_coordinates if address.blank?
+
+      @coordinates_cache ||= {}
+      @coordinates_cache[name] ||= geocode(address) || nil_coordinates
+    rescue StandardError => e
+      Rails.logger.warn "HomepageData: geocoding failed for #{name} — #{e.class}: #{e.message}"
+      nil_coordinates
+    end
+
+    # @return [Hash]
+    def nil_coordinates
+      { lat: nil, lng: nil }
+    end
+
+    # @param address [String]
+    # @return [Hash, nil]
+    def geocode(address)
+      results = Geocoder.search(address)
+      best = results.first
+
+      { lat: best.latitude, lng: best.longitude } if best&.coordinates&.all?(&:present?)
+    end
+
+    # @param path [Pathname]
+    # @param struct_class [Class]
     # @return [Array]
     def load_yaml(path, struct_class)
       YAML.safe_load_file(path, symbolize_names: true)
           .map { |entry| struct_class.new(**entry.slice(*struct_class.members)) }
-    rescue Errno::ENOENT, Psych::SyntaxError, ArgumentError => e
+    rescue StandardError => e
       Rails.logger.warn "Homepage data file missing or malformed: #{path} — #{e.message}"
       []
     end
