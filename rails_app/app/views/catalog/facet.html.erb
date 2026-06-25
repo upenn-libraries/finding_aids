@@ -1,4 +1,15 @@
-<%# Copied from Blacklight v9.0 %>
+<%#
+  Overrides Blacklight 9.0.0 (app/views/catalog/facet.html.erb) — the modal shown
+  when a user clicks "more" on a facet. Changes from the upstream file:
+  - Modal title: uses the custom `blacklight.search.facets.modal_title` translation
+    (with the field name downcased) instead of the bare `facet_field_label(@facet.key)`.
+  - Top pagination wrapper classes: dropped the Bootstrap `top`, `border-bottom`,
+    `pb-3` and `mb-3` classes and added `gap-2` plus the design-system `pl-margin-y-m`
+    spacing class.
+  - Footer slot removed: upstream renders a second (bottom) facet_pagination_component
+    in the modal's `component.with_footer` slot. We do not render a footer, so the
+    bottom pagination controls are omitted (only the top pagination remains).
+%>
 <%= render Blacklight::System::ModalComponent.new do |component| %>
   <% component.with_title { t('blacklight.search.facets.modal_title', field_name: facet_field_label(@facet.key).downcase) } %>
   <% view_config = blacklight_config.view_config(document_index_view_type) %>
