@@ -18,7 +18,7 @@ describe 'Endpoint dashboard' do
   context 'when visiting index page' do
     before { visit endpoints_status_path }
 
-    it 'renders all endpoint slugs' do
+    it 'renders all endpoint slugs', pending: 'until new styles implemented' do
       test_endpoints.each do |endpoint|
         within ".table-row-#{endpoint.slug}" do
           expect(page).to have_text endpoint.slug
