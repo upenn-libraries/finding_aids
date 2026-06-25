@@ -1,20 +1,16 @@
 # frozen_string_literal: true
 
-# Loads and caches homepage data from YAML files and Solr.
+# Homepage data from Solr and the database.
 #
-# Repository counts come from live Solr facet queries; coordinates are
-# geocoded from repository addresses already indexed in Solr. Collection
-# guides are loaded from YAML.
+# Repository counts and addresses come from Solr; coordinates are geocoded.
+# Collection guides are curated via the FeaturedCollection admin.
 module HomepageData
-  COLLECTION_GUIDES_PATH = Rails.root.join('data/collection_guides.yml')
-
-  CollectionGuide = Data.define(:identifier, :name, :collection)
   Repository = Data.define(:name, :slug, :count, :lat, :lng)
 
   class << self
-    # @return [Array<CollectionGuide>]
+    # @return [Array<FeaturedCollection>]
     def collection_guides
-      @collection_guides ||= load_yaml(COLLECTION_GUIDES_PATH, CollectionGuide)
+      FeaturedCollection.active.limit(8).to_a
     end
 
     # @return [Array<Repository>]
@@ -74,17 +70,6 @@ module HomepageData
       best = results.first
 
       { lat: best.latitude, lng: best.longitude } if best&.coordinates&.all?(&:present?)
-    end
-
-    # @param path [Pathname]
-    # @param struct_class [Class]
-    # @return [Array]
-    def load_yaml(path, struct_class)
-      YAML.safe_load_file(path, symbolize_names: true)
-          .map { |entry| struct_class.new(**entry.slice(*struct_class.members)) }
-    rescue StandardError => e
-      Rails.logger.warn "Homepage data file missing or malformed: #{path} — #{e.message}"
-      []
     end
   end
 end

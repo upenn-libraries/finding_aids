@@ -27,50 +27,42 @@ describe HomepageData do
     }
   end
 
-  # Collection guides (YAML) -------------------------------------------------
+  # Collection guides (database-backed) -------------------------------------
 
   describe '.collection_guides' do
-    it 'returns an array of CollectionGuide objects' do
+    it 'returns FeaturedCollection records' do
+      FeaturedCollection.create!(title: 'Test Guide', repository: 'Test Repo', active: true)
+
       guides = described_class.collection_guides
 
-      expect(guides).to all(be_a(HomepageData::CollectionGuide))
+      expect(guides).to all(be_a(FeaturedCollection))
     end
 
-    it 'includes guide identifiers from the YAML file' do
+    it 'returns only active collections' do
+      FeaturedCollection.create!(title: 'Active', repository: 'Repo', active: true)
+      FeaturedCollection.create!(title: 'Inactive', repository: 'Repo', active: false)
+
       guides = described_class.collection_guides
 
-      expect(guides.map(&:identifier)).to include('Haverford_HC.MC.856')
+      expect(guides.map(&:title)).to include('Active')
+      expect(guides.map(&:title)).not_to include('Inactive')
     end
 
-    it 'includes guide names from the YAML file' do
+    it 'returns at most 8 collections' do
+      10.times { |i| FeaturedCollection.create!(title: "Guide #{i}", repository: 'Repo', active: true) }
+
       guides = described_class.collection_guides
 
-      expect(guides.map(&:name)).to include('John Wilbur papers')
+      expect(guides.length).to eq(8)
     end
 
-    context 'when YAML file is missing' do
-      before do
-        allow(YAML).to receive(:safe_load_file).and_raise(Errno::ENOENT)
-      end
+    it 'orders by position' do
+      FeaturedCollection.create!(title: 'Second', repository: 'Repo', position: 2, active: true)
+      FeaturedCollection.create!(title: 'First', repository: 'Repo', position: 1, active: true)
 
-      it 'returns an empty array' do
-        expect(described_class.collection_guides).to eq([])
-      end
+      guides = described_class.collection_guides
 
-      it 'logs a warning' do
-        expect(Rails.logger).to receive(:warn).with(/missing or malformed/)
-        described_class.collection_guides
-      end
-    end
-
-    context 'when YAML is malformed' do
-      before do
-        allow(YAML).to receive(:safe_load_file).and_raise(Psych::SyntaxError)
-      end
-
-      it 'returns an empty array' do
-        expect(described_class.collection_guides).to eq([])
-      end
+      expect(guides.map(&:title)).to eq(%w[First Second])
     end
   end
 

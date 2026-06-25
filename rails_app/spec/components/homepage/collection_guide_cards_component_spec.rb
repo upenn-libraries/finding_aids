@@ -7,12 +7,8 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
 
   let(:guides) do
     [
-      HomepageData::CollectionGuide.new(
-        identifier: 'TEST.001', name: 'Test Collection', collection: 'Test Institution'
-      ),
-      HomepageData::CollectionGuide.new(
-        identifier: 'TEST.002', name: 'Another Collection', collection: 'Another Institution'
-      )
+      FeaturedCollection.new(title: 'Test Collection', repository: 'Test Institution'),
+      FeaturedCollection.new(title: 'Another Collection', repository: 'Another Institution')
     ]
   end
 
@@ -44,7 +40,7 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
                                    href: '/records?q=Another+Collection')
   end
 
-  it 'renders guide collection names as subtitle text' do
+  it 'renders guide repository names as subtitle text' do
     expect(component).to have_css('.fa-cards__card-sub', text: 'Test Institution')
     expect(component).to have_css('.fa-cards__card-sub', text: 'Another Institution')
   end
