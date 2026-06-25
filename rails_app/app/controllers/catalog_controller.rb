@@ -195,6 +195,6 @@ class CatalogController < ApplicationController
   def load_homepage_data
     return if has_search_parameters?
 
-    @homepage_guides = HomepageData.collection_guides.sample(8)
+    @homepage_guides = HomepageData.collection_guides
   end
 end

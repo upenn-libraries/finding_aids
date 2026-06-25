@@ -7,9 +7,9 @@
       <% @guides.each do |guide| %>
         <li class="fa-cards__card">
           <h3 class="fa-cards__card-heading">
-            <%= link_to guide.name, guide_search_url(guide), class: 'fa-cards__card-link' %>
+            <%= link_to guide.title, guide_search_url(guide), class: 'fa-cards__card-link' %>
           </h3>
-          <p class="fa-cards__card-sub"><%= guide.collection %></p>
+          <p class="fa-cards__card-sub"><%= guide.repository %></p>
         </li>
       <% end %>
     </ol>

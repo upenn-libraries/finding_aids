@@ -2,7 +2,10 @@
 
 # Solr queries for repository data used on the homepage.
 class RepositoryQueries
-  # @return [Array<Hash>] [{name:, count:}, ...] from the repository_ssi facet
+  # Live repository names and document counts from the repository_ssi facet,
+  # sorted by count descending. Zero-count repositories are excluded.
+  #
+  # @return [Array<Hash>] [{name:, count:}, ...]
   def self.facet_counts
     repos = raw_facet_pairs.each_slice(2).filter_map do |name, count|
       { name: name, count: count.to_i } if count.to_i.positive?
@@ -25,6 +28,8 @@ class RepositoryQueries
     parse_groups(response)
   end
 
+  # @param response [Hash] Solr grouped response
+  # @return [Hash{String => String}] name => address
   def self.parse_groups(response)
     groups = response.dig('grouped', 'repository_ssi', 'groups') || []
     groups.each_with_object({}) do |group, hash|
@@ -35,6 +40,7 @@ class RepositoryQueries
     end
   end
 
+  # @return [Array] alternating [name, count, name, count, ...]
   def self.raw_facet_pairs
     response = connection.get('select', params: {
                                 q: '*:*',
@@ -46,6 +52,25 @@ class RepositoryQueries
     response.dig('facet_counts', 'facet_fields', 'repository_ssi') || []
   end
 
+  # Collection titles grouped by repository name.
+  #
+  # @return [Hash{String => Array<String>}] repository name => sorted array of titles
+  def self.titles_by_repository
+    response = connection.get('select', params: {
+                                q: '*:*',
+                                fl: 'repository_ssi,title_tsi',
+                                rows: 10_000
+                              })
+    grouped = Hash.new { |h, k| h[k] = [] }
+    response.dig('response', 'docs').each do |doc|
+      repo = doc['repository_ssi']
+      title = doc['title_tsi']
+      grouped[repo] << title if repo.present? && title.present?
+    end
+    grouped.transform_values(&:sort!).sort.to_h
+  end
+
+  # @return [RSolr::Client]
   def self.connection
     Blacklight.default_index.connection
   end
