@@ -111,6 +111,8 @@ en:
         millennium:
           first: 'First Millennium'
   fields:
+    repository_address: 'Address'
+    contact_email: 'Email'
     endpoint: 'Endpoint'
     repository: 'Repository'
     record_source: 'Record Source'
@@ -129,7 +131,7 @@ en:
     genre_form: 'Form'
     citation: 'Preferred Citation'
     year: 'Year'
-    url: 'Original URL'
+    url: 'Website'
     xml: 'EAD XML'
     topics:
       corpnames: 'Organization'
@@ -137,6 +139,7 @@ en:
       places: 'Place'
       occupations: 'Occupation'
       people: 'People'
+    use: 'Use'
   sections:
     collection_inventory: 'Collection Inventory'
     collection_overview: 'Collection Overview'
@@ -167,6 +170,8 @@ en:
     topics: 'Name and Subject Headings'
     admin_info: 'Administrative Information'
     other_info: 'Other Information'
+    rights_and_citation: 'Rights and citation'
+    subjects_and_headings: 'Subjects and headings'
   sorts:
     relevance: 'Relevance'
     year_desc: 'Year (descending)'
@@ -218,3 +223,21 @@ en:
       harvest:
         success: "Successfully enqueued harvest job for %{class_name} %{identifier}."
         failure: "Failed to enqueue harvest for %{class_name} %{identifier}: %{error}."
+  show:
+    aside:
+        access: 'Access'
+        held_at: 'Held At'
+        contact: 'Contact this archive'
+    sections:
+      description:
+        header: 'Description'
+        guide: "Where the collection came from, what's inside, and how you can use it."
+      inventory:
+        header: 'Inventory'
+        guide: 'Everything in this collection, in the order the archivist chose to help you understand it.'
+      contact:
+        header: 'Contact'
+        guide_html: 'These materials are held by <strong>%{repository}</strong>. Contact them to schedule a visit or ask about your research.'
+
+
+

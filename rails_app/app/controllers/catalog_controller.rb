@@ -17,6 +17,8 @@ class CatalogController < ApplicationController
     config.index.search_bar_component = Catalog::SearchBarComponent
     config.index.constraints_component = Catalog::ConstraintsComponent
     config.index.search_header_component = Catalog::SearchHeaderComponent
+    config.show.document_component = Catalog::ShowDocumentComponent
+    config.show.document_presenter_class = Catalog::ShowDocumentPresenter
     config.advanced_search.enabled = false
 
     ## Class for sending and receiving requests from a search index
@@ -138,21 +140,50 @@ class CatalogController < ApplicationController
     config.add_index_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents'),
                                                           helper_method: :truncated_abstract
 
-    config.add_show_field 'pretty_unit_id_ss', label: I18n.t('fields.pretty_unit_id')
+    config.add_show_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents')
     config.add_show_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
-    config.add_show_field 'url_ss', label: I18n.t('fields.url')
-    config.add_show_field 'extent_ssim', label: I18n.t('fields.extent'), helper_method: :extent_display
-    config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
+
+    # collection overview
+    config.add_show_field 'creators_ssim', label: I18n.t('fields.creators'), link_to_facet: true,
+                                           group: :collection_overview
+    config.add_show_field 'display_date_ssim', label: I18n.t('fields.date'), group: :collection_overview
+    config.add_show_field 'extent_ssim', label: I18n.t('fields.extent'), helper_method: :extent_display,
+                                         group: :collection_overview
+    config.add_show_field 'pretty_unit_id_ss', label: I18n.t('fields.pretty_unit_id'), group: :collection_overview
+
+    # subject and headings
+    config.add_show_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), link_to_facet: true,
+                                           group: :subjects_and_headings
+    config.add_show_field 'people_ssim', label: I18n.t('fields.topics.people'), link_to_facet: true,
+                                         group: :subjects_and_headings
+    config.add_show_field 'corpnames_ssim', label: I18n.t('fields.topics.corpnames'), link_to_facet: true,
+                                            group: :subjects_and_headings
+    config.add_show_field 'places_ssim', label: I18n.t('fields.topics.places'), link_to_facet: true,
+                                         group: :subjects_and_headings
+    config.add_show_field 'occupations_ssim', label: I18n.t('fields.topics.occupations'), link_to_facet: true,
+                                              group: :subjects_and_headings
+    config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true,
+                                            group: :subjects_and_headings
+    config.add_show_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), link_to_facet: true,
+                                             group: :subjects_and_headings
+
+    # rights and citations
+    config.add_show_field 'use_restrictions', label: I18n.t('fields.use'), group: :rights_and_citation,
+                                              accessor: :use_restrictions
+    config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation'), group: :rights_and_citation
+
+    # contact
+    config.add_show_field 'repository_address_ssi', label: I18n.t('fields.repository_address'), group: :contact
+    config.add_show_field 'contact_emails_ssm', label: I18n.t('fields.contact_email'), group: :contact,
+                                                presenter: Catalog::EmailFieldPresenter
+    config.add_show_field 'link_url_ss', label: I18n.t('fields.url'), group: :contact, presenter: Catalog::UrlFieldPresenter
+
+    # TODO: where to render these?
     config.add_show_field 'language_note', label: I18n.t('fields.language_note'), accessor: :language_note,
                                            if: :render_language_note?
-    config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation')
-    config.add_show_field 'display_date_ssim', label: I18n.t('fields.date')
-    config.add_show_field 'creators_ssim', label: I18n.t('fields.creators'), link_to_facet: true
     config.add_show_field 'donors_ssim', label: I18n.t('fields.donors'), link_to_facet: true
-    config.add_show_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), link_to_facet: true
-    config.add_show_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents')
-    config.add_show_field 'xml_ss', label: I18n.t('fields.xml'), if: :json_request?
 
+    config.add_show_field 'xml_ss', label: I18n.t('fields.xml')
     config.add_search_field 'all_fields', label: 'All Fields'
 
     # "sort results by" select (pulldown)
