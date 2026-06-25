@@ -22,21 +22,30 @@ class SolrDocument
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
 
-  # @return [Hash{Symbol->Array}]
-  def topics_hash
-    # %i[people_ssim corpnames_ssim subjects_ssim places_ssim].sum([]) { |k| fetch(k, []) }
-    {
-      people_ssim: fetch(:people_ssim, []),
-      corpnames_ssim: fetch(:corpnames_ssim, []),
-      subjects_ssim: fetch(:subjects_ssim, []),
-      places_ssim: fetch(:places_ssim, []),
-      occupations_ssim: fetch(:occupations_ssim, [])
-    }
-  end
-
   # @return [SolrDocument::ParsedEad]
   def parsed_ead
     @parsed_ead ||= ParsedEad.new(fetch(XML_FIELD_NAME))
+  end
+
+  # @return [Array<Symbol>]
+  def description_sections
+    parsed_ead.class::OTHER_SECTIONS
+  end
+
+  # TODO: use translation service?
+  # @return [String, nil]
+  def use_restrictions
+    node = parsed_ead.userestrict
+    node.at_xpath('head')&.remove
+    node.text
+  end
+
+  # TODO: use translation service?
+  # @return [String, nil]
+  def access_restrictions
+    node = parsed_ead.accessrestrict
+    node.at_xpath('head')&.remove
+    node.text
   end
 
   # @return [String, nil]
