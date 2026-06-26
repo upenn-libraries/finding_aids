@@ -73,7 +73,7 @@ build_and_push_base_app_image:
     matrix:
       # - RUNNER: build-arm
       #   DOCKER_BUILD_PLATFORM: "linux/arm64"
-      - RUNNER: ${RUNNER_TAG_BUILD}
+      - RUNNER: new_build
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   before_script:
     - !reference [.install_hashicorp_vault, before_script]
@@ -101,7 +101,7 @@ build_and_push_dev_app_image:
     matrix:
       # - RUNNER: build-arm
       #   DOCKER_BUILD_PLATFORM: "linux/arm64"
-      - RUNNER: ${RUNNER_TAG_BUILD}
+      - RUNNER: new_build
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   before_script:
     - !reference [.install_hashicorp_vault, before_script]
@@ -246,7 +246,7 @@ build_and_push_prod_app_image:
     matrix:
       # - RUNNER: build-arm
       #   DOCKER_BUILD_PLATFORM: "linux/arm64"
-      - RUNNER: ${RUNNER_TAG_BUILD}
+      - RUNNER: new_build
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   before_script:
     - !reference [.install_hashicorp_vault, before_script]
