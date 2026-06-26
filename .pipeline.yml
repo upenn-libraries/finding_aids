@@ -2,6 +2,8 @@ variables:
   FF_SCRIPT_SECTIONS: "true"
   GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${CI_JOB_ID}/${CI_PIPELINE_ID}/${CI_PROJECT_NAME}"
   WAIT_FOR_SERVICES_TIMEOUT: "120"
+  RUNNER_TAG_BUILD: "new_build"
+  RUNNER_TAG_DEPLOY: "new_deploy"
 
 include:
   - project: "devops/gitlab/ci-templates/docker"
@@ -69,9 +71,9 @@ build_and_push_base_app_image:
     - .vault_jwt_auth
   parallel:
     matrix:
-      - RUNNER: build-arm
-        DOCKER_BUILD_PLATFORM: "linux/arm64"
-      - RUNNER: build
+      # - RUNNER: build-arm
+      #   DOCKER_BUILD_PLATFORM: "linux/arm64"
+      - RUNNER: ${RUNNER_TAG_BUILD}
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   before_script:
     - !reference [.install_hashicorp_vault, before_script]
@@ -97,9 +99,9 @@ build_and_push_dev_app_image:
     - .vault_jwt_auth
   parallel:
     matrix:
-      - RUNNER: build-arm
-        DOCKER_BUILD_PLATFORM: "linux/arm64"
-      - RUNNER: build
+      # - RUNNER: build-arm
+      #   DOCKER_BUILD_PLATFORM: "linux/arm64"
+      - RUNNER: ${RUNNER_TAG_BUILD}
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   before_script:
     - !reference [.install_hashicorp_vault, before_script]
@@ -130,7 +132,7 @@ amend_tmp_base_dev_images:
   variables:
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
   tags:
-    - build
+    - ${RUNNER_TAG_BUILD}
 
 # -- Start - test dev image
 rspec_app_test:
@@ -214,7 +216,7 @@ rspec_app_test:
         - rails_app/spec/**.rb
         - rails_app/spec/**/**.rb
   tags:
-    - build
+    - ${RUNNER_TAG_BUILD}
 
 rubocop_app_test:
   stage: test
@@ -231,7 +233,7 @@ rubocop_app_test:
     - exists:
         - rails_app/.rubocop.yml
   tags:
-    - build
+    - ${RUNNER_TAG_BUILD}
 # -- End - test dev image
 
 # -- Start - build and push temp prod image
@@ -242,9 +244,9 @@ build_and_push_prod_app_image:
     - .vault_jwt_auth
   parallel:
     matrix:
-      - RUNNER: build-arm
-        DOCKER_BUILD_PLATFORM: "linux/arm64"
-      - RUNNER: build
+      # - RUNNER: build-arm
+      #   DOCKER_BUILD_PLATFORM: "linux/arm64"
+      - RUNNER: ${RUNNER_TAG_BUILD}
         DOCKER_BUILD_PLATFORM: "linux/amd64"
   before_script:
     - !reference [.install_hashicorp_vault, before_script]
@@ -277,7 +279,7 @@ amend_prod_image:
     REGISTRY_REPOSITORY: "${CI_PIPELINE_ID}"
     TAG_WITH_DOCKER_TARGET: "false"
   tags:
-    - build
+    - ${RUNNER_TAG_BUILD}
 
 # -- Start - SAST images
 # Test application image
@@ -297,7 +299,7 @@ trivy_app_container_scanning:
     CI_IMAGE_NAME: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}
     TRIVY_VERSION: 0.68.1
   tags:
-    - build
+    - ${RUNNER_TAG_BUILD}
 
 # -- Start - Copy app docker images
 copy_app_docker_images:
@@ -309,7 +311,7 @@ copy_app_docker_images:
   extends:
     - .copy_docker_images
   tags:
-    - build
+    - ${RUNNER_TAG_BUILD}
 # -- End - Copy app docker images
 
 # -- Start - remove tmp registry repository
@@ -323,7 +325,7 @@ remove_tmp_registry:
     - copy_app_docker_images
   allow_failure: true
   tags:
-    - build
+    - ${RUNNER_TAG_BUILD}
 # -- End - remove tmp registry repository
 
 # Deploy staging
