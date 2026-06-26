@@ -1,0 +1,65 @@
+# frozen_string_literal: true
+
+class SolrDocument
+  # Provide access to Ead XML nodes
+  class ParsedEad
+    ADMIN_INFO_SECTIONS = %w[publisher author date sponsor accessrestrict userestrict].freeze
+    OTHER_SECTIONS = %w[bioghist scopecontent arrangement relatedmaterials bibliography odd accruals
+                        custodhist altformavail originalsloc fileplan acqinfo otherfindaid phystech
+                        processinfo relatedmaterial separatedmaterial appraisal].freeze
+
+    # @param [String] xml
+    def initialize(xml)
+      @nodes = Nokogiri::XML.parse(xml)
+      @nodes.remove_namespaces!
+    end
+
+    # @return [Nokogiri::XML::Element] required element in <archdesc> node
+    def did
+      @nodes.at_xpath('/ead/archdesc/did')
+    end
+
+    # @return [Nokogiri::XML::Element]
+    def dsc
+      @nodes.at_xpath('/ead/archdesc/dsc')
+    end
+
+    # @return [Nokogiri::XML::Element]
+    def sponsor
+      @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt/sponsor')
+    end
+
+    # @return [Nokogiri::XML::Element]
+    def author
+      @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt/author')
+    end
+
+    # @return [Nokogiri::XML::Element]
+    def publisher
+      @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt/publisher')
+    end
+
+    # @return [Nokogiri::XML::Element]
+    def date
+      @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt//date')
+    end
+
+    # @return [Nokogir::XML::Element]
+    def langmaterial
+      did.at_xpath('langmaterial')
+    end
+
+    # @param [String, Symbol] name
+    def respond_to_missing?(name, _include_private = false)
+      sections = OTHER_SECTIONS + ADMIN_INFO_SECTIONS
+      name.to_s.in?(sections)
+    end
+
+    # @param [Symbol] symbol
+    def method_missing(symbol, *_args)
+      raise NoMethodError unless respond_to_missing? symbol
+
+      @nodes.xpath("/ead/archdesc/#{symbol}")
+    end
+  end
+end

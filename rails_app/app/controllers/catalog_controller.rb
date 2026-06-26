@@ -164,6 +164,9 @@ class CatalogController < ApplicationController
                                               group: :subjects_and_headings
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true,
                                             group: :subjects_and_headings
+    config.add_show_field 'language_note', label: I18n.t('fields.language_note'), accessor: :language_note,
+                                           if: :render_language_note?, group: :subjects_and_headings,
+                                           presenter: Catalog::LanguageNotePresenter
     config.add_show_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), link_to_facet: true,
                                              group: :subjects_and_headings
 
@@ -171,17 +174,19 @@ class CatalogController < ApplicationController
     config.add_show_field 'use_restrictions', label: I18n.t('fields.use'), group: :rights_and_citation,
                                               accessor: :use_restrictions
     config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation'), group: :rights_and_citation
+    config.add_show_field 'publisher', label: I18n.t('fields.publisher'), group: :rights_and_citation,
+                                       accessor: :publisher
+    config.add_show_field 'sponsor', label: I18n.t('fields.sponsor'), group: :rights_and_citation, accessor: :sponsor
+    config.add_show_field 'author', label: I18n.t('fields.author'), group: :rights_and_citation, accessor: :author
+    config.add_show_field 'date', label: I18n.t('fields.date'), group: :rights_and_citation, accessor: :date
+    config.add_show_field 'donors_ssim', label: I18n.t('fields.donors'), link_to_facet: true,
+                                         group: :rights_and_citation
 
     # contact
     config.add_show_field 'repository_address_ssi', label: I18n.t('fields.repository_address'), group: :contact
     config.add_show_field 'contact_emails_ssm', label: I18n.t('fields.contact_email'), group: :contact,
                                                 presenter: Catalog::EmailFieldPresenter
     config.add_show_field 'link_url_ss', label: I18n.t('fields.url'), group: :contact, presenter: Catalog::UrlFieldPresenter
-
-    # TODO: where to render these?
-    config.add_show_field 'language_note', label: I18n.t('fields.language_note'), accessor: :language_note,
-                                           if: :render_language_note?
-    config.add_show_field 'donors_ssim', label: I18n.t('fields.donors'), link_to_facet: true
 
     config.add_show_field 'xml_ss', label: I18n.t('fields.xml')
     config.add_search_field 'all_fields', label: 'All Fields'
@@ -211,16 +216,6 @@ class CatalogController < ApplicationController
 
   def json_request?
     request.format.json?
-  end
-
-  # render dynamically parsed language note if it's different from indexed language field
-  # @param document [SolrDocument]
-  # @return [Boolean]
-  def render_language_note?(_field_config, document)
-    note = document.language_note
-    languages = document.fetch(:languages_ssim, []).join
-
-    note.present? && languages.gsub(/[^0-9a-zA-Z]/, '') != note.gsub(/[^0-9a-zA-Z]/, '')
   end
 
   def load_homepage_data

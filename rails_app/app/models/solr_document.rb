@@ -9,6 +9,8 @@ class SolrDocument
   ].freeze
 
   include Blacklight::Solr::Document
+  include EadTranslating
+  include EadTextExtracting
 
   # self.unique_key = 'id'
 
@@ -24,7 +26,7 @@ class SolrDocument
 
   # @return [SolrDocument::ParsedEad]
   def parsed_ead
-    @parsed_ead ||= ParsedEad.new(fetch(XML_FIELD_NAME))
+    @parsed_ead ||= SolrDocument::ParsedEad.new(fetch(XML_FIELD_NAME))
   end
 
   # @return [Array<Symbol>]
@@ -35,22 +37,34 @@ class SolrDocument
   # TODO: use translation service?
   # @return [String, nil]
   def use_restrictions
-    node = parsed_ead.userestrict
-    node.at_xpath('head')&.remove
-    node.text
+    translate(node: parsed_ead.userestrict, remove_head: true)
   end
 
   # TODO: use translation service?
   # @return [String, nil]
   def access_restrictions
-    node = parsed_ead.accessrestrict
-    node.at_xpath('head')&.remove
-    node.text
+    translate(node: parsed_ead.accessrestrict, remove_head: true)
+  end
+
+  def sponsor
+    translate(node: parsed_ead.sponsor, remove_head: true)
+  end
+
+  def date
+    translate(node: parsed_ead.date, remove_head: true)
+  end
+
+  def author
+    translate(node: parsed_ead.author, remove_head: true)
+  end
+
+  def publisher
+    translate(node: parsed_ead.publisher, remove_head: true)
   end
 
   # @return [String, nil]
   def language_note
-    parsed_ead.did.at_xpath('langmaterial').try(:text).try(:strip)
+    text_only(parsed_ead.langmaterial)
   end
 
   # @return [Array<String> (frozen)]
@@ -97,61 +111,5 @@ class SolrDocument
   # @return [Hash{Symbol->Unknown}]
   def requesting_info
     { title: title, call_num: call_num, repository: repository }
-  end
-
-  class ParsedEad
-    ADMIN_INFO_SECTIONS = %w[publisher author date sponsor accessrestrict userestrict].freeze
-    OTHER_SECTIONS = %w[bioghist scopecontent arrangement relatedmaterials bibliography odd accruals
-                        custodhist altformavail originalsloc fileplan acqinfo otherfindaid phystech
-                        processinfo relatedmaterial separatedmaterial appraisal].freeze
-
-    # @param [String] xml
-    def initialize(xml)
-      @nodes = Nokogiri::XML.parse(xml)
-      @nodes.remove_namespaces!
-    end
-
-    # @return [Nokogiri::XML::Element] required element in <archdesc> node
-    def did
-      @nodes.at_xpath('/ead/archdesc/did')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def dsc
-      @nodes.at_xpath('/ead/archdesc/dsc')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def sponsor
-      @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt/sponsor')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def author
-      @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt/author')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def publisher
-      @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt/publisher')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def date
-      @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt//date')
-    end
-
-    # @param [String, Symbol] name
-    def respond_to_missing?(name, _include_private = false)
-      sections = OTHER_SECTIONS + ADMIN_INFO_SECTIONS
-      name.to_s.in?(sections)
-    end
-
-    # @param [Symbol] symbol
-    def method_missing(symbol, *_args)
-      raise NoMethodError unless respond_to_missing? symbol
-
-      @nodes.xpath("/ead/archdesc/#{symbol}")
-    end
   end
 end
