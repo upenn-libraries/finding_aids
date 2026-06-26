@@ -3,6 +3,7 @@
 # Renders accordion pattern containing description metadata
 class DescriptionAccordionComponent < ViewComponent::Base
   attr_reader :document, :presenter
+  include EadTranslating
 
   # @param document [SolrDocument]
   # @param presenter [Catalog::ShowDocumentPresenter]
@@ -25,11 +26,10 @@ class DescriptionAccordionComponent < ViewComponent::Base
     presenter.field_presenters_by_group(:subjects_and_headings)
   end
 
-  # TODO: call translation service instead
   # @param section [Symbol]
   # @return [ActiveSupport::SafeBuffer]
   def content(section)
     nodes = document.parsed_ead.try(section)
-    safe_join(Array.wrap(nodes).map { |node| Ead::Translation::Service.call(node: node, remove_head: true) })
+    safe_join(Array.wrap(nodes).map { |node| translate(node: node, remove_head: true) })
   end
 end
