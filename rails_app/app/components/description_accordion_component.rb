@@ -3,6 +3,7 @@
 # Renders accordion pattern containing description metadata
 class DescriptionAccordionComponent < ViewComponent::Base
   attr_reader :document, :presenter
+
   include EadTranslating
 
   # @param document [SolrDocument]
