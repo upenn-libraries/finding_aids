@@ -30,6 +30,6 @@ class DescriptionAccordionComponent < ViewComponent::Base
   # @return [ActiveSupport::SafeBuffer]
   def content(section)
     nodes = document.parsed_ead.try(section)
-    safe_join(Array.wrap(nodes).map { |node| EadMarkupTranslation.call(node: node, remove_head: true) })
+    safe_join(Array.wrap(nodes).map { |node| Ead::Translation::Service.call(node: node, remove_head: true) })
   end
 end

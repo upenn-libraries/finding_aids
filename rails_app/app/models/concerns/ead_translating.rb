@@ -11,6 +11,6 @@ module EadTranslating
   private
 
   def translation
-    @translation ||= EadMarkupTranslation
+    @translation ||= Ead::Translation::Service
   end
 end

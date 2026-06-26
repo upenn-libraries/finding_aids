@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EadMarkupTranslation do
+RSpec.describe Ead::Translation::Service do
   let(:fragment) { Nokogiri::XML.fragment(xml) }
   let(:result) { described_class.call(node: fragment) }
   let(:node) { Capybara::Node::Simple.new(result) }

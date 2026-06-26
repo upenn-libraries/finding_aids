@@ -49,12 +49,14 @@ class SolrDocument
       did.at_xpath('langmaterial')
     end
 
+    # Todo replace method missing to improve performance
     # @param [String, Symbol] name
     def respond_to_missing?(name, _include_private = false)
       sections = OTHER_SECTIONS + ADMIN_INFO_SECTIONS
       name.to_s.in?(sections)
     end
 
+    # Todo replace method missing to improve performance
     # @param [Symbol] symbol
     def method_missing(symbol, *_args)
       raise NoMethodError unless respond_to_missing? symbol
