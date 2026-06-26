@@ -1,4 +1,8 @@
 ---
+variables:
+  RUNNER_TAG_BUILD: "new_build"
+  RUNNER_TAG_DEPLOY: "new_deploy"
+
 include:
   - template: Jobs/Secret-Detection.gitlab-ci.yml
 
@@ -14,7 +18,7 @@ secret_detection:
       - .pipeline.yml
     expire_in: 1 day
   tags:
-    - build
+    - ${RUNNER_TAG_BUILD}
   rules:
   - when: always
 
