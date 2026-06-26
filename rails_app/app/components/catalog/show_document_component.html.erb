@@ -13,7 +13,7 @@
           <% end %>
           </div>
 
-          <aside class="faa-guide-header__institution pl-callout" aria-label="Holding institution">
+          <aside class="faa-guide-header__institution pl-callout" aria-label="<%= t('show.aside.aria_label') %>">
             <p class="faa-small-name pl-margin-b-2xs"><%=t('show.aside.held_at') %></p>
             <p class="pl-margin-b-m"><%= repository %></p>
             <% if document.access_restrictions %>
@@ -44,7 +44,8 @@
             <p class="pl-font-size-l"><%= t("show.sections.description.guide") %></p>
           </div>
           <button type="button" class="pl-button"
-                  data-pl-expand-label="Expand all" data-pl-collapse-label="Collapse all"
+                  data-pl-expand-label="<%= t('show.buttons.accordion_control.expand') %>"
+                  data-pl-collapse-label="<%= t('show.buttons.accordion_control.collapse') %>"
                   data-pl-accordion-toggle="description-accordion">
           </button>
         </div>
@@ -58,7 +59,8 @@
             <p class="pl-font-size-l"><%= t("show.sections.inventory.guide") %></p>
           </div>
           <button type="button" class="pl-button"
-                  data-pl-expand-label="Expand all" data-pl-collapse-label="Collapse all"
+                  data-pl-expand-label="<%= t('show.buttons.accordion_control.expand') %>"
+                  data-pl-collapse-label="<%= t('show.buttons.accordion_control.collapse') %>"
                   data-pl-accordion-toggle="inventory-accordion">
           </button>
         </div>

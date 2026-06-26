@@ -227,7 +227,12 @@ en:
         success: "Successfully enqueued harvest job for %{class_name} %{identifier}."
         failure: "Failed to enqueue harvest for %{class_name} %{identifier}: %{error}."
   show:
+    buttons:
+      accordion_control:
+        collapse: 'Collapse all'
+        expand: 'Expand all'
     aside:
+        aria_label: 'Holding Institution'
         access: 'Access'
         held_at: 'Held At'
         contact: 'Contact this archive'
