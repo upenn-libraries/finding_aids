@@ -102,7 +102,7 @@
   }
 
   & .facet-toggle-button {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -113,5 +113,17 @@
 
   .fa-facets-offcanvas {
     display: none;
+  }
+
+  /* Blacklight only reveals #facet-panel-collapse at lg (992px) via `d-lg-block`,
+   * and only hides its "Show facets" toggle via `d-lg-none` at the same point. But
+   * our desktop sidebar appears at 820px, so without this there is an 820–991px gap
+   * where the sidebar is visible yet its facets stay collapsed. Align both to 820px. */
+  #sidebar .facets-collapse {
+    display: block;
+  }
+
+  #sidebar .facet-toggle-button {
+    display: none !important;
   }
 }

@@ -95,7 +95,7 @@ class CatalogController < ApplicationController
     # :index_range can be an array or range of prefixes that will be used to create the navigation
     #              (note: It is case sensitive when searching values)
 
-    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true
+    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true, collapse: false
     config.add_facet_field 'record_source', label: I18n.t('fields.record_source'), query: {
       upenn: { label: 'University of Pennsylvania', fq: 'upenn_record_bsi:true' },
       non_upenn: { label: 'Other PACSCL Partners', fq: 'upenn_record_bsi:false' }
