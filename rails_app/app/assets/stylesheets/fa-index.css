@@ -90,6 +90,20 @@
   & .offcanvas-body {
     display: block;
   }
+
+  /* Blacklight's facet sidebar wraps the facets in #facet-panel-collapse with
+   * `collapse` (no `show`), relying on `d-lg-block` to reveal them on desktop.
+   * That breakpoint is Bootstrap's lg (992px), but the offcanvas takes over at
+   * 820px — so below 992px the panel stays display:none and the offcanvas reads
+   * empty. Inside the offcanvas, always show the facets and drop the redundant
+   * mobile toggle button (the offcanvas header already serves that role). */
+  & .facets-collapse {
+    display: block;
+  }
+
+  & .facet-toggle-button {
+    display: none;
+  }
 }
 
 @media (min-width: 820px) {

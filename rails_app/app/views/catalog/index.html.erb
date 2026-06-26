@@ -5,12 +5,30 @@
 <% end %>
 
 <% if has_search_parameters? %>
+  <% conf = blacklight_config.view_config(document_index_view_type) %>
+
+  <%# Sidebar content for desktop (>= 820px) %>
   <% content_for(:sidebar) do %>
-    <% conf = blacklight_config.view_config(document_index_view_type) %>
     <%= render conf.sidebar_component.new(blacklight_config: blacklight_config,
                                           response: @response,
                                           view_config: conf) %>
   <% end %>
+
+  <%# Offcanvas for mobile (< 820px) - rendered outside sidebar so sidebar can be display:none %>
+  <% content_for(:offcanvas) do %>
+    <div class="offcanvas offcanvas-end fa-facets-offcanvas" tabindex="-1" id="facets-offcanvas" aria-labelledby="facets-offcanvas-label">
+      <div class="offcanvas-header">
+        <h3 class="offcanvas-title" id="facets-offcanvas-label"><%= t('blacklight.search.facets.title') %></h3>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#facets-offcanvas" aria-label="<%= t('blacklight.modal.close') %>"></button>
+      </div>
+      <div class="offcanvas-body">
+        <%= render conf.sidebar_component.new(blacklight_config: blacklight_config,
+                                              response: @response,
+                                              view_config: conf) %>
+      </div>
+    </div>
+  <% end %>
+
   <%# Search results use Blacklight defaults %>
   <%= render 'search_results' %>
 <% else %>
