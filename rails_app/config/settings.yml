@@ -1,9 +1,5 @@
 pennlibs_web_version: '1.4.0-dev.4'
 
-# MS Clarity configuration (null disables tracking)
-ms_clarity:
-  id: null
-
 solr:
   url: <%= ENV['SOLR_URL'] %>
 
