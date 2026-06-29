@@ -17,10 +17,16 @@
     pattern (correct roles, state, and keyboard interaction), so the facets are
     spec-compliant and accessible out of the box.
 %>
+<% detail_classes = class_names(
+  'pl-details', 'facet-limit',
+  "blacklight-#{@facet_field.key}",
+  'facet-limit-active': @facet_field.active?
+  ) %>
 <details
   id="<%= html_id %>"
-  class="pl-details facet-limit blacklight-<%= @facet_field.key %><%= ' facet-limit-active' if @facet_field.active? %>"
+  class="<%= detail_classes %>"
   <%= 'open' unless @facet_field.collapsed? %>
+
 >
   <summary id="<%= header_html_id %>" class="pl-details__summary facet-field-heading h6">
     <%= label %>
