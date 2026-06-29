@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Blacklight class wrapping the retrieved Solr document
 class SolrDocument
   XML_FIELD_NAME = :xml_ss
   REQUESTABLE_REPOSITORIES = [
@@ -34,30 +35,32 @@ class SolrDocument
     parsed_ead.class::OTHER_SECTIONS
   end
 
-  # TODO: use translation service?
   # @return [String, nil]
   def use_restrictions
     translate(node: parsed_ead.userestrict, remove_head: true)
   end
 
-  # TODO: use translation service?
   # @return [String, nil]
   def access_restrictions
     translate(node: parsed_ead.accessrestrict, remove_head: true)
   end
 
+  # @return [String, nil]
   def sponsor
     translate(node: parsed_ead.sponsor, remove_head: true)
   end
 
+  # @return [String, nil]
   def date
     translate(node: parsed_ead.date, remove_head: true)
   end
 
+  # @return [String, nil]
   def author
     translate(node: parsed_ead.author, remove_head: true)
   end
 
+  # @return [String, nil]
   def publisher
     translate(node: parsed_ead.publisher, remove_head: true)
   end
@@ -92,18 +95,12 @@ class SolrDocument
     fetch(:repository_address_ssi, nil)
   end
 
-  def penn_item?
-    fetch(:repository_name_component_1_ssi) == 'University of Pennsylvania'
-  end
-
-  def princeton_item?
-    fetch(:repository_name_component_1_ssi, '').include? 'Princeton'
-  end
-
+  # @return [Boolean]
   def requestable?
     fetch(:repository_ssi, nil).in? REQUESTABLE_REPOSITORIES
   end
 
+  # @return [String, nil]
   def contact_email
     fetch(:contact_emails_ssm).first
   end
