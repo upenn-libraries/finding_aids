@@ -7,3 +7,4 @@ honeybadger:
   api_key: <%= DockerSecrets.lookup('honeybadger_api_key') %>
 
 aspace_throttle: 0.5
+
