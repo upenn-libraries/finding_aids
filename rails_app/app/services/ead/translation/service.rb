@@ -9,7 +9,7 @@ module Ead
         # ActionView::Base.sanitized_allowed_attributes and ActionView::Base.sanitized_allowed_tags
         # for preserved attributes and tags
         # @param node [Nokogiri::XML::Node]
-        # @param remove_head [Boolean]
+        # @param remove_head [Boolean] remove head tag content from returned content
         # @return [ActiveSupport::SafeBuffer, nil]
         def call(node:, remove_head: false)
           return if node.blank?
@@ -29,10 +29,12 @@ module Ead
           @preserved_attributes ||= ActionView::Base.sanitized_allowed_attributes + %w[target rel]
         end
 
+        # @return [Ead::Translation::Formatting]
         def formatting
           @formatting ||= Ead::Translation::Formatting.new
         end
 
+        # @return [Ead::Translation::List]
         def list
           @list ||= Ead::Translation::List.new
         end
