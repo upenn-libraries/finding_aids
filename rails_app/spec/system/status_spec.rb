@@ -21,7 +21,7 @@ describe 'Endpoint dashboard' do
     it 'renders all endpoint slugs' do
       test_endpoints.each do |endpoint|
         within ".table-row-#{endpoint.slug}" do
-          expect(page).to have_text endpoint.slug
+          expect(page).to have_text endpoint.slug.upcase
         end
       end
     end

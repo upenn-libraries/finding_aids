@@ -1,0 +1,10 @@
+<dl class=<%=@dl_class %>>
+<% fields.each do |field| %>
+    <%= wrapper do %>
+      <%= content_tag(:dt, field.label, class: @dt_class) %>
+      <% field.render.each do |value| %>
+        <dd><%= value %></dd>
+      <% end %>
+    <% end %>
+  <% end %>
+</dl>

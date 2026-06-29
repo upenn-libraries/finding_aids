@@ -6,19 +6,19 @@ FactoryBot.define do
     legacy_ids_ssim { ['UPENN_PUUSTEFOO1234'] }
     endpoint_ssi { 'test-endpoint' }
     xml_ss { '' }
-    link_url_ss { '' }
+    link_url_ss { 'https://test-archives.edu' }
     ead_id_ssi { '' }
     unit_id_tsi { 'TE-Foo. 1234' }
     pretty_unit_id_ss { '1234' }
     contact_emails_ssm { [Faker::Internet.email] }
     title_tsi { Faker::Book.title }
     extent_ssim { ['1 bushel'] }
-    display_date_ssim { '1800' }
+    display_date_ssim { ['1800'] }
     years_iim { [1800] }
     date_added_ss { '' }
     languages_ssim { %w[English Gullah] }
     abstract_scope_contents_tsi { Faker::Lorem.sentence }
-    preferred_citation_ss { '' }
+    preferred_citation_ss { 'Test citation' }
     repository_ssi { 'Test Institute:Research Center:Individual Room' }
     creators_ssim { ['A Machine'] }
     people_ssim { ['A Tester'] }
