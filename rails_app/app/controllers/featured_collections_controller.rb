@@ -21,37 +21,23 @@ class FeaturedCollectionsController < ApplicationController
   def create
     @collection = FeaturedCollection.new(collection_params)
     @collection.position = FeaturedCollection.maximum(:position).to_i + 1
-
-    if @collection.save
-      notify_success action: :create, class_name: 'Featured collection', identifier: @collection.title
-      redirect_to featured_collections_path
-    else
-      alert_failure action: :create, class_name: 'Featured collection',
-                    identifier: @collection.title, error: @collection.errors.full_messages.to_sentence
-      render :new, status: :unprocessable_entity
-    end
+    persist(:create, :new)
   end
 
   def update
-    if @collection.update(collection_params)
-      notify_success action: :update, class_name: 'Featured collection', identifier: @collection.title
-      redirect_to featured_collections_path
-    else
-      alert_failure action: :update, class_name: 'Featured collection',
-                    identifier: @collection.title, error: @collection.errors.full_messages.to_sentence
-      render :edit, status: :unprocessable_entity
-    end
+    @collection.assign_attributes(collection_params)
+    persist(:update, :edit)
   end
 
   def destroy
     @collection.destroy
-    notify_success action: :destroy, class_name: 'Featured collection', identifier: @collection.title
+    notify_success action: :destroy, class_name: FeaturedCollection.model_name.human, identifier: @collection.title
     redirect_to featured_collections_path
   end
 
   def reorder
     params[:ids].each_with_index do |id, index|
-      FeaturedCollection.where(id: id).update_all(position: index)
+      FeaturedCollection.find(id).update!(position: index)
     end
     head :ok
   end
@@ -64,21 +50,33 @@ class FeaturedCollectionsController < ApplicationController
 
   def load_form_data
     @titles_by_repository = RepositoryQueries.titles_by_repository
-
-    # Ensure the current record's values are present even if stale
-    if @collection&.repository.present?
-      @titles_by_repository[@collection.repository] ||= []
-      if @collection.title.present? && !@titles_by_repository[@collection.repository].include?(@collection.title)
-        @titles_by_repository[@collection.repository] << @collection.title
-        @titles_by_repository[@collection.repository].sort!
-      end
-    end
-
+    ensure_current_record_titles
     @repositories = @titles_by_repository.keys.sort
   rescue StandardError => e
     Rails.logger.warn "FeaturedCollectionsController: failed to load form data — #{e.class}: #{e.message}"
     @titles_by_repository = { @collection&.repository => [@collection&.title].compact }.compact
     @repositories = [@collection&.repository].compact
+  end
+
+  def persist(action, failure_view)
+    if @collection.save
+      notify_success action: action, class_name: FeaturedCollection.model_name.human, identifier: @collection.title
+      redirect_to featured_collections_path
+    else
+      alert_failure action: action, class_name: FeaturedCollection.model_name.human,
+                    identifier: @collection.title, error: @collection.errors.map(&:full_message).join(', ')
+      render failure_view, status: :unprocessable_entity
+    end
+  end
+
+  def ensure_current_record_titles
+    return if @collection&.repository.blank? || @collection.title.blank?
+
+    titles = @titles_by_repository[@collection.repository] ||= []
+    return if titles.include?(@collection.title)
+
+    titles << @collection.title
+    titles.sort!
   end
 
   def collection_params

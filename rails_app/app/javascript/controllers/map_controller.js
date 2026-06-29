@@ -1,6 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
 
-
 // Leaflet map controller for the regional-partnership band.
 // Repository data is fetched from /api/map_data (cached server-side).
 export default class extends Controller {
@@ -33,7 +32,10 @@ export default class extends Controller {
   async _loadMarkers() {
     try {
       const response = await fetch('/api/map_data')
-      if (!response.ok) return
+      if (!response.ok) {
+        this._showError()
+        return
+      }
       const repos = await response.json()
       repos.forEach((repo) => {
         if (repo.lat && repo.lng) {
@@ -44,14 +46,23 @@ export default class extends Controller {
       })
     } catch (e) {
       console.error('Failed to load map data:', e)
+      this._showError()
     }
+  }
+
+  _showError() {
+    this.element.textContent = 'Map data could not be loaded.'
+    this.element.style.display = 'flex'
+    this.element.style.alignItems = 'center'
+    this.element.style.justifyContent = 'center'
   }
 }
 
+const _escapeDiv = document.createElement('div')
+
 function escapeHtml(str) {
-  const div = document.createElement('div')
-  div.appendChild(document.createTextNode(str))
-  return div.innerHTML
+  _escapeDiv.textContent = str
+  return _escapeDiv.innerHTML
 }
 
 function markerContent(repo) {

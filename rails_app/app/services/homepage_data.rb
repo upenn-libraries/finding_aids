@@ -7,6 +7,8 @@
 module HomepageData
   Repository = Data.define(:name, :slug, :count, :lat, :lng)
 
+  NIL_COORDS = { lat: nil, lng: nil }.freeze
+
   class << self
     # @return [Array<FeaturedCollection>]
     def collection_guides
@@ -20,14 +22,13 @@ module HomepageData
 
     # @return [String]
     def repositories_json
-      @repositories_json ||= repositories.map(&:to_h).to_json
+      repositories.map(&:to_h).to_json
     end
 
     # Clear memoized repository data so the next call re-fetches from Solr.
     # Call this after adding a new repository to the index.
     def reset!
       @repositories = nil
-      @repositories_json = nil
     end
 
     private
@@ -56,18 +57,13 @@ module HomepageData
     # @param address [String, nil]
     # @return [Hash]
     def coordinates_for(name, address)
-      return nil_coordinates if address.blank?
+      return NIL_COORDS if address.blank?
 
       @coordinates_cache ||= {}
-      @coordinates_cache[name] ||= geocode(address) || nil_coordinates
+      @coordinates_cache[name] ||= geocode(address) || NIL_COORDS
     rescue StandardError => e
       Rails.logger.warn "HomepageData: geocoding failed for #{name} — #{e.class}: #{e.message}"
-      nil_coordinates
-    end
-
-    # @return [Hash]
-    def nil_coordinates
-      { lat: nil, lng: nil }
+      NIL_COORDS
     end
 
     # @param address [String]

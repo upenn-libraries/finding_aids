@@ -56,13 +56,8 @@ class RepositoryQueries
   #
   # @return [Hash{String => Array<String>}] repository name => sorted array of titles
   def self.titles_by_repository
-    response = connection.get('select', params: {
-                                q: '*:*',
-                                fl: 'repository_ssi,title_tsi',
-                                rows: 10_000
-                              })
     grouped = Hash.new { |h, k| h[k] = [] }
-    response.dig('response', 'docs').each do |doc|
+    titles_docs.each do |doc|
       repo = doc['repository_ssi']
       title = doc['title_tsi']
       grouped[repo] << title if repo.present? && title.present?
@@ -74,4 +69,16 @@ class RepositoryQueries
   def self.connection
     Blacklight.default_index.connection
   end
+
+  # @return [Array<Hash>] Solr documents with repository_ssi and title_tsi
+  def self.titles_docs
+    response = connection.get('select', params: {
+                                q: '*:*',
+                                fl: 'repository_ssi,title_tsi',
+                                rows: 10_000
+                              })
+    response.dig('response', 'docs') || []
+  end
+
+  private_class_method :connection, :titles_docs
 end
