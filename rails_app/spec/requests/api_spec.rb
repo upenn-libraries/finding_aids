@@ -17,7 +17,6 @@ describe 'API index endpoints' do
   before do
     solr.add_many documents: documents
     solr.commit
-    get api_url
   end
 
   after do
@@ -26,7 +25,7 @@ describe 'API index endpoints' do
   end
 
   context 'with endpoints' do
-    let(:api_url) { endpoints_api_path }
+    before { get endpoints_api_path }
 
     it 'returns a list of all extant endpoints with count and records link' do
       expect(data.first.keys).to include 'name', 'count', 'records_url'
@@ -35,11 +34,30 @@ describe 'API index endpoints' do
   end
 
   context 'with repositories' do
-    let(:api_url) { repositories_api_path }
+    before { get repositories_api_path }
 
     it 'returns a list of all extant repositories with count and records link' do
       expect(data.first.keys).to include 'name', 'count', 'records_url'
       expect(data.first['records_url']).to include '.json'
+    end
+  end
+
+  context 'with map_data' do
+    before do
+      HomepageData.reset!
+      allow(RepositoryQueries).to receive_messages(
+        facet_counts: [{ name: 'Test Repo', count: 100 }],
+        addresses: { 'Test Repo' => '1 Research Park' }
+      )
+      allow(Geocoder).to receive(:search).and_return(
+        [Struct.new(:latitude, :longitude, :coordinates).new(39.98, -75.19, [39.98, -75.19])]
+      )
+      get map_data_api_path
+    end
+
+    it 'returns repository data with coordinates for the map' do
+      expect(data.first.keys).to include 'name', 'slug', 'count', 'lat', 'lng'
+      expect(data.first['lat']).to eq(39.98)
     end
   end
 end

@@ -1,0 +1,8 @@
+<section class="fa-regional-partnership" aria-labelledby="regional-partnership-heading">
+  <div id="partnership-map"
+       class="fa-regional-partnership__map"
+       data-controller="map">
+  </div>
+
+  <%= render Homepage::RepositoryCardsComponent.new(repos: @repos) %>
+</section>

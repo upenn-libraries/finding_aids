@@ -60,8 +60,6 @@
     </div>
   </main>
 
-  <%# Site-wide regional-partnership band (map + repositories), shown above the footer on every page. %>
-  <%= render 'shared/regional_partnership' %>
   <%= render FooterComponent.new(user: current_user) %>
   <%= render partial: 'shared/modal' %>
   <%= content_for(:offcanvas) %>

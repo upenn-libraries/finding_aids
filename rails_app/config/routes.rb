@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
   scope :admin do
     get '/', to: 'admin#index', as: :admin
+    post 'refresh_map_data', to: 'admin#refresh_map_data', as: :refresh_map_data
     resources :users
     resources :endpoints do
       member { post :harvest }
@@ -29,6 +30,7 @@ Rails.application.routes.draw do
   defaults format: :json do
     get '/api/endpoints', to: 'api#endpoints', as: :endpoints_api
     get '/api/repositories', to: 'api#repositories', as: :repositories_api
+    get '/api/map_data', to: 'api#map_data', as: :map_data_api
   end
 
   mount Blacklight::Engine => '/'

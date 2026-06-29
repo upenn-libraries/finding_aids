@@ -7,4 +7,10 @@ class AdminController < ApplicationController
   layout 'application'
 
   def index; end
+
+  def refresh_map_data
+    HomepageData.reset!
+    notify_success action: :refresh, class_name: 'Map data', identifier: 'cache'
+    redirect_to endpoints_path
+  end
 end
