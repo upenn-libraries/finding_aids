@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Blacklight class wrapping the retrieved Solr document
 class SolrDocument
   XML_FIELD_NAME = :xml_ss
   REQUESTABLE_REPOSITORIES = [
@@ -9,6 +10,8 @@ class SolrDocument
   ].freeze
 
   include Blacklight::Solr::Document
+  include EadTranslating
+  include EadTextExtracting
 
   # self.unique_key = 'id'
 
@@ -22,26 +25,49 @@ class SolrDocument
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
 
-  # @return [Hash{Symbol->Array}]
-  def topics_hash
-    # %i[people_ssim corpnames_ssim subjects_ssim places_ssim].sum([]) { |k| fetch(k, []) }
-    {
-      people_ssim: fetch(:people_ssim, []),
-      corpnames_ssim: fetch(:corpnames_ssim, []),
-      subjects_ssim: fetch(:subjects_ssim, []),
-      places_ssim: fetch(:places_ssim, []),
-      occupations_ssim: fetch(:occupations_ssim, [])
-    }
-  end
-
   # @return [SolrDocument::ParsedEad]
   def parsed_ead
-    @parsed_ead ||= ParsedEad.new(fetch(XML_FIELD_NAME))
+    @parsed_ead ||= SolrDocument::ParsedEad.new(fetch(XML_FIELD_NAME))
+  end
+
+  # @return [Array<Symbol>]
+  def description_sections
+    parsed_ead.class::OTHER_SECTIONS
+  end
+
+  # @return [String, nil]
+  def use_restrictions
+    translate(node: parsed_ead.userestrict, remove_head: true)
+  end
+
+  # @return [String, nil]
+  def access_restrictions
+    translate(node: parsed_ead.accessrestrict, remove_head: true)
+  end
+
+  # @return [String, nil]
+  def sponsor
+    translate(node: parsed_ead.sponsor, remove_head: true)
+  end
+
+  # @return [String, nil]
+  def date
+    translate(node: parsed_ead.date, remove_head: true)
+  end
+
+  # @return [String, nil]
+  def author
+    translate(node: parsed_ead.author, remove_head: true)
+  end
+
+  # @return [String, nil]
+  def publisher
+    translate(node: parsed_ead.publisher, remove_head: true)
   end
 
   # @return [String, nil]
   def language_note
-    parsed_ead.did.at_xpath('langmaterial').try(:text).try(:strip)
+    text_only(parsed_ead.langmaterial)
   end
 
   # @return [Array<String> (frozen)]
@@ -69,18 +95,12 @@ class SolrDocument
     fetch(:repository_address_ssi, nil)
   end
 
-  def penn_item?
-    fetch(:repository_name_component_1_ssi) == 'University of Pennsylvania'
-  end
-
-  def princeton_item?
-    fetch(:repository_name_component_1_ssi, '').include? 'Princeton'
-  end
-
+  # @return [Boolean]
   def requestable?
     fetch(:repository_ssi, nil).in? REQUESTABLE_REPOSITORIES
   end
 
+  # @return [String, nil]
   def contact_email
     fetch(:contact_emails_ssm).first
   end
@@ -88,61 +108,5 @@ class SolrDocument
   # @return [Hash{Symbol->Unknown}]
   def requesting_info
     { title: title, call_num: call_num, repository: repository }
-  end
-
-  class ParsedEad
-    ADMIN_INFO_SECTIONS = %w[publisher author date sponsor accessrestrict userestrict].freeze
-    OTHER_SECTIONS = %w[bioghist scopecontent arrangement relatedmaterials bibliography odd accruals
-                        custodhist altformavail originalsloc fileplan acqinfo otherfindaid phystech
-                        processinfo relatedmaterial separatedmaterial appraisal].freeze
-
-    # @param [String] xml
-    def initialize(xml)
-      @nodes = Nokogiri::XML.parse(xml)
-      @nodes.remove_namespaces!
-    end
-
-    # @return [Nokogiri::XML::Element] required element in <archdesc> node
-    def did
-      @nodes.at_xpath('/ead/archdesc/did')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def dsc
-      @nodes.at_xpath('/ead/archdesc/dsc')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def sponsor
-      @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt/sponsor')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def author
-      @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt/author')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def publisher
-      @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt/publisher')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def date
-      @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt//date')
-    end
-
-    # @param [String, Symbol] name
-    def respond_to_missing?(name, _include_private = false)
-      sections = OTHER_SECTIONS + ADMIN_INFO_SECTIONS
-      name.to_s.in?(sections)
-    end
-
-    # @param [Symbol] symbol
-    def method_missing(symbol, *_args)
-      raise NoMethodError unless respond_to_missing? symbol
-
-      @nodes.xpath("/ead/archdesc/#{symbol}")
-    end
   end
 end
