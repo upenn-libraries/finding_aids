@@ -6,6 +6,7 @@ export default class extends Controller {
 
   connect() {
     this.draggedRow = null;
+    this._lastOrder = this._currentIds();
 
     this.listTarget.querySelectorAll('.sortable-item').forEach((row) => {
       row.draggable = true;
@@ -51,8 +52,11 @@ export default class extends Controller {
   }
 
   saveOrder() {
-    const ids = Array.from(this.listTarget.querySelectorAll('.sortable-item'))
-      .map((row) => row.dataset.id);
+    const ids = this._currentIds();
+
+    // Skip no-op: order hasn't changed
+    if (this._arraysEqual(ids, this._lastOrder)) return;
+    this._lastOrder = ids;
 
     fetch(this.urlValue, {
       method: 'PATCH',
@@ -61,6 +65,15 @@ export default class extends Controller {
         'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
       },
       body: JSON.stringify({ ids }),
-    });
+    }).catch((err) => console.error('Failed to save sort order:', err));
+  }
+
+  _currentIds() {
+    return Array.from(this.listTarget.querySelectorAll('.sortable-item'))
+      .map((row) => row.dataset.id);
+  }
+
+  _arraysEqual(a, b) {
+    return a.length === b.length && a.every((v, i) => v === b[i]);
   }
 }

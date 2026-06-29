@@ -30,6 +30,19 @@ describe HomepageData do
   # Collection guides (database-backed) -------------------------------------
 
   describe '.collection_guides' do
+    before do
+      # The title_must_exist_for_repository validation queries Solr via
+      # RepositoryQueries.titles_by_repository. Stub it so these
+      # HomepageData tests don't depend on Solr data.
+      allow(RepositoryQueries).to receive(:titles_by_repository).and_return(
+        { 'Test Repo' => ['Test Guide'],
+          'Repo' => ['Active', 'Inactive',
+                     'Guide 0', 'Guide 1', 'Guide 2', 'Guide 3', 'Guide 4',
+                     'Guide 5', 'Guide 6', 'Guide 7', 'Guide 8', 'Guide 9',
+                     'First', 'Second'] }
+      )
+    end
+
     it 'returns FeaturedCollection records' do
       FeaturedCollection.create!(title: 'Test Guide', repository: 'Test Repo', active: true)
 

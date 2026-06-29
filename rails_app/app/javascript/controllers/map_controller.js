@@ -1,6 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
 
-
 // Leaflet map controller for the regional-partnership band.
 // Repository data comes from data-map-repos-value attribute set in _regional_partnership.html.erb.
 export default class extends Controller {
