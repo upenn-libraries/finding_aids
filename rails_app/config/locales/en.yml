@@ -218,3 +218,5 @@ en:
       harvest:
         success: "Successfully enqueued harvest job for %{class_name} %{identifier}."
         failure: "Failed to enqueue harvest for %{class_name} %{identifier}: %{error}."
+      refresh:
+        success: "Successfully refreshed %{class_name}."

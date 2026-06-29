@@ -2,16 +2,12 @@ import { Controller } from "@hotwired/stimulus"
 
 
 // Leaflet map controller for the regional-partnership band.
-// Repository data comes from data-map-repos-value attribute set in _regional_partnership.html.erb.
+// Repository data is fetched from /api/map_data (cached server-side).
 export default class extends Controller {
-  static values = { repos: Array }
-
   connect() {
-    if (!this.reposValue || this.reposValue.length === 0) return
-
     this._initMap()
     this._addTileLayer()
-    this._addMarkers()
+    this._loadMarkers()
   }
 
   disconnect() {
@@ -34,14 +30,21 @@ export default class extends Controller {
     }).addTo(this.map)
   }
 
-  _addMarkers() {
-    this.reposValue.forEach((repo) => {
-      if (repo.lat && repo.lng) {
-        L.marker([repo.lat, repo.lng])
-          .addTo(this.map)
-          .bindPopup(markerContent(repo))
-      }
-    })
+  async _loadMarkers() {
+    try {
+      const response = await fetch('/api/map_data')
+      if (!response.ok) return
+      const repos = await response.json()
+      repos.forEach((repo) => {
+        if (repo.lat && repo.lng) {
+          L.marker([repo.lat, repo.lng])
+            .addTo(this.map)
+            .bindPopup(markerContent(repo))
+        }
+      })
+    } catch (e) {
+      console.error('Failed to load map data:', e)
+    }
   }
 }
 

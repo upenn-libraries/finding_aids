@@ -68,6 +68,21 @@ describe HomepageData do
 
   # Repositories ------------------------------------------------------------
 
+  describe '.reset!' do
+    before do
+      allow(RepositoryQueries).to receive_messages(facet_counts: facet_data, addresses: address_data)
+      allow(Geocoder).to receive(:search).and_return([geocoder_result])
+    end
+
+    it 'clears memoized repositories so the next call re-fetches' do
+      original = described_class.repositories
+      described_class.reset!
+      refreshed = described_class.repositories
+
+      expect(refreshed.map(&:name)).to eq(original.map(&:name))
+    end
+  end
+
   describe '.repositories' do
     before do
       allow(RepositoryQueries).to receive_messages(facet_counts: facet_data, addresses: address_data)

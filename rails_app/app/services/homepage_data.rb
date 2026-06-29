@@ -23,6 +23,13 @@ module HomepageData
       @repositories_json ||= repositories.map(&:to_h).to_json
     end
 
+    # Clear memoized repository data so the next call re-fetches from Solr.
+    # Call this after adding a new repository to the index.
+    def reset!
+      @repositories = nil
+      @repositories_json = nil
+    end
+
     private
 
     # @return [Array<Repository>]
