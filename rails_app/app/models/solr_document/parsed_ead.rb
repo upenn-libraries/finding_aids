@@ -24,44 +24,16 @@ class SolrDocument
       @nodes.at_xpath('/ead/archdesc/dsc')
     end
 
-    # @return [Nokogiri::XML::Element]
-    def sponsor
-      @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt/sponsor')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def author
-      @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt/author')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def publisher
-      @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt/publisher')
-    end
-
-    # @return [Nokogiri::XML::Element]
-    def date
-      @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt//date')
-    end
-
     # @return [Nokogir::XML::Element]
     def langmaterial
       did.at_xpath('langmaterial')
     end
 
-    # Todo replace method missing to improve performance
-    # @param [String, Symbol] name
-    def respond_to_missing?(name, _include_private = false)
-      sections = OTHER_SECTIONS + ADMIN_INFO_SECTIONS
-      name.to_s.in?(sections)
-    end
-
-    # Todo replace method missing to improve performance
-    # @param [Symbol] symbol
-    def method_missing(symbol, *_args)
-      raise NoMethodError unless respond_to_missing? symbol
-
-      @nodes.xpath("/ead/archdesc/#{symbol}")
+    # Dynamically define accessor methods for sections found in the archdesc node
+    (ADMIN_INFO_SECTIONS + OTHER_SECTIONS).each do |section|
+      define_method(section) do
+        @nodes.xpath("/ead/archdesc/#{section}")
+      end
     end
   end
 end
