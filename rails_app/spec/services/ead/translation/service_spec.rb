@@ -5,6 +5,10 @@ require 'rails_helper'
 RSpec.describe Ead::Translation::Service do
   let(:fragment) { Nokogiri::XML.fragment(xml) }
   let(:result) { described_class.call(node: fragment) }
+
+  # Previous EAD Markup Translation took the form of a ViewComponent, allowing us to use Capybara matches in specs.
+  # This `node` shim allows us to keep most of the existing specs without making significant changes, though eventually
+  # a more significant refactor of these specs is needed.
   let(:node) { Capybara::Node::Simple.new(result) }
 
   context 'with formatted text' do
