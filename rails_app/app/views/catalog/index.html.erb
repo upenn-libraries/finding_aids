@@ -1,17 +1,34 @@
-<%# Override from Blacklight 9.0.0 to remove display of sidebar when not showing results %>
+<%# Override from Blacklight 9.0.0 to:
+      - remove display of sidebar when not showing results
+      - render sidebar content in an offcanvas element for display on small screens
+%>
 
 <% content_for(:head) do %>
   <meta name="blacklight-search-storage" content="<%= blacklight_config.track_search_session.storage %>">
 <% end %>
 
 <% if has_search_parameters? %>
-  <% content_for(:sidebar) do %>
-    <% conf = blacklight_config.view_config(document_index_view_type) %>
-    <%= render conf.sidebar_component.new(blacklight_config: blacklight_config,
-                                          response: @response,
-                                          view_config: conf) %>
+  <% conf = blacklight_config.view_config(document_index_view_type) %>
+  <% sidebar_html = render conf.sidebar_component.new(blacklight_config: blacklight_config,
+                                                      response: @response,
+                                                      view_config: conf) %>
+
+  <%# Sidebar content for desktop (>= 820px) %>
+  <% content_for(:sidebar, sidebar_html) %>
+
+  <%# Offcanvas for mobile (< 820px) - rendered outside sidebar so sidebar can be display:none %>
+  <% content_for(:offcanvas) do %>
+    <div class="offcanvas offcanvas-end fa-facets-offcanvas" tabindex="-1" id="facets-offcanvas" aria-labelledby="facets-offcanvas-label">
+      <div class="offcanvas-header">
+        <h3 class="offcanvas-title" id="facets-offcanvas-label"><%= t('blacklight.search.facets.title') %></h3>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#facets-offcanvas" aria-label="<%= t('blacklight.modal.close') %>"></button>
+      </div>
+      <div class="offcanvas-body">
+        <%= sidebar_html %>
+      </div>
+    </div>
   <% end %>
-  <%# Search results use Blacklight defaults %>
+
   <%= render 'search_results' %>
 <% else %>
   <%# Homepage renders when no search parameters %>

@@ -28,8 +28,8 @@ describe 'Blacklight search results' do
       before { visit search_catalog_path search_field: 'all_fields', q: '' }
 
       it 'displays the expected century facets' do
-        within('div.blacklight-era_facet') do
-          click_on I18n.t('facets.era.label')
+        within('.blacklight-era_facet') do
+          find('summary', text: I18n.t('facets.era.label')).click
           expect(page).to have_text("#{I18n.t('facets.era.century.eighteenth')} 2")
           expect(page).to have_text("#{I18n.t('facets.era.century.nineteenth')} 1")
         end
