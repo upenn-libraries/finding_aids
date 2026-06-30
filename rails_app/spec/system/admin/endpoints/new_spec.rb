@@ -22,7 +22,7 @@ describe 'Endpoints new page' do
     end
 
     it 'displays a dropdown to select source type' do
-      expect(page).to have_select('Source type', options: ['', *Endpoint::SOURCE_TYPES])
+      expect(page).to have_select('Source type', options: ['Select a source type...', *Endpoint::SOURCE_TYPES])
     end
 
     it 'displays webpage url field' do

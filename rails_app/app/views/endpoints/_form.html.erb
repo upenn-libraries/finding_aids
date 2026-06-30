@@ -3,7 +3,7 @@
   <%= f.text_field :slug, disabled: edit, required: false %>
   <%= f.text_field :public_contacts, value: @endpoint.public_contacts&.join(','), required: false %>
   <%= f.text_field :tech_contacts, value: @endpoint.tech_contacts&.join(','), required: false %>
-  <%= f.select :source_type, @endpoint.class::SOURCE_TYPES %>
+  <%= f.select :source_type, @endpoint.class::SOURCE_TYPES, { include_blank: 'Select a source type...' } %>
   <%= f.text_field :webpage_url, required: false %>
   <%= f.collection_select :aspace_instance_id, @aspace_instances, :id, :slug,
                           selected: @endpoint.aspace_instance&.id,
