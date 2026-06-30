@@ -9,7 +9,7 @@ class FeaturedCollectionsController < ApplicationController
   layout 'application'
 
   def index
-    @collections = FeaturedCollection.order(:position)
+    @collections = FeaturedCollection.order(created_at: :desc)
   end
 
   def new
@@ -20,7 +20,6 @@ class FeaturedCollectionsController < ApplicationController
 
   def create
     @collection = FeaturedCollection.new(collection_params)
-    @collection.position = FeaturedCollection.maximum(:position).to_i + 1
     persist(:create, :new)
   end
 
@@ -35,13 +34,6 @@ class FeaturedCollectionsController < ApplicationController
     redirect_to featured_collections_path
   end
 
-  def reorder
-    params[:ids].each_with_index do |id, index|
-      FeaturedCollection.find(id).update!(position: index)
-    end
-    head :ok
-  end
-
   private
 
   def find_collection
@@ -53,7 +45,7 @@ class FeaturedCollectionsController < ApplicationController
     ensure_current_record_titles
     @repositories = @titles_by_repository.keys.sort
   rescue StandardError => e
-    Rails.logger.warn "FeaturedCollectionsController: failed to load form data — #{e.class}: #{e.message}"
+    Rails.logger.warn "FeaturedCollectionsController: failed to load form data - #{e.class}: #{e.message}"
     @titles_by_repository = { @collection&.repository => [@collection&.title].compact }.compact
     @repositories = [@collection&.repository].compact
   end
@@ -70,7 +62,8 @@ class FeaturedCollectionsController < ApplicationController
   end
 
   def ensure_current_record_titles
-    return if @collection&.repository.blank? || @collection.title.blank?
+    return if @collection&.repository.blank?
+    return if @collection.title.blank?
 
     titles = @titles_by_repository[@collection.repository] ||= []
     return if titles.include?(@collection.title)
@@ -80,6 +73,6 @@ class FeaturedCollectionsController < ApplicationController
   end
 
   def collection_params
-    params.require(:featured_collection).permit(:title, :repository, :active)
+    params.require(:featured_collection).permit(:title, :repository)
   end
 end

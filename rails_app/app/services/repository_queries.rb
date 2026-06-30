@@ -65,6 +65,20 @@ class RepositoryQueries
     grouped.transform_values(&:sort!).sort.to_h
   end
 
+  # Random collection titles for homepage backfill.
+  def self.random_titles(limit:)
+    response = connection.get('select', params: {
+                                q: '*:*',
+                                fl: 'title_tsi,repository_ssi',
+                                rows: limit
+                              })
+    (response.dig('response', 'docs') || []).filter_map do |doc|
+      title = doc['title_tsi']
+      repo = doc['repository_ssi']
+      { title: title, repository: repo } if title.present? && repo.present?
+    end.shuffle
+  end
+
   # @return [RSolr::Client]
   def self.connection
     Blacklight.default_index.connection

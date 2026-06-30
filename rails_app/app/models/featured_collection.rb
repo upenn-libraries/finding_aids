@@ -6,8 +6,6 @@ class FeaturedCollection < ApplicationRecord
   validates :title, :repository, presence: true
   validate :title_must_exist_for_repository
 
-  scope :active, -> { where(active: true).order(:position) }
-
   private
 
   def title_must_exist_for_repository
@@ -15,7 +13,5 @@ class FeaturedCollection < ApplicationRecord
 
     titles = RepositoryQueries.titles_by_repository[repository] || []
     errors.add(:title, 'is not a collection at the selected repository') unless titles.include?(title)
-  rescue StandardError => e
-    Rails.logger.warn "FeaturedCollection: title validation skipped — #{e.class}: #{e.message}"
   end
 end

@@ -21,17 +21,20 @@ export default class extends Controller {
     const selected = this.titleTarget.dataset.selected || this.titleTarget.value;
 
     this.titleTarget.disabled = !repo;
-
-    // Clear existing options
     this.titleTarget.innerHTML = '';
 
-    // Add placeholder
-    const placeholder = document.createElement('option');
-    placeholder.value = '';
-    placeholder.textContent = repo ? 'Select a collection…' : 'Select a repository first…';
-    this.titleTarget.appendChild(placeholder);
+    this._addPlaceholderOption(repo);
+    this._addTitleOptions(titles, selected);
+  }
 
-    // Add title options
+  _addPlaceholderOption(repo) {
+    const option = document.createElement('option');
+    option.value = '';
+    option.textContent = repo ? 'Select a collection…' : 'Select a repository first…';
+    this.titleTarget.appendChild(option);
+  }
+
+  _addTitleOptions(titles, selected) {
     titles.forEach((title) => {
       const option = document.createElement('option');
       option.value = title;

@@ -25,11 +25,7 @@ Rails.application.routes.draw do
       member { post :harvest }
     end
     resources :aspace_instances
-    resources :featured_collections do
-      collection do
-        patch :reorder
-      end
-    end
+    resources :featured_collections
   end
 
   defaults format: :json do
