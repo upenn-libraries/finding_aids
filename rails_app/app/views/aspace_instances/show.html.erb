@@ -47,11 +47,11 @@
       </thead>
       <tbody>
       <% @aspace_instance.endpoints.each do |endpoint| %>
-        <tr class="row-id-<%= endpoint.id %>">
-          <td class="slug"><%= link_to endpoint.slug, endpoint_path(endpoint) %></td>
-          <td class="apsace-repo-id"><%= endpoint.aspace_repo_id %></td>
-          <td class="created-at"><%= endpoint.created_at.to_fs(:display) %></td>
-          <td class="updated-at"><%= endpoint.updated_at.to_fs(:display) %></td>
+        <tr>
+          <td><%= link_to endpoint.slug, endpoint_path(endpoint) %></td>
+          <td><%= endpoint.aspace_repo_id %></td>
+          <td><%= endpoint.created_at.to_fs(:display) %></td>
+          <td><%= endpoint.updated_at.to_fs(:display) %></td>
         </tr>
       <% end %>
       </tbody>
