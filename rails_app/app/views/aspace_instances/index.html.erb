@@ -9,25 +9,27 @@
 <% if @aspace_instances.empty? %>
   <p>No ASpace Instances yet!</p>
 <% else %>
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th scope="col">Slug</th>
-      <th scope="col">Endpoint Count</th>
-      <th scope="col">Created At</th>
-      <th scope="col">Updated At</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @aspace_instances.each do |instance| %>
-      <tr class="row-id-<%= instance.id %>">
-        <td class="slug"><%= link_to instance.slug, aspace_instance_path(instance) %></td>
-        <td class="endpoint-count"><%= instance.endpoints.count %></td>
-        <td class="created-at"><%= instance.created_at.to_fs(:display) %></td>
-        <td class="updated-at"><%= instance.updated_at.to_fs(:display) %></td>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Slug</th>
+        <th scope="col">Endpoint Count</th>
+        <th scope="col">Created At</th>
+        <th scope="col">Updated At</th>
       </tr>
-    <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      <% @aspace_instances.each do |instance| %>
+        <tr class="row-id-<%= instance.id %>">
+          <td class="slug"><%= link_to instance.slug, aspace_instance_path(instance) %></td>
+          <td class="endpoint-count"><%= instance.endpoints.count %></td>
+          <td class="created-at"><%= instance.created_at.to_fs(:display) %></td>
+          <td class="updated-at"><%= instance.updated_at.to_fs(:display) %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
   <%= paginate @aspace_instances %>
 <% end %>

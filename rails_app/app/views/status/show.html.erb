@@ -1,114 +1,104 @@
-<div class="container">
-  <h1>Endpoint Status</h1>
-  <h2><%= @endpoint.slug %></h2>
+<h1 class="mb-2">Endpoint Status</h1>
+<h2 class="h4 text-muted mb-4"><%= @endpoint.slug %></h2>
 
-  <dl>
-    <dt>Public Contacts</dt>
-    <dd>
-      <ul>
-      <% @endpoint.public_contacts.each do |contact| %>
-        <li><%= mail_to contact %></li>
-      <% end %>
-      </ul>
-    </dd>
+<div class="card mb-4">
+  <div class="card-body">
+    <h3 class="h5 mb-3">Contacts</h3>
+    <dl class="row mb-0">
+      <dt class="col-sm-3">Public Contacts</dt>
+      <dd class="col-sm-9">
+        <ul class="list-unstyled mb-0">
+        <% @endpoint.public_contacts.each do |contact| %>
+          <li><%= mail_to contact %></li>
+        <% end %>
+        </ul>
+      </dd>
 
-    <dt>Technical Contacts</dt>
-    <dd>
-      <ul>
-      <% @endpoint.tech_contacts.each do |contact| %>
-        <li><%= mail_to contact %></li>
-      <% end %>
-      </ul>
-    </dd>
-  </dl>
-
-  <h3>
-    Harvesting Information
-  </h3>
-
-  <dt>Active</dt>
-  <dd class="active <%= endpoint_active_class(@endpoint) %>"><%= @endpoint.active.to_s.titleize %></dd>
-
-  <dl>
-    <dt>Endpoint Type</dt>
-    <dd><%= @endpoint.source_type %></dd>
-
-    <% if @endpoint.display_url %>
-      <dt>Endpoint URL</dt>
-      <dd><%= link_to @endpoint.display_url, @endpoint.display_url %></dd>
-    <% end %>
-  </dl>
-
-  <h4>
-    Status
-  </h4>
-
-  <dl>
-    <dt>Last Harvest Attempt</dt>
-    <dd><%= time_since_last_harvest @endpoint.last_harvest.date %></dd>
-  </dl>
-
-  <% if @endpoint.last_harvest.failed? %>
-  <div class="alert alert-danger">
-    No files able to be harvested
+      <dt class="col-sm-3">Technical Contacts</dt>
+      <dd class="col-sm-9">
+        <ul class="list-unstyled mb-0">
+        <% @endpoint.tech_contacts.each do |contact| %>
+          <li><%= mail_to contact %></li>
+        <% end %>
+        </ul>
+      </dd>
+    </dl>
   </div>
-  <dl>
-    <dt>Messages</dt>
-    <dd>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h3 class="h5 mb-3">Harvesting Information</h3>
+    <dl class="row mb-0">
+      <dt class="col-sm-3">Active</dt>
+      <dd class="col-sm-9">
+        <span class="badge <%= @endpoint.active? ? 'bg-success' : 'bg-secondary' %>"><%= @endpoint.active.to_s.titleize %></span>
+      </dd>
+
+      <dt class="col-sm-3">Endpoint Type</dt>
+      <dd class="col-sm-9"><%= @endpoint.source_type %></dd>
+
+      <% if @endpoint.display_url %>
+        <dt class="col-sm-3">Endpoint URL</dt>
+        <dd class="col-sm-9"><%= link_to @endpoint.display_url, @endpoint.display_url %></dd>
+      <% end %>
+
+      <dt class="col-sm-3">Last Harvest Attempt</dt>
+      <dd class="col-sm-9"><%= time_since_last_harvest @endpoint.last_harvest.date %></dd>
+    </dl>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h3 class="h5 mb-3">Harvest Results</h3>
+
+    <% if @endpoint.last_harvest.failed? %>
+      <div class="alert alert-danger">
+        <strong>No files able to be harvested</strong>
+      </div>
+      <h4 class="h6">Messages</h4>
       <ul>
-      <% @endpoint.last_harvest.errors.each do |error| %>
-        <li><%= error %></li>
-      <% end %>
+        <% @endpoint.last_harvest.errors.each do |error| %>
+          <li><%= error %></li>
+        <% end %>
       </ul>
-    </dd>
-  </dl>
-  <% elsif @endpoint.last_harvest.partial? %>
-  <div class="alert alert-warning">
-    Some problems harvesting individual files
-  </div>
-  <dl>
-    Problem Files (<%= @endpoint.last_harvest.problem_files.count %>)
-  </dl>
-  <dd>
-    <ol>
-      <% @endpoint.last_harvest.problem_files.each do |file| %>
-      <li><%= error_message_for(file).html_safe %></li>
-      <% end %>
-    </ol>
-  </dd>
-  <dl>
-    Successful Files (<%= @endpoint.last_harvest.success_files.count %>)
-  </dl>
-  <dd>
-    <ol>
-      <% @endpoint.last_harvest.success_files.each do |file| %>
-      <li><%= link_to file['id'], solr_document_path(file['id']) %></li>
-      <% end %>
-    </ol>
-  </dd>
-  <% else %>
-  <div class="alert alert-success">
-    All files harvested successfully
-  </div>
-  <dl>
-    Files (<%= @endpoint.last_harvest.success_files&.count %>)
-  </dl>
-  <dd>
-    <ol>
-      <% @endpoint.last_harvest.success_files&.each do |file| %>
-      <li><%= link_to file['id'], solr_document_path(file['id']) %></li>
-      <% end %>
-    </ol>
-  </dd>
-    <% if @endpoint.last_harvest.removals? %>
-    <dl>Removed Records</dl>
-    <dd>
-      <ol id="removed-records-list">
-        <% @endpoint.last_harvest.removed_files.each do |removed| %>
-        <li><%= removed['id'] %></li>
+
+    <% elsif @endpoint.last_harvest.partial? %>
+      <div class="alert alert-warning">
+        <strong>Some problems harvesting individual files</strong>
+      </div>
+      <h4 class="h6">Problem Files (<%= @endpoint.last_harvest.problem_files.count %>)</h4>
+      <ol>
+        <% @endpoint.last_harvest.problem_files.each do |file| %>
+          <li><%= error_message_for(file).html_safe %></li>
         <% end %>
       </ol>
-    </dd>
+      <h4 class="h6">Successful Files (<%= @endpoint.last_harvest.success_files.count %>)</h4>
+      <ol>
+        <% @endpoint.last_harvest.success_files.each do |file| %>
+          <li><%= link_to file['id'], solr_document_path(file['id']) %></li>
+        <% end %>
+      </ol>
+
+    <% else %>
+      <div class="alert alert-success">
+        <strong>All files harvested successfully</strong>
+      </div>
+      <h4 class="h6">Files (<%= @endpoint.last_harvest.success_files&.count %>)</h4>
+      <ol class="mb-0">
+        <% @endpoint.last_harvest.success_files&.each do |file| %>
+          <li><%= link_to file['id'], solr_document_path(file['id']) %></li>
+        <% end %>
+      </ol>
+      <% if @endpoint.last_harvest.removals? %>
+        <h4 class="h6 mt-3">Removed Records</h4>
+        <ol id="removed-records-list">
+          <% @endpoint.last_harvest.removed_files.each do |removed| %>
+            <li><%= removed['id'] %></li>
+          <% end %>
+        </ol>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
 </div>
