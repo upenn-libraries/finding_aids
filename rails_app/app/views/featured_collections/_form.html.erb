@@ -9,10 +9,5 @@
     <%= form.select :title, [], { include_blank: 'Select a repository first…' }, class: 'form-select', required: true, data: { featured_collection_form_target: 'title', selected: @collection.title } %>
   </div>
 
-  <div class="mb-3 form-check">
-    <%= form.check_box :active, class: 'form-check-input' %>
-    <%= form.label :active, class: 'form-check-label' %>
-  </div>
-
   <%= form.submit class: 'btn btn-primary' %>
 <% end %>

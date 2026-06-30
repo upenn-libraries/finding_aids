@@ -10,9 +10,19 @@ module HomepageData
   NIL_COORDS = { lat: nil, lng: nil }.freeze
 
   class << self
+    MAX_GUIDES = 8
+
+    # Staff-picked collections appear first, then random backfill from Solr.
     # @return [Array<FeaturedCollection>]
     def collection_guides
-      FeaturedCollection.active.limit(8).to_a
+      spotlights = load_spotlights
+      return spotlights if spotlights.length >= MAX_GUIDES
+
+      backfill = fetch_backfill(spotlights)
+      spotlights + build_backfill_guides(backfill)
+    rescue StandardError => e
+      Rails.logger.warn "HomepageData: backfill failed - #{e.class}: #{e.message}"
+      spotlights
     end
 
     # @return [Array<Repository>]
@@ -32,6 +42,22 @@ module HomepageData
     end
     private
 
+    def load_spotlights
+      FeaturedCollection.order(:created_at).limit(MAX_GUIDES).to_a
+    end
+
+    def fetch_backfill(spotlights)
+      titles = spotlights.map(&:title)
+      needed = MAX_GUIDES - spotlights.length
+      RepositoryQueries.random_titles(limit: needed + titles.length)
+        .reject { |b| titles.include?(b[:title]) }
+        .first(needed)
+    end
+
+    def build_backfill_guides(backfill)
+      backfill.map { |b| FeaturedCollection.new(title: b[:title], repository: b[:repository]) }
+    end
+
     # @return [Array<Repository>]
     def fetch_repositories_from_solr
       repos = RepositoryQueries.facet_counts
@@ -48,7 +74,7 @@ module HomepageData
     def fetch_addresses
       RepositoryQueries.addresses
     rescue StandardError => e
-      Rails.logger.warn "HomepageData: address lookup failed — #{e.class}: #{e.message}"
+      Rails.logger.warn "HomepageData: address lookup failed - #{e.class}: #{e.message}"
       {}
     end
 
@@ -61,7 +87,7 @@ module HomepageData
       @coordinates_cache ||= {}
       @coordinates_cache[name] ||= geocode(address) || NIL_COORDS
     rescue StandardError => e
-      Rails.logger.warn "HomepageData: geocoding failed for #{name} — #{e.class}: #{e.message}"
+      Rails.logger.warn "HomepageData: geocoding failed for #{name} - #{e.class}: #{e.message}"
       NIL_COORDS
     end
 

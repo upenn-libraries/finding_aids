@@ -27,65 +27,95 @@ describe HomepageData do
     }
   end
 
-  # Collection guides (database-backed) -------------------------------------
+  shared_context 'with solr and geocoder stubs' do
+    before do
+      allow(RepositoryQueries).to receive_messages(facet_counts: facet_data, addresses: address_data)
+      allow(Geocoder).to receive(:search).and_return([geocoder_result])
+    end
+  end
+
+  shared_examples 'nil coordinates' do
+    it 'returns nil coordinates' do
+      repos = described_class.repositories
+      repo = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
+
+      expect(repo.lat).to be_nil
+      expect(repo.lng).to be_nil
+    end
+  end
+
+  # Collection guides (spotlights + backfill) ------------------------------
 
   describe '.collection_guides' do
     before do
-      # The title_must_exist_for_repository validation queries Solr via
-      # RepositoryQueries.titles_by_repository. Stub it so these
-      # HomepageData tests don't depend on Solr data.
       allow(RepositoryQueries).to receive(:titles_by_repository).and_return(
-        { 'Test Repo' => ['Test Guide'],
-          'Repo' => ['Active', 'Inactive',
-                     'Guide 0', 'Guide 1', 'Guide 2', 'Guide 3', 'Guide 4',
-                     'Guide 5', 'Guide 6', 'Guide 7', 'Guide 8', 'Guide 9',
-                     'First', 'Second'] }
+        { 'Test Repo' => ['Spotlight', 'Also Spotlight'] +
+                         (0..7).map { |i| "Spotlight #{i}" } }
       )
     end
 
-    it 'returns FeaturedCollection records' do
-      FeaturedCollection.create!(title: 'Test Guide', repository: 'Test Repo', active: true)
+    it 'returns spotlight collections' do
+      FeaturedCollection.create!(title: 'Spotlight', repository: 'Test Repo')
 
       guides = described_class.collection_guides
 
       expect(guides).to all(be_a(FeaturedCollection))
+      expect(guides.first.title).to eq('Spotlight')
     end
 
-    it 'returns only active collections' do
-      FeaturedCollection.create!(title: 'Active', repository: 'Repo', active: true)
-      FeaturedCollection.create!(title: 'Inactive', repository: 'Repo', active: false)
+    it 'places spotlights before backfill' do
+      FeaturedCollection.create!(title: 'Spotlight', repository: 'Test Repo')
+      allow(RepositoryQueries).to receive(:random_titles).with(limit: 8).and_return([
+        { title: 'Backfill-A', repository: 'Test Repo' }
+      ])
 
       guides = described_class.collection_guides
 
-      expect(guides.map(&:title)).to include('Active')
-      expect(guides.map(&:title)).not_to include('Inactive')
+      expect(guides.length).to eq(2)
+      expect(guides.first.title).to eq('Spotlight')
+      expect(guides.last.title).to eq('Backfill-A')
     end
 
-    it 'returns at most 8 collections' do
-      10.times { |i| FeaturedCollection.create!(title: "Guide #{i}", repository: 'Repo', active: true) }
+    it 'backfills up to 8 total when fewer spotlights exist' do
+      FeaturedCollection.create!(title: 'Spotlight', repository: 'Test Repo')
+      backfill = ('A'..'G').map { |l| { title: "Backfill-#{l}", repository: 'Test Repo' } }
+      allow(RepositoryQueries).to receive(:random_titles).with(limit: 8).and_return(backfill)
 
       guides = described_class.collection_guides
 
       expect(guides.length).to eq(8)
     end
 
-    it 'orders by position' do
-      FeaturedCollection.create!(title: 'Second', repository: 'Repo', position: 2, active: true)
-      FeaturedCollection.create!(title: 'First', repository: 'Repo', position: 1, active: true)
+    it 'skips backfill when 8 or more spotlights exist' do
+      allow(RepositoryQueries).to receive(:random_titles)
+      8.times { |i| FeaturedCollection.create!(title: "Spotlight #{i}", repository: 'Test Repo') }
 
       guides = described_class.collection_guides
 
-      expect(guides.map(&:title)).to eq(%w[First Second])
+      expect(guides.length).to eq(8)
+      expect(RepositoryQueries).not_to have_received(:random_titles)
+    end
+
+    it 'excludes spotlight titles from backfill' do
+      FeaturedCollection.create!(title: 'Spotlight', repository: 'Test Repo')
+      FeaturedCollection.create!(title: 'Also Spotlight', repository: 'Test Repo')
+
+      allow(RepositoryQueries).to receive(:random_titles).with(limit: 8).and_return([
+        { title: 'Spotlight', repository: 'Test Repo' },
+        { title: 'Unique', repository: 'Test Repo' }
+      ])
+
+      guides = described_class.collection_guides
+
+      expect(guides.map(&:title)).to eq(['Spotlight', 'Also Spotlight', 'Unique'])
     end
   end
 
   # Repositories ------------------------------------------------------------
 
+
   describe '.repositories' do
-    before do
-      allow(RepositoryQueries).to receive_messages(facet_counts: facet_data, addresses: address_data)
-      allow(Geocoder).to receive(:search).and_return([geocoder_result])
-    end
+    include_context 'with solr and geocoder stubs'
 
     it 'returns an array of Repository objects' do
       repos = described_class.repositories
@@ -120,13 +150,7 @@ describe HomepageData do
         allow(RepositoryQueries).to receive(:addresses).and_return({})
       end
 
-      it 'returns nil coordinates' do
-        repos = described_class.repositories
-        haverford = repos.find { |r| r.slug == 'haverford-college-quaker-special-collections' }
-
-        expect(haverford.lat).to be_nil
-        expect(haverford.lng).to be_nil
-      end
+      include_examples 'nil coordinates'
     end
 
     context 'when geocoding returns no results' do
@@ -134,13 +158,7 @@ describe HomepageData do
         allow(Geocoder).to receive(:search).and_return([])
       end
 
-      it 'returns nil coordinates' do
-        repos = described_class.repositories
-        haverford = repos.find { |r| r.slug == 'haverford-college-quaker-special-collections' }
-
-        expect(haverford.lat).to be_nil
-        expect(haverford.lng).to be_nil
-      end
+      include_examples 'nil coordinates'
     end
 
     context 'when geocoding raises an error' do
@@ -148,13 +166,7 @@ describe HomepageData do
         allow(Geocoder).to receive(:search).and_raise(Geocoder::Error, 'rate limited')
       end
 
-      it 'returns nil coordinates' do
-        repos = described_class.repositories
-        haverford = repos.find { |r| r.slug == 'haverford-college-quaker-special-collections' }
-
-        expect(haverford.lat).to be_nil
-        expect(haverford.lng).to be_nil
-      end
+      include_examples 'nil coordinates'
     end
 
     context 'when the address lookup fails' do
@@ -162,13 +174,7 @@ describe HomepageData do
         allow(RepositoryQueries).to receive(:addresses).and_raise(StandardError, 'Solr error')
       end
 
-      it 'returns nil coordinates' do
-        repos = described_class.repositories
-        haverford = repos.find { |r| r.slug == 'haverford-college-quaker-special-collections' }
-
-        expect(haverford.lat).to be_nil
-        expect(haverford.lng).to be_nil
-      end
+      include_examples 'nil coordinates'
     end
 
     context 'when Solr is unavailable' do

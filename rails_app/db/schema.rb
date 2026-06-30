@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_23_182523) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_29_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -54,12 +54,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_23_182523) do
   create_table "featured_collections", force: :cascade do |t|
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
-    t.integer "position", default: 0, null: false
     t.string "repository", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["active"], name: "index_featured_collections_on_active"
-    t.index ["position"], name: "index_featured_collections_on_position"
   end
 
   create_table "searches", id: :serial, force: :cascade do |t|
