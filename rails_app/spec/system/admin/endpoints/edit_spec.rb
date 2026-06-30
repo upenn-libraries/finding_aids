@@ -22,7 +22,7 @@ describe 'Endpoints edit page' do
     end
 
     it 'pre-selects source type' do
-      expect(page).to have_select('Source type', selected: endpoint.source_type, options: Endpoint::SOURCE_TYPES)
+      expect(page).to have_select('Source type', selected: endpoint.source_type, options: ['', *Endpoint::SOURCE_TYPES])
     end
 
     it 'pre selects aspace instance' do

@@ -22,7 +22,7 @@ describe 'Endpoints new page' do
     end
 
     it 'displays a dropdown to select source type' do
-      expect(page).to have_select('Source type', selected: 'webpage', options: Endpoint::SOURCE_TYPES)
+      expect(page).to have_select('Source type', options: ['', *Endpoint::SOURCE_TYPES])
     end
 
     it 'displays webpage url field' do
@@ -45,6 +45,7 @@ describe 'Endpoints new page' do
 
     before do
       fill_in 'Slug', with: endpoint.slug
+      select 'webpage', from: 'Source type'
       fill_in 'Webpage url', with: endpoint.webpage_url
       click_on 'Save'
     end
@@ -67,6 +68,7 @@ describe 'Endpoints new page' do
       visit endpoints_path
       click_on I18n.t('admin.actions.create')
       fill_in 'Slug', with: endpoint.slug
+      select 'webpage', from: 'Source type'
       click_on 'Save'
     end
 

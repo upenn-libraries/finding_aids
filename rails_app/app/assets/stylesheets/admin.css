@@ -1,8 +1,0 @@
-/*
- * Minimal bridge between bootstrap_form v4 (BS4 markup) and Bootstrap 5 CSS.
- * bootstrap_form v4 generates form-group wrappers and uses form-control
- * on selects where BS5 expects form-select.
- */
-.form-group {
-  margin-bottom: 1rem;
-}
