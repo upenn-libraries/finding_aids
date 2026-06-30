@@ -2,56 +2,6 @@
 
 # Solr queries for repository data used on the homepage.
 class RepositoryQueries
-  # Live repository names and document counts from the repository_ssi facet,
-  # sorted by count descending. Zero-count repositories are excluded.
-  #
-  # @return [Array<Hash>] [{name:, count:}, ...]
-  def self.facet_counts
-    repos = raw_facet_pairs.each_slice(2).filter_map do |name, count|
-      { name: name, count: count.to_i } if count.to_i.positive?
-    end
-    repos.sort_by { |r| -r[:count] }
-  end
-
-  # Returns one representative address per repository using field collapsing.
-  #
-  # @return [Hash{String => String}] repository name => address string
-  def self.addresses
-    response = connection.get('select', params: {
-                                q: '*:*',
-                                fl: 'repository_ssi,repository_address_ssi',
-                                group: 'true',
-                                'group.field': 'repository_ssi',
-                                'group.limit': 1,
-                                rows: 100
-                              })
-    parse_groups(response)
-  end
-
-  # @param response [Hash] Solr grouped response
-  # @return [Hash{String => String}] name => address
-  def self.parse_groups(response)
-    groups = response.dig('grouped', 'repository_ssi', 'groups') || []
-    groups.each_with_object({}) do |group, hash|
-      doc = group.dig('doclist', 'docs')&.first
-      name = doc&.dig('repository_ssi')
-      addr = doc&.dig('repository_address_ssi')
-      hash[name] = addr if name && addr.present?
-    end
-  end
-
-  # @return [Array] alternating [name, count, name, count, ...]
-  def self.raw_facet_pairs
-    response = connection.get('select', params: {
-                                q: '*:*',
-                                facet: 'true',
-                                'facet.field': 'repository_ssi',
-                                'facet.limit': -1,
-                                rows: 0
-                              })
-    response.dig('facet_counts', 'facet_fields', 'repository_ssi') || []
-  end
-
   # Collection titles grouped by repository name.
   #
   # @return [Hash{String => Array<String>}] repository name => sorted array of titles
@@ -72,11 +22,11 @@ class RepositoryQueries
                                 fl: 'title_tsi,repository_ssi',
                                 rows: limit
                               })
-    (response.dig('response', 'docs') || []).filter_map do |doc|
+    (response.dig('response', 'docs') || []).filter_map { |doc|
       title = doc['title_tsi']
       repo = doc['repository_ssi']
       { title: title, repository: repo } if title.present? && repo.present?
-    end.shuffle
+    }.shuffle
   end
 
   # @return [RSolr::Client]

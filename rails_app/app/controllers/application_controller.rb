@@ -24,10 +24,4 @@ class ApplicationController < ActionController::Base
   def alert_failure(action:, class_name:, identifier:, error:)
     flash.alert = I18n.t("admin.flash.#{action}.failure", class_name: class_name, identifier: identifier, error: error)
   end
-
-  private
-
-  def load_regional_repos
-    @regional_repos = HomepageData.repositories
-  end
 end

@@ -27,10 +27,6 @@
     <%= javascript_importmap_tags %>
     <%= javascript_import_module_tag "https://cdn.jsdelivr.net/npm/@penn-libraries/web@#{Settings.pennlibs_web_version}/dist/web/web.esm.js" %>
 
-    <%# Leaflet — powers the institutions map in the site-wide regional-partnership band (shared/_regional_partnership). %>
-    <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/leaflet@1/dist/leaflet.min.css" %>
-    <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/leaflet@1/dist/leaflet.min.js" %>
-
     <%= csrf_meta_tags %>
     <%= content_for(:head) %>
 
@@ -59,8 +55,6 @@
     </div>
   </main>
 
-  <%# Site-wide regional-partnership band (map + repositories), shown above the footer on every page. %>
-  <%= render 'shared/regional_partnership' %>
   <%= render FooterComponent.new(user: current_user) %>
   <%= render partial: 'shared/modal' %>
   <%= content_for(:offcanvas) %>
