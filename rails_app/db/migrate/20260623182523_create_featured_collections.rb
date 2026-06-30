@@ -1,6 +1,6 @@
-class CreateCollectionGuides < ActiveRecord::Migration[8.1]
+class CreateFeaturedCollections < ActiveRecord::Migration[8.1]
   def change
-    create_table :collection_guides do |t|
+    create_table :featured_collections do |t|
       t.string :title, null: false
       t.string :repository, null: false
       t.integer :position, null: false, default: 0
@@ -9,7 +9,7 @@ class CreateCollectionGuides < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :collection_guides, :position
-    add_index :collection_guides, :active
+    add_index :featured_collections, :position
+    add_index :featured_collections, :active
   end
 end
