@@ -13,10 +13,6 @@
   width: 1px;
 }
 
-.facet-limit-active {
-  --bs-accordion-btn-color: var(--pl-color-fg-default);
-}
-
 .facet-values {
   padding: var(--pl-space-s) 0;
 }
@@ -58,6 +54,7 @@
 
 .facet-values .facet-count {
   color: var(--pl-color-fg-subtle);
+  overflow-wrap: break-word;
 }
 
 .facet-values:has( + .more_facets) {
@@ -65,10 +62,9 @@
 }
 
 .more_facets {
+  padding: var(--pl-space-m);
   padding-top: var(--pl-space-xs);
-  padding-left: var(--pl-space-m);
-  padding-right: var(--pl-space-m);
-  margin-bottom: var(--pl-space-s);
+  padding-bottom: calc(var(--pl-space-xs) + var(--pl-space-m));
 }
 
 .blacklight-year_isim {
@@ -110,13 +106,11 @@
 }
 
 .facets {
-  & .accordion {
-    --bs-accordion-body-padding-y: 0;
-    --bs-accordion-body-padding-x: 0;
-  }
-
-  & .facet-field-heading {
-    margin-bottom: 0;
+  /* The design-system .pl-details__content adds its own padding; zero it for
+     facets so the values list (and its full-width selected highlight) spans the
+     panel edge-to-edge, as the Bootstrap accordion body did. */
+  & .pl-details__content {
+    padding: 0;
   }
 
   margin-bottom: var(--pl-space-xl);

@@ -39,6 +39,7 @@
 @import url('bs-root.css');
 @import url('bs-link.css');
 @import url('bs-btn.css');
+@import url('bs-containers.css');
 @import url('bs-dropdown-menu.css');
 @import url('bs-form.css');
 @import url('bs-modal.css');
@@ -64,3 +65,4 @@
 @import url('fa-index.css');
 @import url('fa-home.css');
 @import url('fa-results.css');
+@import url('fa-record.css');

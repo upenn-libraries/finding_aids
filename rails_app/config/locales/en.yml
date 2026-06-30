@@ -111,8 +111,10 @@ en:
         millennium:
           first: 'First Millennium'
   fields:
+    repository_address: 'Address'
+    contact_email: 'Email'
     endpoint: 'Endpoint'
-    repository: 'Repository'
+    repository: 'Institution'
     record_source: 'Record Source'
     online_content: 'Online Content'
     title: 'Title'
@@ -127,9 +129,12 @@ en:
     language_note: 'Language Note'
     donors: 'Donor'
     genre_form: 'Form'
+    publisher: 'Publisher'
+    sponsor: 'Sponsor'
+    author: 'Finding aids author'
     citation: 'Preferred Citation'
     year: 'Year'
-    url: 'Original URL'
+    url: 'Website'
     xml: 'EAD XML'
     topics:
       corpnames: 'Organization'
@@ -137,6 +142,7 @@ en:
       places: 'Place'
       occupations: 'Occupation'
       people: 'People'
+    use: 'Use'
   sections:
     collection_inventory: 'Collection Inventory'
     collection_overview: 'Collection Overview'
@@ -167,12 +173,14 @@ en:
     topics: 'Name and Subject Headings'
     admin_info: 'Administrative Information'
     other_info: 'Other Information'
+    rights_and_citation: 'Rights and citation'
+    subjects_and_headings: 'Subjects and headings'
   sorts:
     relevance: 'Relevance'
     year_desc: 'Year (descending)'
-    year_asc: 'Year (ascending)'
+    year_asc: 'Year (oldest first)'
     title_desc: 'Title (descending)'
-    title_asc: 'Title (ascending)'
+    title_asc: 'Title (A–Z)'
   messages:
     access_clarification_html: "This is a finding aid. It is a description of archival material held at the <b>%{repository}</b>. Unless otherwise noted, the materials described below are physically available in their reading room, and not digitally available through the web."
     location_html: "Held at: %{repository} [%{email_link}]"
@@ -220,3 +228,24 @@ en:
         failure: "Failed to enqueue harvest for %{class_name} %{identifier}: %{error}."
       refresh:
         success: "Successfully refreshed %{class_name}."
+
+  show:
+    buttons:
+      accordion_control:
+        collapse: 'Collapse all'
+        expand: 'Expand all'
+    aside:
+        aria_label: 'Holding Institution'
+        access: 'Access'
+        held_at: 'Held At'
+        contact: 'Contact this archive'
+    sections:
+      description:
+        header: 'Description'
+        guide: "Where the collection came from, what's inside, and how you can use it."
+      inventory:
+        header: 'Inventory'
+        guide: 'Everything in this collection, in the order the archivist chose to help you understand it.'
+      contact:
+        header: 'Contact'
+        guide_html: 'These materials are held by <strong>%{repository}</strong>. Contact them to schedule a visit or ask about your research.'

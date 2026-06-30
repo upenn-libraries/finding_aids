@@ -42,7 +42,8 @@
   align-items: center;
 }
 
-.search-widgets .btn {
+.search-widgets .btn,
+.search-wdgets .pl-button {
   --bs-btn-padding-y: var(--pl-space-2xs);
 }
 

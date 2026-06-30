@@ -1,0 +1,23 @@
+<pennlibs-accordion class="pl-flex pl-flex-col pl-gap-m" id="<%= @id %>">
+
+<% description_sections.each do |section| %>
+  <%= render DetailsComponent.new(header_id: section, header: t("sections.#{section}")) do |component| %>
+    <%= component.with_body do %>
+      <%= content(section) %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= render DetailsComponent.new(header_id: 'rights', header: t("sections.rights_and_citation")) do |component| %>
+  <%= component.with_body do %>
+      <%= render ShowMetadataFieldsComponent.new(fields: rights_and_citation) %>
+    <% end %>
+<% end %>
+
+<%= render DetailsComponent.new(header_id: 'topics', header: t('sections.subjects_and_headings')) do |component| %>
+  <%= component.with_body do %>
+    <%= render ShowMetadataFieldsComponent.new(fields: subjects_and_headings) %>
+  <% end %>
+<% end %>
+
+</pennlibs-accordion>

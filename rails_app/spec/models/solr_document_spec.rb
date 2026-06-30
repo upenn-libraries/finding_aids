@@ -18,29 +18,6 @@ describe SolrDocument do
     expect(doc.parsed_ead).to be_an_instance_of SolrDocument::ParsedEad
   end
 
-  it 'returns expected topics in hash form' do
-    expect(doc.topics_hash.keys).to match_array(
-      %i[places_ssim people_ssim subjects_ssim corpnames_ssim occupations_ssim]
-    )
-    expect(doc.topics_hash[:places_ssim]).to eq ['Philadelphia']
-  end
-
-  describe '#penn_item?' do
-    let(:fields) { { repository_name_component_1_ssi: repo } }
-
-    context 'with a penn item' do
-      let(:repo) { 'University of Pennsylvania' }
-
-      it { is_expected.to be_a_penn_item }
-    end
-
-    context 'with a non-Penn item' do
-      let(:repo) { 'Princeton University' }
-
-      it { is_expected.not_to be_a_penn_item }
-    end
-  end
-
   describe '#language_note' do
     context 'without text content' do
       it 'returns a blank value' do

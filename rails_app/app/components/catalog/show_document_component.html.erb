@@ -1,0 +1,84 @@
+<%# Override Blacklight 9.0.0 template to implement custom layout %>
+<div class="document-main-section pl-margin-b-3xl">
+  <div class="pl-padding-y-3xl" style="background: var(--pl-color-bg-subtle);">
+    <div class="pl-viewport-margins">
+
+      <div class="faa-guide-header">
+        <div class="faa-guide-header__hero">
+          <div class="faa-guide-header__intro">
+
+            <h1 id="guide-title" class="pl-margin-b-l"><%= presenter.heading %></h1>
+           <% if abstract %>
+              <p style="font-size: var(--pl-font-size-l);" class="pl-line-length"><%= abstract %></p>
+          <% end %>
+          </div>
+
+          <aside class="faa-guide-header__institution pl-callout" aria-label="<%= t('show.aside.aria_label') %>">
+            <p class="faa-small-name pl-margin-b-2xs"><%=t('show.aside.held_at') %></p>
+            <p class="pl-margin-b-m"><%= repository %></p>
+            <% if document.access_restrictions %>
+              <p class="faa-small-name pl-margin-b-2xs"><%= t('show.aside.access') %></p>
+              <div class="pl-margin-b-m"><%= document.access_restrictions %></div>
+            <% end %>
+
+            <a href="#contact" class="pl-button pl-button--accent"><%=t('show.aside.contact') %></a>
+          </aside>
+        </div>
+        <div class="faa-guide-header__strip">
+          <%= render ShowMetadataFieldsComponent.new(fields: collection_overview,
+                                                     dl_class: 'fa-metadata',
+                                                     dt_class: 'faa-small-name',
+                                                     wrapper_tag: 'div') %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="faa-guide-layout pl-viewport-margins pl-margin-y-2xl" style="max-width: 100%">
+    <nav class="faa-toc" aria-label="Table of contents"></nav>
+    <div class="faa-guide-content">
+      <div id="description-sections" class="pl-margin-b-2xl">
+        <div class="faa-section-header">
+          <div>
+            <h2 id="description"><%= t("show.sections.description.header") %></h2>
+            <p class="pl-font-size-l"><%= t("show.sections.description.guide") %></p>
+          </div>
+          <button type="button" class="pl-button"
+                  data-pl-expand-label="<%= t('show.buttons.accordion_control.expand') %>"
+                  data-pl-collapse-label="<%= t('show.buttons.accordion_control.collapse') %>"
+                  data-pl-accordion-toggle="description-accordion">
+          </button>
+        </div>
+          <%= render(DescriptionAccordionComponent.new(document: document, presenter: @presenter,
+                                                       id: 'description-accordion')) %>
+      </div>
+      <div id="inventory-sections" class="pl-margin-b-2xl">
+        <div class="faa-section-header">
+          <div>
+            <h2 id="inventory"><%= t("show.sections.inventory.header") %></h2>
+            <p class="pl-font-size-l"><%= t("show.sections.inventory.guide") %></p>
+          </div>
+          <button type="button" class="pl-button"
+                  data-pl-expand-label="<%= t('show.buttons.accordion_control.expand') %>"
+                  data-pl-collapse-label="<%= t('show.buttons.accordion_control.collapse') %>"
+                  data-pl-accordion-toggle="inventory-accordion">
+          </button>
+        </div>
+        <pennlibs-accordion class="pl-flex pl-flex-col pl-gap-m" id="inventory-accordion">
+           <%= render DetailsComponent.new(header_id: 'inventory', header: 'Family letters') do |component| %>
+              <% component.with_body do %>
+            <p> todo: render inventory ^_^ </p>
+            <% end %>
+          <% end %>
+        </pennlibs-accordion>
+      </div>
+      <section>
+        <h2 id="contact"><%= t('show.sections.contact.header') %></h2>
+        <p style="font-size: var(--pl-font-size-l);" class="pl-line-length pl-margin-b-m">
+          <%= t("show.sections.contact.guide_html", repository: @document.repository) %>
+        </p>
+        <%= render ShowMetadataFieldsComponent.new(fields: contact, dl_class: 'pl-dl pl-margin-t-l') %>
+      </section>
+    </div>
+  </div>
+</div>

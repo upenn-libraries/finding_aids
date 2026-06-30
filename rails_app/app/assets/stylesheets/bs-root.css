@@ -1,4 +1,10 @@
 body {
+  /* Repoint Bootstrap's font variables at the Penn design-system font. Bootstrap's
+     Reboot sets `body { font-family: var(--bs-body-font-family) }`, which otherwise
+     wins and leaves the body in Bootstrap's default system stack. */
+  --bs-font-sans-serif: var(--pl-font-family);
+  --bs-body-font-family: var(--pl-font-family);
+
   --bs-border-radius: var(--pl-space-m);
   --bs-gray-100: var(--pl-color-bg-subtle);
   --bs-gray-200: var(--pl-color-bg-subtle);
