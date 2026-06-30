@@ -16,7 +16,7 @@ describe HomepageData do
     end
 
     it 'returns collection guide records' do
-      CollectionGuide.create!(title: 'Spotlight', repository: 'Test Repo')
+      create(:collection_guide, title: 'Spotlight', repository: 'Test Repo')
 
       guides = described_class.collection_guides
 
@@ -25,9 +25,10 @@ describe HomepageData do
     end
 
     it 'places spotlights before backfill' do
-      CollectionGuide.create!(title: 'Spotlight', repository: 'Test Repo')
+      create(:collection_guide, title: 'Spotlight', repository: 'Test Repo')
       allow(RepositoryQueries).to receive(:random_titles).with(limit: 8).and_return([
-                                                                                      { title: 'Backfill-A', repository: 'Test Repo' }
+                                                                                      { title: 'Backfill-A',
+                                                                                        repository: 'Test Repo' }
                                                                                     ])
 
       guides = described_class.collection_guides
@@ -38,7 +39,7 @@ describe HomepageData do
     end
 
     it 'backfills up to 8 total when fewer spotlights exist' do
-      CollectionGuide.create!(title: 'Spotlight', repository: 'Test Repo')
+      create(:collection_guide, title: 'Spotlight', repository: 'Test Repo')
       backfill = ('A'..'G').map { |l| { title: "Backfill-#{l}", repository: 'Test Repo' } }
       allow(RepositoryQueries).to receive(:random_titles).with(limit: 8).and_return(backfill)
 
@@ -49,7 +50,7 @@ describe HomepageData do
 
     it 'skips backfill when 8 or more spotlights exist' do
       allow(RepositoryQueries).to receive(:random_titles)
-      8.times { |i| CollectionGuide.create!(title: "Spotlight #{i}", repository: 'Test Repo') }
+      8.times { |i| create(:collection_guide, title: "Spotlight #{i}", repository: 'Test Repo') }
 
       guides = described_class.collection_guides
 
@@ -58,12 +59,14 @@ describe HomepageData do
     end
 
     it 'excludes spotlight titles from backfill' do
-      CollectionGuide.create!(title: 'Spotlight', repository: 'Test Repo')
-      CollectionGuide.create!(title: 'Also Spotlight', repository: 'Test Repo')
+      create(:collection_guide, title: 'Spotlight', repository: 'Test Repo')
+      create(:collection_guide, title: 'Also Spotlight', repository: 'Test Repo')
 
       allow(RepositoryQueries).to receive(:random_titles).with(limit: 8).and_return([
-                                                                                      { title: 'Spotlight', repository: 'Test Repo' },
-                                                                                      { title: 'Unique', repository: 'Test Repo' }
+                                                                                      { title: 'Spotlight',
+                                                                                        repository: 'Test Repo' },
+                                                                                      { title: 'Unique',
+                                                                                        repository: 'Test Repo' }
                                                                                     ])
 
       guides = described_class.collection_guides

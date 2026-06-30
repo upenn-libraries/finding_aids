@@ -8,6 +8,8 @@ module HomepageData
     MAX_GUIDES = 8
 
     # Staff-picked collections appear first, then random backfill from Solr.
+    # At most MAX_GUIDES are returned; if more spotlights exist, only the
+    # first MAX_GUIDES (by created_at) are shown and the rest are ignored.
     # @return [Array<CollectionGuide>]
     def collection_guides
       spotlights = load_spotlights
