@@ -4,11 +4,11 @@
 
 <div class="d-flex justify-content-end">
   <div class="btn-group mb-3">
-    <%= link_to t('admin.actions.create'), new_featured_collection_path, class: 'btn btn-outline-dark' %>
+    <%= link_to t('admin.actions.create'), new_collection_guide_path, class: 'btn btn-outline-dark' %>
   </div>
 </div>
 
-<% if @collections.empty? %>
+<% if @guides.empty? %>
   <p>No picks yet. The homepage will show 8 guides chosen automatically from the archive.</p>
 <% else %>
   <table class="table table-striped">
@@ -20,11 +20,11 @@
     </tr>
     </thead>
     <tbody>
-    <% @collections.each do |collection| %>
+    <% @guides.each do |guide| %>
       <tr>
-        <td><%= link_to collection.title, edit_featured_collection_path(collection) %></td>
-        <td><%= collection.repository %></td>
-        <td><%= button_to t('admin.actions.destroy'), featured_collection_path(collection), method: :delete, class: 'btn btn-sm btn-outline-danger', form: { data: { turbo_confirm: 'Remove this pick?' } } %></td>
+        <td><%= link_to guide.title, edit_collection_guide_path(guide) %></td>
+        <td><%= guide.repository %></td>
+        <td><%= button_to t('admin.actions.destroy'), collection_guide_path(guide), method: :delete, class: 'btn btn-sm btn-outline-danger', form: { data: { turbo_confirm: 'Remove this pick?' } } %></td>
       </tr>
     <% end %>
     </tbody>

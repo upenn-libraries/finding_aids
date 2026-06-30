@@ -7,8 +7,8 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
 
   let(:guides) do
     [
-      FeaturedCollection.new(title: 'Test Collection', repository: 'Test Institution'),
-      FeaturedCollection.new(title: 'Another Collection', repository: 'Another Institution')
+      CollectionGuide.new(title: 'Test Collection', repository: 'Test Institution'),
+      CollectionGuide.new(title: 'Another Collection', repository: 'Another Institution')
     ]
   end
 

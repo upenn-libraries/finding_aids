@@ -2,13 +2,13 @@
 
 # Homepage data from Solr and the database.
 #
-# Collection guides are curated via the FeaturedCollection admin.
+# Collection guides are curated via the CollectionGuide admin.
 module HomepageData
   class << self
     MAX_GUIDES = 8
 
     # Staff-picked collections appear first, then random backfill from Solr.
-    # @return [Array<FeaturedCollection>]
+    # @return [Array<CollectionGuide>]
     def collection_guides
       spotlights = load_spotlights
       return spotlights if spotlights.length >= MAX_GUIDES
@@ -23,7 +23,7 @@ module HomepageData
     private
 
     def load_spotlights
-      FeaturedCollection.order(:created_at).limit(MAX_GUIDES).to_a
+      CollectionGuide.order(:created_at).limit(MAX_GUIDES).to_a
     end
 
     def fetch_backfill(spotlights)
@@ -35,7 +35,7 @@ module HomepageData
     end
 
     def build_backfill_guides(backfill)
-      backfill.map { |b| FeaturedCollection.new(title: b[:title], repository: b[:repository]) }
+      backfill.map { |b| CollectionGuide.new(title: b[:title], repository: b[:repository]) }
     end
   end
 end

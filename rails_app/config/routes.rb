@@ -24,7 +24,7 @@ Rails.application.routes.draw do
       member { post :harvest }
     end
     resources :aspace_instances
-    resources :featured_collections
+    resources :collection_guides
   end
 
   defaults format: :json do

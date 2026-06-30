@@ -51,13 +51,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_29_200000) do
     t.index ["slug"], name: "index_endpoints_on_slug", unique: true
   end
 
-  create_table "featured_collections", force: :cascade do |t|
+  create_table "collection_guides", force: :cascade do |t|
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.string "repository", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false
-    t.index ["active"], name: "index_featured_collections_on_active"
+    t.index ["active"], name: "index_collection_guides_on_active"
   end
 
   create_table "searches", id: :serial, force: :cascade do |t|
