@@ -7,6 +7,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" %>
     <%= stylesheet_link_tag 'application', media: "all", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
@@ -14,10 +15,10 @@
   <body>
     <%= render 'shared/admin_menu' if current_user %>
 
-    <div class="container">
+    <main class="container py-4">
       <%= render partial: 'shared/flash_msg', layout: 'shared/flash_messages' %>
 
       <%= yield %>
-    </div>
+    </main>
   </body>
 </html>
