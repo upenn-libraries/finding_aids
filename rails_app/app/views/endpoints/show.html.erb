@@ -11,45 +11,45 @@
 
 <div class="card">
   <div class="card-body">
-    <dl class="row mb-0">
-      <dt class="col-sm-3">Active</dt>
-      <dd class="col-sm-9">
+    <dl class="mb-0">
+      <dt>Active</dt>
+      <dd>
         <span class="badge <%= @endpoint.active? ? 'bg-success' : 'bg-secondary' %>"><%= @endpoint.active.to_s.titleize %></span>
       </dd>
 
-      <dt class="col-sm-3">Slug</dt>
-      <dd class="col-sm-9"><%= @endpoint.slug %></dd>
+      <dt>Slug</dt>
+      <dd><%= @endpoint.slug %></dd>
 
-      <dt class="col-sm-3">Source Type</dt>
-      <dd class="col-sm-9"><%= @endpoint.source_type %></dd>
+      <dt>Source Type</dt>
+      <dd><%= @endpoint.source_type %></dd>
 
-      <dt class="col-sm-3">Public Contacts</dt>
-      <dd class="col-sm-9"><%= @endpoint.public_contacts.join(', ') %></dd>
+      <dt>Public Contacts</dt>
+      <dd><%= @endpoint.public_contacts.join(', ') %></dd>
 
-      <dt class="col-sm-3">Technical Contacts</dt>
-      <dd class="col-sm-9"><%= @endpoint.tech_contacts.join(', ') %></dd>
+      <dt>Technical Contacts</dt>
+      <dd><%= @endpoint.tech_contacts.join(', ') %></dd>
 
-      <dt class="col-sm-3">Status</dt>
-      <dd class="col-sm-9"><%= link_to(t('admin.endpoints.last_harvest_results'), endpoint_status_path(@endpoint.slug)) %></dd>
+      <dt>Status</dt>
+      <dd><%= link_to(t('admin.endpoints.last_harvest_results'), endpoint_status_path(@endpoint.slug)) %></dd>
 
       <% if @endpoint.webpage_type? %>
-      <dt class="col-sm-3">Webpage URL</dt>
-      <dd class="col-sm-9"><%= link_to @endpoint.webpage_url, @endpoint.webpage_url %></dd>
+      <dt>Webpage URL</dt>
+      <dd><%= link_to @endpoint.webpage_url, @endpoint.webpage_url %></dd>
       <% end %>
 
       <% if @endpoint.aspace_type? %>
-        <dt class="col-sm-3">ASpace Instance</dt>
-        <dd class="col-sm-9"><%= link_to @endpoint.aspace_instance.slug, aspace_instance_path(@endpoint.aspace_instance) %></dd>
+        <dt>ASpace Instance</dt>
+        <dd><%= link_to @endpoint.aspace_instance.slug, aspace_instance_path(@endpoint.aspace_instance) %></dd>
 
-        <dt class="col-sm-3"><%= I18n.t('admin.endpoints.aspace_repo_id') %></dt>
-        <dd class="col-sm-9"><%= @endpoint.aspace_repo_id %></dd>
+        <dt><%= I18n.t('admin.endpoints.aspace_repo_id') %></dt>
+        <dd><%= @endpoint.aspace_repo_id %></dd>
       <% end %>
 
-      <dt class="col-sm-3">Created At</dt>
-      <dd class="col-sm-9"><%= @endpoint.created_at.to_fs(:display) %></dd>
+      <dt>Created At</dt>
+      <dd><%= @endpoint.created_at.to_fs(:display) %></dd>
 
-      <dt class="col-sm-3">Updated At</dt>
-      <dd class="col-sm-9"><%= @endpoint.updated_at.to_fs(:display) %></dd>
+      <dt>Updated At</dt>
+      <dd><%= @endpoint.updated_at.to_fs(:display) %></dd>
     </dl>
   </div>
 </div>

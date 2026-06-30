@@ -4,9 +4,9 @@
 <div class="card mb-4">
   <div class="card-body">
     <h3 class="h5 mb-3">Contacts</h3>
-    <dl class="row mb-0">
-      <dt class="col-sm-3">Public Contacts</dt>
-      <dd class="col-sm-9">
+    <dl class="mb-0">
+      <dt>Public Contacts</dt>
+      <dd>
         <ul class="list-unstyled mb-0">
         <% @endpoint.public_contacts.each do |contact| %>
           <li><%= mail_to contact %></li>
@@ -14,8 +14,8 @@
         </ul>
       </dd>
 
-      <dt class="col-sm-3">Technical Contacts</dt>
-      <dd class="col-sm-9">
+      <dt>Technical Contacts</dt>
+      <dd>
         <ul class="list-unstyled mb-0">
         <% @endpoint.tech_contacts.each do |contact| %>
           <li><%= mail_to contact %></li>
@@ -29,22 +29,22 @@
 <div class="card mb-4">
   <div class="card-body">
     <h3 class="h5 mb-3">Harvesting Information</h3>
-    <dl class="row mb-0">
-      <dt class="col-sm-3">Active</dt>
-      <dd class="col-sm-9">
+    <dl class="mb-0">
+      <dt>Active</dt>
+      <dd>
         <span class="badge <%= @endpoint.active? ? 'bg-success' : 'bg-secondary' %>"><%= @endpoint.active.to_s.titleize %></span>
       </dd>
 
-      <dt class="col-sm-3">Endpoint Type</dt>
-      <dd class="col-sm-9"><%= @endpoint.source_type %></dd>
+      <dt>Endpoint Type</dt>
+      <dd><%= @endpoint.source_type %></dd>
 
       <% if @endpoint.display_url %>
-        <dt class="col-sm-3">Endpoint URL</dt>
-        <dd class="col-sm-9"><%= link_to @endpoint.display_url, @endpoint.display_url %></dd>
+        <dt>Endpoint URL</dt>
+        <dd><%= link_to @endpoint.display_url, @endpoint.display_url %></dd>
       <% end %>
 
-      <dt class="col-sm-3">Last Harvest Attempt</dt>
-      <dd class="col-sm-9"><%= time_since_last_harvest @endpoint.last_harvest.date %></dd>
+      <dt>Last Harvest Attempt</dt>
+      <dd><%= time_since_last_harvest @endpoint.last_harvest.date %></dd>
     </dl>
   </div>
 </div>

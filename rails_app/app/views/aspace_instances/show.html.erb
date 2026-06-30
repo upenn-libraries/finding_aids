@@ -11,21 +11,21 @@
 
 <div class="card mb-4">
   <div class="card-body">
-    <dl class="row mb-0">
-      <dt class="col-sm-3">Slug</dt>
-      <dd class="col-sm-9"><%= @aspace_instance.slug %></dd>
+    <dl class="mb-0">
+      <dt>Slug</dt>
+      <dd><%= @aspace_instance.slug %></dd>
 
-      <dt class="col-sm-3">Base URL</dt>
-      <dd class="col-sm-9"><%= @aspace_instance.base_url %></dd>
+      <dt>Base URL</dt>
+      <dd><%= @aspace_instance.base_url %></dd>
 
-      <dt class="col-sm-3">Throttle</dt>
-      <dd class="col-sm-9"><%= @aspace_instance.harvest_throttle %> seconds</dd>
+      <dt>Throttle</dt>
+      <dd><%= @aspace_instance.harvest_throttle %> seconds</dd>
 
-      <dt class="col-sm-3">Created At</dt>
-      <dd class="col-sm-9"><%= @aspace_instance.created_at.to_fs(:display) %></dd>
+      <dt>Created At</dt>
+      <dd><%= @aspace_instance.created_at.to_fs(:display) %></dd>
 
-      <dt class="col-sm-3">Updated At</dt>
-      <dd class="col-sm-9"><%= @aspace_instance.updated_at.to_fs(:display) %></dd>
+      <dt>Updated At</dt>
+      <dd><%= @aspace_instance.updated_at.to_fs(:display) %></dd>
     </dl>
   </div>
 </div>

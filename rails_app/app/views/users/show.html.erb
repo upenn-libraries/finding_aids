@@ -11,18 +11,18 @@
 
 <div class="card">
   <div class="card-body">
-    <dl class="row mb-0">
-      <dt class="col-sm-3">PennKey</dt>
-      <dd class="col-sm-9"><%= @user.uid %></dd>
+    <dl class="mb-0">
+      <dt>PennKey</dt>
+      <dd><%= @user.uid %></dd>
 
-      <dt class="col-sm-3">Email</dt>
-      <dd class="col-sm-9"><%= @user.email %></dd>
+      <dt>Email</dt>
+      <dd><%= @user.email %></dd>
 
-      <dt class="col-sm-3">Created At</dt>
-      <dd class="col-sm-9"><%= @user.created_at.to_fs(:display) %></dd>
+      <dt>Created At</dt>
+      <dd><%= @user.created_at.to_fs(:display) %></dd>
 
-      <dt class="col-sm-3">Active Status</dt>
-      <dd class="col-sm-9"><%= @user.active ? 'Active' : 'Inactive' %></dd>
+      <dt>Active Status</dt>
+      <dd><%= @user.active ? 'Active' : 'Inactive' %></dd>
     </dl>
   </div>
 </div>
