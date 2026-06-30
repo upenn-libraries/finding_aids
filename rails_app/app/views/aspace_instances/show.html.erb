@@ -2,10 +2,10 @@
 
 <div class="btn-toolbar mb-4" role="toolbar">
   <div class="btn-group me-2">
-    <%= link_to I18n.t('admin.actions.edit'), edit_aspace_instance_path(@aspace_instance), class: 'btn btn-outline-dark' %>
+    <%= link_to t('admin.actions.edit'), edit_aspace_instance_path(@aspace_instance), class: 'btn btn-outline-dark' %>
   </div>
   <div class="btn-group">
-    <%= link_to I18n.t('admin.actions.destroy'), aspace_instance_path(@aspace_instance), class: 'btn btn-outline-danger', method: :delete %>
+    <%= link_to t('admin.actions.destroy'), aspace_instance_path(@aspace_instance), class: 'btn btn-outline-danger', method: :delete %>
   </div>
 </div>
 

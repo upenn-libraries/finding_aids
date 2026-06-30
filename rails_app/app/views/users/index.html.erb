@@ -1,9 +1,7 @@
 <h1>Users</h1>
 
-<div class="d-flex justify-content-end">
-  <div class="btn-group mb-3">
-    <%= link_to t('admin.actions.create'), new_user_path, class: 'btn btn-outline-dark' %>
-  </div>
+<div class="text-end mb-4">
+  <%= link_to t('admin.actions.create'), new_user_path, class: 'btn btn-outline-dark' %>
 </div>
 
 <% if @users.empty? %>
@@ -20,10 +18,10 @@
       </thead>
       <tbody>
       <% @users.each do |user| %>
-        <tr class="user-row row-id-<%= user.id %>">
-          <td class="email"><%= link_to user.email, user_path(user) %></td>
-          <td class="active"><%= user.active ? 'Active' : 'Inactive' %></td>
-          <td class="created-at"><%= user.created_at.to_fs(:display) %></td>
+        <tr>
+          <td><%= link_to user.email, user_path(user) %></td>
+          <td><%= user.active ? 'Active' : 'Inactive' %></td>
+          <td><%= user.created_at.to_fs(:display) %></td>
         </tr>
       <% end %>
       </tbody>

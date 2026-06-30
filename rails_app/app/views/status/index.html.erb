@@ -11,7 +11,7 @@
   </thead>
   <tbody>
   <% @endpoints.each do |ep| %>
-    <tr class="<%= table_active_class(ep) %> <%= "table-row-#{ep.slug}"  %>">
+    <tr class="<%= table_active_class(ep) %>">
       <th scope="row">
         <%= link_to ep.slug, endpoint_status_path(ep.slug) %>
       </th>
