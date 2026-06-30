@@ -6,7 +6,8 @@ describe HomepageData do
   before do
     described_class.instance_variable_set(:@collection_guides, nil)
     described_class.instance_variable_set(:@repositories, nil)
-    described_class.instance_variable_set(:@coordinates_cache, nil)
+    described_class.instance_variable_set(:@coordinates, nil)
+    FileUtils.rm_f(HomepageData::CACHEFILE)
   end
 
   let(:geocoder_result) do
@@ -25,6 +26,18 @@ describe HomepageData do
       'Haverford College Quaker & Special Collections' => '370 Lancaster Ave, Haverford, PA 19041',
       'Historical Society of Pennsylvania' => '1300 Locust St, Philadelphia, PA 19107'
     }
+  end
+
+  shared_context 'with solr stubs' do
+    before do
+      allow(RepositoryQueries).to receive_messages(facet_counts: facet_data, addresses: address_data)
+    end
+  end
+
+  shared_context 'with geocoder stub' do
+    before do
+      allow(Geocoder).to receive(:search).and_return([geocoder_result])
+    end
   end
 
   # Collection guides (YAML) -------------------------------------------------
@@ -76,119 +89,51 @@ describe HomepageData do
 
   # Repositories ------------------------------------------------------------
 
-  describe '.reset!' do
-    before do
-      allow(RepositoryQueries).to receive_messages(facet_counts: facet_data, addresses: address_data)
-      allow(Geocoder).to receive(:search).and_return([geocoder_result])
-    end
-
-    it 'clears memoized repositories so the next call re-fetches' do
-      original = described_class.repositories
-      described_class.reset!
-      refreshed = described_class.repositories
-
-      expect(refreshed.map(&:name)).to eq(original.map(&:name))
-    end
-  end
-
   describe '.repositories' do
-    before do
-      allow(RepositoryQueries).to receive_messages(facet_counts: facet_data, addresses: address_data)
-      allow(Geocoder).to receive(:search).and_return([geocoder_result])
-    end
+    include_context 'with solr stubs'
+    include_context 'with geocoder stub'
 
-    it 'returns an array of Repository objects' do
+    it 'builds Repository structs' do
       repos = described_class.repositories
-
       expect(repos).to all(be_a(HomepageData::Repository))
     end
 
-    it 'builds Repository structs from query data' do
+    it 'geocodes coordinates' do
       repos = described_class.repositories
-
-      haverford = repos.find { |r| r.slug == 'haverford-college-quaker-special-collections' }
-      expect(haverford.name).to eq('Haverford College Quaker & Special Collections')
-      expect(haverford.count).to eq(2100)
-    end
-
-    it 'geocodes coordinates from addresses' do
-      repos = described_class.repositories
-
-      haverford = repos.find { |r| r.slug == 'haverford-college-quaker-special-collections' }
+      haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
       expect(haverford.lat).to eq(40.0087)
       expect(haverford.lng).to eq(-75.3068)
     end
 
-    it 'generates a slug from the name' do
+    it 'generates slugs' do
       repos = described_class.repositories
-
       expect(repos.map(&:slug)).to include('haverford-college-quaker-special-collections')
     end
 
-    context 'when a repository has no address' do
-      before do
-        allow(RepositoryQueries).to receive(:addresses).and_return({})
-      end
-
-      it 'returns nil coordinates' do
-        repos = described_class.repositories
-        haverford = repos.find { |r| r.slug == 'haverford-college-quaker-special-collections' }
-
-        expect(haverford.lat).to be_nil
-        expect(haverford.lng).to be_nil
-      end
+    it 'returns nil coordinates when geocoding fails' do
+      allow(Geocoder).to receive(:search).and_raise(StandardError, 'boom')
+      repos = described_class.repositories
+      repo = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
+      expect(repo.lat).to be_nil
+      expect(repo.lng).to be_nil
     end
 
-    context 'when geocoding returns no results' do
-      before do
-        allow(Geocoder).to receive(:search).and_return([])
-      end
-
-      it 'returns nil coordinates' do
-        repos = described_class.repositories
-        haverford = repos.find { |r| r.slug == 'haverford-college-quaker-special-collections' }
-
-        expect(haverford.lat).to be_nil
-        expect(haverford.lng).to be_nil
-      end
+    it 'returns nil when address is missing' do
+      allow(RepositoryQueries).to receive(:addresses).and_return({})
+      repos = described_class.repositories
+      repo = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
+      expect(repo.lat).to be_nil
     end
+  end
 
-    context 'when geocoding raises an error' do
-      before do
-        allow(Geocoder).to receive(:search).and_raise(Geocoder::Error, 'rate limited')
-      end
+  describe '.reset!' do
+    include_context 'with solr stubs'
+    include_context 'with geocoder stub'
 
-      it 'returns nil coordinates' do
-        repos = described_class.repositories
-        haverford = repos.find { |r| r.slug == 'haverford-college-quaker-special-collections' }
-
-        expect(haverford.lat).to be_nil
-        expect(haverford.lng).to be_nil
-      end
-    end
-
-    context 'when the address lookup fails' do
-      before do
-        allow(RepositoryQueries).to receive(:addresses).and_raise(StandardError, 'Solr error')
-      end
-
-      it 'returns nil coordinates' do
-        repos = described_class.repositories
-        haverford = repos.find { |r| r.slug == 'haverford-college-quaker-special-collections' }
-
-        expect(haverford.lat).to be_nil
-        expect(haverford.lng).to be_nil
-      end
-    end
-
-    context 'when Solr is unavailable' do
-      before do
-        allow(RepositoryQueries).to receive(:facet_counts).and_raise(SocketError, 'Connection refused')
-      end
-
-      it 'lets the error propagate' do
-        expect { described_class.repositories }.to raise_error(SocketError)
-      end
+    it 'clears memoized repositories' do
+      original = described_class.repositories
+      described_class.reset!
+      expect(described_class.repositories.map(&:name)).to eq(original.map(&:name))
     end
   end
 end

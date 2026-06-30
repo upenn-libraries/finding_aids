@@ -216,7 +216,16 @@ class EadParser
     # Remove emails, URLs and phone numbers from address.
     addresslines = addresslines.map { |a| a.try(:text).try(:strip) }
                                .delete_if { |a| a.match?(/\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}|@|URL|http/) }
-    addresslines.presence&.join(', ')
+
+    # Drop the first line if it looks like a building name rather than a street address.
+    # "Falvey Library, 800 E Lancaster Ave, Villanova, PA" → "800 E Lancaster Ave, Villanova, PA"
+    if addresslines.length > 2 && addresslines.first.match?(/\A(?!\d).*\z/)
+      addresslines.shift
+    end
+
+    # Strip parenthetical notes like hours and floor numbers.
+    clean = addresslines.join(', ').gsub(/\(.*?\)/, '').gsub(/,\s*,/, ',').strip
+    clean.presence
   end
 
   # https://www.loc.gov/ead/tglib/elements/origination.html

@@ -12,9 +12,5 @@ module Homepage
     def initialize(repos:)
       @repos = repos
     end
-
-    def render?
-      @repos.present?
-    end
   end
 end

@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 Geocoder.configure(
-  lookup: :nominatim,
+  lookup: :google,
+  api_key: Rails.application.credentials.google_api_key,
   cache: Rails.cache,
-  timeout: 5,
-  http_headers: { 'User-Agent' => "FindingAidsDiscovery/#{Settings.version || '1.0'} (PACSCL)" },
-  always_raise: [Geocoder::OverQueryLimitError]
+  timeout: 5
 )

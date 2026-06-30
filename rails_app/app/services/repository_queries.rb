@@ -10,28 +10,19 @@ class RepositoryQueries
     repos.sort_by { |r| -r[:count] }
   end
 
-  # Returns one representative address per repository using field collapsing.
+  # Returns one representative address per repository.
   #
   # @return [Hash{String => String}] repository name => address string
   def self.addresses
     response = connection.get('select', params: {
                                 q: '*:*',
                                 fl: 'repository_ssi,repository_address_ssi',
-                                group: 'true',
-                                'group.field': 'repository_ssi',
-                                'group.limit': 1,
-                                rows: 100
+                                rows: 10_000
                               })
-    parse_groups(response)
-  end
-
-  def self.parse_groups(response)
-    groups = response.dig('grouped', 'repository_ssi', 'groups') || []
-    groups.each_with_object({}) do |group, hash|
-      doc = group.dig('doclist', 'docs')&.first
-      name = doc&.dig('repository_ssi')
-      addr = doc&.dig('repository_address_ssi')
-      hash[name] = addr if name && addr.present?
+    (response.dig('response', 'docs') || []).each_with_object({}) do |doc, hash|
+      name = doc['repository_ssi']
+      addr = doc['repository_address_ssi']
+      hash[name] ||= addr if name && addr.present?
     end
   end
 
