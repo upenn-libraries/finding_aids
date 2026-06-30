@@ -1,0 +1,7 @@
+/*
+ * Admin Styles
+ * ============
+ * Minimal overrides for Bootstrap-administered pages.
+ * The main Bootstrap CSS is loaded from CDN in the layout.
+ */
+@import url(rails_bootstrap_forms.css);
