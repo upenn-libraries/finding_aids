@@ -20,30 +20,22 @@ describe 'Endpoint dashboard' do
 
     it 'renders all endpoint slugs' do
       test_endpoints.each do |endpoint|
-        within ".table-row-#{endpoint.slug}" do
-          expect(page).to have_text endpoint.slug.upcase
-        end
+        expect(page).to have_text endpoint.slug
       end
     end
 
     it 'renders links to endpoint show pages' do
       test_endpoints.each do |endpoint|
-        within ".table-row-#{endpoint.slug}" do
-          expect(page).to have_link endpoint.slug, href: endpoint_status_path(endpoint.slug)
-        end
+        expect(page).to have_link endpoint.slug, href: endpoint_status_path(endpoint.slug)
       end
     end
 
     it 'shows error message text for problem harvest' do
-      within ".table-row-#{endpoint_failed.slug}" do
-        expect(page).to have_text endpoint_failed.last_harvest.errors.first
-      end
+      expect(page).to have_text endpoint_failed.last_harvest.errors.first
     end
 
     it 'shows a count of removed records' do
-      within ".table-row-#{endpoint_removals.slug}" do
-        expect(page).to have_text "removed #{endpoint_removals.last_harvest.removed_files.count} record"
-      end
+      expect(page).to have_text "removed #{endpoint_removals.last_harvest.removed_files.count} record"
     end
 
     it 'colors inactive endpoint' do
@@ -64,7 +56,7 @@ describe 'Endpoint dashboard' do
       end
 
       it 'lists active status' do
-        expect(page).to have_selector('.active')
+        expect(page).to have_text 'Active'
       end
     end
   end

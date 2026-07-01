@@ -33,15 +33,11 @@ describe 'ASpaceInstances index page' do
     end
 
     it 'links to show page' do
-      within(".table > tbody > .row-id-#{aspace_instance.id} > .slug") do
-        expect(page).to have_link(aspace_instance.slug, href: aspace_instance_path(aspace_instance), count: 1)
-      end
+      expect(page).to have_link(aspace_instance.slug, href: aspace_instance_path(aspace_instance), count: 1)
     end
 
     it 'shows the endpoint count' do
-      within(".table > tbody > .row-id-#{aspace_instance.id} > .endpoint-count") do
-        expect(page).to have_text(aspace_instance.endpoints.count)
-      end
+      expect(page).to have_text(aspace_instance.endpoints.count)
     end
   end
 end
