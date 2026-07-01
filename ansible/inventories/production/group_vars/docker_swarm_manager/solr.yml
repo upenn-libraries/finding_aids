@@ -9,7 +9,7 @@ solr_configsets:
   - name: "finding-aid-discovery"
     path: "roles/finding_aid_discovery/files/src/solr/conf/"
 
-solr_docker_image_tag: 9.6.1
+solr_docker_image_tag: 9.3.0
 
 solr_limits_cpu: 8
 solr_limits_mem: "14G"
