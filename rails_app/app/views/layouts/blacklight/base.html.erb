@@ -1,6 +1,6 @@
 <%#
   Overriding Blacklight 9.0.0 template in order to add design system
-  assets, and google tag manager snippets.
+  assets, and MS Clarity analytics.
 %>
 
 <!DOCTYPE html>
@@ -34,10 +34,9 @@
     <%= csrf_meta_tags %>
     <%= content_for(:head) %>
 
-    <%= render 'shared/google_tag_manager/head_snippet' %>
+    <%= render('shared/ms_clarity/script', id: Settings.ms_clarity.id) if render_clarity_script? %>
   </head>
   <body class="pl-reset pl-typeset <%= render_body_class %>">
-  <%= render 'shared/google_tag_manager/body_snippet' %>
 
   <%= render blacklight_config.skip_link_component.new do %>
     <%= content_for(:skip_links) %>
