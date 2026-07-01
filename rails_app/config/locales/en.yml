@@ -206,7 +206,7 @@ en:
     endpoints:
       aspace_repo_id: 'ASpace repository ID'
       aspace_instance:
-        include_blank: 'Select an ASpace instance'
+        include_blank: 'Select an ASpace instance...'
       last_harvest_results: 'Last Harvest Results'
     actions:
       create: 'Add'
