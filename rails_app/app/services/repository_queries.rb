@@ -16,13 +16,17 @@ class RepositoryQueries
   def self.addresses
     response = connection.get('select', params: {
                                 q: '*:*',
-                                fl: 'repository_ssi,repository_address_ssi',
-                                rows: 10_000
+                                group: 'true',
+                                'group.field': 'repository_ssi',
+                                'group.limit': 1,
+                                fl: 'repository_ssi,repository_address_ssi'
                               })
-    (response.dig('response', 'docs') || []).each_with_object({}) do |doc, hash|
+    (response.dig('grouped', 'repository_ssi', 'groups') || []).each_with_object({}) do |group, hash|
+      doc = group.dig('doclist', 'docs')&.first
+      next unless doc
       name = doc['repository_ssi']
       addr = doc['repository_address_ssi']
-      hash[name] ||= addr if name && addr.present?
+      hash[name] = addr if name && addr.present?
     end
   end
 
