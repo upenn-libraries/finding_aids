@@ -20,3 +20,9 @@ solr_proxy_host: "finding-aid-discovery-dev.library.upenn.int"
 solr_instances: 1
 
 solr_collection_replicas: 1
+
+solr_custom_env_variables:
+  SOLR_ENABLE_AUTHENTICATION: "yes"
+  SOLR_ADMIN_USERNAME: "admin"
+  SOLR_ADMIN_PASSWORD: "password"
+  SOLR_MODULES: "analysis-extras"
