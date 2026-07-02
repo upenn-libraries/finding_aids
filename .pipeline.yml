@@ -1,6 +1,7 @@
 variables:
   FF_SCRIPT_SECTIONS: "true"
-  GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${CI_PROJECT_NAME}/${CI_JOB_ID}"
+  GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${CI_JOB_ID}/${CI_PIPELINE_ID}/${CI_PROJECT_NAME}"
+  WAIT_FOR_SERVICES_TIMEOUT: "120"
 
 include:
   - project: "devops/gitlab/ci-templates/docker"
@@ -143,24 +144,20 @@ rspec_app_test:
         POSTGRES_DB: "${DATABASE_NAME}"
         POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
         POSTGRES_USER: "${DATABASE_USER}"
-    - name: bitnamilegacy/solr:9.3.0
+    - name: solr:9.3.0
       alias: solr
       command:
         - /bin/bash
         - -c
         - |
-          source /opt/bitnami/scripts/libsolr.sh;solr_start_bg &&
-          /opt/bitnami/solr/bin/solr auth enable -type basicAuth -credentials ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} -z 127.0.0.1:9983 &&
-          /opt/bitnami/solr/bin/solr zk upconfig -n finding-aid-discovery -d ${CI_PROJECT_DIR}/rails_app/solr/conf/ -z 127.0.0.1:9983 &&
-          /opt/bitnami/solr/bin/solr create_collection -c finding-aid-discovery-test -n finding-aid-discovery &&
-          source /opt/bitnami/scripts/libsolr.sh;solr_stop &&
-          /opt/bitnami/scripts/solr/run.sh
+          solr-foreground -c &
+          wait-for-solr.sh --max-attempts 60 --wait-seconds 2
+          solr auth enable -type basicAuth -credentials ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} -z localhost:${ZOOKEEPER_PORT}
+          wait
       variables:
-        SOLR_CLOUD_BOOTSTRAP: "yes"
         SOLR_HOST: "solr"
-        SOLR_JAVA_MEM: "-Xms4g -Xmx4g"
+        SOLR_HEAP: "6g"
         SOLR_MODE: "solrcloud"
-        SOLR_ENABLE_AUTHENTICATION: "yes"
         SOLR_AUTHENTICATION_OPTS: "-Dbasicauth=${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}"
         SOLR_AUTH_TYPE: "basic"
   extends:
@@ -177,19 +174,27 @@ rspec_app_test:
     RAILS_SYSTEM_TESTING_SCREENSHOT_HTML: "1"
     SOLR_ADMIN_USERNAME: admin
     SOLR_ADMIN_PASSWORD: password
-    SOLR_TEST_URL: "http://${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}@solr:8983/solr/finding-aid-discovery-test"
+    SOLR_COLLECTION_NAME: "finding-aid-discovery-test"
+    SOLR_CONFIGSET_NAME: "finding-aid-discovery"
+    SOLR_PORT: "8983"
+    SOLR_TEST_URL: "http://${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}@solr:${SOLR_PORT}/solr/${SOLR_COLLECTION_NAME}"
+    ZOOKEEPER_PORT: "9983"
   script:
+    - apk update && apk add zip
     - cd ${CI_PROJECT_DIR}/rails_app/
     - bundle add rspec_junit_formatter
     - bundle exec rake db:reset
-    - i=0
-    - >
-      while [ $i -le 9 ]; do
-        i=$((i+1))
-        curl --silent --user ${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD} "http://solr:8983/api/" "-H" "'Content-type:application/json'" && break
-        echo "Waiting for solr api to be ready"
-        sleep "30s"
+    - |
+      attempts=0
+      until curl -sf -u "${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}" "http://solr:${SOLR_PORT}/api/"; do
+        attempts=$((attempts + 1))
+        [ "$attempts" -ge 10 ] && { echo "Solr never started"; exit 1; }
+        echo "Waiting for Solr API... (attempt $attempts/10)"
+        sleep 15
       done
+    - (cd ${CI_PROJECT_DIR}/rails_app/solr/conf && zip -r - *) > configset.zip
+    - curl -X POST -u "${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}" -H "Content-Type:application/octet-stream" --data-binary @configset.zip "http://solr:${SOLR_PORT}/solr/admin/configs?action=UPLOAD&name=${SOLR_CONFIGSET_NAME}"
+    - curl -v -u "${SOLR_ADMIN_USERNAME}:${SOLR_ADMIN_PASSWORD}" "http://solr:${SOLR_PORT}/solr/admin/collections?action=CREATE&name=${SOLR_COLLECTION_NAME}&collection.configName=${SOLR_CONFIGSET_NAME}&numShards=1"
     - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
   needs:
     - amend_tmp_base_dev_images

@@ -2,11 +2,12 @@ version: "3"
 
 includes:
   app:
-    taskfile: https://gitlab.library.upenn.edu/devops/taskfile/-/raw/expanded/DevEnvTasks.yml?ref_type=heads
+    taskfile: https://gitlab.library.upenn.edu/devops/taskfile/-/raw/main/DevEnvTasks.yml?ref_type=heads
     flatten: true
     vars:
       PROJECT_NAME: "finding-aids"
-      DOMAIN: finding-aid-discovery-dev
+      DOMAINS:
+        - findingaids-dev
       DOCKER_NETWORK_SUBNET: 172.16.6.0/24
       DOCKER_CONTAINER_IP: "172.16.6.10"
       DOCKER_CONTAINER_NAME: "finding-aids"

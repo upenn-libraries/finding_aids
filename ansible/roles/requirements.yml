@@ -13,7 +13,7 @@ roles:
     src: https://gitlab.library.upenn.edu/devops/ansible/roles/postgres.git
     scm: git
     version: main
-  
+
   - name: traefik
     src: https://gitlab.library.upenn.edu/devops/ansible/roles/traefik.git
     scm: git
@@ -27,9 +27,4 @@ roles:
   - name: solr
     src: https://gitlab.library.upenn.edu/devops/ansible/roles/solr.git
     scm: git
-    version: dind
-
-  - name: zoonavigator
-    src: https://gitlab.library.upenn.edu/devops/ansible/roles/zoonavigator.git
-    scm: git
-    version: main
+    version: vendor_image
