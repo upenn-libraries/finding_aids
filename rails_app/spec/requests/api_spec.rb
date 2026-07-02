@@ -43,14 +43,16 @@ describe 'API index endpoints' do
   end
 
   context 'with map_data' do
+    let!(:geo_service) { Geocoding::Service.new(cache: cache, api_delay: 0) }
+    let(:cache) { Geocoding::Cache.new }
+
     before do
+      cache.store('Test Repo', lat: 39.98, lng: -75.19)
+      HomepageData.geocoding_service = geo_service
       HomepageData.reset!
       allow(RepositoryQueries).to receive_messages(
         facet_counts: [{ name: 'Test Repo', count: 100 }],
         addresses: { 'Test Repo' => '1 Research Park' }
-      )
-      allow(Geocoder).to receive(:search).and_return(
-        [Struct.new(:latitude, :longitude, :coordinates).new(39.98, -75.19, [39.98, -75.19])]
       )
       get map_data_api_path
     end

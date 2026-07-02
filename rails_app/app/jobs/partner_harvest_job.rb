@@ -7,6 +7,6 @@ class PartnerHarvestJob < ApplicationJob
   # @param [Endpoint] endpoint
   def perform(endpoint)
     HarvestingService.new(endpoint).harvest
-    HomepageData.refresh_coordinates!
+    Geocoding::Service.new.refresh!(RepositoryQueries.addresses)
   end
 end

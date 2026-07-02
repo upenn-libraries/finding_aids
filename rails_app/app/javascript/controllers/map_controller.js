@@ -5,12 +5,18 @@ import { Controller } from "@hotwired/stimulus"
 // Repository data is fetched from /api/map_data (cached server-side).
 export default class extends Controller {
   connect() {
+    if (typeof L === 'undefined') {
+      console.warn('Leaflet library not loaded — map cannot render')
+      return
+    }
+    this.abortController = new AbortController()
     this._initMap()
     this._addTileLayer()
     this._loadMarkers()
   }
 
   disconnect() {
+    this.abortController?.abort()
     if (this.map) {
       this.map.remove()
       this.map = null
@@ -32,9 +38,10 @@ export default class extends Controller {
 
   async _loadMarkers() {
     try {
-      const response = await fetch('/api/map_data')
+      const response = await fetch('/api/map_data', { signal: this.abortController.signal })
       if (!response.ok) return
       const repos = await response.json()
+      if (this.abortController?.signal.aborted) return
       repos.forEach((repo) => {
         if (repo.lat && repo.lng) {
           L.marker([repo.lat, repo.lng])
@@ -57,6 +64,5 @@ function escapeHtml(str) {
 function markerContent(repo) {
   const name = escapeHtml(repo.name)
   const count = Number(repo.count).toLocaleString()
-  const recordsUrl = repo.records_url || `/records?f[repository_ssi][]=${encodeURIComponent(name)}`
-  return `<strong>${name}</strong><br />${count} guides<br /><a href="${recordsUrl}">View all records</a>`
+  return `<strong>${name}</strong><br />${count} guides<br /><a href="${repo.records_url}">View all records</a>`
 }
