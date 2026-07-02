@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'cgi'
+
 # Homepage data from YAML and Solr.
 #
 # Repository coordinates are geocoded via Nominatim and cached to disk.
@@ -9,10 +11,10 @@ module HomepageData
   COLLECTION_GUIDES_PATH = Rails.root.join('data/collection_guides.yml')
 
   CollectionGuide = Data.define(:identifier, :name, :collection)
-  Repository = Data.define(:name, :slug, :count, :lat, :lng)
+  Repository = Data.define(:name, :slug, :count, :lat, :lng, :records_url)
 
   NIL_COORDS = { lat: nil, lng: nil }.freeze
-  CACHEFILE = Rails.root.join('tmp', 'geocoder_cache.yml')
+  CACHEFILE = Rails.root.join('tmp/geocoder_cache.yml')
 
   class << self
     # @return [Array<CollectionGuide>]
@@ -28,8 +30,9 @@ module HomepageData
 
         repos.filter_map do |repo|
           coords = coordinates_for(repo[:name], addresses[repo[:name]])
+          records_url = "/records?f%5Brepository_ssi%5D%5B%5D=#{CGI.escape(repo[:name])}"
           Repository.new(name: repo[:name], slug: repo[:name].parameterize,
-                         count: repo[:count], **coords)
+                         count: repo[:count], records_url: records_url, **coords)
         end
       end
     end

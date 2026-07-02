@@ -57,5 +57,6 @@ function escapeHtml(str) {
 function markerContent(repo) {
   const name = escapeHtml(repo.name)
   const count = Number(repo.count).toLocaleString()
-  return `<strong>${name}</strong><br />${count} guides`
+  const recordsUrl = repo.records_url || `/records?f[repository_ssi][]=${encodeURIComponent(name)}`
+  return `<strong>${name}</strong><br />${count} guides<br /><a href="${recordsUrl}">View all records</a>`
 }
