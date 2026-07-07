@@ -15,11 +15,17 @@ describe ApplicationHelper do
       end
     end
 
-    context 'when a page-specific title is set via @page_title' do
-      before { assign(:page_title, 'About') }
-
+    context 'when a page-specific title is passed in (e.g. the layout forwarding @page_title)' do
       it 'follows the full pattern' do
-        expect(helper.full_page_title).to eq "About · #{application_name} · #{organization_name}"
+        expect(helper.full_page_title('About')).to eq "About · #{application_name} · #{organization_name}"
+      end
+    end
+
+    context 'when a content_for title is set, it takes precedence over the passed-in title' do
+      before { helper.content_for(:page_title, 'Civil War') }
+
+      it 'uses the content_for title' do
+        expect(helper.full_page_title('About')).to eq "Civil War · #{application_name} · #{organization_name}"
       end
     end
 
