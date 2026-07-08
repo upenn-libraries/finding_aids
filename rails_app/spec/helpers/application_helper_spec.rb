@@ -4,8 +4,8 @@ require 'rails_helper'
 
 describe ApplicationHelper do
   describe '#full_page_title' do
-    let(:application_name) { 'Philadelphia Area Archives' }
-    let(:organization_name) { 'Penn Libraries' }
+    let(:application_name) { I18n.t('blacklight.application_name') }
+    let(:organization_name) { I18n.t('blacklight.organization_name') }
 
     context 'when a page-specific title is set via content_for' do
       before { helper.content_for(:page_title, 'Civil War') }
