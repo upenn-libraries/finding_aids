@@ -1,11 +1,10 @@
 <%# Overriding view from Blacklight v9.0.0 to:
       - render both `search_results_header` and `search_header_component` in the container header
-      - in page title if there are no constraints, display "All" %>
+      - set the page-name title segment to the search constraints (or "All" when there are none);
+        render_page_title appends the application and organization segments %>
 
-<% content_for(:page_title) do %>
-  <% constraints = render_search_to_page_title(search_state) %>
-  <% constraints = 'All' if constraints.blank? %>
-  <%= t('blacklight.search.page_title.title', constraints: constraints, application_name: application_name) %>
+<% content_for :page_title do %>
+  <%= render_search_to_page_title(search_state).presence || t('blacklight.search.page_title.all') %>
 <% end %>
 
 <% content_for(:head) do -%>
