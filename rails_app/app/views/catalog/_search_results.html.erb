@@ -3,9 +3,9 @@
       - set the page-name title segment to the search constraints (or "All" when there are none);
         render_page_title appends the application and organization segments %>
 
-<% constraints = render_search_to_page_title(search_state) %>
-<% constraints = t('blacklight.search.page_title.all') if constraints.blank? %>
-<% content_for(:page_title) { constraints } %>
+<% content_for :page_title do %>
+  <%= render_search_to_page_title(search_state).presence || t('blacklight.search.page_title.all') %>
+<% end %>
 
 <% content_for(:head) do -%>
   <%= render 'catalog/opensearch_response_metadata', response: @response %>
