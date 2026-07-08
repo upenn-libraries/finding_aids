@@ -1,6 +1,6 @@
 <%#
   Overriding Blacklight 9.0.0 template in order to add design system
-  assets, and google tag manager snippets.
+  assets, and MS Clarity analytics.
 %>
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title><%= render_page_title %></title>
+    <title><%= full_page_title(@page_title) %></title>
     <script>
         document.querySelector('html').classList.remove('no-js');
     </script>
@@ -27,19 +27,27 @@
     <%= javascript_importmap_tags %>
     <%= javascript_import_module_tag "https://cdn.jsdelivr.net/npm/@penn-libraries/web@#{Settings.pennlibs_web_version}/dist/web/web.esm.js" %>
 
+    <%# Leaflet — powers the institutions map in the site-wide regional-partnership band (shared/_regional_partnership). %>
+    <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/leaflet@1/dist/leaflet.min.css" %>
+    <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/leaflet@1/dist/leaflet.min.js" %>
+
     <%= csrf_meta_tags %>
     <%= content_for(:head) %>
 
-    <%= render 'shared/google_tag_manager/head_snippet' %>
+    <%= render('shared/ms_clarity/script', id: Settings.ms_clarity.id) if render_clarity_script? %>
   </head>
   <body class="pl-reset pl-typeset <%= render_body_class %>">
-  <%= render 'shared/google_tag_manager/body_snippet' %>
 
   <%= render blacklight_config.skip_link_component.new do %>
     <%= content_for(:skip_links) %>
   <% end %>
 
-  <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config, user: current_user) %>
+  <%# Pages may supply their own header region (e.g. the homepage hero). Otherwise render the standard header. %>
+  <% if content_for?(:header) %>
+    <%= yield :header %>
+  <% else %>
+    <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config, user: current_user) %>
+  <% end %>
 
   <main id="main-container" class="<%= container_classes %>" aria-label="<%= t('blacklight.main.aria.main_container') %>">
     <%= content_for(:container_header) %>
@@ -51,7 +59,10 @@
     </div>
   </main>
 
+  <%# Site-wide regional-partnership band (map + repositories), shown above the footer on every page. %>
+  <%= render 'shared/regional_partnership' %>
   <%= render FooterComponent.new(user: current_user) %>
   <%= render partial: 'shared/modal' %>
+  <%= content_for(:offcanvas) %>
   </body>
 <% end %>

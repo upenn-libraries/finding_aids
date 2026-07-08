@@ -1,6 +1,37 @@
 en:
+  views:
+    pagination:
+      previous: 'Previous'
+      next: 'Next'
   blacklight:
     application_name: 'Philadelphia Area Archives'
+    # Organization segment anchoring every browser tab title (page title pattern).
+    organization_name: 'Penn Libraries'
     search:
+      # Drop Blacklight's built-in " - %{application_name}" suffix on the show page;
+      # render_page_title appends the application and organization segments.
+      show:
+        title: '%{document_title}'
+      page_title:
+        # Page-name title segment used when a results view has no search constraints.
+        all: 'All'
+      form:
+        search:
+          placeholder: 'Search collection guides'
+      facets:
+        missing: '[Not specified]'
+        title: 'Filter results'
+        filter: 'Filter'
+        page: 'Page %{page}'
+        modal_title: 'Filter by %{field_name}'
+        more_html: 'All %{field_name}'
+        suggest:
+          label: 'Search for %{field_label}'
+          placeholder: 'Search'
+          no_results: 'No results found.'
+        sort:
+          label: 'Sort by %{sort}'
+          index: 'A-Z'
+          count: 'Frequency'
       filters:
         all: 'All'

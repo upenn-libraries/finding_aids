@@ -1,0 +1,25 @@
+<%#
+  Overrides Blacklight 9.0.0's facet group template for one reason: to wrap the
+  facet list in the Penn design-system <pennlibs-accordion> web component, which
+  enhances the .pl-details children rendered by blacklight/facets/field_component.
+
+  Everything else is left exactly as Blacklight renders it, including the `accordion`
+  class in body_classes. We don't use Bootstrap's accordion, but that class only
+  declares --bs-accordion-* custom properties; with no .accordion-item/.accordion-button
+  children (we render .pl-details instead) it has no visual effect, so it's left in
+  place rather than stripped. The panel div (the @panel_id collapse target) and the
+  mobile "Show facets" toggle also stay unchanged.
+%>
+<%= content_tag :div, id: @id, class: container_classes do %>
+  <div class="facets-header">
+    <%= content_tag :h2, @title, class: header_classes if @title %>
+
+    <%= collapse_toggle_button(@panel_id) %>
+  </div>
+
+  <div id="<%= @panel_id %>" class="<%= body_classes %>">
+    <pennlibs-accordion class="pl-flex pl-flex-col pl-gap-m">
+      <%= body %>
+    </pennlibs-accordion>
+  </div>
+<% end %>

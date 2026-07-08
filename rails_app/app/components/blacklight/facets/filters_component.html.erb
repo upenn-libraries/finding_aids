@@ -1,0 +1,10 @@
+<%#
+  Overriding Blacklight 9.0.0 component to remove the wrapping div with dynamic classes.
+  The original wraps the contents in a div whose class is set from the `classes`
+  helper, which adds unwanted styling. This override renders suggestions and index
+  navigation without that outer div.
+%>
+<div class="facet-filters">
+  <%= suggestions %>
+  <%= index_navigation %>
+</div>
