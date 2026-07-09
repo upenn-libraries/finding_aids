@@ -11,7 +11,7 @@ module Geocoding
   # Failed geocodes are stored as { lat: nil, lng: nil, _failed: true } so
   # they are never retried on subsequent lookups.
   class Cache
-    CACHEFILE = Rails.root.join('tmp/geocoder_cache.yml')
+    CACHEFILE = Rails.root.join('data/geocoder_cache.yml')
     FAILED    = { lat: nil, lng: nil, _failed: true }.freeze
     BLANK     = { lat: nil, lng: nil }.freeze
 

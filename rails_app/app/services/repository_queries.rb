@@ -30,6 +30,7 @@ class RepositoryQueries
   def self.addresses
     response = connection.get('select', params: {
                                 q: '*:*',
+                                rows: 100,
                                 group: 'true',
                                 'group.field': 'repository_ssi',
                                 'group.limit': 1,

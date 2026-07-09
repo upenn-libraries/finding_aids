@@ -36,9 +36,9 @@ module HomepageData
       end
     end
 
-    # @return [String]
+    # @return [Array<Hash>]
     def repositories_json
-      @repositories_json ||= repositories.map(&:to_h).to_json
+      @repositories_json ||= repositories.map(&:to_h)
     end
 
     attr_writer :geocoding_service
