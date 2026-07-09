@@ -17,7 +17,7 @@ roles:
   - name: traefik
     src: https://gitlab.library.upenn.edu/devops/ansible/roles/traefik.git
     scm: git
-    version: main
+    version: sans_requests
 
   - name: redis
     src: https://gitlab.library.upenn.edu/devops/ansible/roles/redis.git
