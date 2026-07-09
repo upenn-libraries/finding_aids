@@ -2,7 +2,7 @@ version: "3"
 
 includes:
   app:
-    taskfile: https://gitlab.library.upenn.edu/devops/taskfile/-/raw/sans_auth_container/DevEnvTasks.yml?ref_type=heads
+    taskfile: https://gitlab.library.upenn.edu/devops/taskfile/-/raw/main/DevEnvTasks.yml?ref_type=heads
     flatten: true
     vars:
       PROJECT_NAME: "finding-aids"
