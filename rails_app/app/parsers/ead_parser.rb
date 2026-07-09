@@ -387,13 +387,11 @@ class EadParser
     doc.xpath('/ead/eadheader/filedesc/publicationstmt/address/addressline')
   end
 
-  CONTACT_PATTERN = /\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}|@|URL|http/
-
   # @param lines [Array<Nokogiri::XML::Node>]
   # @return [Array<String>]
   def strip_non_address_text(lines)
     lines.map { |a| a.try(:text).try(:strip) }
-         .delete_if { |a| a.match?(CONTACT_PATTERN) }
+         .delete_if { |a| a.match?(Geocoding::AddressCleaner::CONTACT_PATTERN) }
   end
 
   # Drops the first element when it looks like a building name
@@ -404,11 +402,9 @@ class EadParser
   # @param lines [Array<String>]
   # @return [Array<String>]
   def drop_building_name(lines)
-    if lines.length > 2 && lines.first.match?(/\A(?!\d).*\z/)
-      lines.drop(1)
-    else
-      lines
-    end
+    return lines unless lines.length > 2 && lines.first.match?(Geocoding::AddressCleaner::BUILDING_NAME_PATTERN)
+
+    lines.drop(1)
   end
 
   # Join address lines and strip parenthetical notes.
@@ -416,7 +412,7 @@ class EadParser
   # @param lines [Array<String>]
   # @return [String]
   def clean_address_text(lines)
-    lines.join(', ').gsub(/\(.*?\)/, '').gsub(/,\s*,/, ',').strip
+    Geocoding::AddressCleaner.clean(lines.join(', '))
   end
 
   # Provide additional EAD specification validations, for example validating EAD XML namespace

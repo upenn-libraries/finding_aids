@@ -4,10 +4,8 @@ module Geocoding
   # File-backed coordinate cache.
   #
   #   cache = Geocoding::Cache.new
-  #   cache["Haverford"]   # => { lat: 40.00, lng: -75.30 }
   #   cache.store("HSP", lat: 39.94, lng: -75.15)
   #   cache.persist
-  #   cache.clear!
   #
   # Each entry is a hash with +:lat+, +:lng+, and optionally +:_failed+ (true).
   # Failed geocodes are stored as { lat: nil, lng: nil, _failed: true } so
@@ -46,12 +44,6 @@ module Geocoding
       tmp = Pathname.new("#{CACHEFILE}.#{Process.pid}.tmp")
       File.write(tmp, Psych.dump(@load))
       File.rename(tmp, CACHEFILE)
-    end
-
-    # Clear in-memory data and delete the file.
-    def clear!
-      @load = {}
-      File.delete(CACHEFILE) if File.exist?(CACHEFILE)
     end
   end
 end

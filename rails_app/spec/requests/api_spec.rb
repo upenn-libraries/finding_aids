@@ -49,7 +49,8 @@ describe 'API index endpoints' do
     before do
       cache.store('Test Repo', lat: 39.98, lng: -75.19)
       HomepageData.geocoding_service = geo_service
-      HomepageData.reset!
+      HomepageData.instance_variable_set(:@repositories, nil)
+      HomepageData.instance_variable_set(:@repositories_json, nil)
       allow(RepositoryQueries).to receive_messages(
         facet_counts: [{ name: 'Test Repo', count: 100 }],
         addresses: { 'Test Repo' => '1 Research Park' }

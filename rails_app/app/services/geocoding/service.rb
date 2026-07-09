@@ -3,10 +3,6 @@
 module Geocoding
   # Orchestrates geocoding lookups and bulk refreshes.
   #
-  # Reads from the cache for the request path; writes to the cache for the
-  # background-job and rake-task paths.  Callers inject a +Cache+ so the
-  # service is decoupled from file I/O and easily testable.
-  #
   #   service = Geocoding::Service.new
   #   service.coordinates_for("Haverford", "370 Lancaster Ave, Haverford, PA")
   #   # => { lat: 40.0087, lng: -75.3068 }  (from cache, no API call)
@@ -45,18 +41,13 @@ module Geocoding
     # @param address [String]
     # @return [Hash, nil] +{ lat: Float, lng: Float }+ or +nil+ on failure
     def geocode(address)
-      results = Geocoder.search(clean_address(address))
+      results = Geocoder.search(Geocoding::AddressCleaner.clean(address))
       sleep @api_delay
       best = results.first
       { lat: best.latitude, lng: best.longitude } if best&.coordinates&.all?(&:present?)
     rescue StandardError => e
       Rails.logger.warn "Geocoding::Service: #{e.class}: #{e.message}"
       nil
-    end
-
-    # Clear the cache file on disk.
-    def clear_cache!
-      @cache.clear!
     end
 
     # Bulk-geocode all uncached addresses.
@@ -91,17 +82,9 @@ module Geocoding
     # @param name [String] repository name
     # @param coords [Hash, nil] geocoded coordinates or nil on failure
     def store_result(name, coords)
-      if coords
-        @cache.store(name, **coords)
-      else
-        @cache.store(name, failed: true)
-      end
-    end
+      return @cache.store(name, failed: true) unless coords
 
-    # @param address [String]
-    # @return [String]
-    def clean_address(address)
-      address.gsub(/\(.*?\)/, '').gsub(/,\s*,/, ',').strip
+      @cache.store(name, **coords)
     end
   end
 end

@@ -6,11 +6,11 @@ describe RepositoryQueries do
   let(:solr) { SolrService.new }
 
   describe '.facet_counts' do
-    let(:repo_alpha) do
+    let(:demo_repo) do
       attributes_for(:solr_document, repository_ssi: 'Test Repo Alpha')
     end
     let(:documents) do
-      [repo_alpha,
+      [demo_repo,
        attributes_for(:solr_document, repository_ssi: 'Test Repo Beta'),
        attributes_for(:solr_document, repository_ssi: 'Test Repo Beta')]
     end

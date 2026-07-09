@@ -11,7 +11,10 @@ describe Geocoding::Service do
     Struct.new(:latitude, :longitude, :coordinates).new(40.0087, -75.3068, [40.0087, -75.3068])
   end
 
-  before { cache.clear! }
+  before do
+    cache.instance_variable_set(:@load, {})
+    FileUtils.rm_f(Geocoding::Cache::CACHEFILE)
+  end
 
   describe "#coordinates_for" do
     it "returns blank when address is nil" do

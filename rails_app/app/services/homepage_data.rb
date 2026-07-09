@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'cgi'
-
 # Homepage data from YAML and Solr.
 #
 # Repository coordinates are looked up from the Geocoding::Service cache.
@@ -43,15 +41,6 @@ module HomepageData
       @repositories_json ||= repositories.map(&:to_h).to_json
     end
 
-    # Clear memoized data so the next call re-fetches from Solr.
-    # The coordinate cache file on disk is preserved — only in-memory
-    # memoization is cleared.
-    def reset!
-      @repositories = nil
-      @repositories_json = nil
-    end
-
-    # Allow dependency injection for testing.
     attr_writer :geocoding_service
 
     private

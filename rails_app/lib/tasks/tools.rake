@@ -3,49 +3,11 @@
 require 'csv'
 
 namespace :geocode do
-  desc 'List repository geocoding status'
-  task status: :environment do
-    cache = Geocoding::Cache.new
-    cache.load
-    addresses = RepositoryQueries.addresses
-
-    puts Rainbow("\n📍 Repository Geocoding Status\n").bold.cyan
-    puts Rainbow('=' * 60).cyan
-
-    addresses.each do |name, address|
-      entry = cache.load[name]
-      status = if entry&.dig(:lat)
-                 Rainbow('✓ CACHED').green
-               elsif address.blank?
-                 Rainbow('⚠ NO ADDRESS').yellow
-               elsif entry&.dig(:_failed)
-                 Rainbow('✗ FAILED').red
-               else
-                 Rainbow('○ NEEDS GEOCODING').red
-               end
-
-      puts "\n#{Rainbow(name).bold}"
-      puts "  Address: #{address || 'N/A'}"
-      puts "  Status:  #{status}"
-      puts "  Coords:  #{entry[:lat]}, #{entry[:lng]}" if entry&.dig(:lat)
-    end
-
-    total = addresses.size
-    cached = addresses.count { |name, _| cache.load[name]&.dig(:lat) }
-    puts "\n#{Rainbow('=' * 60).cyan}"
-    puts Rainbow("Summary: #{cached}/#{total} repositories geocoded\n").bold
-  end
-
-  desc 'Run geocoding with interactive disambiguation'
+  desc 'Run geocoding refresh'
   task refresh: :environment do
     cache = Geocoding::Cache.new
     cache.load
     service = Geocoding::Service.new(cache: cache)
-    non_interactive = ENV['NONINTERACTIVE'] || ENV['noninteractive']
-
-    puts Rainbow("\n🚀 Starting geocoding refresh\n").bold.green
-    puts Rainbow("Using #{Geocoder.config.lookup} API").cyan
-    puts Rainbow("Mode: #{non_interactive ? 'non-interactive (auto-first)' : 'interactive'}\n").cyan
 
     updated = service.refresh!(RepositoryQueries.addresses) do |name, status, lat, lng|
       puts Rainbow('─' * 60).bright.black
@@ -63,30 +25,6 @@ namespace :geocode do
     else
       puts Rainbow("\n✓ No updates needed\n").bold.cyan
     end
-  end
-
-  desc 'Clear geocoding cache'
-  task clear: :environment do
-    Geocoding::Cache.new.clear!
-    puts Rainbow('✓ Cleared geocoder cache').green
-  rescue Errno::ENOENT
-    puts Rainbow('No cache file to clear').yellow
-  end
-
-  desc 'Show collection counts per repository (from Solr)'
-  task counts: :environment do
-    repos = RepositoryQueries.facet_counts
-
-    puts Rainbow("\n📊 Collection Counts by Repository\n").bold.cyan
-    puts Rainbow('=' * 60).cyan
-
-    repos.each do |repo|
-      puts "#{Rainbow(repo[:name]).bold}: #{Rainbow(repo[:count].to_s).green} collections"
-    end
-
-    total = repos.sum { |r| r[:count] }
-    puts Rainbow('=' * 60).cyan
-    puts Rainbow("Total: #{total} collections\n").bold
   end
 end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 describe HomepageData do
   let(:cache) { Geocoding::Cache.new }
@@ -15,19 +15,19 @@ describe HomepageData do
 
   let(:facet_data) do
     [
-      { name: "Haverford College Quaker & Special Collections", count: 2100 },
-      { name: "Historical Society of Pennsylvania", count: 300 }
+      { name: 'Haverford College Quaker & Special Collections', count: 2100 },
+      { name: 'Historical Society of Pennsylvania', count: 300 }
     ]
   end
 
   let(:address_data) do
     {
-      "Haverford College Quaker & Special Collections" => "370 Lancaster Ave, Haverford, PA 19041",
-      "Historical Society of Pennsylvania" => "1300 Locust St, Philadelphia, PA 19107"
+      'Haverford College Quaker & Special Collections' => '370 Lancaster Ave, Haverford, PA 19041',
+      'Historical Society of Pennsylvania' => '1300 Locust St, Philadelphia, PA 19107'
     }
   end
 
-  shared_context "with solr stubs" do
+  shared_context 'with solr stubs' do
     before do
       allow(RepositoryQueries).to receive_messages(facet_counts: facet_data, addresses: address_data)
     end
@@ -35,78 +35,66 @@ describe HomepageData do
 
   # Collection guides (YAML) -------------------------------------------------
 
-  describe ".collection_guides" do
-    it "returns an array of CollectionGuide objects" do
+  describe '.collection_guides' do
+    it 'returns an array of CollectionGuide objects' do
       guides = described_class.collection_guides
 
       expect(guides).to all(be_a(HomepageData::CollectionGuide))
     end
 
-    it "includes guide identifiers from the YAML file" do
+    it 'includes guide identifiers from the YAML file' do
       guides = described_class.collection_guides
 
-      expect(guides.map(&:identifier)).to include("Haverford_HC.MC.856")
+      expect(guides.map(&:identifier)).to include('Haverford_HC.MC.856')
     end
 
-    it "includes guide names from the YAML file" do
+    it 'includes guide names from the YAML file' do
       guides = described_class.collection_guides
 
-      expect(guides.map(&:name)).to include("John Wilbur papers")
+      expect(guides.map(&:name)).to include('John Wilbur papers')
     end
   end
 
   # Repositories ------------------------------------------------------------
 
-  describe ".repositories" do
-    include_context "with solr stubs"
+  describe '.repositories' do
+    include_context 'with solr stubs'
 
-    it "builds Repository structs" do
-      cache.store("Haverford College Quaker & Special Collections", lat: 40.0087, lng: -75.3068)
-      cache.store("Historical Society of Pennsylvania", lat: 39.9496, lng: -75.1504)
+    it 'builds Repository structs' do
+      cache.store('Haverford College Quaker & Special Collections', lat: 40.0087, lng: -75.3068)
+      cache.store('Historical Society of Pennsylvania', lat: 39.9496, lng: -75.1504)
 
       repos = described_class.repositories
       expect(repos).to all(be_a(HomepageData::Repository))
     end
 
-    it "reads coordinates from cache" do
-      cache.store("Haverford College Quaker & Special Collections", lat: 40.0087, lng: -75.3068)
+    it 'reads coordinates from cache' do
+      cache.store('Haverford College Quaker & Special Collections', lat: 40.0087, lng: -75.3068)
 
       repos = described_class.repositories
-      haverford = repos.find { |r| r.name == "Haverford College Quaker & Special Collections" }
+      haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
       expect(haverford.lat).to eq(40.0087)
       expect(haverford.lng).to eq(-75.3068)
     end
 
-    it "generates slugs" do
+    it 'generates slugs' do
       repos = described_class.repositories
-      expect(repos.map(&:slug)).to include("haverford-college-quaker-special-collections")
+      expect(repos.map(&:slug)).to include('haverford-college-quaker-special-collections')
     end
 
-    it "returns nil coordinates when address is missing" do
+    it 'returns nil coordinates when address is missing' do
       allow(RepositoryQueries).to receive(:addresses).and_return({})
       repos = described_class.repositories
-      haverford = repos.find { |r| r.name == "Haverford College Quaker & Special Collections" }
+      haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
       expect(haverford.lat).to be_nil
     end
 
-    it "returns nil coordinates when cache has FAILED entry" do
-      cache.store("Haverford College Quaker & Special Collections", failed: true)
+    it 'returns nil coordinates when cache has FAILED entry' do
+      cache.store('Haverford College Quaker & Special Collections', failed: true)
 
       repos = described_class.repositories
-      haverford = repos.find { |r| r.name == "Haverford College Quaker & Special Collections" }
+      haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
       expect(haverford.lat).to be_nil
-    end
-  end
-
-  describe ".reset!" do
-    include_context "with solr stubs"
-
-    it "clears memoized repositories" do
-      cache.store("Haverford College Quaker & Special Collections", lat: 40.0087, lng: -75.3068)
-
-      repos = described_class.repositories
-      described_class.reset!
-      expect(described_class.repositories.map(&:name)).to eq(repos.map(&:name))
     end
   end
 end
