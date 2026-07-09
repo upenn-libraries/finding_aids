@@ -19,7 +19,6 @@ Rails.application.routes.draw do
 
   scope :admin do
     get '/', to: 'admin#index', as: :admin
-    post 'refresh_map_data', to: 'admin#refresh_map_data', as: :refresh_map_data
     resources :users
     resources :endpoints do
       member { post :harvest }

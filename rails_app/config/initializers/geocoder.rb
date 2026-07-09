@@ -9,5 +9,5 @@ Geocoder.configure(
   cache: Rails.cache,
   timeout: 5,
   use_https: true,
-  http_headers: { 'User-Agent' => 'FindingAidDiscovery/2.0 (University of Penn Libraries)' }
+  http_headers: { 'User-Agent' => 'UPENN Finding Aids' }
 )

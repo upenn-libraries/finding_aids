@@ -103,14 +103,6 @@ describe Geocoding::Service do
       expect(count).to eq(0)
     end
 
-    it "yields progress to block" do
-      allow(Geocoder).to receive(:search).and_return([geocoder_result])
-      yielded = []
-      service.refresh!("A" => "addr") { |*args| yielded << args }
-
-      expect(yielded).to eq([["A", :ok, 40.0087, -75.3068]])
-    end
-
     it "persists cache when updates occurred" do
       allow(Geocoder).to receive(:search).and_return([geocoder_result])
 

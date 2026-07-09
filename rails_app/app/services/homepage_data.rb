@@ -27,12 +27,11 @@ module HomepageData
 
         repos.filter_map do |repo|
           coords = geocoding_service.coordinates_for(repo[:name], addresses[repo[:name]])
-          records_url = "/records?f%5Brepository_ssi%5D%5B%5D=#{CGI.escape(repo[:name])}"
           Repository.new(
             name: repo[:name],
             slug: repo[:name].parameterize,
             count: repo[:count],
-            records_url: records_url,
+            records_url: records_url_for(repo[:name]),
             **coords
           )
         end
@@ -61,13 +60,19 @@ module HomepageData
       @geocoding_service ||= Geocoding::Service.new
     end
 
+    # @param name [String] repository name
+    # @return [String] URL to filtered records page
+    def records_url_for(name)
+      "/records?f%5Brepository_ssi%5D%5B%5D=#{CGI.escape(name)}"
+    end
+
     # @param path [Pathname]
     # @param struct_class [Class]
     # @return [Array]
     def load_yaml(path, struct_class)
       YAML.safe_load_file(path, symbolize_names: true)
           .map { |entry| struct_class.new(**entry.slice(*struct_class.members)) }
-    rescue Errno::ENOENT, Psych::SyntaxError, ArgumentError => e
+    rescue StandardError => e
       Rails.logger.warn "Homepage data file missing or malformed: #{path} - #{e.message}"
       []
     end

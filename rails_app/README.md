@@ -103,37 +103,12 @@ bundle exec rake tools:robotstxt
 ```
 
 #### Geocoding
-Repository locations are geocoded using the Nominatim (OpenStreetMap) API and cached in `tmp/geocoder_cache.yml`. The geocoding tasks help manage this cache:
+Repository locations are geocoded using the Nominatim (OpenStreetMap) API and cached in `tmp/geocoder_cache.yml`.
 
 ```bash
-# View geocoding status for all repositories
-bundle exec rake geocode:status
-
-# Run geocoding with interactive disambiguation for uncertain addresses
+# Run geocoding (interactive — prompts when multiple results are returned)
 bundle exec rake geocode:refresh
-
-# Run geocoding non-interactively (auto-selects first result for multiple matches)
-bundle exec rake geocode:refresh NONINTERACTIVE=1
-
-# Clear the geocoding cache
-bundle exec rake geocode:clear
-
-# Show collection counts per repository (from Solr)
-bundle exec rake geocode:counts
 ```
-
-The `geocode:refresh` task will:
-1. Query Solr for all repository addresses
-2. Skip repositories that already have cached coordinates
-3. For each uncached repository, query the geocoder
-4. If multiple results are returned, prompt you to choose the correct one (or auto-select first in non-interactive mode)
-5. Save results to the cache file
-
-**Note:** For initial bulk geocoding with Google's higher rate limits, temporarily switch to Google in `config/initializers/geocoder.rb`:
-```ruby
-Geocoder.configure(lookup: :google, api_key: Rails.application.credentials.google_api_key)
-```
-Then switch back to Nominatim for ongoing updates.
 
 ### Harvesting Sample Endpoints
 

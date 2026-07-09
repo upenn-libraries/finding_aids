@@ -17,9 +17,12 @@ module Geocoding
     FAILED    = { lat: nil, lng: nil, _failed: true }.freeze
     BLANK     = { lat: nil, lng: nil }.freeze
 
-    # @return [Hash{String => Hash}]
+    # Lazily loads the geocoding cache from disk (YAML file).
+    # Returns an empty hash when the file doesn't exist yet.
+    #
+    # @return [Hash{String => Hash}] repository name → coordinate data
     def load
-      @data ||= begin
+      @load ||= begin
         File.open(CACHEFILE, File::RDONLY) do |f|
           f.flock(File::LOCK_SH)
           YAML.safe_load_file(CACHEFILE, permitted_classes: [Symbol], aliases: true) || {}
@@ -41,13 +44,13 @@ module Geocoding
     def persist
       FileUtils.mkdir_p(File.dirname(CACHEFILE))
       tmp = Pathname.new("#{CACHEFILE}.#{Process.pid}.tmp")
-      File.write(tmp, Psych.dump(@data))
+      File.write(tmp, Psych.dump(@load))
       File.rename(tmp, CACHEFILE)
     end
 
     # Clear in-memory data and delete the file.
     def clear!
-      @data = {}
+      @load = {}
       File.delete(CACHEFILE) if File.exist?(CACHEFILE)
     end
   end
