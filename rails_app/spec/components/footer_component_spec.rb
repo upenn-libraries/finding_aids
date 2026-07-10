@@ -20,16 +20,17 @@ RSpec.describe FooterComponent, type: :component do
   end
 
   it 'renders navigation links' do
-    expect(component).to have_link I18n.t('footer.nav.home')
+    expect(component).to have_link I18n.t('footer.archives.home')
+    expect(component).to have_link I18n.t('footer.archives.about')
   end
 
-  it 'renders policy links' do
-    expect(component).to have_link I18n.t('footer.organizations.pacscl')
+  it 'renders the PACSCL link' do
+    expect(component).to have_link I18n.t('footer.archives.pacscl')
   end
 
   context 'when not logged in' do
     it 'does not show the admin link' do
-      expect(component).to have_no_link I18n.t('footer.nav.admin')
+      expect(component).to have_no_link I18n.t('footer.admin.link')
     end
   end
 
@@ -37,7 +38,7 @@ RSpec.describe FooterComponent, type: :component do
     let(:user) { instance_double(User) }
 
     it 'shows the admin link' do
-      expect(component).to have_link I18n.t('footer.nav.admin')
+      expect(component).to have_link I18n.t('footer.admin.link')
     end
   end
 end

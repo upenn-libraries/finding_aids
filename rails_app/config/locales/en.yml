@@ -51,23 +51,20 @@ en:
       submit_correction: "Suggest a correction"
   about:
     page_title: 'About'
-    header: 'About the Philadelphia Area Archives Site'
+    header: 'About'
+    lede: >-
+      Search collection guides from archives, libraries, and historical
+      societies across the Philadelphia area, all in one place. Each guide
+      shows you what a collection holds and where to see it.
   footer:
-    nav:
-      heading: 'Navigation'
+    archives:
+      heading: 'Philadelphia Area Archives'
       home: 'Home'
       about: 'About'
-      admin: 'Site Administration'
-    organizations:
-      heading: 'Organizations'
       pacscl: 'PACSCL'
-      hidden_coll_init: 'Hidden Collections Initiative for Pennsylvania Small Archival Repositories'
-    policies:
-      heading: 'Policies'
-      disclaimer: 'Disclaimer'
-      privacy: 'Privacy Policy'
-      a11y: 'Report Accessibility Issues and Get Help'
-      statement: 'Archival Description and Harmful Language'
+    admin:
+      heading: 'Administration'
+      link: 'Site administration'
   legacy:
     redirect: 'The identifier for this item has been updated. Please use this page URL to access this item.'
   requests:
