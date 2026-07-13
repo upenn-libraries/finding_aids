@@ -9,7 +9,7 @@ en:
       subheading: 'Find your way into the primary sources held by archives in the Philadelphia area.'
       alt: 'An archival reading room'
     collection_guides:
-      heading: 'Collection guides'
+      heading: 'Featured collections'
       intro: >-
         A collection guide, sometimes called a finding aid, describes a single
         archival collection. It tells you where the collection came from, what's
@@ -247,5 +247,7 @@ en:
         header: 'Contact'
         guide_html: 'These materials are held by <strong>%{repository}</strong>. Contact them to schedule a visit or ask about your research.'
 
-
+  activerecord:
+    models:
+      collection_guide: 'Featured collection'
 

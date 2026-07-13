@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Curated collection guides featured on the homepage. Staff manage these
+# Featured collections shown on the homepage. Staff manage these
 # via the admin UI at /admin/collection_guides.
 class CollectionGuide < ApplicationRecord
   validates :title, :repository, presence: true

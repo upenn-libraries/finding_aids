@@ -2,7 +2,7 @@
 
 # Homepage data from YAML files, the database, and Solr.
 #
-# Collection guides are curated via the CollectionGuide admin.
+# Featured collections are curated via the CollectionGuide admin.
 # Repository data is loaded from YAML for the regional partnership band.
 module HomepageData
   REPOSITORIES_PATH = Rails.root.join('data/repositories.yml')
