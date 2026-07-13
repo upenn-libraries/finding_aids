@@ -5,7 +5,8 @@ module Aeon
   class Request
     class InvalidRequestError < StandardError; end
 
-    BASE_PARAMS = { AeonForm: 'EADRequest',
+    BASE_PARAMS = { AeonForm: 'ExternalRequest',
+                    SystemID: Settings.aeon.system_id,
                     WebRequestForm: 'DefaultRequest',
                     SubmitButton: 'Submit Request' }.freeze
 
@@ -18,7 +19,7 @@ module Aeon
       Settings.aeon.locations.any? { |loc| loc[:label] == repository_name }
     end
 
-    # @param [ActiveSupport::HashWithIndifferentAccess] params
+    # @param params [ActiveSupport::HashWithIndifferentAccess]
     def initialize(params)
       @repository = repository_info params[:repository].to_s
       @params = params
@@ -36,7 +37,7 @@ module Aeon
     end
 
     # @return [Hash]
-    # @param [String] repository_name
+    # @param repository_name [String]
     def repository_info(repository_name)
       info = Settings.aeon.locations.find { |loc| loc[:label] == repository_name }
       raise InvalidRequestError, "Repository #{repository_name} does not support Aeon requesting" unless info
@@ -52,8 +53,14 @@ module Aeon
 
     # @return [Hash{String (frozen)->String}]
     def fulfillment_fields
-      { 'UserReview' => @params[:save_for_later] == '1' ? 'Yes' : 'No',
-        'ScheduledDate' => formatted_retrieval_date }
+      if request_type == 'Loan'
+        { 'RequestType' => 'Loan',
+          'UserReview' => @params[:save_for_later] == '1' ? 'Yes' : 'No',
+          'ScheduledDate' => formatted_retrieval_date }
+      else
+        { 'UserReview' => @params[:save_for_later] == '1' ? 'Yes' : 'No',
+          'RequestType' => 'Copy'}
+      end
     end
 
     # @return [String]
@@ -71,8 +78,8 @@ module Aeon
       @params[:title]
     end
 
+    # @param index [Integer]
     # @return [String]
-    # @param [Integer] index
     def barcode(index)
       @params[:item_barcode][index]
     end
