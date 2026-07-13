@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Admin CRUD for collection guides shown on the homepage.
-class CollectionGuidesController < ApplicationController
+# Admin CRUD for featured collections shown on the homepage.
+class FeaturedCollectionsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_guide, only: %i[edit update destroy]
   before_action :load_form_data, only: %i[new create edit update]
@@ -31,7 +31,7 @@ class CollectionGuidesController < ApplicationController
   def destroy
     @guide.destroy
     notify_success action: :destroy, class_name: CollectionGuide.model_name.human, identifier: @guide.title
-    redirect_to collection_guides_path
+    redirect_to featured_collections_path
   end
 
   private
@@ -45,7 +45,7 @@ class CollectionGuidesController < ApplicationController
     ensure_current_record_titles
     @repositories = @titles_by_repository.keys.sort
   rescue StandardError => e
-    Rails.logger.warn "CollectionGuidesController: failed to load form data - #{e.class}: #{e.message}"
+    Rails.logger.warn "FeaturedCollectionsController: failed to load form data - #{e.class}: #{e.message}"
     @titles_by_repository = { @guide&.repository => [@guide&.title].compact }.compact
     @repositories = [@guide&.repository].compact
   end
@@ -53,7 +53,7 @@ class CollectionGuidesController < ApplicationController
   def persist(action, failure_view)
     if @guide.save
       notify_success action: action, class_name: CollectionGuide.model_name.human, identifier: @guide.title
-      redirect_to collection_guides_path
+      redirect_to featured_collections_path
     else
       alert_failure action: action, class_name: CollectionGuide.model_name.human,
                     identifier: @guide.title, error: @guide.errors.map(&:full_message).join(', ')

@@ -4,7 +4,7 @@
 
 <div class="d-flex justify-content-end">
   <div class="btn-group mb-3">
-    <%= link_to 'Feature a Collection', new_collection_guide_path, class: 'btn btn-outline-dark' %>
+    <%= link_to 'Feature a Collection', new_featured_collection_path, class: 'btn btn-outline-dark' %>
   </div>
 </div>
 
@@ -22,9 +22,9 @@
     <tbody>
     <% @guides.each do |guide| %>
       <tr>
-        <td><%= link_to guide.title, edit_collection_guide_path(guide) %></td>
+        <td><%= link_to guide.title, edit_featured_collection_path(guide) %></td>
         <td><%= guide.repository %></td>
-        <td><%= button_to t('admin.actions.destroy'), collection_guide_path(guide), method: :delete, class: 'btn btn-sm btn-outline-danger', form: { data: { turbo_confirm: 'Remove this pick?' } } %></td>
+        <td><%= button_to t('admin.actions.destroy'), featured_collection_path(guide), method: :delete, class: 'btn btn-sm btn-outline-danger', form: { data: { turbo_confirm: 'Remove this pick?' } } %></td>
       </tr>
     <% end %>
     </tbody>
