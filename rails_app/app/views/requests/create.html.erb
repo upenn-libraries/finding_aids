@@ -11,7 +11,7 @@
   </div>
 </div>
 
-<%= bootstrap_form_with id: 'aeonRequestForm', url: penn_aeon_auth_url, method: :post, layout: :horizontal do |form| %>
+<%= bootstrap_form_with id: 'aeonRequestForm', url: Settings.aeon.ere_endpoint, method: :post, layout: :horizontal do |form| %>
   <%= form.hidden_field :call_num, value: params[:call_num] %>
   <%= form.hidden_field :repository, value: params[:repository] %>
   <%= form.static_control :title, value: params[:title], label: t('requests.form.fields.title') %>
@@ -24,10 +24,6 @@
   <%= form.text_area :special_request, label: t('requests.form.fields.special_request') %>
   <%= form.text_area :notes, label: t('requests.form.fields.notes') %>
   <%= form.date_field :retrieval_date, label: t('requests.form.fields.retrieval_date'), required: true %>
-  <%= form.form_group :auth_type, label: { text: t('requests.form.fields.auth_types') }, help: t('requests.form.messages.auth_help_html', aeon_link: link_to('ensure that you are logged in', Settings.aeon.url, class: 'ext', target: '_blank', rel: 'noopener')) do %>
-    <%= form.radio_button :auth_type, 'penn', label: t('requests.form.fields.penn_auth'), checked: true %>
-    <%= form.radio_button :auth_type, 'external', label: t('requests.form.fields.external_auth') %>
-  <% end %>
   <%= form.form_group do %>
     <%= form.check_box :save_for_later, label: t('requests.form.fields.save_for_later') %>
   <% end %>

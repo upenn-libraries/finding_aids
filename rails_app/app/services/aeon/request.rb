@@ -5,26 +5,18 @@ module Aeon
   class Request
     class InvalidRequestError < StandardError; end
 
-    KISLAK_REPOSITORY_NAME =
-      'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
-    KATZ_REPOSITORY_NAME =
-      'University of Pennsylvania: Archives at the Library of the Katz Center for Advanced Judaic Studies'
-    ARCHIVES_REPOSITORY_NAME =
-      'University of Pennsylvania: University Archives and Records Center'
-
-    REPOSITORY_ATTRIBUTE_MAP = {
-      ARCHIVES_REPOSITORY_NAME => { site: 'UARCHIVES', location: 'uarcmss', sublocation: 'Reading Rm' },
-      KATZ_REPOSITORY_NAME => { site: 'KATZ', location: 'cjsarcms', sublocation: 'Arc Room Ms.' },
-      KISLAK_REPOSITORY_NAME => { site: 'KISLAK', location: 'scmss', sublocation: 'Manuscripts' }
-    }.freeze
-
-    AUTH_INFO_MAP = {
-      penn: { url: 'https://aeon.library.upenn.edu/aeon/aeon.dll', param: '1' },
-      external: { url: 'https://aeon.library.upenn.edu/nonshib/aeon.dll', param: '2' }
-    }.freeze
-    BASE_PARAMS = { AeonForm: 'EADRequest', WebRequestForm: 'DefaultRequest', SubmitButton: 'Submit Request' }.freeze
+    BASE_PARAMS = { AeonForm: 'EADRequest',
+                    WebRequestForm: 'DefaultRequest',
+                    SubmitButton: 'Submit Request' }.freeze
 
     attr_reader :items, :repository
+
+    # Is requesting enabled for this repository?
+    # @param repository_name [String]
+    # @return [Boolean]
+    def self.allowed?(repository_name:)
+      Settings.aeon.locations.any? { |loc| loc[:label] == repository_name }
+    end
 
     # @param [ActiveSupport::HashWithIndifferentAccess] params
     def initialize(params)
@@ -33,29 +25,21 @@ module Aeon
       @items = build_items
     end
 
-    # @return [Array[AeonRequest::Item]]
+    # @return [Array[Aeon::Item]]
     def build_items
       @params['item'].map.with_index do |item, i|
         volume, issue = item.split(':').map(&:strip)
         volume += " [#{barcode(i)}]" if barcode(i).present?
         container_info = { volume: volume, issue: issue }
-        Item.new i, container_info, self
+        Aeon::Item.new i, container_info, self
       end
     end
 
     # @return [Hash]
     # @param [String] repository_name
     def repository_info(repository_name)
-      info = REPOSITORY_ATTRIBUTE_MAP[repository_name]
+      info = Settings.aeon.locations.find { |loc| loc[:label] == repository_name }
       raise InvalidRequestError, "Repository #{repository_name} does not support Aeon requesting" unless info
-
-      info
-    end
-
-    # @return [Hash{Symbol->String (frozen)}]
-    def auth_info(auth_type)
-      info = AUTH_INFO_MAP[auth_type.to_sym]
-      raise InvalidRequestError, "Invalid auth type specified: #{auth_type}" unless info
 
       info
     end
@@ -75,11 +59,6 @@ module Aeon
     # @return [String]
     def formatted_retrieval_date
       Date.parse(@params['retrieval_date']).strftime('%m/%d/%Y')
-    end
-
-    # @return [Hash{String (frozen)->String (frozen)}]
-    def auth_param
-      { 'auth' => auth_info(@params[:auth_type])[:param] }
     end
 
     # @return [String]
@@ -107,35 +86,14 @@ module Aeon
         end
       end
       BASE_PARAMS.merge(note_fields)
-                 .merge(auth_param)
                  .merge(fulfillment_fields)
                  .merge(item_fields)
     end
 
     # @return [Hash{Symbol->String (frozen)]
     def prepared
-      { url: auth_info(@params[:auth_type])[:url],
+      { url: Settings.aeon.ere_endpoint,
         body: to_h }
-    end
-
-    # Represent a single Item (checked box in the site) in the context of the request
-    class Item
-      # @param [String] number
-      # @param [Hash] container
-      # @param [AeonRequest] request
-      def initialize(number, container, request)
-        @number = number
-        @container = container
-        @request = request
-      end
-
-      def to_h
-        { 'CallNumber' => @request.call_number, 'ItemTitle' => @request.title, 'ItemAuthor' => '',
-          'Site' => @request.repository[:site], 'SubLocation' => @request.repository[:sublocation],
-          'Location' => @request.repository[:location], 'ItemVolume' => @container[:volume],
-          'ItemIssue' => @container[:issue], 'Request' => @number }
-          .transform_keys { |key| key + "_#{@number}" }
-      end
     end
   end
 end

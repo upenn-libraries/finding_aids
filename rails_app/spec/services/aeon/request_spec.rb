@@ -15,7 +15,6 @@ describe Aeon::Request do
           notes: 'Thanks',
           retrieval_date: '2025-12-25',
           save_for_later: true,
-          auth_type: 'penn',
           item: ['Month January: Page 6', 'Month December: Plate 40'],
           item_barcode: %w[111111111 222222222] }
       )
@@ -36,7 +35,7 @@ describe Aeon::Request do
 
       it 'has an array of Items' do
         expect(request.items.length).to eq 2
-        expect(request.items.first).to be_an described_class::Item
+        expect(request.items.first).to be_an Aeon::Item
       end
 
       it 'has Items with proper hash representation' do
@@ -59,17 +58,9 @@ describe Aeon::Request do
             'ScheduledDate' => '12/25/2025' }
         )
       end
-
-      it 'has a hash representation with proper auth field' do
-        expect(request.to_h).to include({ 'auth' => '1' })
-      end
     end
 
     describe '#prepare' do
-      it 'has expected url value' do
-        expect(request.prepared).to include({ url: described_class::AUTH_INFO_MAP[:penn][:url] })
-      end
-
       it 'has expected request representation as a hash' do
         expect(request.prepared[:body]).to be_a Hash
       end

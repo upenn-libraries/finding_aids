@@ -3,11 +3,6 @@
 # Blacklight class wrapping the retrieved Solr document
 class SolrDocument
   XML_FIELD_NAME = :xml_ss
-  REQUESTABLE_REPOSITORIES = [
-    Aeon::Request::ARCHIVES_REPOSITORY_NAME,
-    Aeon::Request::KATZ_REPOSITORY_NAME,
-    Aeon::Request::KISLAK_REPOSITORY_NAME
-  ].freeze
 
   include Blacklight::Solr::Document
   include EadTranslating
@@ -93,11 +88,6 @@ class SolrDocument
   # @return [String]
   def repository_address
     fetch(:repository_address_ssi, nil)
-  end
-
-  # @return [Boolean]
-  def requestable?
-    fetch(:repository_ssi, nil).in? REQUESTABLE_REPOSITORIES
   end
 
   # @return [String, nil]

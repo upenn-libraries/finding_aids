@@ -29,9 +29,4 @@ module RequestsHelper
     issues = param.keys.map { |k| k.split('_').second }.join(', ')
     "#{label} #{issues}"
   end
-
-  # @return [String (frozen)]
-  def penn_aeon_auth_url
-    Aeon::Request::AUTH_INFO_MAP[:penn][:url]
-  end
 end

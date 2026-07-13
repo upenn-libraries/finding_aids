@@ -2,6 +2,20 @@ pennlibs_web_version: '1.4.0-dev.4'
 
 aeon:
   url: 'https://aeon.library.upenn.edu'
+  ere_endpoint: 'https://aeon.library.upenn.edu/aeon/aeon.dll'
+  locations:
+    - label: 'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
+      site: KISLAK
+      location: scmss
+      sublocation: Manuscripts
+    - label: 'University of Pennsylvania: Archives at the Library of the Katz Center for Advanced Judaic Studies'
+      site: KATZ
+      location: cjsarcms
+      sublocation: Arc Room Ms.
+    - label: 'University of Pennsylvania: University Archives and Records Center'
+      site: UARCHIVES
+      location: uarcmss
+      sublocation: Reading Rm
 
 solr:
   url: <%= ENV['SOLR_URL'] %>
