@@ -10,9 +10,6 @@ class SolrDocument
   ].freeze
 
   include Blacklight::Solr::Document
-  include EadTranslating
-  include EadTextExtracting
-
   # self.unique_key = 'id'
 
   # Support EAD XML export format
@@ -25,49 +22,52 @@ class SolrDocument
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
 
-  # @return [SolrDocument::ParsedEad]
+  # @return [Ead::Parsing::ArchivalDescription]
   def parsed_ead
-    @parsed_ead ||= SolrDocument::ParsedEad.new(fetch(XML_FIELD_NAME))
+    @parsed_ead ||= Ead::Parsing::ArchivalDescription.new(fetch(XML_FIELD_NAME))
+  end
+
+  # @return [Ead::Extraction::ArchivalDescription]
+  def ead_extraction
+    @ead_extraction ||= Ead::Extraction::ArchivalDescription.new(parsed_ead)
   end
 
   # @return [Array<Symbol>]
-  def description_sections
-    parsed_ead.class::OTHER_SECTIONS
+  delegate :description_sections, to: :ead_extraction
+
+  # @return [ActiveSupport::SafeBuffer, nil]
+  def use_restrictions(*)
+    ead_extraction.use_restrictions
+  end
+
+  # @return [ActiveSupport::SafeBuffer, nil]
+  def access_restrictions(*)
+    ead_extraction.access_restrictions
+  end
+
+  # @return [ActiveSupport::SafeBuffer, nil]
+  def sponsor(*)
+    ead_extraction.sponsor
+  end
+
+  # @return [ActiveSupport::SafeBuffer, nil]
+  def date(*)
+    ead_extraction.date
+  end
+
+  # @return [ActiveSupport::SafeBuffer, nil]
+  def author(*)
+    ead_extraction.author
+  end
+
+  # @return [ActiveSupport::SafeBuffer, nil]
+  def publisher(*)
+    ead_extraction.publisher
   end
 
   # @return [String, nil]
-  def use_restrictions
-    translate(node: parsed_ead.userestrict, remove_head: true)
-  end
-
-  # @return [String, nil]
-  def access_restrictions
-    translate(node: parsed_ead.accessrestrict, remove_head: true)
-  end
-
-  # @return [String, nil]
-  def sponsor
-    translate(node: parsed_ead.sponsor, remove_head: true)
-  end
-
-  # @return [String, nil]
-  def date
-    translate(node: parsed_ead.date, remove_head: true)
-  end
-
-  # @return [String, nil]
-  def author
-    translate(node: parsed_ead.author, remove_head: true)
-  end
-
-  # @return [String, nil]
-  def publisher
-    translate(node: parsed_ead.publisher, remove_head: true)
-  end
-
-  # @return [String, nil]
-  def language_note
-    text_only(parsed_ead.langmaterial)
+  def language_note(*)
+    ead_extraction.language_note
   end
 
   # @return [Array<String> (frozen)]
