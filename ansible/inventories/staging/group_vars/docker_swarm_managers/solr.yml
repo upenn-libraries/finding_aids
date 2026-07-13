@@ -1,8 +1,4 @@
 ---
-solr_auth_password: "{{ finaids_vault_values.secret.solr_password }}"
-solr_auth_username: "{{ finaids_vault_values.secret.solr_username }}"
-solr_auth_type: "basic"
-
 solr_collections:
   - name: finding-aid-discovery
     configset: finding-aid-discovery
