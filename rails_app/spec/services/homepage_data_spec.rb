@@ -29,9 +29,7 @@ describe HomepageData do
 
       guides = described_class.collection_guides
 
-      expect(guides.length).to eq(2)
-      expect(guides.first.title).to eq('Spotlight')
-      expect(guides.last.title).to eq('Backfill-A')
+      expect(guides.map(&:title)).to eq(%w[Spotlight Backfill-A])
     end
 
     it 'backfills up to 8 total when fewer spotlights exist' do
@@ -45,13 +43,12 @@ describe HomepageData do
     end
 
     it 'skips backfill when 8 or more spotlights exist' do
-      allow(RepositoryQueries).to receive(:random_titles)
+      expect(RepositoryQueries).not_to receive(:random_titles)
       8.times { |i| create(:featured_collection, title: "Spotlight #{i}", repository: 'Test Repo') }
 
       guides = described_class.collection_guides
 
       expect(guides.length).to eq(8)
-      expect(RepositoryQueries).not_to have_received(:random_titles)
     end
 
     it 'excludes spotlight titles from backfill' do
