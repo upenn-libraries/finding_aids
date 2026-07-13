@@ -9,17 +9,17 @@ class FeaturedCollectionsController < ApplicationController
   layout 'application'
 
   def index
-    @guides = CollectionGuide.order(created_at: :desc)
+    @guides = FeaturedCollection.order(created_at: :desc)
   end
 
   def new
-    @guide = CollectionGuide.new
+    @guide = FeaturedCollection.new
   end
 
   def edit; end
 
   def create
-    @guide = CollectionGuide.new(guide_params)
+    @guide = FeaturedCollection.new(guide_params)
     persist(:create, :new)
   end
 
@@ -30,14 +30,14 @@ class FeaturedCollectionsController < ApplicationController
 
   def destroy
     @guide.destroy
-    notify_success action: :destroy, class_name: CollectionGuide.model_name.human, identifier: @guide.title
+    notify_success action: :destroy, class_name: FeaturedCollection.model_name.human, identifier: @guide.title
     redirect_to featured_collections_path
   end
 
   private
 
   def find_guide
-    @guide = CollectionGuide.find(params[:id])
+    @guide = FeaturedCollection.find(params[:id])
   end
 
   def load_form_data
@@ -52,10 +52,10 @@ class FeaturedCollectionsController < ApplicationController
 
   def persist(action, failure_view)
     if @guide.save
-      notify_success action: action, class_name: CollectionGuide.model_name.human, identifier: @guide.title
+      notify_success action: action, class_name: FeaturedCollection.model_name.human, identifier: @guide.title
       redirect_to featured_collections_path
     else
-      alert_failure action: action, class_name: CollectionGuide.model_name.human,
+      alert_failure action: action, class_name: FeaturedCollection.model_name.human,
                     identifier: @guide.title, error: @guide.errors.map(&:full_message).join(', ')
       render failure_view, status: :unprocessable_entity
     end
@@ -73,6 +73,6 @@ class FeaturedCollectionsController < ApplicationController
   end
 
   def guide_params
-    params.require(:collection_guide).permit(:title, :repository)
+    params.require(:featured_collection).permit(:title, :repository)
   end
 end

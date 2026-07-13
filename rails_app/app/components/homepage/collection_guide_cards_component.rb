@@ -6,12 +6,12 @@ module Homepage
   # @example
   #   render Homepage::CollectionGuideCardsComponent.new(guides: @homepage_guides)
   class CollectionGuideCardsComponent < ViewComponent::Base
-    # @param guides [Array<CollectionGuide>]
+    # @param guides [Array<FeaturedCollection>]
     def initialize(guides:)
       @guides = guides
     end
 
-    # @param guide [CollectionGuide]
+    # @param guide [FeaturedCollection]
     # @return [String]
     def guide_search_url(guide)
       helpers.search_action_path(q: guide.title)

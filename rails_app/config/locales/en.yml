@@ -249,5 +249,5 @@ en:
 
   activerecord:
     models:
-      collection_guide: 'Featured collection'
+      featured_collection: 'Featured collection'
 

@@ -2,7 +2,7 @@
 
 # Homepage data from YAML files, the database, and Solr.
 #
-# Featured collections are curated via the CollectionGuide admin.
+# Featured collections are curated via the FeaturedCollection admin.
 # Repository data is loaded from YAML for the regional partnership band.
 module HomepageData
   REPOSITORIES_PATH = Rails.root.join('data/repositories.yml')
@@ -15,7 +15,7 @@ module HomepageData
     # Staff-picked collections appear first, then random backfill from Solr.
     # At most MAX_GUIDES are returned; if more spotlights exist, only the
     # first MAX_GUIDES (by created_at) are shown and the rest are ignored.
-    # @return [Array<CollectionGuide>]
+    # @return [Array<FeaturedCollection>]
     def collection_guides
       spotlights = load_spotlights
       return spotlights if spotlights.length >= MAX_GUIDES
@@ -40,7 +40,7 @@ module HomepageData
     private
 
     def load_spotlights
-      CollectionGuide.order(:created_at).limit(MAX_GUIDES).to_a
+      FeaturedCollection.order(:created_at).limit(MAX_GUIDES).to_a
     end
 
     def fetch_backfill(spotlights)
@@ -52,7 +52,7 @@ module HomepageData
     end
 
     def build_backfill_guides(backfill)
-      backfill.map { |b| CollectionGuide.new(title: b[:title], repository: b[:repository]) }
+      backfill.map { |b| FeaturedCollection.new(title: b[:title], repository: b[:repository]) }
     end
 
     # Parses a YAML file and wraps each entry in the given Data class.
