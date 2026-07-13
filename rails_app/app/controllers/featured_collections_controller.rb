@@ -20,24 +20,17 @@ class FeaturedCollectionsController < ApplicationController
     @guide = FeaturedCollection.new(guide_params)
 
     if @guide.save
-      flash.notice = I18n.t('admin.flash.create.success',
-                            class_name: FeaturedCollection.model_name.human,
-                            identifier: @guide.title)
+      flash_success(:create)
       redirect_to featured_collections_path
     else
-      flash.alert = I18n.t('admin.flash.create.failure',
-                           class_name: FeaturedCollection.model_name.human,
-                           identifier: @guide.title,
-                           error: @guide.errors.map(&:full_message).join(', '))
+      flash_failure(:create)
       render :new, status: :unprocessable_entity
     end
   end
 
   def destroy
     @guide.destroy
-    flash.notice = I18n.t('admin.flash.destroy.success',
-                          class_name: FeaturedCollection.model_name.human,
-                          identifier: @guide.title)
+    flash_success(:destroy)
     redirect_to featured_collections_path
   end
 
@@ -58,5 +51,18 @@ class FeaturedCollectionsController < ApplicationController
 
   def guide_params
     params.require(:featured_collection).permit(:title, :repository)
+  end
+
+  def flash_success(action)
+    flash.notice = I18n.t("admin.flash.#{action}.success",
+                          class_name: FeaturedCollection.model_name.human,
+                          identifier: @guide.title)
+  end
+
+  def flash_failure(action)
+    flash.alert = I18n.t("admin.flash.#{action}.failure",
+                         class_name: FeaturedCollection.model_name.human,
+                         identifier: @guide.title,
+                         error: @guide.errors.map(&:full_message).join(', '))
   end
 end
