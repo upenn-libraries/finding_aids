@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Aeon
   # Represent a single Item (checked box in the site) in the context of the request
   class Item
@@ -20,8 +22,7 @@ module Aeon
         'Location' => @request.repository[:location],
         'ItemVolume' => @container[:volume],
         'ItemIssue' => @container[:issue],
-        'Request' => @number
-      }.transform_keys { |key| key + "_#{@number}" }
+        'Request' => @number }.transform_keys { |key| key + "_#{@number}" }
     end
   end
 end
