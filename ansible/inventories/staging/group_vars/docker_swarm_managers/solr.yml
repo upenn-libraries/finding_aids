@@ -1,4 +1,8 @@
 ---
+solr_auth_password: "{{ finaids_vault_values.secret.solr_password }}"
+solr_auth_username: "{{ finaids_vault_values.secret.solr_username }}"
+solr_auth_type: "basic"
+
 solr_collections:
   - name: finding-aid-discovery
     configset: finding-aid-discovery
@@ -17,9 +21,6 @@ solr_limits_mem: "8G"
 solr_proxy_host: "finaid-stg01.library.upenn.int"
 
 solr_custom_env_variables:
-  SOLR_ADMIN_USERNAME: "{{ finaids_vault_values.secret.solr_username }}"
-  SOLR_ADMIN_PASSWORD: "{{ finaids_vault_values.secret.solr_password }}"
-  SOLR_ENABLE_AUTHENTICATION: "yes"
   SOLR_HEAP: "6G"
   SOLR_JAVA_MEM: "-Xms4G -Xmx4G"
   SOLR_MODULES: "analysis-extras"
