@@ -32,6 +32,6 @@ module RequestsHelper
 
   # @return [String (frozen)]
   def penn_aeon_auth_url
-    AeonRequest::AUTH_INFO_MAP[:penn][:url]
+    Aeon::Request::AUTH_INFO_MAP[:penn][:url]
   end
 end

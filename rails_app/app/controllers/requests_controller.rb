@@ -9,7 +9,7 @@ class RequestsController < ApplicationController
 
   # return request destination URL and Aeon request body in JSON
   def prepare
-    req = AeonRequest.new(params).prepared
+    req = Aeon::Request.new(params).prepared
     render json: req
   end
 

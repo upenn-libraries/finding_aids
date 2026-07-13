@@ -4,9 +4,9 @@
 class SolrDocument
   XML_FIELD_NAME = :xml_ss
   REQUESTABLE_REPOSITORIES = [
-    AeonRequest::ARCHIVES_REPOSITORY_NAME,
-    AeonRequest::KATZ_REPOSITORY_NAME,
-    AeonRequest::KISLAK_REPOSITORY_NAME
+    Aeon::Request::ARCHIVES_REPOSITORY_NAME,
+    Aeon::Request::KATZ_REPOSITORY_NAME,
+    Aeon::Request::KISLAK_REPOSITORY_NAME
   ].freeze
 
   include Blacklight::Solr::Document

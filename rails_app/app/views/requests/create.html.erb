@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col">
       <p>You are requesting to view materials on-site at: <strong><%= params[:repository] %></strong>.</p>
-      <p>Please confirm that <%= link_to 'you are logged in to the Aeon system', AeonRequest::AEON_URL, class: 'ext', target: '_blank', rel: 'noopener' %>, then review the selected items and complete the form below and press Submit when everything is in order.</p>
+      <p>Please confirm that <%= link_to 'you are logged in to the Aeon system', Settings.aeon.url, class: 'ext', target: '_blank', rel: 'noopener' %>, then review the selected items and complete the form below and press Submit when everything is in order.</p>
     </div>
   </div>
 </div>
@@ -24,7 +24,7 @@
   <%= form.text_area :special_request, label: t('requests.form.fields.special_request') %>
   <%= form.text_area :notes, label: t('requests.form.fields.notes') %>
   <%= form.date_field :retrieval_date, label: t('requests.form.fields.retrieval_date'), required: true %>
-  <%= form.form_group :auth_type, label: { text: t('requests.form.fields.auth_types') }, help: t('requests.form.messages.auth_help_html', aeon_link: link_to('ensure that you are logged in', AeonRequest::AEON_URL, class: 'ext', target: '_blank', rel: 'noopener')) do %>
+  <%= form.form_group :auth_type, label: { text: t('requests.form.fields.auth_types') }, help: t('requests.form.messages.auth_help_html', aeon_link: link_to('ensure that you are logged in', Settings.aeon.url, class: 'ext', target: '_blank', rel: 'noopener')) do %>
     <%= form.radio_button :auth_type, 'penn', label: t('requests.form.fields.penn_auth'), checked: true %>
     <%= form.radio_button :auth_type, 'external', label: t('requests.form.fields.external_auth') %>
   <% end %>

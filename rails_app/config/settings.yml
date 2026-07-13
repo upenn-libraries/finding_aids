@@ -1,5 +1,8 @@
 pennlibs_web_version: '1.4.0-dev.4'
 
+aeon:
+  url: 'https://aeon.library.upenn.edu'
+
 solr:
   url: <%= ENV['SOLR_URL'] %>
 

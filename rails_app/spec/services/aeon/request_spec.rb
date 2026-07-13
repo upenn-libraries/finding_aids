@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe AeonRequest do
+describe Aeon::Request do
   let(:request) { described_class.new(params) }
 
   context 'with some sample params' do

@@ -36,7 +36,7 @@ FactoryBot.define do
   end
 
   trait :requestable do
-    repository_ssi { AeonRequest::KISLAK_REPOSITORY_NAME }
+    repository_ssi { Aeon::Request::KISLAK_REPOSITORY_NAME }
   end
 
   trait :with_collection_data do
