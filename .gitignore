@@ -17,3 +17,4 @@ ansible/collections
 # Don't track Mac files
 *.DS_Store
 * alias
+AGENTS.md
