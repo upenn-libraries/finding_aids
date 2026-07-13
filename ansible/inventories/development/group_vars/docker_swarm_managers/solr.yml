@@ -1,8 +1,4 @@
 ---
-solr_auth_password: "password"
-solr_auth_username: "admin"
-solr_auth_type: "basic"
-
 solr_collections:
   - name: finding-aid-discovery-development
     configset: finding-aid-discovery
