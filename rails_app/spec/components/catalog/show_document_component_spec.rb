@@ -119,9 +119,9 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
       expect(page).to have_css("#{css} pennlibs-accordion#inventory-accordion")
     end
 
-    it 'renders inventory details', pending: 'not implemented' do
+    it 'renders inventory details' do
       detail_css = "#{css} pennlibs-accordion#inventory-accordion"
-      expect(page).to have_css("#{detail_css} summary h3#inventory", text: 'Something Really Distinctive')
+      expect(page).to have_css("#{detail_css} details summary h3#series-1", text: 'Test Collection')
     end
   end
 
