@@ -35,19 +35,4 @@ describe RepositoryQueries do
       expect(results['Repo B']).to eq(['Guide Three'])
     end
   end
-
-  describe '.random_titles' do
-    include_context 'with solr documents'
-
-    let(:documents) do
-      Array.new(5) { |i| attributes_for(:solr_document, repository_ssi: 'Repo', title_tsi: "Guide #{i}") }
-    end
-
-    it 'returns an array of title/repository hashes' do
-      results = described_class.random_titles(limit: 3)
-
-      expect(results).to all(include(:title, :repository))
-      expect(results.length).to eq(3)
-    end
-  end
 end

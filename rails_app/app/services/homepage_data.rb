@@ -12,19 +12,10 @@ module HomepageData
   class << self
     MAX_GUIDES = 8
 
-    # Staff-picked collections appear first, then random backfill from Solr.
-    # At most MAX_GUIDES are returned; if more featured collections exist,
-    # only the first MAX_GUIDES (by created_at) are shown.
+    # Staff-picked collections shown on the homepage, up to MAX_GUIDES.
     # @return [Array<FeaturedCollection>]
     def collection_guides
-      featured = load_featured
-      return featured if featured.length >= MAX_GUIDES
-
-      backfill = fetch_backfill(featured)
-      featured + build_backfill_guides(backfill)
-    rescue StandardError => e
-      Rails.logger.warn "HomepageData: backfill failed - #{e.class}: #{e.message}"
-      featured
+      FeaturedCollection.order(:created_at).limit(MAX_GUIDES).to_a
     end
 
     # @return [Array<Repository>]
@@ -38,22 +29,6 @@ module HomepageData
     end
 
     private
-
-    def load_featured
-      FeaturedCollection.order(:created_at).limit(MAX_GUIDES).to_a
-    end
-
-    def fetch_backfill(featured)
-      titles = featured.map(&:title)
-      needed = MAX_GUIDES - featured.length
-      RepositoryQueries.random_titles(limit: needed + titles.length)
-                       .reject { |b| titles.include?(b[:title]) }
-                       .first(needed)
-    end
-
-    def build_backfill_guides(backfill)
-      backfill.map { |b| FeaturedCollection.new(title: b[:title], repository: b[:repository]) }
-    end
 
     # Parses a YAML file and wraps each entry in the given Data class.
     # Returns an empty array and logs a warning if the file is missing or malformed.

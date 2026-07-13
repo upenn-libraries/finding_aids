@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Solr queries for repository data used on the homepage.
+# Solr queries for repository data used in the admin form.
 class RepositoryQueries
   # Collection titles grouped by repository name.
   #
@@ -13,20 +13,6 @@ class RepositoryQueries
       grouped[repo] << title if repo.present? && title.present?
     end
     grouped.transform_values(&:sort!).sort.to_h
-  end
-
-  # Random collection titles for homepage backfill.
-  def self.random_titles(limit:)
-    response = connection.get('select', params: {
-                                q: '*:*',
-                                fl: 'title_tsi,repository_ssi',
-                                rows: limit
-                              })
-    (response.dig('response', 'docs') || []).filter_map { |doc|
-      title = doc['title_tsi']
-      repo = doc['repository_ssi']
-      { title: title, repository: repo } if title.present? && repo.present?
-    }.shuffle
   end
 
   # @return [RSolr::Client]
