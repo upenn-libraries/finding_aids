@@ -14,8 +14,8 @@ describe SolrDocument do
       corpnames_ssim: ['University of Pennsylvania'] }
   end
 
-  it 'creates a ParsedEad' do
-    expect(doc.parsed_ead).to be_an_instance_of SolrDocument::ParsedEad
+  it 'creates a parsed ead' do
+    expect(doc.parsed_ead).to be_an_instance_of Ead::Parsing::ArchivalDescription
   end
 
   describe '#language_note' do
@@ -63,7 +63,7 @@ describe SolrDocument do
     end
 
     it 'responds to method calls for defined sections' do
-      SolrDocument::ParsedEad::OTHER_SECTIONS.each do |section|
+      Ead::Parsing::ArchivalDescription::OTHER_SECTIONS.each do |section|
         expect(parsed_ead).to respond_to section
       end
     end

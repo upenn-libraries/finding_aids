@@ -17,77 +17,77 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
   end
 
   describe 'rendering header' do
-    let(:css) { 'div.document-main-section div.faa-guide-header' }
+    let(:css) { 'div.document-main-section div.fa-guide-header' }
 
     it 'shows the abstract in the header section' do
-      abstract_css =  "#{css} div.faa-guide-header__hero div.faa-guide-header__intro p"
+      abstract_css =  "#{css} div.fa-guide-header__hero div.fa-guide-header__intro p"
       expect(page).to have_css(abstract_css, text: document.fetch(:abstract_scope_contents_tsi))
     end
 
     it 'links to a repository facet search in the header aside' do
-      repo_css = "#{css} div.faa-guide-header__hero aside.faa-guide-header__institution p"
+      repo_css = "#{css} div.fa-guide-header__hero aside.fa-guide-header__institution p"
       link = view_context.search_catalog_path({ "f[repository_ssi][]": document.fetch(:repository_ssi),
                                                 only_path: true })
       expect(page).to have_css("#{repo_css} a[href='#{link}']")
     end
 
     it 'links to the contact section from the header aside' do
-      css = "#{css} aside.faa-guide-header__institution a.pl-button.pl-button--accent[href='#contact']"
+      css = "#{css} aside.fa-guide-header__institution a.pl-button.pl-button--accent[href='#contact']"
       expect(page).to have_css(css, text: I18n.t('show.aside.contact'))
     end
 
     it 'renders the collection title' do
-      title_css = "#{css} div.faa-guide-header__hero div.faa-guide-header__intro h1#guide-title"
+      title_css = "#{css} div.fa-guide-header__hero div.fa-guide-header__intro h1#guide-title"
       expect(page).to have_css(title_css, text: presenter.heading)
     end
 
     it 'shows the access restrictions in the header aside' do
-      access_css = "#{css} div.faa-guide-header__hero aside.faa-guide-header__institution p"
+      access_css = "#{css} div.fa-guide-header__hero aside.fa-guide-header__institution p"
       expect(page).to have_css(access_css, text: document.access_restrictions)
     end
 
     it 'renders collection overview metadata in the header strip' do
-      expect(page).to have_css("#{css} div.faa-guide-header__strip dl.fa-metadata")
+      expect(page).to have_css("#{css} div.fa-guide-header__strip dl.fa-metadata")
     end
 
     it 'shows creator in the header strip' do
-      metadata_css = "#{css} div.faa-guide-header__strip dl.fa-metadata div"
+      metadata_css = "#{css} div.fa-guide-header__strip dl.fa-metadata div"
       expect(page).to have_css("#{metadata_css} dt", text: I18n.t('fields.creators'))
       document.fetch(:creators_ssim).each { |creator| expect(page).to have_css("#{metadata_css} dd", text: creator) }
     end
 
     it 'shows date in the header strip' do
-      metadata_css = "#{css} div.faa-guide-header__strip dl.fa-metadata div"
+      metadata_css = "#{css} div.fa-guide-header__strip dl.fa-metadata div"
       expect(page).to have_css("#{metadata_css} dt", text: I18n.t('fields.date'))
       document.display_dates.each { |date| expect(page).to have_css("#{metadata_css} dd", text: date) }
     end
 
     it 'shows extent in the header strip' do
-      metadata_css = "#{css} div.faa-guide-header__strip dl.fa-metadata div"
+      metadata_css = "#{css} div.fa-guide-header__strip dl.fa-metadata div"
       expect(page).to have_css("#{metadata_css} dt", text: I18n.t('fields.extent'))
       document.fetch(:extent_ssim).each { |extent| expect(page).to have_css("#{metadata_css} dd", text: extent) }
     end
 
     it 'shows the call number in the header strip' do
-      metadata_css = "#{css} div.faa-guide-header__strip dl.fa-metadata div"
+      metadata_css = "#{css} div.fa-guide-header__strip dl.fa-metadata div"
       expect(page).to have_css("#{metadata_css} dt", text: I18n.t('fields.pretty_unit_id'))
       expect(page).to have_css("#{metadata_css} dd", text: document.fetch(:pretty_unit_id_ss))
     end
   end
 
   describe 'rendering table of contents' do
-    let(:css) { 'div.document-main-section div.faa-guide-layout' }
+    let(:css) { 'div.document-main-section div.fa-guide-layout' }
 
     it 'renders a table of contents navigation', pending: 'not implemented' do
-      expect(page).to have_css("#{css} nav.faa-toc[aria-label='Table of contents'] ul li", text: presenter.heading)
+      expect(page).to have_css("#{css} nav.fa-toc[aria-label='Table of contents'] ul li", text: presenter.heading)
     end
   end
 
   describe 'rendering description' do
-    let(:css) { 'div.document-main-section div.faa-guide-layout div#description-sections' }
+    let(:css) { 'div.document-main-section div.fa-guide-layout div#description-sections' }
 
     it 'renders the description section heading and guide text' do
-      section_css = "#{css} div.faa-section-header"
+      section_css = "#{css} div.fa-section-header"
 
       expect(page).to have_css("#{section_css} h2#description", text: I18n.t('show.sections.description.header'))
       expect(page).to have_css("#{section_css} p", text: I18n.t('show.sections.description.guide'))
@@ -103,10 +103,10 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
   end
 
   describe 'rendering inventory' do
-    let(:css) { 'div.document-main-section div.faa-guide-layout div#inventory-sections' }
+    let(:css) { 'div.document-main-section div.fa-guide-layout div#inventory-sections' }
 
     it 'renders the inventory section heading and guide text' do
-      section_css = 'div.faa-section-header'
+      section_css = 'div.fa-section-header'
       expect(page).to have_css("#{section_css} h2#inventory", text: I18n.t('show.sections.inventory.header'))
       expect(page).to have_css("#{section_css} p", text: I18n.t('show.sections.inventory.guide'))
     end
@@ -126,7 +126,7 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
   end
 
   describe 'rendering contact' do
-    let(:css) { 'div.document-main-section div.faa-guide-content section' }
+    let(:css) { 'div.document-main-section div.fa-guide-content section' }
 
     it 'renders the contact section heading' do
       expect(page).to have_css("#{css} h2#contact", text: I18n.t('show.sections.contact.header'))
