@@ -13,18 +13,18 @@ module HomepageData
     MAX_GUIDES = 8
 
     # Staff-picked collections appear first, then random backfill from Solr.
-    # At most MAX_GUIDES are returned; if more spotlights exist, only the
-    # first MAX_GUIDES (by created_at) are shown and the rest are ignored.
+    # At most MAX_GUIDES are returned; if more featured collections exist,
+    # only the first MAX_GUIDES (by created_at) are shown.
     # @return [Array<FeaturedCollection>]
     def collection_guides
-      spotlights = load_spotlights
-      return spotlights if spotlights.length >= MAX_GUIDES
+      featured = load_featured
+      return featured if featured.length >= MAX_GUIDES
 
-      backfill = fetch_backfill(spotlights)
-      spotlights + build_backfill_guides(backfill)
+      backfill = fetch_backfill(featured)
+      featured + build_backfill_guides(backfill)
     rescue StandardError => e
       Rails.logger.warn "HomepageData: backfill failed - #{e.class}: #{e.message}"
-      spotlights
+      featured
     end
 
     # @return [Array<Repository>]
@@ -39,13 +39,13 @@ module HomepageData
 
     private
 
-    def load_spotlights
+    def load_featured
       FeaturedCollection.order(:created_at).limit(MAX_GUIDES).to_a
     end
 
-    def fetch_backfill(spotlights)
-      titles = spotlights.map(&:title)
-      needed = MAX_GUIDES - spotlights.length
+    def fetch_backfill(featured)
+      titles = featured.map(&:title)
+      needed = MAX_GUIDES - featured.length
       RepositoryQueries.random_titles(limit: needed + titles.length)
                        .reject { |b| titles.include?(b[:title]) }
                        .first(needed)
