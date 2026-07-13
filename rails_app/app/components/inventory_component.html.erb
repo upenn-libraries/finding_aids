@@ -1,0 +1,62 @@
+<%= render DetailsComponent.new(heading_id: heading_id, heading: details_title(@entry),
+                                container_class: "pl-flex pl-flex-col pl-gap-s",
+                                level: @level, requestable: @requestable) do |component| %>
+  <%= component.with_body do %>
+
+    <% if @entry.children? %>
+      <%= parent_entry_metadata(@entry) %>
+    <% end %>
+
+    <% if all_children_have_children? %>
+      <% @entry.children.each_with_index do |child, i| %>
+        <%= render InventoryComponent.new(entry: child, level: @level + 1, parent_id: heading_id, index: i + 1,
+                                          requestable: @requestable) %>
+      <% end %>
+
+    <% else %>
+      <table class="table table--responsive-small">
+        <thead>
+        <tr>
+          <th>Contents</th>
+          <th>Dates</th>
+          <th>Container</th>
+          <% if @requestable %>
+            <th>Select</th>
+          <% end %>
+        </tr>
+        </thead>
+        <% row_entries.each_with_index do |row_entry, i| %>
+          <% if row_entry.children? %>
+            <tr class="inventory-row">
+              <td colspan=<%= @requestable ? 4 : 3 %>>
+                <%= render InventoryComponent.new(entry: row_entry, level: @level + 1, parent_id: heading_id, index: i + 1,
+                                                  requestable: @requestable) %>
+              </td>
+            </tr>
+          <% else %>
+            <% dates = date(row_entry) %>
+            <% containers = join_containers(row_entry) %>
+            <% title_text = title(title: row_entry.title_text, origination: row_entry.origination) %>
+
+            <tr class="inventory-row"
+                data-title="<%= title_text %>"
+                data-container="<%= containers %>"
+                data-dates="<%= dates %>">
+              <td data-th="Contents"><%= contents_column(row_entry) %></td>
+              <td data-th="Dates"><%= dates %></td>
+              <td data-th="Container"><%= containers %></td>
+              <% if @requestable %>
+              <td class="fa-visit__cell" data-th="Select">
+                <label class="fa-visit__label">
+                  <input class="fa-visit__checkbox" type="checkbox" data-fa-request-id=<%= "#{heading_id}-item-#{i + 1}" %>>
+                  <span class="visually-hidden"><%= "Select #{title_text}" %></span>
+                </label>
+              </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    <% end %>
+  <% end %>
+<% end %>
