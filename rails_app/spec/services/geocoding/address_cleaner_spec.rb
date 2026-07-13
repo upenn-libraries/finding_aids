@@ -26,31 +26,49 @@ describe Geocoding::AddressCleaner do
   end
 
   describe 'constants' do
-    it 'matches phone numbers' do
-      expect('(215) 555-1234').to match(described_class::CONTACT_PATTERN)
-      expect('215.555.1234').to match(described_class::CONTACT_PATTERN)
-      expect('215-555-1234').to match(described_class::CONTACT_PATTERN)
+    it 'matches phone numbers with parentheses' do
+      phone = '(215) 555-1234'
+      expect(phone).to match(described_class::CONTACT_PATTERN)
+    end
+
+    it 'matches phone numbers with dots' do
+      phone = '215.555.1234'
+      expect(phone).to match(described_class::CONTACT_PATTERN)
+    end
+
+    it 'matches phone numbers with dashes' do
+      phone = '215-555-1234'
+      expect(phone).to match(described_class::CONTACT_PATTERN)
     end
 
     it 'matches email indicators' do
-      expect('info@example.org').to match(described_class::CONTACT_PATTERN)
+      email = 'info@example.org'
+      expect(email).to match(described_class::CONTACT_PATTERN)
     end
 
     it 'matches URL indicators' do
-      expect('Visit us at URL:').to match(described_class::CONTACT_PATTERN)
-      expect('http://example.org').to match(described_class::CONTACT_PATTERN)
+      url_text = 'Visit us at URL:'
+      expect(url_text).to match(described_class::CONTACT_PATTERN)
+    end
+
+    it 'matches raw URLs' do
+      url = 'http://example.org'
+      expect(url).to match(described_class::CONTACT_PATTERN)
     end
 
     it 'does not match plain street addresses' do
-      expect('123 Main St').not_to match(described_class::CONTACT_PATTERN)
+      address = '123 Main St'
+      expect(address).not_to match(described_class::CONTACT_PATTERN)
     end
 
     it 'BUILDING_NAME_PATTERN matches non-numeric-start lines' do
-      expect('Falvey Library').to match(described_class::BUILDING_NAME_PATTERN)
+      building = 'Falvey Library'
+      expect(building).to match(described_class::BUILDING_NAME_PATTERN)
     end
 
     it 'BUILDING_NAME_PATTERN rejects numeric-start lines' do
-      expect('800 E Lancaster Ave').not_to match(described_class::BUILDING_NAME_PATTERN)
+      address = '800 E Lancaster Ave'
+      expect(address).not_to match(described_class::BUILDING_NAME_PATTERN)
     end
   end
 end

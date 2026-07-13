@@ -5,26 +5,24 @@ require 'rails_helper'
 describe HomepageData do
   let(:cache) { Geocoding::Cache.new }
   let(:geo_service) { Geocoding::Service.new(cache: cache) }
-
-  before do
-    described_class.instance_variable_set(:@collection_guides, nil)
-    described_class.instance_variable_set(:@repositories, nil)
-    described_class.instance_variable_set(:@repositories_json, nil)
-    described_class.geocoding_service = geo_service
-  end
-
   let(:facet_data) do
     [
       { name: 'Haverford College Quaker & Special Collections', count: 2100 },
       { name: 'Historical Society of Pennsylvania', count: 300 }
     ]
   end
-
   let(:address_data) do
     {
       'Haverford College Quaker & Special Collections' => '370 Lancaster Ave, Haverford, PA 19041',
       'Historical Society of Pennsylvania' => '1300 Locust St, Philadelphia, PA 19107'
     }
+  end
+
+  before do
+    described_class.instance_variable_set(:@collection_guides, nil)
+    described_class.instance_variable_set(:@repositories, nil)
+    described_class.instance_variable_set(:@repositories_json, nil)
+    described_class.geocoding_service = geo_service
   end
 
   shared_context 'with solr stubs' do
