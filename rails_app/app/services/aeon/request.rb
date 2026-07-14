@@ -108,7 +108,7 @@ module Aeon
     # @return [String]
     def formatted_retrieval_date
       Date.parse(params['retrieval_date']).strftime('%m/%d/%Y')
-    rescue StandardError => _e
+    rescue StandardError => e
       Honeybadger.notify("Problem parsing retrieval date: #{e.message}")
       nil
     end
