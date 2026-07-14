@@ -114,26 +114,20 @@
 <%# Fixed bottom find bar (Firefox Ctrl+F style) — appears when results exist %>
 <div id="search-find-bar"
      class="pl-padding-s"
-     data-search-highlight-target="findBar"
      role="search"
      aria-label="Find in page"
      hidden>
   <div class="pl-flex pl-align-center pl-gap-s">
     <input type="text" id="find-bar-input"
            class="form-control"
-           data-search-highlight-target="findBarInput"
-           data-action="input->search-highlight#onFindBarInput"
            placeholder="Find in this guide&hellip;"
            aria-label="Find in page">
-    <span class="faa-small-name" data-search-highlight-target="findBarCounter" style="white-space: nowrap;"></span>
-    <button type="button" class="pl-button pl-button--ghost"
-            data-action="click->search-highlight#prevMatch"
+    <span id="find-bar-counter" class="faa-small-name" style="white-space: nowrap;"></span>
+    <button type="button" id="find-bar-prev" class="pl-button pl-button--ghost"
             aria-label="Previous match">&#8593;</button>
-    <button type="button" class="pl-button pl-button--ghost"
-            data-action="click->search-highlight#nextMatch"
+    <button type="button" id="find-bar-next" class="pl-button pl-button--ghost"
             aria-label="Next match">&#8595;</button>
-    <button type="button" class="pl-button pl-button--ghost"
-            data-action="click->search-highlight#dismissFindBar"
+    <button type="button" id="find-bar-close" class="pl-button pl-button--ghost"
             aria-label="Close find bar">&times;</button>
   </div>
 </div>

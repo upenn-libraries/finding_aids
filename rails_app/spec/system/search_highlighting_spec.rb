@@ -97,12 +97,12 @@ describe 'Search highlighting on record pages' do
 
       # Find bar should be visible with counter
       expect(page).to have_css('#search-find-bar:not([hidden])', wait: 2)
-      expect(page).to have_css('[data-search-highlight-target="findBarCounter"]')
+      expect(page).to have_css('#find-bar-counter')
 
       find('#record-search-input').send_keys(:enter)
       expect(page).to have_css('mark.search-highlight--active', wait: 2)
       # Counter should show position after navigation
-      expect(find('[data-search-highlight-target="findBarCounter"]').text).to match(/1 of \d+/i)
+      expect(find('#find-bar-counter').text).to match(/1 of \d+/i)
     end
 
     it 'opens collapsed details when navigating to a match inside one' do

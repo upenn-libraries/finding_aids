@@ -20,6 +20,7 @@ export default class extends Controller {
     this._searchTerm = null;
 
     this._bindKeyboard();
+    this._bindFindBar();
 
     if (this.queryValue) {
       this.highlight(this.queryValue, { navigate: true });
@@ -274,6 +275,7 @@ export default class extends Controller {
     const input = document.getElementById("find-bar-input");
     if (!bar || !input) return;
     bar.hidden = false;
+    document.body.style.paddingBottom = bar.offsetHeight + "px";
     if (this.hasSearchInputTarget) {
       input.value = this.searchInputTarget.value;
     }
@@ -283,10 +285,11 @@ export default class extends Controller {
   _hideFindBar() {
     const bar = document.getElementById("search-find-bar");
     if (bar) bar.hidden = true;
+    document.body.style.paddingBottom = "";
   }
 
   _updateFindBarCounter() {
-    const counter = document.querySelector('[data-search-highlight-target="findBarCounter"]');
+    const counter = document.getElementById("find-bar-counter");
     if (!counter) return;
     const total = this.markElements.length;
     const pos = this.activeIndex >= 0 ? this.activeIndex + 1 : 0;
@@ -299,17 +302,34 @@ export default class extends Controller {
   _bindKeyboard() {
     if (!this.hasSearchInputTarget) return;
     this.searchInputTarget.addEventListener("keydown", (event) => {
-      // Enter = next match, Shift+Enter = previous match
-      // Only when the listbox is not open/handling its own keyboard nav
       if (event.key === "Enter" && !this.listboxTarget.querySelector(":focus")) {
         event.preventDefault();
-        if (event.shiftKey) {
-          this.prevMatch();
-        } else {
-          this.nextMatch();
-        }
+        event.shiftKey ? this.prevMatch() : this.nextMatch();
       }
     });
+  }
+
+  // Bind find bar DOM events — find bar is outside Stimulus scope.
+  _bindFindBar() {
+    const barInput = document.getElementById("find-bar-input");
+    const prevBtn = document.getElementById("find-bar-prev");
+    const nextBtn = document.getElementById("find-bar-next");
+    const closeBtn = document.getElementById("find-bar-close");
+
+    if (barInput) {
+      barInput.addEventListener("input", () => this.onFindBarInput());
+      barInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          event.shiftKey ? this.prevMatch() : this.nextMatch();
+        } else if (event.key === "Escape") {
+          this.dismissFindBar();
+        }
+      });
+    }
+    if (prevBtn) prevBtn.addEventListener("click", () => this.prevMatch());
+    if (nextBtn) nextBtn.addEventListener("click", () => this.nextMatch());
+    if (closeBtn) closeBtn.addEventListener("click", () => this.dismissFindBar());
   }
 
   _reducedMotion() {
