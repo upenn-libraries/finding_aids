@@ -7,8 +7,7 @@ import Mark from "mark.js";
 // listbox, status callout, ARIA live region, and keyboard navigation
 // with on-demand section expansion.
 export default class extends Controller {
-  static targets = ["context", "searchInput", "listbox", "statusCallout", "liveRegion",
-                     "prevButton", "nextButton", "navHint"];
+  static targets = ["context", "searchInput", "listbox", "statusCallout", "liveRegion"];
   static values = { query: String };
 
   connect() {
@@ -27,7 +26,23 @@ export default class extends Controller {
     }
   }
 
-  // U3: Live in-page search triggered by input events. Debounced.
+  // U3: Find bar input — syncs top input value on typing.
+  onFindBarInput() {
+    const findInput = document.getElementById("find-bar-input");
+    if (this.hasSearchInputTarget && findInput) {
+      this.searchInputTarget.value = findInput.value;
+      this.searchInputTarget.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+  }
+
+  // Dismiss the find bar and clear all highlights.
+  dismissFindBar() {
+    if (this.hasSearchInputTarget) this.searchInputTarget.value = "";
+    const findInput = document.getElementById("find-bar-input");
+    if (findInput) findInput.value = "";
+    this._clear();
+    this._hideFindBar();
+  }
   onSearchInput() {
     clearTimeout(this._debounceTimer);
     this._debounceTimer = setTimeout(() => {
@@ -96,7 +111,7 @@ export default class extends Controller {
     this.sectionCounts.clear();
     this._renderListbox();
     this._hideCallout();
-    this._toggleNavButtons(false);
+    this._hideFindBar();
     this._announce("");
   }
 
@@ -129,8 +144,8 @@ export default class extends Controller {
   _onDone(counter) {
     this._renderListbox();
     const hasMatches = counter > 0;
-    this._toggleNavButtons(hasMatches);
     if (hasMatches) {
+      this._showFindBar();
       const sectionCount = this.sectionCounts.size;
       this._showCallout(
         `${counter} match${counter === 1 ? "" : "es"} in ${sectionCount} section${sectionCount === 1 ? "" : "s"}`
@@ -241,8 +256,8 @@ export default class extends Controller {
     mark.classList.add("search-highlight--active");
     this._focusMark(mark);
 
-    // Update nav hint with position
-    this._updateNavState();
+    // Update find bar counter with position
+    this._updateFindBarCounter();
 
     // Update ARIA live
     const total = this.markElements.length;
@@ -254,23 +269,30 @@ export default class extends Controller {
     this._announce(`Match ${this.activeIndex + 1} of ${total}${heading ? `: ${heading}` : ""}`);
   }
 
-  // Enable/disable nav buttons and show position hint.
-  _toggleNavButtons(visible) {
-    if (this.hasPrevButtonTarget && this.hasNextButtonTarget) {
-      this.prevButtonTarget.disabled = !visible;
-      this.nextButtonTarget.disabled = !visible;
+  _showFindBar() {
+    const bar = document.getElementById("search-find-bar");
+    const input = document.getElementById("find-bar-input");
+    if (!bar || !input) return;
+    bar.hidden = false;
+    if (this.hasSearchInputTarget) {
+      input.value = this.searchInputTarget.value;
     }
-    if (this.hasNavHintTarget) {
-      this.navHintTarget.style.display = visible ? "" : "none";
-    }
+    this._updateFindBarCounter();
   }
 
-  _updateNavState() {
+  _hideFindBar() {
+    const bar = document.getElementById("search-find-bar");
+    if (bar) bar.hidden = true;
+  }
+
+  _updateFindBarCounter() {
+    const counter = document.querySelector('[data-search-highlight-target="findBarCounter"]');
+    if (!counter) return;
     const total = this.markElements.length;
-    const pos = this.activeIndex + 1;
-    if (this.hasNavHintTarget) {
-      this.navHintTarget.textContent = `${pos} of ${total} \u2014 Enter/Shift+Enter or arrows to navigate`;
-    }
+    const pos = this.activeIndex >= 0 ? this.activeIndex + 1 : 0;
+    counter.textContent = pos > 0
+      ? `${pos} of ${total}`
+      : `${total} match${total === 1 ? "" : "es"}`;
   }
 
   // U5: Bind keyboard shortcuts on the search input.

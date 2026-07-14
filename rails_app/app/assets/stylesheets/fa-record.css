@@ -666,7 +666,21 @@ mark.search-highlight--active {
     color: var(--pl-color-fg-accent) !important;
 }
 
-/* In-page search listbox — absolute overlay, doesn't push page content */
+/* Fixed bottom find bar — Firefox Ctrl+F style */
+#search-find-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--pl-color-bg-default);
+    border-top: 1px solid var(--pl-color-fg-subtle);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#search-find-bar .form-control {
+    max-width: 320px;
+}
 .search-highlight-input-group {
     position: relative;
 }

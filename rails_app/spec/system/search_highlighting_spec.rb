@@ -44,11 +44,10 @@ describe 'Search highlighting on record pages' do
   describe 'in-page search (U3)' do
     before { visit solr_document_path(document_id) }
 
-    it 'renders the search input, nav buttons, and hidden listbox' do
+    it 'renders the search input and hidden listbox' do
       expect(page).to have_field('Find in this guide', type: 'text')
-      expect(page).to have_css('button[aria-label="Previous match"][disabled]')
-      expect(page).to have_css('button[aria-label="Next match"][disabled]')
       expect(page).to have_css('#search-match-list[hidden]', visible: :hidden)
+      expect(page).to have_css('#search-find-bar[hidden]', visible: :hidden)
     end
 
     it 'shows match listbox when typing a term in the input' do
@@ -96,23 +95,21 @@ describe 'Search highlighting on record pages' do
       fill_in 'Find in this guide', with: 'collection'
       expect(page).to have_css('mark.search-highlight', wait: 3)
 
-      # Nav buttons should be enabled now
-      expect(page).to have_css('button[aria-label="Next match"]:not([disabled])')
+      # Find bar should be visible with counter
+      expect(page).to have_css('#search-find-bar:not([hidden])', wait: 2)
+      expect(page).to have_css('[data-search-highlight-target="findBarCounter"]')
 
-      input = find('#record-search-input')
-      input.send_keys(:enter)
-
+      find('#record-search-input').send_keys(:enter)
       expect(page).to have_css('mark.search-highlight--active', wait: 2)
-      expect(page).to have_text(/of \d+/, wait: 1)
+      # Counter should show position after navigation
+      expect(find('[data-search-highlight-target="findBarCounter"]').text).to match(/1 of \d+/i)
     end
 
     it 'opens collapsed details when navigating to a match inside one' do
       fill_in 'Find in this guide', with: 'collection'
-      # Wait for debounce + mark.js to finish
       expect(page).to have_css('mark.search-highlight', wait: 3)
+      expect(page).to have_css('#search-find-bar:not([hidden])', wait: 2)
 
-      # Click input to ensure focus, then press Enter to navigate
-      find('#record-search-input').click
       find('#record-search-input').send_keys(:enter)
       expect(page).to have_css('mark.search-highlight--active', wait: 2)
     end
