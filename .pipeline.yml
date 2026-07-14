@@ -61,7 +61,7 @@ include:
       needs_copy:
         - trivy_scan
         - rspec_app_test
-        - rubocop_app_test
+        - rubocop
   - component: $CI_SERVER_FQDN/devops/gitlab/components/deploy/deploy@~latest
     inputs:
       deploy_environment_url: "https://findingaids-staging.library.upenn.edu"
