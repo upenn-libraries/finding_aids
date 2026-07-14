@@ -4,67 +4,94 @@ require 'rails_helper'
 
 describe Aeon::Request do
   let(:request) { described_class.new(params) }
+  let(:params) { ActionController::Parameters.new(parameters) }
+  let(:repository) { Settings.aeon.locations.sample[:label] }
+  let(:parameters) { {} }
 
-  context 'with some sample params' do
-    let(:params) do
-      ActionController::Parameters.new(
-        { call_num: 'test-call-num',
-          repository: 'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts',
-          title: 'Some old thing',
-          request_type: 'Loan',
-          special_request: 'I need this NOW!',
-          notes: 'Thanks',
-          retrieval_date: '2025-12-25',
-          save_for_later: true,
-          return_url: 'http://www.findingaids.com/record1',
-          item: ['Month January: Page 6', 'Month December: Plate 40'],
-          item_barcode: %w[111111111 222222222] }
-      )
-    end
-
-    describe '#items' do
-      let(:expected_item_hash) do
-        { 'CallNumber_0' => 'test-call-num',
-          'ItemTitle_0' => 'Some old thing',
-          'ItemAuthor_0' => '',
-          'Site_0' => 'KISLAK',
-          'SubLocation_0' => 'Manuscripts',
-          'Location_0' => 'scmss',
-          'ItemVolume_0' => 'Month January [111111111]',
-          'ItemIssue_0' => 'Page 6',
-          'Request_0' => 0 }
-      end
-
-      it 'has an array of Items' do
-        expect(request.items.length).to eq 2
-        expect(request.items.first).to be_an Aeon::Item
-      end
-
-      it 'has Items with proper hash representation' do
-        expect(request.items.first).to respond_to :to_h
-        expect(request.items.first.to_h).to eq(expected_item_hash)
+  describe '.allowed?' do
+    context 'with a supported location' do
+      it 'returns true' do
+        expect(described_class.allowed?(repository_name: repository)).to be true
       end
     end
 
-    describe '#to_h' do
-      it 'has a hash representation with proper note fields' do
-        expect(request.to_h).to include(
-          { 'SpecialRequest' => 'I need this NOW!',
-            'Notes' => 'Thanks' }
+    context 'with an unsupported location' do
+      let(:repository) { "Bob's VHS Archive" }
+
+      it 'returns false' do
+        expect(described_class.allowed?(repository_name: repository)).to be false
+      end
+    end
+  end
+
+  describe '.new' do
+    context 'with an unsupported location' do
+      let(:parameters) { { repository: "Bob's VHS Archive" } }
+
+      it 'raises an exception' do
+        expect { request }.to raise_error(described_class::InvalidRequestError)
+      end
+    end
+
+    context 'with a supported location' do
+      let(:parameters) { { repository: repository } }
+
+      it 'raises an exception' do
+        expect { request }.not_to raise_error
+      end
+    end
+  end
+
+  describe '#items' do
+    let(:parameters) do
+      { call_num: 'test-call-num',
+        repository: repository,
+        title: 'Some old thing',
+        request_type: 'Loan',
+        special_request: 'I need this NOW!',
+        notes: 'Thanks',
+        retrieval_date: '2025-12-25',
+        save_for_later: true,
+        return_url: 'http://www.findingaids.com/record1',
+        item: ['Month January: Page 6', 'Month December: Plate 40'],
+        item_barcode: %w[111111111 222222222] }
+    end
+
+    let(:expected_item_metadata) do
+      { 'CallNumber_0' => 'test-call-num',
+        'ItemTitle_0' => 'Some old thing',
+        'ItemVolume_0' => 'Month January [111111111]',
+        'ItemIssue_0' => 'Page 6',
+        'Request_0' => 0 }
+    end
+
+    it 'has an array of Items' do
+      expect(request.items.length).to eq 2
+    end
+
+    it 'has Items with proper hash representation' do
+      expect(request.items.first.to_h).to include(expected_item_metadata)
+    end
+  end
+
+  describe '#fulfillment_fields' do
+    let(:parameters) { { repository: repository, request_type: request_type, retrieval_date: '2026-12-25' } }
+
+    context 'with an in-person access request' do
+      let(:request_type) { described_class::VISIT_REQUEST }
+
+      it 'includes a scheduled date field' do
+        expect(request.fulfillment_fields).to eq(
+          { 'RequestType' => request_type, 'ScheduledDate' => '12/25/2026' }
         )
       end
-
-      it 'has a hash representation with proper fulfillment fields' do
-        expect(request.to_h).to include(
-          { 'UserReview' => 'No',
-            'ScheduledDate' => '12/25/2025' }
-        )
-      end
     end
 
-    describe '#prepare' do
-      it 'has expected request representation as a hash' do
-        expect(request.prepared[:body]).to be_a Hash
+    context 'with a scan (reprographic) request' do
+      let(:request_type) { described_class::SCAN_REQUEST }
+
+      it 'includes only the request type field' do
+        expect(request.fulfillment_fields).to eq({ 'RequestType' => request_type })
       end
     end
   end
