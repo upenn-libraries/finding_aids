@@ -660,6 +660,36 @@ mark.search-highlight {
     outline: 2px var(--pl-color-bg-attention-emphasis) solid;
 }
 
+/* In-page search listbox (U3) */
+#search-match-list {
+    background: var(--pl-color-bg-default);
+    border: 1px solid var(--pl-color-fg-subtle);
+    border-radius: var(--pl-border-radius-subtle);
+    padding: var(--pl-space-xs);
+    max-height: 320px;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+}
+
+#search-match-list li[role="option"] {
+    padding: var(--pl-space-xs) var(--pl-space-s);
+    cursor: pointer;
+    border-radius: var(--pl-border-radius-subtle);
+    transition: background 0.1s;
+}
+
+#search-match-list li[role="option"]:hover,
+#search-match-list li[role="option"]:focus {
+    background: var(--pl-color-bg-subtle);
+}
+
+.search-highlight--active {
+    background: var(--pl-color-bg-accent) !important;
+    color: var(--pl-color-fg-on-emphasis) !important;
+    outline-color: var(--pl-color-bg-accent) !important;
+}
+
 .pl-callout {
     padding: var(--pl-space-m) var(--pl-space-l);
     margin-bottom: var(--pl-space-l);

@@ -40,4 +40,41 @@ describe 'Search highlighting on record pages' do
       end
     end
   end
+
+  describe 'in-page search (U3)' do
+    before { visit solr_document_path(document_id) }
+
+    it 'renders the search input and hidden listbox' do
+      expect(page).to have_field('Find in this guide', type: 'text')
+      expect(page).to have_css('#search-match-list[hidden]', visible: :hidden)
+    end
+
+    it 'shows match listbox when typing a term in the input' do
+      fill_in 'Find in this guide', with: 'collection'
+
+      expect(page).to have_css('#search-match-list:not([hidden])', wait: 3)
+      expect(page).to have_css('mark.search-highlight', wait: 2)
+      within '#search-match-list' do
+        expect(page).to have_css('li[role="option"]', minimum: 1)
+      end
+    end
+
+    it 'hides listbox and removes marks when input is cleared' do
+      fill_in 'Find in this guide', with: 'collection'
+      expect(page).to have_css('#search-match-list:not([hidden])', wait: 3)
+
+      # Clear via JS to ensure input event fires
+      page.execute_script("document.getElementById('record-search-input').value = ''")
+      page.execute_script("document.getElementById('record-search-input').dispatchEvent(new Event('input', { bubbles: true }))")
+      expect(page).to have_no_css('#search-match-list:not([hidden])', wait: 3)
+      expect(page).to have_no_css('mark.search-highlight')
+    end
+
+    it 'shows no listbox entries when term has no matches' do
+      fill_in 'Find in this guide', with: 'xyznonexistent'
+
+      expect(page).to have_css('#search-match-list[hidden]', visible: :hidden, wait: 3)
+      expect(page).to have_no_css('mark.search-highlight')
+    end
+  end
 end

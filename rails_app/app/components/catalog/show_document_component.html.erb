@@ -38,6 +38,26 @@
     <nav class="faa-toc" aria-label="Table of contents"></nav>
     <div class="faa-guide-content" data-controller="search-highlight" data-search-highlight-target="context"
          data-search-highlight-query-value="<%= ERB::Util.html_escape(helpers.params[:q].to_s) %>">
+
+      <%# In-page search input + match-summary listbox (U3) %>
+      <div class="pl-margin-b-l" data-search-highlight-target="searchContainer">
+        <label for="record-search-input" class="faa-small-name">Find in this guide</label>
+        <div class="pl-flex pl-gap-s">
+          <input type="text" id="record-search-input"
+                 class="form-control"
+                 data-search-highlight-target="searchInput"
+                 data-action="input->search-highlight#onSearchInput change->search-highlight#onSearchInput"
+                 placeholder="Search within this record&hellip;"
+                 aria-controls="search-match-list">
+        </div>
+        <div id="search-match-list"
+             class="pl-margin-t-xs"
+             role="listbox"
+             aria-label="Search matches"
+             data-search-highlight-target="listbox"
+             hidden></div>
+      </div>
+
       <div id="description-sections" class="pl-margin-b-2xl">
         <div class="faa-section-header">
           <div>
