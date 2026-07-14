@@ -30,6 +30,8 @@ export default class extends Controller {
     if (!term) return;
 
     this.instance.mark(term, {
+      element: "mark",
+      className: "search-highlight",
       separateWordSearch: true,
       accuracy: "partially",
       diacritics: true,

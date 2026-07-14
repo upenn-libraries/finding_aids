@@ -6,6 +6,16 @@ module ApplicationHelper
   # @see https://designsystem.library.upenn.edu/patterns/page-title/
   PAGE_TITLE_SEPARATOR = ' · '
 
+  # Override Blacklight's link_to_document to preserve the search query (q param)
+  # in record page URLs, enabling arrival highlighting on show pages.
+  # When params[:q] is present, merges it into the URL before link generation.
+  def link_to_document(doc, field_or_opts = nil, opts = { counter: nil })
+    label, link_to_opts = resolve_link_to_document_args(doc, field_or_opts, opts)
+    url = search_state.url_for_document(doc)
+    url = url.merge(q: params[:q]) if params[:q].present?
+    link_to(label, url, document_link_params(doc, link_to_opts))
+  end
+
   # @return [Boolean]
   def render_clarity_script?
     Settings.ms_clarity&.id.present?
@@ -52,6 +62,24 @@ module ApplicationHelper
       options[:value].map do |item|
         concat content_tag(:li, item)
       end
+    end
+  end
+
+  private
+
+  # Unpacks Blacklight's overloaded link_to_document signature:
+  #   link_to_document(doc, label, counter: N)
+  #   link_to_document(doc, opts, {counter: N})  (label from doc heading)
+  #   link_to_document(doc, counter: N)          (label from doc heading)
+  # Returns [label, link_to_options_hash].
+  def resolve_link_to_document_args(doc, field_or_opts, opts)
+    case field_or_opts
+    when NilClass
+      [document_presenter(doc).heading, opts]
+    when Hash
+      [document_presenter(doc).heading, field_or_opts]
+    else
+      [field_or_opts, opts]
     end
   end
 end
