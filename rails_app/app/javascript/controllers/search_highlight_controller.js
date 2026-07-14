@@ -27,12 +27,7 @@ export default class extends Controller {
     this.instance.mark(term, {
       element: "mark",
       className: "search-highlight",
-      separateWordSearch: true,
-      accuracy: "partially",
-      diacritics: true,
-      caseSensitive: false,
       each: (node) => this._collect(node),
-      filter: () => true,
       noMatch: () => this._hideCallout(),
       done: (counter) => this._onDone(counter, term)
     });
