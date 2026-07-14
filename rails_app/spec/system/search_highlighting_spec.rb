@@ -44,8 +44,10 @@ describe 'Search highlighting on record pages' do
   describe 'in-page search (U3)' do
     before { visit solr_document_path(document_id) }
 
-    it 'renders the search input and hidden listbox' do
+    it 'renders the search input, nav buttons, and hidden listbox' do
       expect(page).to have_field('Find in this guide', type: 'text')
+      expect(page).to have_css('button[aria-label="Previous match"][disabled]')
+      expect(page).to have_css('button[aria-label="Next match"][disabled]')
       expect(page).to have_css('#search-match-list[hidden]', visible: :hidden)
     end
 
@@ -91,15 +93,17 @@ describe 'Search highlighting on record pages' do
     before { visit solr_document_path(document_id) }
 
     it 'navigates between matches with Enter' do
-      expect(page).to have_css('[data-controller="search-highlight"]')
       fill_in 'Find in this guide', with: 'collection'
       expect(page).to have_css('mark.search-highlight', wait: 3)
+
+      # Nav buttons should be enabled now
+      expect(page).to have_css('button[aria-label="Next match"]:not([disabled])')
 
       input = find('#record-search-input')
       input.send_keys(:enter)
 
-      # First match should have active class and focus
       expect(page).to have_css('mark.search-highlight--active', wait: 2)
+      expect(page).to have_text(/of \d+/, wait: 1)
     end
 
     it 'opens collapsed details when navigating to a match inside one' do

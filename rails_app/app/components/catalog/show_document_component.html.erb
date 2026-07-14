@@ -40,22 +40,39 @@
          data-search-highlight-query-value="<%= ERB::Util.html_escape(helpers.params[:q].to_s) %>">
 
       <%# In-page search input + match-summary listbox (U3) %>
-      <div class="pl-margin-b-l" data-search-highlight-target="searchContainer">
+      <div class="pl-margin-b-l">
         <label for="record-search-input" class="faa-small-name">Find in this guide</label>
-        <div class="pl-flex pl-gap-s">
-          <input type="text" id="record-search-input"
-                 class="form-control"
-                 data-search-highlight-target="searchInput"
-                 data-action="input->search-highlight#onSearchInput change->search-highlight#onSearchInput"
-                 placeholder="Search within this record&hellip;"
-                 aria-controls="search-match-list">
+        <div class="search-highlight-input-group">
+          <div class="pl-flex pl-gap-xs">
+            <input type="text" id="record-search-input"
+                   class="form-control"
+                   data-search-highlight-target="searchInput"
+                   data-action="input->search-highlight#onSearchInput change->search-highlight#onSearchInput"
+                   placeholder="Search within this record&hellip;"
+                   aria-controls="search-match-list"
+                   aria-describedby="search-nav-hint">
+            <button type="button" class="pl-button pl-button--ghost"
+                    data-action="click->search-highlight#prevMatch"
+                    aria-label="Previous match"
+                    data-search-highlight-target="prevButton"
+                    disabled>&#8593;</button>
+            <button type="button" class="pl-button pl-button--ghost"
+                    data-action="click->search-highlight#nextMatch"
+                    aria-label="Next match"
+                    data-search-highlight-target="nextButton"
+                    disabled>&#8595;</button>
+          </div>
+          <span id="search-nav-hint" class="faa-small-name pl-margin-t-2xs"
+                data-search-highlight-target="navHint"
+                style="display: none;">
+            Enter/Shift+Enter to navigate
+          </span>
+          <div id="search-match-list"
+               role="listbox"
+               aria-label="Search matches"
+               data-search-highlight-target="listbox"
+               hidden></div>
         </div>
-        <div id="search-match-list"
-             class="pl-margin-t-xs"
-             role="listbox"
-             aria-label="Search matches"
-             data-search-highlight-target="listbox"
-             hidden></div>
 
         <%# Match-status callout + ARIA live region (U4) %>
         <div class="pl-callout pl-margin-t-xs"

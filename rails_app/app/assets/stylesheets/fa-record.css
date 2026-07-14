@@ -654,14 +654,29 @@ a.pl-button {
 
 /* Highlight matched text from search */
 mark.search-highlight {
-    background: var(--pl-color-bg-attention-emphasis);
-    color: var(--pl-color-fg-on-emphasis);
+    background: var(--pl-color-bg-info);
+    color: var(--pl-color-fg-default);
     border-radius: var(--pl-border-radius-subtle);
-    outline: 2px var(--pl-color-bg-attention-emphasis) solid;
+    padding-inline: 0.125em;
 }
 
-/* In-page search listbox (U3) */
+/* Active match during keyboard navigation */
+mark.search-highlight--active {
+    background: var(--pl-color-bg-accent) !important;
+    color: var(--pl-color-fg-accent) !important;
+}
+
+/* In-page search listbox — absolute overlay, doesn't push page content */
+.search-highlight-input-group {
+    position: relative;
+}
+
 #search-match-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
     background: var(--pl-color-bg-default);
     border: 1px solid var(--pl-color-fg-subtle);
     border-radius: var(--pl-border-radius-subtle);
@@ -669,7 +684,8 @@ mark.search-highlight {
     max-height: 320px;
     overflow-y: auto;
     list-style: none;
-    margin: 0;
+    margin: var(--pl-space-2xs) 0 0 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 #search-match-list li[role="option"] {
@@ -682,12 +698,6 @@ mark.search-highlight {
 #search-match-list li[role="option"]:hover,
 #search-match-list li[role="option"]:focus {
     background: var(--pl-color-bg-subtle);
-}
-
-.search-highlight--active {
-    background: var(--pl-color-bg-accent) !important;
-    color: var(--pl-color-fg-on-emphasis) !important;
-    outline-color: var(--pl-color-bg-accent) !important;
 }
 
 /* Focus indicator on marked elements per Penn Libraries DS pattern */

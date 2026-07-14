@@ -7,7 +7,8 @@ import Mark from "mark.js";
 // listbox, status callout, ARIA live region, and keyboard navigation
 // with on-demand section expansion.
 export default class extends Controller {
-  static targets = ["context", "searchInput", "listbox", "statusCallout", "liveRegion"];
+  static targets = ["context", "searchInput", "listbox", "statusCallout", "liveRegion",
+                     "prevButton", "nextButton", "navHint"];
   static values = { query: String };
 
   connect() {
@@ -95,6 +96,7 @@ export default class extends Controller {
     this.sectionCounts.clear();
     this._renderListbox();
     this._hideCallout();
+    this._toggleNavButtons(false);
     this._announce("");
   }
 
@@ -126,15 +128,15 @@ export default class extends Controller {
   // U4: Match complete. Update callout, ARIA live, listbox.
   _onDone(counter) {
     this._renderListbox();
-    if (counter > 0) {
+    const hasMatches = counter > 0;
+    this._toggleNavButtons(hasMatches);
+    if (hasMatches) {
       const sectionCount = this.sectionCounts.size;
       this._showCallout(
         `${counter} match${counter === 1 ? "" : "es"} in ${sectionCount} section${sectionCount === 1 ? "" : "s"}`
       );
       this._announce(`${counter} matches found`);
     } else {
-      // This branch should be unreachable since _onNoMatch handles zero-count,
-      // but guard defensively.
       this._onNoMatch(this._searchTerm || "");
     }
   }
@@ -227,7 +229,7 @@ export default class extends Controller {
     mark.focus();
   }
 
-  // U5: Navigate to the current activeIndex and update UI state.
+  // U5: Navigate to current activeIndex and update UI.
   _navigateCurrent() {
     if (this.activeIndex < 0 || this.activeIndex >= this.markElements.length) return;
 
@@ -239,6 +241,9 @@ export default class extends Controller {
     mark.classList.add("search-highlight--active");
     this._focusMark(mark);
 
+    // Update nav hint with position
+    this._updateNavState();
+
     // Update ARIA live
     const total = this.markElements.length;
     const section = mark.closest("details") ||
@@ -247,6 +252,25 @@ export default class extends Controller {
                     mark.closest("h4");
     const heading = section?.querySelector("summary, h2, h3, h4")?.textContent?.trim() || "";
     this._announce(`Match ${this.activeIndex + 1} of ${total}${heading ? `: ${heading}` : ""}`);
+  }
+
+  // Enable/disable nav buttons and show position hint.
+  _toggleNavButtons(visible) {
+    if (this.hasPrevButtonTarget && this.hasNextButtonTarget) {
+      this.prevButtonTarget.disabled = !visible;
+      this.nextButtonTarget.disabled = !visible;
+    }
+    if (this.hasNavHintTarget) {
+      this.navHintTarget.style.display = visible ? "" : "none";
+    }
+  }
+
+  _updateNavState() {
+    const total = this.markElements.length;
+    const pos = this.activeIndex + 1;
+    if (this.hasNavHintTarget) {
+      this.navHintTarget.textContent = `${pos} of ${total} \u2014 Enter/Shift+Enter or arrows to navigate`;
+    }
   }
 
   // U5: Bind keyboard shortcuts on the search input.
