@@ -46,6 +46,8 @@ export default class extends Controller {
     });
     if (opened.size > 0) {
       this._announce(`Expanded ${opened.size} section${opened.size === 1 ? "" : "s"}`);
+    } else {
+      this._announce("All matching sections are already open");
     }
     this.expandButtonTarget.hidden = true;
   }
@@ -59,7 +61,9 @@ export default class extends Controller {
   _collect(node) {
     const section = node.closest("details") ||
                     node.closest("h2") || node.closest("h3") || node.closest("h4");
-    const heading = section?.querySelector("summary, h2, h3, h4")?.textContent?.trim() || "Other";
+    const heading = section?.querySelector("summary")?.textContent?.trim() ||
+                    section?.textContent?.trim() ||
+                    "Other";
     this.sectionCounts.set(heading, (this.sectionCounts.get(heading) || 0) + 1);
   }
 
