@@ -39,31 +39,20 @@
     <div class="faa-guide-content" data-controller="search-highlight" data-search-highlight-target="context"
          data-search-highlight-query-value="<%= ERB::Util.html_escape(helpers.params[:q].to_s) %>">
 
-      <%# In-page search input + match-summary listbox (U3) %>
-      <div class="pl-margin-b-l">
-        <label for="record-search-input" class="faa-small-name">Find in this guide</label>
-        <div class="search-highlight-input-group">
-          <input type="text" id="record-search-input"
-                 class="form-control"
-                 data-search-highlight-target="searchInput"
-                 data-action="input->search-highlight#onSearchInput change->search-highlight#onSearchInput"
-                 placeholder="Search within this record&hellip;"
-                 aria-controls="search-match-list">
-          <div id="search-match-list"
-               role="listbox"
-               aria-label="Search matches"
-               data-search-highlight-target="listbox"
-               hidden></div>
-        </div>
-
-        <%# Match-status callout + ARIA live region (U4) %>
-        <div class="pl-callout pl-margin-t-xs"
-             data-search-highlight-target="statusCallout"
-             role="status" hidden></div>
-        <div class="sr-only"
-             data-search-highlight-target="liveRegion"
-             aria-live="polite"></div>
+      <%# Search highlight status — appears when arrival highlighting finds matches %>
+      <div class="pl-callout pl-margin-b-l"
+           data-search-highlight-target="statusCallout"
+           role="status" hidden>
+        <span data-search-highlight-target="statusText"></span>
+        <button type="button" class="pl-button pl-button--ghost pl-margin-l-xs"
+                data-action="click->search-highlight#expandMatches"
+                data-search-highlight-target="expandButton" hidden>
+          Expand matching sections
+        </button>
       </div>
+      <div class="sr-only"
+           data-search-highlight-target="liveRegion"
+           aria-live="polite"></div>
 
       <div id="description-sections" class="pl-margin-b-2xl">
         <div class="faa-section-header">
@@ -108,26 +97,5 @@
         <%= render ShowMetadataFieldsComponent.new(fields: contact, dl_class: 'pl-dl pl-margin-t-l') %>
       </section>
     </div>
-  </div>
-</div>
-
-<%# Fixed bottom find bar (Firefox Ctrl+F style) — appears when results exist %>
-<div id="search-find-bar"
-     class="pl-padding-s"
-     role="search"
-     aria-label="Find in page"
-     hidden>
-  <div class="pl-flex pl-align-center pl-gap-s">
-    <input type="text" id="find-bar-input"
-           class="form-control"
-           placeholder="Find in this guide&hellip;"
-           aria-label="Find in page">
-    <span id="find-bar-counter" class="faa-small-name" style="white-space: nowrap;"></span>
-    <button type="button" id="find-bar-prev" class="pl-button pl-button--ghost"
-            aria-label="Previous match">&#8593;</button>
-    <button type="button" id="find-bar-next" class="pl-button pl-button--ghost"
-            aria-label="Next match">&#8595;</button>
-    <button type="button" id="find-bar-close" class="pl-button pl-button--ghost"
-            aria-label="Close find bar">&times;</button>
   </div>
 </div>

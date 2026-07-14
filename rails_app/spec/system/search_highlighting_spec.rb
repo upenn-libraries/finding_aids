@@ -17,101 +17,43 @@ describe 'Search highlighting on record pages' do
     solr.commit
   end
 
-  describe 'arrival highlighting (U2)' do
+  describe 'arrival highlighting' do
     context 'when visiting a record page with a query param' do
-      it 'highlights the query term on the page' do
+      it 'highlights the query term and shows a match-count callout' do
         visit solr_document_path(document_id, q: 'collection')
 
-        # Verify data attribute is set
-        el = find('.faa-guide-content')
-        expect(el['data-search-highlight-query-value']).to eq('collection')
-
-        # mark.js should have wrapped matches in <mark> elements
         expect(page).to have_css('mark.search-highlight', wait: 3)
+
+        # Callout should show match count
+        expect(page).to have_css('[data-search-highlight-target="statusCallout"]:not([hidden])', wait: 2)
+        expect(find('[data-search-highlight-target="statusText"]').text).to match(/matches? for "collection"/)
+
+        # Expand button should be visible
+        expect(page).to have_css('[data-search-highlight-target="expandButton"]:not([hidden])')
+      end
+
+      it 'expands matching details sections when the expand button is clicked' do
+        visit solr_document_path(document_id, q: 'collection')
+        expect(page).to have_css('mark.search-highlight', wait: 3)
+
+        click_button 'Expand matching sections'
+
+        # All <details> containing marks should be open
+        marks_inside_closed_details = page.evaluate_script(<<~JS)
+          [...document.querySelectorAll('mark.search-highlight')]
+            .filter(m => { const d = m.closest('details'); return d && !d.open; }).length
+        JS
+        expect(marks_inside_closed_details).to eq(0)
       end
     end
 
     context 'when visiting a record page without a query param' do
-      it 'mounts the controller without highlighting' do
+      it 'does not highlight or show the callout' do
         visit solr_document_path(document_id)
 
-        expect(page).to have_css('.faa-guide-content[data-controller="search-highlight"]')
         expect(page).to have_no_css('mark.search-highlight')
+        expect(page).to have_css('[data-search-highlight-target="statusCallout"][hidden]', visible: :hidden)
       end
-    end
-  end
-
-  describe 'in-page search (U3)' do
-    before { visit solr_document_path(document_id) }
-
-    it 'renders the search input and hidden listbox' do
-      expect(page).to have_field('Find in this guide', type: 'text')
-      expect(page).to have_css('#search-match-list[hidden]', visible: :hidden)
-      expect(page).to have_css('#search-find-bar[hidden]', visible: :hidden)
-    end
-
-    it 'shows match listbox when typing a term in the input' do
-      fill_in 'Find in this guide', with: 'collection'
-
-      expect(page).to have_css('#search-match-list:not([hidden])', wait: 3)
-      expect(page).to have_css('mark.search-highlight', wait: 2)
-      within '#search-match-list' do
-        expect(page).to have_css('li[role="option"]', minimum: 1)
-      end
-    end
-
-    it 'hides listbox and removes marks when input is cleared' do
-      fill_in 'Find in this guide', with: 'collection'
-      expect(page).to have_css('#search-match-list:not([hidden])', wait: 3)
-
-      # Clear via JS to ensure input event fires
-      page.execute_script("document.getElementById('record-search-input').value = ''")
-      page.execute_script("document.getElementById('record-search-input').dispatchEvent(new Event('input', { bubbles: true }))")
-      expect(page).to have_no_css('#search-match-list:not([hidden])', wait: 3)
-      expect(page).to have_no_css('mark.search-highlight')
-    end
-
-    it 'shows no listbox entries when term has no matches' do
-      fill_in 'Find in this guide', with: 'xyznonexistent'
-
-      expect(page).to have_css('#search-match-list[hidden]', visible: :hidden, wait: 3)
-      expect(page).to have_no_css('mark.search-highlight')
-    end
-
-    it 'shows status callout with match count (U4)' do
-      fill_in 'Find in this guide', with: 'collection'
-
-      expect(page).to have_css('mark.search-highlight', wait: 3)
-      expect(page).to have_css('[data-search-highlight-target="statusCallout"]:not([hidden])', wait: 2)
-      callout = find('[data-search-highlight-target="statusCallout"]')
-      expect(callout.text).to match(/\d+ matches? in \d+ sections?/)
-    end
-  end
-
-  describe 'keyboard navigation (U5)' do
-    before { visit solr_document_path(document_id) }
-
-    it 'navigates between matches with Enter' do
-      fill_in 'Find in this guide', with: 'collection'
-      expect(page).to have_css('mark.search-highlight', wait: 3)
-
-      # Find bar should be visible with counter
-      expect(page).to have_css('#search-find-bar:not([hidden])', wait: 2)
-      expect(page).to have_css('#find-bar-counter')
-
-      find('#record-search-input').send_keys(:enter)
-      expect(page).to have_css('mark.search-highlight--active', wait: 2)
-      # Counter should show position after navigation
-      expect(find('#find-bar-counter').text).to match(/1 of \d+/i)
-    end
-
-    it 'opens collapsed details when navigating to a match inside one' do
-      fill_in 'Find in this guide', with: 'collection'
-      expect(page).to have_css('mark.search-highlight', wait: 3)
-      expect(page).to have_css('#search-find-bar:not([hidden])', wait: 2)
-
-      find('#record-search-input').send_keys(:enter)
-      expect(page).to have_css('mark.search-highlight--active', wait: 2)
     end
   end
 end
