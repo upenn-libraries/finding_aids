@@ -10,7 +10,7 @@ module Aeon
                     WebRequestForm: 'DefaultRequest',
                     SubmitButton: 'Submit Request' }.freeze
 
-    attr_reader :items, :repository
+    attr_reader :items, :repository, :params
 
     # Is requesting enabled for this repository?
     # @param repository_name [String]
@@ -28,7 +28,7 @@ module Aeon
 
     # @return [Array[Aeon::Item]]
     def build_items
-      @params['item'].map.with_index do |item, i|
+      params['item'].map.with_index do |item, i|
         volume, issue = item.split(':').map(&:strip)
         volume += " [#{barcode(i)}]" if barcode(i).present?
         container_info = { volume: volume, issue: issue }
@@ -47,53 +47,61 @@ module Aeon
 
     # @return [Hash{String (frozen)->String}]
     def note_fields
-      { 'SpecialRequest' => @params[:special_request].to_s,
-        'Notes' => @params[:notes].to_s }
+      { 'SpecialRequest' => params[:special_request].to_s,
+        'Notes' => params[:notes].to_s }
+    end
+
+    def settings_fields
+      { 'UserReview' => params[:save_for_later] == '1' ? 'Yes' : 'No',
+        'ReturnLinkUrl' => params[:return_url],
+        'ReturnLinkSystemName' => Settings.aeon.system_name }
     end
 
     # @return [Hash{String (frozen)->String}]
     def fulfillment_fields
-      if request_type == 'Loan'
+      if params[:request_type] == 'Loan'
         { 'RequestType' => 'Loan',
-          'UserReview' => @params[:save_for_later] == '1' ? 'Yes' : 'No',
           'ScheduledDate' => formatted_retrieval_date }
       else
-        { 'UserReview' => @params[:save_for_later] == '1' ? 'Yes' : 'No',
-          'RequestType' => 'Copy'}
+        { 'RequestType' => 'Copy' }
       end
     end
 
     # @return [String]
     def formatted_retrieval_date
-      Date.parse(@params['retrieval_date']).strftime('%m/%d/%Y')
+      Date.parse(params['retrieval_date']).strftime('%m/%d/%Y')
+    rescue StandardError => _e
+      Honeybadger.notify("Problem parsing retrieval date: #{e.message}")
+      nil
     end
 
     # @return [String]
     def call_number
-      @params[:call_num]
+      params[:call_num]
     end
 
     # @return [String]
     def title
-      @params[:title]
+      params[:title]
     end
 
     # @param index [Integer]
     # @return [String]
     def barcode(index)
-      @params[:item_barcode][index]
+      params[:item_barcode][index]
     end
 
     # @return [Hash]
     def to_h
       item_fields = {}
-      @items.each do |i|
+      items.each do |i|
         i.to_h.each do |k, v|
           item_fields[k] = v
         end
       end
       BASE_PARAMS.merge(note_fields)
                  .merge(fulfillment_fields)
+                 .merge(settings_fields)
                  .merge(item_fields)
     end
 

@@ -11,10 +11,12 @@ describe Aeon::Request do
         { call_num: 'test-call-num',
           repository: 'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts',
           title: 'Some old thing',
+          request_type: 'Loan',
           special_request: 'I need this NOW!',
           notes: 'Thanks',
           retrieval_date: '2025-12-25',
           save_for_later: true,
+          return_url: 'http://www.findingaids.com/record1',
           item: ['Month January: Page 6', 'Month December: Plate 40'],
           item_barcode: %w[111111111 222222222] }
       )

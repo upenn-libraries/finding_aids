@@ -4,6 +4,7 @@ aeon:
   url: 'https://aeon.library.upenn.edu'
   ere_endpoint: 'https://aeon.library.upenn.edu/aeon/aeon.dll'
   system_id: PennFindingAidsSite
+  system_name: 'Penn Finding Aids site'
   locations:
     - label: 'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
       site: KISLAK
