@@ -56,6 +56,14 @@
              aria-label="Search matches"
              data-search-highlight-target="listbox"
              hidden></div>
+
+        <%# Match-status callout + ARIA live region (U4) %>
+        <div class="pl-callout pl-margin-t-xs"
+             data-search-highlight-target="statusCallout"
+             role="status" hidden></div>
+        <div class="sr-only"
+             data-search-highlight-target="liveRegion"
+             aria-live="polite"></div>
       </div>
 
       <div id="description-sections" class="pl-margin-b-2xl">

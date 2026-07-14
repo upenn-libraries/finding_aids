@@ -690,6 +690,19 @@ mark.search-highlight {
     outline-color: var(--pl-color-bg-accent) !important;
 }
 
+/* Focus indicator on marked elements per Penn Libraries DS pattern */
+mark.search-highlight:focus {
+    outline: none;
+    box-shadow: var(--pl-focus-box-shadow);
+}
+
+/* Reduced motion: disable smooth scrolling */
+@media (prefers-reduced-motion: reduce) {
+    .faa-guide-content * {
+        scroll-behavior: auto !important;
+    }
+}
+
 .pl-callout {
     padding: var(--pl-space-m) var(--pl-space-l);
     margin-bottom: var(--pl-space-l);

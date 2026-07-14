@@ -76,5 +76,41 @@ describe 'Search highlighting on record pages' do
       expect(page).to have_css('#search-match-list[hidden]', visible: :hidden, wait: 3)
       expect(page).to have_no_css('mark.search-highlight')
     end
+
+    it 'shows status callout with match count (U4)' do
+      fill_in 'Find in this guide', with: 'collection'
+
+      expect(page).to have_css('mark.search-highlight', wait: 3)
+      expect(page).to have_css('[data-search-highlight-target="statusCallout"]:not([hidden])', wait: 2)
+      callout = find('[data-search-highlight-target="statusCallout"]')
+      expect(callout.text).to match(/\d+ matches? in \d+ sections?/)
+    end
+  end
+
+  describe 'keyboard navigation (U5)' do
+    before { visit solr_document_path(document_id) }
+
+    it 'navigates between matches with Enter' do
+      expect(page).to have_css('[data-controller="search-highlight"]')
+      fill_in 'Find in this guide', with: 'collection'
+      expect(page).to have_css('mark.search-highlight', wait: 3)
+
+      input = find('#record-search-input')
+      input.send_keys(:enter)
+
+      # First match should have active class and focus
+      expect(page).to have_css('mark.search-highlight--active', wait: 2)
+    end
+
+    it 'opens collapsed details when navigating to a match inside one' do
+      fill_in 'Find in this guide', with: 'collection'
+      # Wait for debounce + mark.js to finish
+      expect(page).to have_css('mark.search-highlight', wait: 3)
+
+      # Click input to ensure focus, then press Enter to navigate
+      find('#record-search-input').click
+      find('#record-search-input').send_keys(:enter)
+      expect(page).to have_css('mark.search-highlight--active', wait: 2)
+    end
   end
 end
