@@ -9,7 +9,6 @@ include:
     ref: "sans-dind"
     file:
       - ".rspec.yml"
-      - ".rubocop.yml"
 
   - component: $CI_SERVER_FQDN/devops/gitlab/components/docker/stage_build@~latest
     inputs:
@@ -54,7 +53,7 @@ include:
         - "amend_manifest_production"
       stage: "test"
   
-  - component: $CI_SERVER_FQDN/devops/gitlab/components/tests/rubucop@~latest
+  - component: $CI_SERVER_FQDN/devops/gitlab/components/tests/rubocop@~latest
 
   - component: $CI_SERVER_FQDN/devops/gitlab/components/docker/stage_finalize@~latest
     inputs:
