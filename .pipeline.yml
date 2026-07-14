@@ -53,6 +53,8 @@ include:
       needs:
         - "amend_manifest_production"
       stage: "test"
+  
+  - component: $CI_SERVER_FQDN/devops/gitlab/components/tests/rubucop@~latest
 
   - component: $CI_SERVER_FQDN/devops/gitlab/components/docker/stage_finalize@~latest
     inputs:
@@ -61,7 +63,6 @@ include:
         - trivy_scan
         - rspec_app_test
         - rubocop_app_test
-
   - component: $CI_SERVER_FQDN/devops/gitlab/components/deploy/deploy@~latest
     inputs:
       deploy_environment_url: "https://findingaids-staging.library.upenn.edu"
@@ -78,11 +79,9 @@ include:
       valid_principals: "${VALID_PRINCIPALS}"
       vault_auth_role: "${VAULT_AUTH_ROLE}"
       vault_ssh_client_role: "${VAULT_SSH_CLIENT_ROLE}"
-
   - component: gitlab.library.upenn.edu/devops/gitlab/components/general/vault_jwt_auth@~latest
     inputs:
       vault_auth_role: "${VAULT_AUTH_ROLE}"
-
   - component: gitlab.library.upenn.edu/devops/gitlab/components/general/install_hashicorp_vault@~latest
 
 workflow:
@@ -202,23 +201,6 @@ rspec_app_test:
         - rails_app/spec/**/**.rb
   allow_failure: true
   timeout: 15m
-  tags:
-    - build
-
-rubocop_app_test:
-  stage: test
-  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-development
-  needs:
-    - amend_manifest_development
-  extends:
-    - .rubocop
-  before_script:
-    - cd rails_app/
-  rules:
-    - if: $DISABLE_RUBOCOP == "true"
-      when: never
-    - exists:
-        - rails_app/.rubocop.yml
   tags:
     - build
 
