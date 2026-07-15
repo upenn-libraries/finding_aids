@@ -52,8 +52,6 @@ include:
       needs:
         - "amend_manifest_production"
       stage: "test"
-  
-  - component: $CI_SERVER_FQDN/devops/gitlab/components/tests/rubocop@~latest
 
   - component: $CI_SERVER_FQDN/devops/gitlab/components/docker/stage_finalize@~latest
     inputs:
@@ -62,6 +60,8 @@ include:
         - trivy_scan
         - rspec_app_test
         - rubocop
+  - component: $CI_SERVER_FQDN/devops/gitlab/components/tests/rubocop@~latest
+
   - component: $CI_SERVER_FQDN/devops/gitlab/components/deploy/deploy@~latest
     inputs:
       deploy_environment_url: "https://findingaids-staging.library.upenn.edu"
