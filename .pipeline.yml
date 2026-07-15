@@ -59,9 +59,10 @@ include:
       needs_copy:
         - trivy_scan
         - rspec_app_test
-        # - rubocop
+        - rubocop
   - component: $CI_SERVER_FQDN/devops/gitlab/components/tests/rubocop@~latest
-
+    inputs:
+      app_dir: "rails_app"
   - component: $CI_SERVER_FQDN/devops/gitlab/components/deploy/deploy@~latest
     inputs:
       deploy_environment_url: "https://findingaids-staging.library.upenn.edu"
