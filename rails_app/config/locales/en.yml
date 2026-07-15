@@ -56,12 +56,19 @@ en:
       Search collection guides from archives, libraries, and historical
       societies across the Philadelphia area, all in one place. Each guide
       shows you what a collection holds and where to see it.
+    headings:
+      overview: "What you'll find here"
+      contribute: 'Share your finding aids with us'
+      update: 'Update your finding aids'
+      add: 'Add your finding aids'
+      thanks: 'Special thanks'
   footer:
     archives:
       heading: 'Philadelphia Area Archives'
       home: 'Home'
       about: 'About'
       pacscl: 'PACSCL'
+      statement: 'Statement on Archival Description and Harmful Language'
     admin:
       heading: 'Administration'
       link: 'Site administration'

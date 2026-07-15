@@ -28,6 +28,10 @@ RSpec.describe FooterComponent, type: :component do
     expect(component).to have_link I18n.t('footer.archives.pacscl')
   end
 
+  it 'renders the harmful language statement link' do
+    expect(component).to have_link I18n.t('footer.archives.statement'), href: I18n.t('urls.statement')
+  end
+
   context 'when not logged in' do
     it 'does not show the admin link' do
       expect(component).to have_no_link I18n.t('footer.admin.link')
