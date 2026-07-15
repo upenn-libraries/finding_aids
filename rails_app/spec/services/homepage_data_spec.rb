@@ -5,6 +5,8 @@ require 'rails_helper'
 describe HomepageData do
   let(:cache) { Geocoding::Cache.new }
   let(:geo_service) { Geocoding::Service.new(cache: cache) }
+  let(:haverford_coords) { { lat: 40.0087, lng: -75.3068 } }
+  let(:hsp_coords) { { lat: 39.9496, lng: -75.1504 } }
   let(:facet_data) do
     [
       { name: 'Haverford College Quaker & Special Collections', count: 2100 },
@@ -59,20 +61,20 @@ describe HomepageData do
     include_context 'with solr stubs'
 
     it 'builds Repository structs' do
-      cache.store('Haverford College Quaker & Special Collections', lat: 40.0087, lng: -75.3068)
-      cache.store('Historical Society of Pennsylvania', lat: 39.9496, lng: -75.1504)
+      cache.store('Haverford College Quaker & Special Collections', **haverford_coords)
+      cache.store('Historical Society of Pennsylvania', **hsp_coords)
 
       repos = described_class.repositories
       expect(repos).to all(be_a(HomepageData::Repository))
     end
 
     it 'reads coordinates from cache' do
-      cache.store('Haverford College Quaker & Special Collections', lat: 40.0087, lng: -75.3068)
+      cache.store('Haverford College Quaker & Special Collections', **haverford_coords)
 
       repos = described_class.repositories
       haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
-      expect(haverford.lat).to eq(40.0087)
-      expect(haverford.lng).to eq(-75.3068)
+      expect(haverford.lat).to eq(haverford_coords[:lat])
+      expect(haverford.lng).to eq(haverford_coords[:lng])
     end
 
     it 'generates slugs' do
@@ -88,7 +90,7 @@ describe HomepageData do
     end
 
     it 'returns nil coordinates when cache has FAILED entry' do
-      cache.store('Haverford College Quaker & Special Collections', failed: true)
+      cache.store_failure('Haverford College Quaker & Special Collections')
 
       repos = described_class.repositories
       haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }

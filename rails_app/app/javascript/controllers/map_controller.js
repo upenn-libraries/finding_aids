@@ -1,8 +1,14 @@
 import { Controller } from "@hotwired/stimulus"
 
+const DEFAULT_CENTER = [39.98, -75.19]
+const DEFAULT_ZOOM = 11
 
 // Leaflet map controller for the regional-partnership band.
 // Repository data is fetched from /api/map_data (cached server-side).
+//
+// An AbortController is wired to disconnect() so in-flight fetch requests
+// are cancelled when the Stimulus controller is torn down — for example
+// during a Turbo back-navigation away from the homepage.
 export default class extends Controller {
   connect() {
     if (typeof L === 'undefined') {
@@ -11,7 +17,7 @@ export default class extends Controller {
     }
     this.abortController = new AbortController()
     this._initMap()
-    this._addTileLayer()
+    this._loadTileLayer()
     this._loadMarkers()
   }
 
@@ -26,10 +32,10 @@ export default class extends Controller {
   _initMap() {
     this.map = L.map(this.element, {
       scrollWheelZoom: false
-    }).setView([39.98, -75.19], 11)
+    }).setView(DEFAULT_CENTER, DEFAULT_ZOOM)
   }
 
-  _addTileLayer() {
+  _loadTileLayer() {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

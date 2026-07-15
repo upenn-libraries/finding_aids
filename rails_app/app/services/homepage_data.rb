@@ -52,7 +52,9 @@ module HomepageData
     # @param name [String] repository name
     # @return [String] URL to filtered records page
     def records_url_for(name)
-      "/records?f%5Brepository_ssi%5D%5B%5D=#{CGI.escape(name)}"
+      Rails.application.routes.url_helpers.search_catalog_path(
+        f: { repository_ssi: [name] }
+      )
     end
 
     # @param path [Pathname]

@@ -6,22 +6,21 @@ namespace :geocode do
   desc 'Run geocoding refresh'
   task refresh: :environment do
     cache = Geocoding::Cache.new
-    cache.load
     service = Geocoding::Service.new(cache: cache)
 
-    updated = service.refresh!(RepositoryQueries.addresses) do |name, status, lat, lng|
+    updated = service.refresh!(RepositoryQueries.addresses) do |name, result|
       puts Rainbow('─' * 60).bright.black
       puts Rainbow("Processing: #{name}").bold.yellow
 
-      if status == :ok
-        puts Rainbow("  ✓ #{lat}, #{lng}").green
-      elsif status == :failed
+      if result.success?
+        puts Rainbow("  ✓ #{result.lat}, #{result.lng}").green
+      else
         puts Rainbow('  ✗ No results or API error').red
       end
     end
 
     if updated.positive?
-      puts Rainbow("\n✅ Cache updated and saved to #{Geocoding::Cache::CACHEFILE}\n").bold.green
+      puts Rainbow("\n✅ Cache updated and saved to #{cache.path}\n").bold.green
     else
       puts Rainbow("\n✓ No updates needed\n").bold.cyan
     end
