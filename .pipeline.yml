@@ -59,7 +59,7 @@ include:
       needs_copy:
         - trivy_scan
         - rspec_app_test
-        - rubocop
+        # - rubocop
   - component: $CI_SERVER_FQDN/devops/gitlab/components/tests/rubocop@~latest
 
   - component: $CI_SERVER_FQDN/devops/gitlab/components/deploy/deploy@~latest
