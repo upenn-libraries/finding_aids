@@ -16,13 +16,13 @@ module Ead
 
         attr_reader :node
 
-        # @param entry [Ead::Extraction::Inventory::Entry]
+        # @param node [Nokogiri::XML::Node]
         # @return [Nokogiri::XML::NodeSet]
         def self.nodes(node)
           node.xpath(NODES.map { |name| "./#{name}" }.join(' | '))
         end
 
-        # @param entry [Ead::Extraction::Inventory::Entry]
+        # @param node [Nokogiri::XML::Node]
         # @return [Array<Ead::Extraction::Inventory::Entry>]
         def self.build_entries(node)
           nodes(node).map { |n| new(n) }
