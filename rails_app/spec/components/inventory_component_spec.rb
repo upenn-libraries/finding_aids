@@ -144,11 +144,6 @@ RSpec.describe InventoryComponent, type: :component do
                                                 count: 2, visible: :all)
       end
 
-      it 'includes metadata in table row data attributes' do
-        css = 'tr.inventory-row[data-title="Subseries A"][data-dates=1909][data-container="Box 1, Folder 1"]'
-        expect(outer_entry_details).to have_css(css, visible: :all)
-      end
-
       it 'renders the Contents' do
         css = ' > div > table.table--responsive-small > tr.inventory-row > td[data-th="Contents"]'
         expect(outer_entry_details).to have_css(css, text: 'Subseries A', count: 1, visible: :all)
@@ -228,6 +223,14 @@ RSpec.describe InventoryComponent, type: :component do
     end
 
     context 'when an entry is requestable' do
+      it 'renders the request-count span' do
+        entry = entry_for('<c01 level="series"><did><unittitle>Files</unittitle></did></c01>', xpath: '//c01')
+
+        render_inline(described_class.new(entry: entry, index: 1, requestable: true))
+
+        expect(page).to have_css('span.fa-visit__section-count', visible: :all)
+      end
+
       it 'renders the select column' do
         entry = entry_for('<c01 level="series"><did><unittitle>Files</unittitle></did></c01>', xpath: '//c01')
 
@@ -235,6 +238,43 @@ RSpec.describe InventoryComponent, type: :component do
 
         expect(page).to have_css('th', text: 'Select', visible: :all)
         expect(page).to have_css('input.fa-visit__checkbox', visible: :all)
+      end
+
+      it 'includes metadata in td data attributes' do
+        entry = entry_for(<<~XML, xpath: '//c01')
+          <c01 level="series">
+            <did><unittitle>Series</unittitle></did>
+            <c02>
+              <did><unittitle>Subseries A</unittitle><unitdate>1909</unitdate>
+              <container type="Box">1</container>
+              <container type="Folder">1</container>
+              </did>
+            </c02>
+            <c02>
+              <did><unittitle>Subseries B</unittitle><unitdate type="bulk">1910-1919</unitdate>
+              <container type="Box">2</container>
+              <container type="Folder">1-10</container>
+              </did>
+            </c02>
+          </c01>
+        XML
+
+        render_inline(described_class.new(entry: entry, index: 1, requestable: true))
+
+        css = 'td[data-title="Subseries A"][data-dates=1909][data-container="Box 1, Folder 1"][data-th="Select"]'
+        expect(page).to have_css(css, visible: :all)
+      end
+
+      it 'renders visually hidden span' do
+        entry = entry_for('<c01 level="series"><did><unittitle>Files</unittitle></did></c01>', xpath: '//c01')
+
+        render_inline(described_class.new(entry: entry, index: 1, requestable: true))
+
+        expect(page).to have_css(
+          'td[data-th="Select"] span.visually-hidden',
+          text: I18n.t('show.sections.inventory.select_visually_hidden',
+                       title: entry.title_text), visible: false
+        )
       end
 
       it 'renders a nested details that spans 4 columns' do
@@ -272,6 +312,14 @@ RSpec.describe InventoryComponent, type: :component do
     end
 
     context 'when an entry is not requestable' do
+      it 'omits the request-count span' do
+        entry = entry_for('<c01 level="series"><did><unittitle>Files</unittitle></did></c01>', xpath: '//c01')
+
+        render_inline(described_class.new(entry: entry, index: 1, requestable: false))
+
+        expect(page).to have_no_css('span.fa-visit__section-count', visible: :all)
+      end
+
       it 'does not render the select column' do
         entry = entry_for(<<~XML, xpath: '//c01')
           <c01 level="series">

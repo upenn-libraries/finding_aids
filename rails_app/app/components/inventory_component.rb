@@ -5,6 +5,10 @@ class InventoryComponent < ViewComponent::Base
   NO_TITLE = '(No Title)'
   ONLINE_RESOURCE = 'View Online'
   PARENT_ID = 'series'
+  HEADING_OFFSET = 2
+  HEADING_MAX = 6
+  COLSPAN_MIN = 3
+  COLSPAN_MAX = 4
 
   # @param entry [Ead::Extraction::Inventory::Entry]
   # @param level [Integer]
@@ -45,9 +49,7 @@ class InventoryComponent < ViewComponent::Base
   # @param entry [Ead::Extraction::Inventory::Entry]
   # @return [Array<ActiveSupport::SafeBuffer>]
   def digital_archival_object_links(entry)
-    entry.digital_archival_objects.map do |dao|
-      link_to dao.title, dao.href, target: '_blank', rel: 'noopener'
-    end
+    entry.digital_objects.map { |dao| link_to dao.title, dao.href, target: '_blank', rel: 'noopener' }
   end
 
   # @return [ActiveSupport::SafeBuffer]
@@ -74,6 +76,26 @@ class InventoryComponent < ViewComponent::Base
   # @return [String]
   def heading_id
     "#{@parent_id}-#{@index}"
+  end
+
+  # @return [Symbol]
+  def heading_tag
+    heading_level = @level + HEADING_OFFSET
+    heading_level = [heading_level, HEADING_MAX].min
+    "h#{heading_level}".to_sym
+  end
+
+  # @return [ActiveSupport::SafeBuffer]
+  def heading
+    request_span = content_tag(:span, nil, class: 'fa-visit__section-count fa-small-name') if @requestable
+
+    content_tag(heading_tag, id: heading_id) { safe_join [details_title(@entry), request_span].compact_blank }
+  end
+
+  # @return [String]
+  def details_class
+    subseries_class = 'fa-guide__details--subseries' if @level > 1
+    ['fa-guide__details', subseries_class].join(' ')
   end
 
   # @return [Array<Ead::Extraction::Inventory::Entry>]
