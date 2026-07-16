@@ -104,8 +104,8 @@ module Ead
         end
 
         # @return [Array<Ead::Extraction::Inventory::DigitalObject>]
-        def digital_archival_objects
-          @digital_archival_objects ||= node.xpath('./did/dao | ./dao').filter_map do |dao|
+        def digital_objects
+          @digital_objects ||= node.xpath('./did/dao | ./dao').filter_map do |dao|
             href = dao.attr('href').to_s
             next unless DigitalObject.web_url?(href)
 
@@ -127,7 +127,7 @@ module Ead
 
         # @return [Boolean]
         def additional_contents?
-          descriptive_metadata_nodes.any? || identification_metadata_definitions.any? || digital_archival_objects.any?
+          descriptive_metadata_nodes.any? || identification_metadata_definitions.any? || digital_objects.any?
         end
 
         private

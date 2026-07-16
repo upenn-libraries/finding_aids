@@ -260,7 +260,7 @@ RSpec.describe Ead::Extraction::Inventory::Entry do
     end
   end
 
-  describe '#digital_archival_objects' do
+  describe '#digital_objects' do
     it 'includes daos with a web url' do
       entry = entry_for(<<~XML)
         <c02>
@@ -272,10 +272,10 @@ RSpec.describe Ead::Extraction::Inventory::Entry do
         </c02>
       XML
 
-      expect(entry.digital_archival_objects.first).to have_attributes(href: 'https://example.com/scan01.pdf',
-                                                                      title: 'Scan01')
-      expect(entry.digital_archival_objects.last).to have_attributes(href: 'https://example.com/scan02.pdf',
-                                                                     title: 'Scan02')
+      expect(entry.digital_objects.first).to have_attributes(href: 'https://example.com/scan01.pdf',
+                                                             title: 'Scan01')
+      expect(entry.digital_objects.last).to have_attributes(href: 'https://example.com/scan02.pdf',
+                                                            title: 'Scan02')
     end
 
     it 'excludes daos without http hrefs' do
@@ -289,7 +289,7 @@ RSpec.describe Ead::Extraction::Inventory::Entry do
         </c02>
       XML
 
-      expect(entry.digital_archival_objects).to be_empty
+      expect(entry.digital_objects).to be_empty
     end
   end
 
