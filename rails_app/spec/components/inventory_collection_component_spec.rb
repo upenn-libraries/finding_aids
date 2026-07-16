@@ -8,7 +8,7 @@ RSpec.describe InventoryCollectionComponent, type: :component do
   describe 'rendering' do
     it 'renders the "not available" alert when given no entries' do
       render_inline(described_class.new(entries: []))
-      expect(page).to have_css('#inventory-accordion div[role="alert"]', text: 'Collection information not available')
+      expect(page).to have_css('#inventory-accordion div[role="alert"]', text: I18n.t('show.sections.inventory.none'))
     end
 
     it 'renders one InventoryComponent per entry when entries are given' do

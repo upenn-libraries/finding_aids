@@ -4,6 +4,6 @@
       <%= render(InventoryComponent.new(entry: entry, index: index + 1, requestable: @requestable)) %>
     <% end %>
   <% else %>
-    <div role="alert">Collection information not available</div>
+    <div role="alert"><%= t('show.sections.inventory.none') %></div>
   <% end %>
 </pennlibs-accordion>
