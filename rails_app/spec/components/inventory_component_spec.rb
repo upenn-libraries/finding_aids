@@ -108,14 +108,14 @@ RSpec.describe InventoryComponent, type: :component do
             <did><unittitle>Series</unittitle></did>
             <c02>
               <did><unittitle>Subseries A</unittitle><unitdate>1909</unitdate>
-              <container type="Box" >1</container>
-              <container type="Folder" >1</container>
+              <container type="Box">1</container>
+              <container type="Folder">1</container>
               </did>
             </c02>
             <c02>
               <did><unittitle>Subseries B</unittitle><unitdate type="bulk">1910-1919</unitdate>
-              <container type="Box" >2</container>
-              <container type="Folder" >1-10</container>
+              <container type="Box">2</container>
+              <container type="Folder">1-10</container>
               </did>
             </c02>
           </c01>
