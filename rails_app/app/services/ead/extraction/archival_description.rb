@@ -18,6 +18,16 @@ module Ead
         parsed_ead.class::OTHER_SECTIONS
       end
 
+      # @return [Array<Hash>]
+      def description_definitions
+        description_sections.filter_map do |section|
+          definition = translate(node: parsed_ead.send(section), remove_head: true)
+          next if definition.blank?
+
+          { term: section, definition: definition }
+        end
+      end
+
       # @return [ActiveSupport::SafeBuffer, nil]
       def use_restrictions
         translate(node: parsed_ead.userestrict, remove_head: true)
