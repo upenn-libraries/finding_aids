@@ -101,7 +101,7 @@ RSpec.describe InventoryComponent, type: :component do
       end
     end
 
-    context "when an entry's children children are all childless" do
+    context "when an entry's children are all childless" do
       let(:entry) do
         entry_for(<<~XML, xpath: '//c01')
           <c01 level="series">

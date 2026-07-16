@@ -7,7 +7,7 @@ class InventoryComponent < ViewComponent::Base
   PARENT_ID = 'series'
 
   # @param entry [Ead::Extraction::Inventory::Entry]
-  # @param level level [Integer]
+  # @param level [Integer]
   # @param parent_id [String]
   # @param index [Integer]
   # @param requestable [Boolean]

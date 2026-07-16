@@ -215,7 +215,7 @@ RSpec.describe Ead::Extraction::Inventory::Entry do
       entry = entry_for(<<~XML)
          <c02>
           <did>
-          <unittitle>Correspondence</unittitle>#{' '}
+          <unittitle>Correspondence</unittitle>
           <physdesc label="Extent"><p>1 Folder.</p></physdesc>
           </did>
         </c02>

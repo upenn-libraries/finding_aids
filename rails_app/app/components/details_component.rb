@@ -11,6 +11,7 @@ class DetailsComponent < ViewComponent::Base
   # @param heading [String]
   # @param container_class [String]
   # @param level [Integer]
+  # @param requestable [Boolean]
   def initialize(heading_id:, heading:, container_class: nil, level: 1, requestable: false)
     @heading_id = heading_id
     @heading_text = heading

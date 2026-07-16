@@ -23,6 +23,7 @@ module Catalog
       presenter.field_presenters_by_group(:contact)
     end
 
+    # @return [Array<Ead::Extraction::Inventory::Entry>]
     def inventory_entries
       Ead::Extraction::Inventory::Entry.build_entries(@document.parsed_ead.dsc)
     end

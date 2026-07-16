@@ -3,7 +3,7 @@
 # Renders all InventoryComponents
 class InventoryCollectionComponent < ViewComponent::Base
   # @param entries [Array<Ead::Extraction::Inventory::Entry>]
-  # @param [Boolean] requestable
+  # @param requestable [Boolean]
   def initialize(entries:, requestable: false)
     @entries = entries
     @requestable = requestable
