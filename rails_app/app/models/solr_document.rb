@@ -32,42 +32,10 @@ class SolrDocument
     @ead_extraction ||= Ead::Extraction::ArchivalDescription.new(parsed_ead)
   end
 
-  # @return [Array<Symbol>]
-  delegate :description_sections, to: :ead_extraction
-
-  # @return [ActiveSupport::SafeBuffer, nil]
-  def use_restrictions(*)
-    ead_extraction.use_restrictions
-  end
-
-  # @return [ActiveSupport::SafeBuffer, nil]
-  def access_restrictions(*)
-    ead_extraction.access_restrictions
-  end
-
-  # @return [ActiveSupport::SafeBuffer, nil]
-  def sponsor(*)
-    ead_extraction.sponsor
-  end
-
-  # @return [ActiveSupport::SafeBuffer, nil]
-  def date(*)
-    ead_extraction.date
-  end
-
-  # @return [ActiveSupport::SafeBuffer, nil]
-  def author(*)
-    ead_extraction.author
-  end
-
-  # @return [ActiveSupport::SafeBuffer, nil]
-  def publisher(*)
-    ead_extraction.publisher
-  end
-
-  # @return [String, nil]
-  def language_note(*)
-    ead_extraction.language_note
+  # Main accessor method for configured fields. Forwards messages to the ead_extraction.
+  # @param method [Symbol]
+  def extract(method)
+    ead_extraction.send method
   end
 
   # @return [Array<String> (frozen)]

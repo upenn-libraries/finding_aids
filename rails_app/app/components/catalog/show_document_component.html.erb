@@ -16,9 +16,9 @@
           <aside class="fa-guide-header__institution pl-callout" aria-label="<%= t('show.aside.aria_label') %>">
             <p class="fa-small-name pl-margin-b-2xs"><%= t('show.aside.held_at') %></p>
             <p class="pl-margin-b-m"><%= repository %></p>
-            <% if document.access_restrictions %>
+            <% if document.extract(:access_restrictions) %>
               <p class="fa-small-name pl-margin-b-2xs"><%= t('show.aside.access') %></p>
-              <div class="pl-margin-b-m"><%= document.access_restrictions %></div>
+              <div class="pl-margin-b-m"><%= document.extract(:access_restrictions) %></div>
             <% end %>
 
             <a href="#contact" class="pl-button pl-button--accent"><%=t('show.aside.contact') %></a>

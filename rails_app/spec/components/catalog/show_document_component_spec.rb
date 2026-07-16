@@ -43,7 +43,7 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
 
     it 'shows the access restrictions in the header aside' do
       access_css = "#{css} div.fa-guide-header__hero aside.fa-guide-header__institution p"
-      expect(page).to have_css(access_css, text: document.access_restrictions)
+      expect(page).to have_css(access_css, text: document.extract(:access_restrictions))
     end
 
     it 'renders collection overview metadata in the header strip' do
