@@ -1,23 +1,34 @@
 <pennlibs-accordion class="pl-flex pl-flex-col pl-gap-m" id="<%= @id %>">
+<% document.extract(:description_definitions).each do |description| %>
+    <details class="fa-guide__details">
+      <summary>
+        <h3 id="<%= description[:term] %>"><%= t("sections.#{description [:term]}") %></h3>
+      </summary>
+      <div>
+        <%= description[:definition] %>
+      </div>
+    </details>
+<% end %>
 
-<% description_sections.each do |section| %>
-  <%= render DetailsComponent.new(heading_id: section, heading: t("sections.#{section}")) do |component| %>
-    <%= component.with_body do %>
-      <%= content(section) %>
+  <% if rights_and_citation.any? %>
+  <details class="fa-guide__details">
+    <summary>
+      <h3 id="rights"><%= t("sections.rights_and_citation") %></h3>
+    </summary>
+    <div>
+     <%= render ShowMetadataFieldsComponent.new(fields: rights_and_citation) %>
+    </div>
+  </details>
     <% end %>
+
+  <% if subjects_and_headings.any? %>
+    <details class="fa-guide__details">
+      <summary>
+        <h3 id="topics"><%= t("sections.subjects_and_headings") %></h3>
+      </summary>
+      <div>
+        <%= render ShowMetadataFieldsComponent.new(fields: subjects_and_headings) %>
+      </div>
+    </details>
   <% end %>
-<% end %>
-
-<%= render DetailsComponent.new(heading_id: 'rights', heading: t("sections.rights_and_citation")) do |component| %>
-  <%= component.with_body do %>
-      <%= render ShowMetadataFieldsComponent.new(fields: rights_and_citation) %>
-    <% end %>
-<% end %>
-
-<%= render DetailsComponent.new(heading_id: 'topics', heading: t('sections.subjects_and_headings')) do |component| %>
-  <%= component.with_body do %>
-    <%= render ShowMetadataFieldsComponent.new(fields: subjects_and_headings) %>
-  <% end %>
-<% end %>
-
 </pennlibs-accordion>
