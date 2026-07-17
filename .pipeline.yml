@@ -158,7 +158,7 @@ rspec_app_test:
   extends:
     - .rspec
   variables:
-    CHROME_URL: "http://chrome:3000"
+    CHROME_URL: "http://chrome:3333"
     CONNECTION_TIMEOUT: -1
     DATABASE_NAME: "finding_aid_discovery"
     DATABASE_PASSWORD: "rspec_test"
