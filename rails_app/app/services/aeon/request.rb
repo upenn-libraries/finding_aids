@@ -18,8 +18,7 @@ module Aeon
 
     SCAN_REQUEST = 'Copy'
     VISIT_REQUEST = 'Loan'
-    BASE_PARAMS = { AeonForm: 'ExternalRequest',
-                    SystemID: Settings.aeon.system_id,
+    BASE_PARAMS = { SystemID: Settings.aeon.system_id,
                     WebRequestForm: 'DefaultRequest',
                     SubmitButton: 'Submit Request' }.freeze
 
@@ -64,10 +63,12 @@ module Aeon
     # @return [Hash{String (frozen)->String}]
     def fulfillment_fields
       if params[:request_type] == VISIT_REQUEST
-        { 'RequestType' => VISIT_REQUEST,
+        { 'AeonForm' => 'EADRequest',
+          'RequestType' => VISIT_REQUEST,
           'ScheduledDate' => formatted_retrieval_date }
       else
-        { 'RequestType' => SCAN_REQUEST }
+        { 'AeonForm' => 'PhotoduplicationRequest',
+          'RequestType' => SCAN_REQUEST }
       end
     end
 
