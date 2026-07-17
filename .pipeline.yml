@@ -152,7 +152,7 @@ rspec_app_test:
         HEALTHCHECK_TCP_PORT: "8983"
         SOLR_HEAP: "6g"
         SOLR_HOST: "solr"
-        SOLR_OPTS: "$SOLR_OPTS -Dsolr.disableConfigSetsCreateAuthChecks=true"
+        SOLR_OPTS: "-Dsolr.disableConfigSetsCreateAuthChecks=true"
         SOLR_MODULES: "analysis-extras"
         ZK_CREATE_CHROOT: "true"
   extends:
