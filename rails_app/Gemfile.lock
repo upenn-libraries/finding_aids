@@ -1,8 +1,8 @@
 GEM
   remote: https://gems.contribsys.com/
   specs:
-    sidekiq-pro (7.3.1)
-      sidekiq (>= 7.3.0, < 8)
+    sidekiq-pro (7.3.7)
+      sidekiq (>= 7.3.7, < 8)
 
 GEM
   remote: https://rubygems.org/
@@ -125,10 +125,10 @@ GEM
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
     cliver (0.3.2)
-    concurrent-ruby (1.3.6)
+    concurrent-ruby (1.3.7)
     config (5.5.1)
       deep_merge (~> 1.2, >= 1.2.1)
-    connection_pool (3.0.2)
+    connection_pool (2.5.5)
     crack (0.4.5)
       rexml
     crass (1.0.6)
@@ -210,7 +210,7 @@ GEM
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    json (2.19.7)
+    json (2.21.1)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -348,7 +348,7 @@ GEM
       erb
       psych (>= 4.0.0)
       tsort
-    redis-client (0.22.2)
+    redis-client (0.30.0)
       connection_pool
     regexp_parser (2.12.0)
     reline (0.6.3)
@@ -426,12 +426,12 @@ GEM
       sprockets-rails
       tilt
     securerandom (0.4.1)
-    sidekiq (7.3.2)
-      concurrent-ruby (< 2)
-      connection_pool (>= 2.3.0)
+    sidekiq (7.3.10)
+      base64
+      connection_pool (>= 2.3.0, < 3)
       logger
-      rack (>= 2.2.4)
-      redis-client (>= 0.22.2)
+      rack (>= 2.2.4, < 3.3)
+      redis-client (>= 0.23.0, < 1)
     sidekiq-cron (1.12.0)
       fugit (~> 1.8)
       globalid (>= 1.0.1)
@@ -516,6 +516,7 @@ DEPENDENCIES
   byebug
   capybara
   config
+  connection_pool (~> 2.5)
   cuprite
   debug
   devise
@@ -542,7 +543,7 @@ DEPENDENCIES
   rspec-rails (~> 8.0)
   sass-rails (>= 6)
   sidekiq-cron
-  sidekiq-pro!
+  sidekiq-pro (~> 7)!
   simplecov
   sitemap_generator
   turbolinks (~> 5)
