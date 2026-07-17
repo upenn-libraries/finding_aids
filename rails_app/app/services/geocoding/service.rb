@@ -26,9 +26,9 @@ module Geocoding
     # @param address [String, nil] raw address
     # @return [Hash] +{ lat: Float, lng: Float }+ or +Cache::BLANK+
     def coordinates_for(name, address)
-      return Cache::BLANK if address.blank? || @cache.failed?(name)
+      return Cache::BLANK if address.blank?
 
-      @cache[name] || Cache::BLANK
+      @cache.fetch(name)
     end
 
     # Geocode a single address via the configured lookup API.

@@ -61,6 +61,7 @@ describe 'API index endpoints' do
   context 'with map_data' do
     let!(:geo_service) { Geocoding::Service.new(cache: cache, api_delay: 0) }
     let(:cache) { Geocoding::Cache.new }
+    let(:cached_coords) { { lat: 39.98, lng: -75.19 } }
 
     before do
       HomepageData.geocoding_service = geo_service
@@ -70,7 +71,7 @@ describe 'API index endpoints' do
 
     context 'when a repository has cached coordinates' do
       before do
-        cache.store('Test Repo', lat: 39.98, lng: -75.19)
+        cache.store('Test Repo', **cached_coords)
         allow(RepositoryQueries).to receive_messages(
           facet_counts: [{ name: 'Test Repo', count: 100 }],
           addresses: { 'Test Repo' => '1 Research Park' }
@@ -79,8 +80,8 @@ describe 'API index endpoints' do
       end
 
       it 'returns the coordinates so markers render on the map' do
-        expect(data.first['lat']).to eq(39.98)
-        expect(data.first['lng']).to eq(-75.19)
+        expect(data.first['lat']).to eq(cached_coords[:lat])
+        expect(data.first['lng']).to eq(cached_coords[:lng])
       end
     end
 
@@ -100,7 +101,7 @@ describe 'API index endpoints' do
     end
 
     it 'returns repository data with expected keys' do
-      cache.store('Test Repo', lat: 39.98, lng: -75.19)
+      cache.store('Test Repo', **cached_coords)
       allow(RepositoryQueries).to receive_messages(
         facet_counts: [{ name: 'Test Repo', count: 100 }],
         addresses: { 'Test Repo' => '1 Research Park' }
@@ -112,8 +113,7 @@ describe 'API index endpoints' do
   end
 
   context 'with real Solr documents (end-to-end)' do
-    let(:cache) { Geocoding::Cache.new }
-    let(:geo_service) { Geocoding::Service.new(cache: cache, api_delay: 0) }
+    let(:e2e_coords) { { lat: 40.01, lng: -75.01 } }
     let(:e2e_docs) do
       [attributes_for(:solr_document,
                       repository_ssi: 'Mapped Repo',
@@ -124,9 +124,11 @@ describe 'API index endpoints' do
     end
 
     before do
+      cache = Geocoding::Cache.new
+      geo_service = Geocoding::Service.new(cache: cache, api_delay: 0)
       HomepageData.geocoding_service = geo_service
       seed_solr(e2e_docs)
-      cache.store('Mapped Repo', lat: 40.01, lng: -75.01)
+      cache.store('Mapped Repo', **e2e_coords)
       HomepageData.instance_variable_set(:@repositories, nil)
       HomepageData.instance_variable_set(:@repositories_json, nil)
       get map_data_api_path
@@ -136,8 +138,8 @@ describe 'API index endpoints' do
 
     it 'returns coordinates for repos with cached data' do
       mapped = data.find { |r| r['name'] == 'Mapped Repo' }
-      expect(mapped['lat']).to eq(40.01)
-      expect(mapped['lng']).to eq(-75.01)
+      expect(mapped['lat']).to eq(e2e_coords[:lat])
+      expect(mapped['lng']).to eq(e2e_coords[:lng])
     end
 
     it 'returns null coordinates for repos without cached data' do

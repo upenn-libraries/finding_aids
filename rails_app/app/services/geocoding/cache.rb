@@ -43,6 +43,18 @@ module Geocoding
       entries.dig(name, :lat).present?
     end
 
+    # Look up an entry from cache.  Returns the coordinate hash on success,
+    # BLANK when the entry is missing or was previously recorded as failed.
+    #
+    # @param name [String] repository name
+    # @return [Hash]
+    def fetch(name)
+      return self[name] if cached?(name)
+      return BLANK if failed?(name)
+
+      BLANK
+    end
+
     # ── write API ─────────────────────────────────────────────────────
 
     # Store a successful geocode result.
