@@ -4,7 +4,6 @@ require 'rails_helper'
 
 describe HomepageData do
   let(:cache) { Geocoding::Cache.new }
-  let(:geo_service) { Geocoding::Service.new(cache: cache) }
   let(:coords) do
     {
       haverford: { lat: 40.0087, lng: -75.3068 },
@@ -26,9 +25,6 @@ describe HomepageData do
 
   before do
     described_class.instance_variable_set(:@collection_guides, nil)
-    described_class.instance_variable_set(:@repositories, nil)
-    described_class.instance_variable_set(:@repositories_json, nil)
-    described_class.geocoding_service = geo_service
   end
 
   shared_context 'with solr stubs' do
@@ -68,27 +64,27 @@ describe HomepageData do
       cache.store('Haverford College Quaker & Special Collections', **coords[:haverford])
       cache.store('Historical Society of Pennsylvania', **coords[:hsp])
 
-      repos = described_class.repositories
+      repos = described_class.repositories(cache: cache)
       expect(repos).to all(be_a(HomepageData::Repository))
     end
 
     it 'reads coordinates from cache' do
       cache.store('Haverford College Quaker & Special Collections', **coords[:haverford])
 
-      repos = described_class.repositories
+      repos = described_class.repositories(cache: cache)
       haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
       expect(haverford.lat).to eq(coords[:haverford][:lat])
       expect(haverford.lng).to eq(coords[:haverford][:lng])
     end
 
     it 'generates slugs' do
-      repos = described_class.repositories
+      repos = described_class.repositories(cache: cache)
       expect(repos.map(&:slug)).to include('haverford-college-quaker-special-collections')
     end
 
     it 'returns nil coordinates when address is missing' do
       allow(RepositoryQueries).to receive(:addresses).and_return({})
-      repos = described_class.repositories
+      repos = described_class.repositories(cache: cache)
       haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
       expect(haverford.lat).to be_nil
     end
@@ -96,7 +92,7 @@ describe HomepageData do
     it 'returns nil coordinates when cache has FAILED entry' do
       cache.store_failure('Haverford College Quaker & Special Collections')
 
-      repos = described_class.repositories
+      repos = described_class.repositories(cache: cache)
       haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
       expect(haverford.lat).to be_nil
     end

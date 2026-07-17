@@ -59,12 +59,11 @@ describe 'API index endpoints' do
   end
 
   context 'with map_data' do
-    let!(:geo_service) { Geocoding::Service.new(cache: cache, api_delay: 0) }
     let(:cache) { Geocoding::Cache.new }
     let(:cached_coords) { { lat: 39.98, lng: -75.19 } }
 
     before do
-      HomepageData.geocoding_service = geo_service
+      allow(Geocoding::Cache).to receive(:new).and_return(cache)
       HomepageData.instance_variable_set(:@repositories, nil)
       HomepageData.instance_variable_set(:@repositories_json, nil)
     end
@@ -113,6 +112,7 @@ describe 'API index endpoints' do
   end
 
   context 'with real Solr documents (end-to-end)' do
+    let(:cache) { Geocoding::Cache.new }
     let(:e2e_coords) { { lat: 40.01, lng: -75.01 } }
     let(:e2e_docs) do
       [attributes_for(:solr_document,
@@ -124,13 +124,11 @@ describe 'API index endpoints' do
     end
 
     before do
-      cache = Geocoding::Cache.new
-      geo_service = Geocoding::Service.new(cache: cache, api_delay: 0)
-      HomepageData.geocoding_service = geo_service
-      seed_solr(e2e_docs)
-      cache.store('Mapped Repo', **e2e_coords)
+      allow(Geocoding::Cache).to receive(:new).and_return(cache)
       HomepageData.instance_variable_set(:@repositories, nil)
       HomepageData.instance_variable_set(:@repositories_json, nil)
+      seed_solr(e2e_docs)
+      cache.store('Mapped Repo', **e2e_coords)
       get map_data_api_path
     end
 

@@ -2,7 +2,7 @@
 
 # Homepage data from YAML and Solr.
 #
-# Repository coordinates are looked up from the Geocoding::Service cache.
+# Repository coordinates are looked up from the Geocoding::Cache.
 # Bulk geocoding (refresh!) lives in the service layer, not here.
 # Collection guides are loaded from YAML.
 module HomepageData
@@ -17,36 +17,45 @@ module HomepageData
       @collection_guides ||= load_yaml(COLLECTION_GUIDES_PATH, CollectionGuide)
     end
 
+    # @param cache [Geocoding::Cache, nil] explicit cache bypasses memoization;
+    #   omit (or pass nil) for the default memoized path.
     # @return [Array<Repository>]
-    def repositories
-      @repositories ||= begin
-        repos = RepositoryQueries.facet_counts
-        addresses = RepositoryQueries.addresses
+    def repositories(cache: nil)
+      return build_repositories(cache) if cache
 
-        repos.filter_map do |repo|
-          coords = geocoding_service.coordinates_for(repo[:name], addresses[repo[:name]])
-          Repository.new(
-            name: repo[:name],
-            slug: repo[:name].parameterize,
-            count: repo[:count],
-            records_url: records_url_for(repo[:name]),
-            **coords
-          )
-        end
-      end
+      @repositories ||= build_repositories(Geocoding::Cache.new)
     end
 
+    # @param cache [Geocoding::Cache, nil] explicit cache bypasses memoization;
+    #   omit (or pass nil) for the default memoized path.
     # @return [Array<Hash>]
-    def repositories_json
+    def repositories_json(cache: nil)
+      return repositories(cache: cache).map(&:to_h) if cache
+
       @repositories_json ||= repositories.map(&:to_h)
     end
 
-    attr_writer :geocoding_service
-
     private
 
-    def geocoding_service
-      @geocoding_service ||= Geocoding::Service.new
+    def build_repositories(cache)
+      repos = RepositoryQueries.facet_counts
+      addresses = RepositoryQueries.addresses
+
+      repos.filter_map do |repo|
+        name = repo[:name]
+        coords = if addresses[name].present?
+                   cache.fetch(name)
+                 else
+                   Geocoding::Cache::BLANK
+                 end
+        Repository.new(
+          name: name,
+          slug: name.parameterize,
+          count: repo[:count],
+          records_url: records_url_for(name),
+          **coords
+        )
+      end
     end
 
     # @param name [String] repository name
