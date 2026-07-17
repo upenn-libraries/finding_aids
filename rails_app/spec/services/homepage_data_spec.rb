@@ -33,8 +33,6 @@ describe HomepageData do
     end
   end
 
-  # Collection guides (YAML) -------------------------------------------------
-
   describe '.collection_guides' do
     it 'returns an array of CollectionGuide objects' do
       guides = described_class.collection_guides
@@ -54,8 +52,6 @@ describe HomepageData do
       expect(guides.map(&:name)).to include('John Wilbur papers')
     end
   end
-
-  # Repositories ------------------------------------------------------------
 
   describe '.repositories' do
     include_context 'with solr stubs'
