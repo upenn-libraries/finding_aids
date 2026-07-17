@@ -51,6 +51,7 @@ namespace :tools do
 
       print "Harvesting #{ep.slug} ... "
 
+      # Skip localhost endpoints
       if ep.webpage_url&.include? '127.0.0.1'
         puts Rainbow("Skipping because it's @ #{ep.webpage_url}").cyan
         next

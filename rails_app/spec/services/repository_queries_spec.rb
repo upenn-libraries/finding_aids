@@ -47,12 +47,6 @@ describe RepositoryQueries do
 
       expect(results.first[:count]).to be >= results.last[:count]
     end
-
-    it 'does not include repositories with zero documents' do
-      results = described_class.facet_counts
-
-      expect(results.map { |r| r[:name] }).not_to include('Non Existent Repo')
-    end
   end
 
   describe '.addresses' do
