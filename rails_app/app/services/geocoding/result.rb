@@ -11,14 +11,19 @@ module Geocoding
   class Result
     attr_reader :lat, :lng
 
+    # @param lat [Float]
+    # @param lng [Float]
+    # @return [Geocoding::Result]
     def self.success(lat:, lng:)
       new(lat: lat, lng: lng, success: true)
     end
 
+    # @return [Geocoding::Result]
     def self.failure
       new(lat: nil, lng: nil, success: false)
     end
 
+    # @return [Boolean]
     def success?
       @success
     end

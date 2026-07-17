@@ -74,6 +74,8 @@ module Geocoding
     end
 
     # Atomic disk write via tempfile + rename.
+    #
+    # @return [void]
     def persist
       FileUtils.mkdir_p(File.dirname(@path))
       Tempfile.create(['geocoder_cache', '.yml'], File.dirname(@path)) do |tmp|
@@ -93,6 +95,7 @@ module Geocoding
       @entries ||= load_from_disk.freeze
     end
 
+    # @return [Hash]
     def load_from_disk
       File.open(@path, File::RDONLY) do |f|
         f.flock(File::LOCK_SH)

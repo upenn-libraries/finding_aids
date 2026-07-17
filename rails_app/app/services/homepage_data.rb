@@ -17,8 +17,7 @@ module HomepageData
       @collection_guides ||= load_yaml(COLLECTION_GUIDES_PATH, CollectionGuide)
     end
 
-    # @param cache [Geocoding::Cache, nil] explicit cache bypasses memoization;
-    #   omit (or pass nil) for the default memoized path.
+    # @param cache [Geocoding::Cache, nil] pass to bypass memoization
     # @return [Array<Repository>]
     def repositories(cache: nil)
       return build_repositories(cache) if cache
@@ -26,8 +25,7 @@ module HomepageData
       @repositories ||= build_repositories(Geocoding::Cache.new)
     end
 
-    # @param cache [Geocoding::Cache, nil] explicit cache bypasses memoization;
-    #   omit (or pass nil) for the default memoized path.
+    # @param cache [Geocoding::Cache, nil] pass to bypass memoization
     # @return [Array<Hash>]
     def repositories_json(cache: nil)
       return repositories(cache: cache).map(&:to_h) if cache
@@ -37,6 +35,8 @@ module HomepageData
 
     private
 
+    # @param cache [Geocoding::Cache]
+    # @return [Array<Repository>]
     def build_repositories(cache)
       repos = RepositoryQueries.facet_counts
       addresses = RepositoryQueries.addresses
