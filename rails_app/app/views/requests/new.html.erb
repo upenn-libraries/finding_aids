@@ -3,23 +3,22 @@
 <h2 class="mb-4"><%= t('requests.form.header') %></h2>
 
 <%#
-  Ok, so using the AeonForm of "ExternalRequest" just doesn't work.
-  I see two distinctive forms - EADRequest and PhotoduplicationRequest. These kinda work, but:
-  Currently using EADRequest for, nothing happens (no errors display)
-  And using PDRequest, validation errors are present, and it doesn not appear that i can submit multiple items.
-  Ask Atlas these questions!
+  This is working OK, but two issues remain:
+    - UserReview isn't producing the expected behaviro in Aeon
+    - The 'return link` stuff isn't working
 %>
 
 <% params = ActionController::Parameters.new(
   repository: Settings.aeon.locations.sample[:label],
   title: '1992 collection',
-  request_type: Aeon::Request::VISIT_REQUEST,
+  call_number: '123456',
+  request_type: Aeon::Request::SCAN_REQUEST,
   special_request: 'Special request',
   notes: 'Some notes',
   retrieval_date: '2027-01-01',
-  save_for_later: true,
+  save_for_later: false,
   return_url: 'http://example.com',
-  item: ['Box 1', 'Box 2'],
+  item: ['Box 1:Folder 1', 'Box 2:Folder 1'],
   item_barcode: ['1234', '5678']
 ) %>
 
@@ -30,11 +29,11 @@
 </p>
 
 <p>
-<%= pp request.to_h %>
+<%= pp request.to_a %>
 </p>
 
 <%= bootstrap_form_with id: 'aeonRequestForm', url: Settings.aeon.ere_endpoint, method: :post, authenticity_token: false do |form| %>
-  <% request.to_h.each do |key, value| %>
+  <% request.to_a.each do |key, value| %>
     <%= form.hidden_field key, value: value %>
   <% end %>
   <%= form.submit 'Send request' %>

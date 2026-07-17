@@ -44,38 +44,36 @@ module Aeon
         volume, issue = item.split(':').map(&:strip)
         volume += " [#{barcode(i)}]" if barcode(i).present?
         container_info = { volume: volume, issue: issue }
-        Aeon::Item.new i, container_info, self
+        Aeon::Item.new i + 1, container_info, self
       end
     end
 
     # @return [Hash{String (frozen)->String}]
     def note_fields
-      { 'SpecialRequest' => params[:special_request].to_s,
-        'Notes' => params[:notes].to_s }
+      { SpecialRequest: params[:special_request].to_s,
+        Notes: params[:notes].to_s }
     end
 
     def settings_fields
-      { 'UserReview' => params[:save_for_later] == '1' ? 'Yes' : 'No',
-        'ReturnLinkUrl' => params[:return_url].to_s,
-        'ReturnLinkSystemName' => Settings.aeon.system_name }
+      { UserReview: params[:save_for_later] == '1' ? 'Yes' : 'No',
+        ReturnLinkUrl: params[:return_url].to_s,
+        ReturnLinkSystemName: Settings.aeon.system_name }
     end
 
     # @return [Hash{String (frozen)->String}]
     def fulfillment_fields
       if params[:request_type] == VISIT_REQUEST
-        { 'AeonForm' => 'EADRequest',
-          'RequestType' => VISIT_REQUEST,
-          'ScheduledDate' => formatted_retrieval_date }
+        { RequestType: VISIT_REQUEST,
+          ScheduledDate: formatted_retrieval_date }
       else
-        { 'AeonForm' => 'PhotoduplicationRequest',
-          'RequestType' => SCAN_REQUEST }
+        { RequestType: SCAN_REQUEST }
       end
     end
 
-    # @return [Hash]
+    # @return [Array<Array(String, String)>]
     def item_fields
-      items.each_with_object({}) do |item, fields|
-        fields.merge!(item.to_h)
+      items.flat_map do |item|
+        [['Request', item.number]] + item.to_h.to_a
       end
     end
 
@@ -95,13 +93,13 @@ module Aeon
       params[:item_barcode][index]
     end
 
-    # Hash of params to send over to Aeon ERE endpoint
-    # @return [Hash]
-    def to_h
-      BASE_PARAMS.merge(note_fields)
-                 .merge(fulfillment_fields)
-                 .merge(settings_fields)
-                 .merge(item_fields)
+    # @return [Array<Array(String, String)>]
+    def to_a
+      BASE_PARAMS.to_a +
+        note_fields.to_a +
+        fulfillment_fields.to_a +
+        settings_fields.to_a +
+        item_fields
     end
 
     private

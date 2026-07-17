@@ -3,6 +3,8 @@
 module Aeon
   # Represent a single Item (checked box in the site) in the context of the request
   class Item
+    attr_accessor :number
+
     # @param number [String]
     # @param container [Hash]
     # @param request [Aeon::Request]
@@ -21,8 +23,7 @@ module Aeon
         'SubLocation' => @request.repository[:sublocation],
         'Location' => @request.repository[:location],
         'ItemVolume' => @container[:volume],
-        'ItemIssue' => @container[:issue],
-        'Request' => @number }.transform_keys { |key| key + "_#{@number}" }
+        'ItemIssue' => @container[:issue] }.transform_keys { |key| key + "_#{@number}" }
     end
   end
 end
