@@ -5,6 +5,7 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
 
   before_action :load_homepage_data, only: :index
+  before_action :load_regional_repos, unless: -> { request.format.json? || request.format.turbo_frame? }
 
   def index
     super
