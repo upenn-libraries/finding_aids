@@ -14,35 +14,20 @@ describe SolrDocument do
       corpnames_ssim: ['University of Pennsylvania'] }
   end
 
-  it 'creates a ParsedEad' do
-    expect(doc.parsed_ead).to be_an_instance_of SolrDocument::ParsedEad
+  it 'creates a parsed ead' do
+    expect(doc.parsed_ead).to be_an_instance_of Ead::Parsing::ArchivalDescription
   end
 
-  describe '#language_note' do
-    context 'without text content' do
-      it 'returns a blank value' do
-        expect(doc.language_note).to be_blank
-      end
-    end
+  it 'creates an ead extraction' do
+    expect(doc.ead_extraction).to be_an_instance_of Ead::Extraction::ArchivalDescription
+  end
 
-    context 'with text content' do
-      let(:xml) do
-        <<~XML
-          <ead>
-            <archdesc>
-              <did>
-                <langmaterial>
-                  Mostly in <language langcode="eng">English</language>, but some materials contain Esperanto.
-                </langmaterial>
-              </did>
-            </archdesc>
-          </ead>
-        XML
-      end
+  describe '#extract' do
+    before { allow(doc.ead_extraction).to receive(:access_restrictions) }
 
-      it 'parses the expected data' do
-        expect(doc.language_note).to eq 'Mostly in English, but some materials contain Esperanto.'
-      end
+    it 'sends the message to the ead extraction' do
+      expect(doc.ead_extraction).to receive(:access_restrictions).once
+      doc.extract(:access_restrictions)
     end
   end
 
@@ -63,7 +48,7 @@ describe SolrDocument do
     end
 
     it 'responds to method calls for defined sections' do
-      SolrDocument::ParsedEad::OTHER_SECTIONS.each do |section|
+      Ead::Parsing::ArchivalDescription::OTHER_SECTIONS.each do |section|
         expect(parsed_ead).to respond_to section
       end
     end

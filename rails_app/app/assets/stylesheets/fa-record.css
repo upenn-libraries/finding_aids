@@ -1,3 +1,11 @@
+html {
+    background: var(--pl-color-penn-blue);
+}
+
+body {
+    background: var(--pl-color-bg-default);
+}
+
 .pl-button {
     border: none;
     outline: none;
@@ -46,7 +54,7 @@
 }
 
 /* Cards — mirrors the Digital Collections pattern */
-.faa-cards {
+.fa-cards {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -55,12 +63,12 @@
     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
 }
 
-.faa-cards__card {
+.fa-cards__card {
     position: relative;
     width: 100%;
 }
 
-.faa-cards__card-img {
+.fa-cards__card-img {
     box-shadow: rgba(140, 149, 159, 0.3) 0px 3px 6px 0px;
     border-radius: var(--pl-border-radius-subtle);
     width: 100%;
@@ -70,7 +78,7 @@
     display: block;
 }
 
-.faa-cards__card-placeholder {
+.fa-cards__card-placeholder {
     border-radius: var(--pl-border-radius-subtle);
     aspect-ratio: 3 / 2;
     background: var(--pl-color-bg-subtle-brand);
@@ -78,7 +86,7 @@
     width: 100%;
 }
 
-.faa-cards__card-heading {
+.fa-cards__card-heading {
     margin: 0;
     padding-top: var(--pl-space-s);
     font-size: var(--pl-font-size-m);
@@ -90,13 +98,13 @@
     }
 }
 
-.faa-cards__card-sub {
+.fa-cards__card-sub {
     margin: 0.25rem 0 0;
     color: var(--pl-color-fg-subtle);
     font-size: var(--pl-font-size-s);
 }
 
-.faa-cards__card-link {
+.fa-cards__card-link {
     &::after {
         content: '';
         position: absolute;
@@ -105,46 +113,46 @@
 }
 
 /* Home sections — limit visible cards to one or two rows per breakpoint */
-.faa-home-sections {
-    & .faa-cards {
+.fa-home-sections {
+    & .fa-cards {
         grid-template-columns: repeat(2, 1fr);
 
-        & .faa-cards__card { display: none; }
-        & .faa-cards__card:nth-child(-n+4) { display: block; }
+        & .fa-cards__card { display: none; }
+        & .fa-cards__card:nth-child(-n+4) { display: block; }
 
         @media (min-width: 520px) {
             grid-template-columns: repeat(3, 1fr);
-            & .faa-cards__card:nth-child(-n+6) { display: block; }
-            & .faa-cards__card:nth-child(n+7) { display: none; }
+            & .fa-cards__card:nth-child(-n+6) { display: block; }
+            & .fa-cards__card:nth-child(n+7) { display: none; }
         }
 
         @media (min-width: 720px) {
             grid-template-columns: repeat(4, 1fr);
-            & .faa-cards__card:nth-child(-n+8) { display: block; }
-            & .faa-cards__card:nth-child(n+9) { display: none; }
+            & .fa-cards__card:nth-child(-n+8) { display: block; }
+            & .fa-cards__card:nth-child(n+9) { display: none; }
         }
 
         @media (min-width: 1000px) {
             grid-template-columns: repeat(5, 1fr);
-            & .faa-cards__card:nth-child(-n+5) { display: block; }
-            & .faa-cards__card:nth-child(n+6) { display: none; }
+            & .fa-cards__card:nth-child(-n+5) { display: block; }
+            & .fa-cards__card:nth-child(n+6) { display: none; }
         }
 
         @media (min-width: 1200px) {
             grid-template-columns: repeat(6, 1fr);
-            & .faa-cards__card:nth-child(-n+6) { display: block; }
-            & .faa-cards__card:nth-child(n+7) { display: none; }
+            & .fa-cards__card:nth-child(-n+6) { display: block; }
+            & .fa-cards__card:nth-child(n+7) { display: none; }
         }
 
         /* @media (min-width: 1400px) {
           grid-template-columns: repeat(7, 1fr);
-          & .faa-cards__card:nth-child(-n+7) { display: block; }
-          & .faa-cards__card:nth-child(n+8) { display: none; }
+          & .fa-cards__card:nth-child(-n+7) { display: block; }
+          & .fa-cards__card:nth-child(n+8) { display: none; }
         } */
     }
 }
 
-.faa-home-lede {
+.fa-home-lede {
     font-size: var(--pl-font-size-l);
 }
 
@@ -231,6 +239,13 @@
     line-height: 1.4;
 }
 
+/* Any author display value (flex, grid, inline-flex…) silently defeats the
+   hidden attribute, which has bitten three separate elements now. Enforce it
+   globally: hidden means hidden. */
+[hidden] {
+    display: none !important;
+}
+
 .visually-hidden {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -249,28 +264,47 @@
     }
 }
 
-.paa-search-box {
-    width: 100%;
-    background: var(--pl-color-bg-default);
-    flex-grow: 1;
-    border-radius: 1.25rem;
-    padding: var(--pl-space-2xs);
-    box-shadow: rgba(140, 149, 159, 0.2) 0px 3px 6px 0px;
-    border: solid 1px var(--pl-color-penn-blue);
-    padding-left: var(--pl-space-m);
-    display: flex;
-    gap: var(--pl-space-s);
-    flex-grow: 1rem;
-    width: 24rem;
-    max-width: 100%;
+/* Header search wrapper (the slot="end" div). flex:1 + min-width:0 lets it
+   shrink instead of forcing the service name to wrap; full width when the header
+   stacks, capped and right-aligned once the header is a row. Mirrors Digital
+   Collections' .dc-header-search. */
+.fa-header-search {
+    flex: 1;
+    min-width: 0;
+    margin-top: var(--pl-space-m);
 
-    @media (max-width: 1000px) {
-        margin-top: var(--pl-space-m);
+    @media (min-width: 1001px) {
+        margin-top: 0;
+        margin-left: var(--pl-space-3xl);
     }
 }
 
-pennlibs-header .paa-search-box {
-    width: 28rem;
+@media (max-width: 1000px) {
+    .fa-header-search {
+        width: 100%;
+    }
+}
+
+.paa-search-box {
+    background: var(--pl-color-bg-default);
+    border-radius: 1.25rem;
+    padding: var(--pl-space-2xs);
+    padding-left: var(--pl-space-m);
+    box-shadow: rgba(140, 149, 159, 0.2) 0px 3px 6px 0px;
+    border: solid 1px var(--pl-color-penn-blue);
+    display: flex;
+    gap: var(--pl-space-s);
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+/* In the header, cap the pill and push it to the right of the row. */
+.fa-header-search .paa-search-box {
+    margin-left: auto;
+
+    @media (min-width: 1001px) {
+        max-width: 28rem;
+    }
 }
 
 pennlibs-header[theme=dark] {
@@ -333,38 +367,37 @@ pennlibs-header[theme=dark] {
 }
 
 /* Guide-page header: stacked hero row (intro + institution) + metadata strip below */
-.faa-guide-header {
+.fa-guide-header {
     display: flex;
     flex-direction: column;
     gap: var(--pl-space-l);
 }
 
-.faa-guide-header__hero {
+.fa-guide-header__hero {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--pl-space-xl);
 }
 
 @media (min-width: 900px) {
-    .faa-guide-header__hero {
+    .fa-guide-header__hero {
         grid-template-columns: 2fr 1fr;
         gap: var(--pl-space-2xl);
     }
 }
 
-.faa-guide-header__institution {
+.fa-guide-header__institution {
     align-self: flex-start;
     background: var(--pl-color-bg-default);
 }
 
-.faa-guide-header__institution p {
+.fa-guide-header__institution p {
     margin: 0;
 }
 
-.faa-guide-header__institution .pl-margin-b-m {
+.fa-guide-header__institution .pl-margin-b-m {
     margin-bottom: var(--pl-space-m);
 }
-
 
 .fa-metadata {
     list-style: none;
@@ -374,21 +407,13 @@ pennlibs-header[theme=dark] {
     gap: var(--pl-space-m);
 }
 
-.fa-metadata--description {
-    display: block;
+.fa-toc-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pl-space-2xs);
 }
 
-.fa-metadata--description .fa-metadata-field {
-    display: flex;
-    gap: var(--pl-space-m);
-    align-items: baseline;
-}
-
-.fa-metadata--description dt {
-    flex: 0 0 10rem;
-}
-
-.faa-small-name {
+.fa-small-name {
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.075rem;
@@ -396,7 +421,7 @@ pennlibs-header[theme=dark] {
     font-weight: 600;
 }
 
-.faa-section-header {
+.fa-section-header {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
@@ -404,12 +429,12 @@ pennlibs-header[theme=dark] {
     gap: var(--pl-space-s);
 }
 
-.faa-section-header__actions {
+.fa-section-header__actions {
     display: flex;
     gap: var(--pl-space-xs);
 }
 
-.faa-guide__details {
+.fa-guide__details {
     border-radius: var(--pl-border-radius);
     background: var(--pl-color-bg-subtle);
     border: solid 1px transparent;
@@ -440,10 +465,8 @@ pennlibs-header[theme=dark] {
         }
     }
 
-    & summary ~ * {
-        margin-top: var(--pl-space-s);
+    & summary + * {
         padding: var(--pl-space-m);
-        margin-top: 0;
         background: var(--pl-color-bg-default);
         border-radius: 0 0 var(--pl-border-radius) var(--pl-border-radius);
     }
@@ -486,8 +509,12 @@ table.table {
 
 .table tr > * {
     border-bottom: solid 1px var(--pl-color-bg-subtle-brand);
-    padding: 1rem 0;
+    padding: var(--pl-space-xs) 0;
     vertical-align: top;
+
+    @media only screen and (max-width: 721px) {
+        padding: var(--pl-space-2xs) 0;
+    }
 }
 
 .table tr > *:not(:last-child) {
@@ -509,6 +536,25 @@ table.table {
 
 .table tr > td[data-th]:before {
     font-weight: 600;
+}
+
+/* Every series/subseries renders its own inventory table. Fixing the column
+   widths keeps Detail / Container / Select aligned from one table to the next,
+   so nothing shifts as you scroll down the guide. Scoped above the stacking
+   breakpoint — the widths must not apply once rows stack. */
+@media only screen and (min-width: 721px) {
+    .table--responsive-small {
+        table-layout: fixed;
+    }
+
+    /* Contents (1) is left unset, so it absorbs the remaining width — it leads the
+       scan, so it gets the most room. */
+    .table--responsive-small th:nth-child(2),
+    .table--responsive-small td:nth-child(2) { width: 8rem; }  /* Dates */
+    .table--responsive-small th:nth-child(3),
+    .table--responsive-small td:nth-child(3) { width: 14rem; }  /* Container (Box/Folder) */
+    .table--responsive-small th:nth-child(4),
+    .table--responsive-small td:nth-child(4) { width: 3.5rem; }   /* Select */
 }
 
 @media only screen and (max-width: 720px) {
@@ -536,14 +582,19 @@ table.table {
     }
 }
 
-/* Guide page layout — sticky TOC sidebar */
-.faa-guide-layout {
+/* Guide page layout — TOC sidebar is opt-in, so single column by default.
+   The sticky sidebar column only appears once someone turns the TOC on. */
+.fa-guide-layout {
     display: grid;
-    grid-template-columns: 18rem 1fr;
+    grid-template-columns: 1fr;
     gap: var(--pl-space-2xl);
 }
 
-.faa-toc {
+.fa-guide-layout--with-toc {
+    grid-template-columns: 18rem 1fr;
+}
+
+.fa-toc {
     position: sticky;
     top: var(--pl-space-l);
     align-self: start;
@@ -553,19 +604,19 @@ table.table {
 }
 
 
-.faa-toc ul {
+.fa-toc ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.faa-toc ul ul {
+.fa-toc ul ul {
     margin-left: var(--pl-space-s);
     padding-left: var(--pl-space-s);
     border-left: 1px solid var(--pl-color-fg-subtle);
 }
 
-.faa-toc a {
+.fa-toc a {
     display: block;
     padding: var(--pl-space-2xs) 0;
     color: var(--pl-color-fg-default);
@@ -574,12 +625,12 @@ table.table {
     font-size: var(--pl-font-size-s);
 }
 
-.faa-toc a:hover {
+.fa-toc a:hover {
     color: var(--pl-color-fg-default);
     text-decoration: underline;
 }
 
-.faa-toc a.faa-toc--active {
+.fa-toc a.fa-toc--active {
     font-weight: 600;
     color: var(--pl-color-fg-default);
 }
@@ -590,27 +641,27 @@ table.table {
 }
 
 @media (max-width: 720px) {
-    .faa-guide-layout {
+    .fa-guide-layout {
         grid-template-columns: 1fr;
     }
 
-    .faa-toc {
+    .fa-toc {
         position: static;
     }
 }
 
 /* Visit callout */
-.faa-visit-callout {
+.fa-visit-callout {
     padding: var(--pl-space-xl);
     background: var(--pl-color-bg-subtle);
     border-radius: var(--pl-border-radius-subtle);
 }
 
-.faa-visit-callout h2 {
+.fa-visit-callout h2 {
     margin-top: 0;
 }
 
-.faa-visit-callout p {
+.fa-visit-callout p {
     max-width: var(--pl-line-length);
 }
 
@@ -618,8 +669,8 @@ a.pl-button {
     text-decoration: none;
 }
 
-.faa-header-actions {
-    display: flex;
+.fa-header-actions {
+    display: none;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--pl-space-s);
@@ -642,12 +693,12 @@ a.pl-button {
 }
 
 /* Subseries — nested within series, lazy rendered */
-.faa-guide__details--subseries {
+.fa-guide__details--subseries {
     content-visibility: auto;
     contain-intrinsic-size: auto 300px;
 }
 
-.faa-guide__details--subseries summary h4 {
+.fa-guide__details--subseries summary h4 {
     font-size: var(--pl-font-size-default);
     margin: 0;
 }
@@ -672,4 +723,272 @@ mark.search-highlight {
 
 h4, h5, h6 {
     font-size: 1rem
+}
+/* A row's title, dates, and any scope/contents, physical description, and
+   digital object links render as a description list. pl-dl--inline puts each
+   label + value on its own line. */
+.fa-inventory-detail {
+
+}
+
+/* Your visit — collect inventory items to request from the archive */
+.fa-visit__cell {
+    width: 2rem;
+}
+
+.fa-visit__label {
+    display: inline-flex;
+    /* Grow the touch target to ~44px square without affecting layout */
+    position: relative;
+    padding: 0.5rem;
+    margin: -0.5rem;
+    cursor: pointer;
+    border-radius: var(--pl-border-radius);
+    border: solid 1px transparent;
+
+    /* The 1rem border-radius rounds off the corners of the hit area too.
+       This unrounded overlay restores the full square as a touch target
+       without changing the rounded hover look. */
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+    }
+
+    &:hover {
+        background: var(--pl-color-bg-subtle);
+    }
+}
+
+.fa-visit__checkbox {
+    accent-color: var(--pl-color-bg-success-emphasis);
+    cursor: pointer;
+    width: var(--pl-space-m);
+    height: var(--pl-space-m);
+    /* Paint above the label's ::after hit overlay so the input itself
+       receives direct clicks. */
+    position: relative;
+    z-index: 1;
+}
+
+.fa-visit__checkbox:focus-visible {
+    box-shadow: var(--pl-focus-box-shadow);
+}
+
+@media only screen and (max-width: 720px) {
+    /* Select is the last column. In the stacked layout it becomes its own
+       "Select:" block (via data-th="Select"), like the other cells, instead of
+       floating to the corner. Reset the fixed desktop width so it fills the row. */
+    .table--responsive-small .fa-visit__cell {
+        width: auto;
+    }
+
+    /* The label's desktop touch-target trick (position:relative + negative margin
+       + ::after) only exists to avoid shifting the table, which doesn't apply once
+       the cell is a stacked block. Keep the padding as a plain tap target. */
+    .table--responsive-small .fa-visit__label {
+        position: static;
+    }
+
+    .table--responsive-small .fa-visit__label::after {
+        content: none;
+    }
+}
+
+/* These receive focus programmatically (modal open, step changes) purely to
+   move AT into the dialog / announce the result — they're not interactive, so
+   suppress the global *:focus ring that would otherwise land on them. */
+.fa-visit__dialog:focus,
+#visit-confirm-lede:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.fa-visit__dialog {
+    /* No position override here: a modal <dialog> is position:fixed by UA
+       default (that's what pins it to the viewport), and that fixed box is
+       already the containing block for the absolute close button. Setting
+       position:relative previously made the dialog scroll with the page. */
+    width: min(34rem, calc(100vw - 2rem));
+    margin: auto; /* recenter — pl-reset strips the user-agent dialog margins */
+    border: 1px solid var(--pl-color-fg-subtle);
+    border-radius: var(--pl-border-radius-subtle);
+    padding: var(--pl-space-xl);
+}
+
+.fa-visit__dialog-close {
+    position: absolute;
+    top: var(--pl-space-s);
+    right: var(--pl-space-s);
+}
+
+.fa-visit__dialog::backdrop {
+    backdrop-filter: blur(var(--pl-space-2xs));
+    --bl-modal-backdrop-bg: rgb(from var(--pl-color-fg-default) r g b / 0.25);
+}
+
+.fa-visit__dialog h2:focus {
+    outline: none;
+}
+
+.fa-visit__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.fa-visit__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--pl-space-m);
+    padding: var(--pl-space-s) 0;
+    border-bottom: solid 1px var(--pl-color-bg-subtle-brand);
+}
+
+.fa-visit__meta {
+    margin: 0;
+    color: var(--pl-color-fg-subtle);
+}
+
+.fa-visit__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--pl-space-s);
+    margin-top: var(--pl-space-l);
+}
+
+.fa-visit__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pl-space-m);
+}
+
+.fa-visit__form label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pl-space-3xs);
+    font-weight: 600;
+}
+
+.fa-visit__form .fa-visit__hint {
+    font-weight: normal;
+}
+
+.fa-visit__form input,
+.fa-visit__form textarea {
+    font: inherit;
+    font-weight: normal;
+    padding: var(--pl-space-xs);
+    border: 1px solid var(--pl-color-fg-subtle);
+    border-radius: var(--pl-border-radius-subtle);
+}
+
+.fa-visit__form input:focus-visible,
+.fa-visit__form textarea:focus-visible {
+    box-shadow: var(--pl-focus-box-shadow);
+    outline: none;
+}
+
+.fa-visit__disclaimer {
+    color: var(--pl-color-fg-subtle);
+    font-size: 0.8rem;
+}
+
+.fa-visit__error {
+    color: var(--pl-color-fg-attention);
+    font-size: 0.9rem;
+}
+
+.fa-visit__confirm--error input {
+    outline: 2px solid var(--pl-color-fg-attention);
+    outline-offset: 2px;
+}
+
+.fa-visit__aside-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pl-space-s);
+}
+
+/* Full-width bar pinned to the bottom of the viewport, surfaced (via JS) only
+   while scrolled into the inventory — content is constrained with the same
+   viewport margins as the rest of the page. */
+.fa-visit__bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: var(--pl-space-s) 0;
+    box-shadow: rgba(140, 149, 159, 0.2) 0px 3px 6px 0px;
+    backdrop-filter: blur(var(--pl-space-m));
+    background: rgb(from var(--pl-color-bg-default) r g b / 0.75);
+    border-top: 1px solid var(--pl-color-fg-subtle);
+}
+
+.fa-visit__bar-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--pl-space-s) var(--pl-space-m);
+
+    & .pl-button--success {
+        box-shadow: rgba(140, 149, 159, 0.2) 0px 3px 6px 0px;
+    }
+}
+
+.fa-visit__bar-text {
+    margin: 0;
+}
+
+/* Reserve room so the fixed bar never covers the last of the page content
+   (the bar shows whenever ≥1 item is selected). */
+body.fa-visit-bar-visible {
+    margin-bottom: 1rem;
+}
+
+/* At-a-glance tally of selected items, shown inline in each inventory
+   section's summary heading (after the title, before the disclosure arrow).
+   Carries .fa-small-name too: the smaller size keeps it within the heading's
+   line box instead of growing the row. */
+.fa-visit__section-count {
+    margin-left: var(--pl-space-2xs);
+}
+
+.fa-visit__section-count:empty {
+    display: none;
+}
+
+/* Step cue above the dialog title (fa-small-name supplies the small caps). */
+.fa-visit__step {
+    margin: 0 0 var(--pl-space-2xs);
+    color: var(--pl-color-fg-subtle);
+}
+
+.fa-visit__step:empty {
+    display: none;
+}
+
+/* .pl-button sets display, which would otherwise defeat the hidden attribute
+   (e.g. the bottom bar before it's surfaced) */
+.pl-button[hidden] {
+    display: none;
+}
+
+.pl-caps,
+.pl-caps--subtle {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.075rem;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.pl-caps--subtle {
+    color: var(--pl-color-fg-subtle);
 }

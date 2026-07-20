@@ -247,6 +247,12 @@ en:
       inventory:
         header: 'Inventory'
         guide: 'Everything in this collection, in the order the archivist chose to help you understand it.'
+        contents: 'Contents'
+        dates: 'Dates'
+        container: 'Container'
+        select: 'Select'
+        select_visually_hidden: 'Select %{title}'
+        none: 'Collection information not available'
       contact:
         header: 'Contact'
         guide_html: 'These materials are held by <strong>%{repository}</strong>. Contact them to schedule a visit or ask about your research.'
