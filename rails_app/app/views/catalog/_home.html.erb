@@ -1,11 +1,3 @@
-<%# ============================================================================
-    HOMEPAGE — UI ported from the finding-aids-prototype (Eleventy mockup).
-
-    Collection guides data is loaded by CatalogController and rendered by
-    Homepage::CollectionGuideCardsComponent.
-    ============================================================================ %>
-
-<%# --- Hero (replaces the standard header on the homepage) ------------------- %>
 <% content_for(:header) do %>
   <%= render HeaderHeroComponent.new(blacklight_config: blacklight_config) do |hero| %>
     <% hero.with_picture do %>
@@ -22,7 +14,6 @@
   <% end %>
 <% end %>
 
-<%# --- Home sections --------------------------------------------------------- %>
 <div class="fa-home-sections">
   <%= render Homepage::CollectionGuideCardsComponent.new(guides: @homepage_guides || []) %>
 </div>

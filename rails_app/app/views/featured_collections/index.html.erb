@@ -1,21 +1,21 @@
-<h1>Featured Collections</h1>
+<h1><%= t('admin.featured_collections.heading') %></h1>
 
-<p class="text-muted mb-3">Picks appear first in the &ldquo;Featured collections&rdquo; section on the homepage.</p>
+<p class="text-muted mb-3"><%= t('admin.featured_collections.description') %></p>
 
 <div class="d-flex justify-content-end">
   <div class="btn-group mb-3">
-    <%= link_to 'Feature a Collection', new_featured_collection_path, class: 'btn btn-outline-dark' %>
+    <%= link_to t('admin.featured_collections.new'), new_featured_collection_path, class: 'btn btn-outline-dark' %>
   </div>
 </div>
 
 <% if @guides.empty? %>
-  <p>No featured collections yet. Add some to display on the homepage.</p>
+  <p><%= t('admin.featured_collections.empty') %></p>
 <% else %>
   <table class="table table-striped">
     <thead>
     <tr>
-      <th scope="col">Title</th>
-      <th scope="col">Repository</th>
+      <th scope="col"><%= t('admin.featured_collections.form.title_label') %></th>
+      <th scope="col"><%= t('admin.featured_collections.form.repository_label') %></th>
       <th scope="col"></th>
     </tr>
     </thead>
@@ -24,7 +24,7 @@
       <tr>
         <td><%= guide.title %></td>
         <td><%= guide.repository %></td>
-        <td><%= button_to t('admin.actions.destroy'), featured_collection_path(guide), method: :delete, class: 'btn btn-sm btn-outline-danger', form: { data: { turbo_confirm: 'Remove this pick?' } } %></td>
+        <td><%= button_to t('admin.actions.destroy'), featured_collection_path(guide), method: :delete, class: 'btn btn-sm btn-outline-danger', form: { data: { turbo_confirm: t('admin.featured_collections.confirm_destroy') } } %></td>
       </tr>
     <% end %>
     </tbody>

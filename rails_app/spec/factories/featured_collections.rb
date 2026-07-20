@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :featured_collection do
-    title { 'Test Collection Guide' }
+    sequence(:title) { |n| "Test Collection #{n}" }
     repository { 'Test Repository' }
   end
 end

@@ -6,12 +6,11 @@
 # Repository data is loaded from YAML for the regional partnership band.
 module HomepageData
   REPOSITORIES_PATH = Rails.root.join('data/repositories.yml')
+  MAX_GUIDES = 8
 
   Repository = Data.define(:name, :slug, :count, :lat, :lng)
 
   class << self
-    MAX_GUIDES = 8
-
     # Staff-picked collections shown on the homepage, up to MAX_GUIDES.
     # @return [Array<FeaturedCollection>]
     def collection_guides

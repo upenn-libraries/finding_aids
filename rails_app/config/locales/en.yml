@@ -212,6 +212,8 @@ en:
       aspace_instance:
         include_blank: 'Select an ASpace instance...'
       last_harvest_results: 'Last Harvest Results'
+    menu:
+      featured_collections: 'Featured Collections'
     actions:
       create: 'Add'
       edit: 'Edit'
@@ -251,7 +253,17 @@ en:
         header: 'Contact'
         guide_html: 'These materials are held by <strong>%{repository}</strong>. Contact them to schedule a visit or ask about your research.'
 
-  activerecord:
-    models:
-      featured_collection: 'Featured collection'
+    featured_collections:
+      heading: 'Featured Collections'
+      description: 'Picks appear first in the Featured collections section on the homepage.'
+      new: 'Feature a Collection'
+      empty: 'No featured collections yet. Add some to display on the homepage.'
+      confirm_destroy: 'Remove this pick?'
+      form:
+        repository_label: 'Repository'
+        repository_blank: 'Select a repository…'
+        title_label: 'Collection'
+        title_blank: 'Select a repository first…'
+        submit: 'Create Featured Collection'
+      model_name: 'Featured collection'
 

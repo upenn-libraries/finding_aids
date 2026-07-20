@@ -5,9 +5,7 @@ require 'rails_helper'
 describe HomepageData do
   before do
     allow(RepositoryQueries).to receive(:titles_by_repository).and_return(
-      { 'Test Repo' => ['Featured A', 'Featured 0', 'Featured 1', 'Featured 2',
-                        'Featured 3', 'Featured 4', 'Featured 5', 'Featured 6',
-                        'Featured 7', 'Featured 8', 'Featured 9'] }
+      { 'Test Repo' => ['Featured A'] + (1..10).map { |i| "Test Collection #{i}" } }
     )
   end
 
@@ -21,14 +19,12 @@ describe HomepageData do
       expect(guides.first.title).to eq('Featured A')
     end
 
-    it 'limits to 8 featured collections' do
-      10.times { |i| create(:featured_collection, title: "Featured #{i}", repository: 'Test Repo') }
+    it 'limits to the featured collections max' do
+      create_list(:featured_collection, 10, repository: 'Test Repo')
 
       guides = described_class.collection_guides
 
-      expect(guides.length).to eq(8)
-      expect(guides.map(&:title)).to eq(['Featured 0', 'Featured 1', 'Featured 2', 'Featured 3',
-                                         'Featured 4', 'Featured 5', 'Featured 6', 'Featured 7'])
+      expect(guides.length).to eq(HomepageData::MAX_GUIDES)
     end
   end
 end

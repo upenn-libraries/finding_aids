@@ -1,13 +1,13 @@
 <%= form_with(model: @guide, local: true, data: { controller: 'featured-collection-form', featured_collection_form_titles_value: @titles_by_repository.to_json }) do |form| %>
   <div class="mb-3">
-    <%= form.label :repository, class: 'form-label' %>
-    <%= form.select :repository, @repositories, { include_blank: 'Select a repository…' }, class: 'form-select', required: true, data: { featured_collection_form_target: 'repository', action: 'featured-collection-form#filterTitles' } %>
+    <%= form.label :repository, t('admin.featured_collections.form.repository_label'), class: 'form-label' %>
+    <%= form.select :repository, @repositories, { include_blank: t('admin.featured_collections.form.repository_blank') }, class: 'form-select', required: true, data: { featured_collection_form_target: 'repository', action: 'featured-collection-form#filterTitles' } %>
   </div>
 
   <div class="mb-3">
-    <%= form.label :title, 'Collection', class: 'form-label' %>
-    <%= form.select :title, [], { include_blank: 'Select a repository first…' }, class: 'form-select', required: true, data: { featured_collection_form_target: 'title', selected: @guide.title } %>
+    <%= form.label :title, t('admin.featured_collections.form.title_label'), class: 'form-label' %>
+    <%= form.select :title, [], { include_blank: t('admin.featured_collections.form.title_blank') }, class: 'form-select', required: true, data: { featured_collection_form_target: 'title', selected: @guide.title } %>
   </div>
 
-  <%= form.submit class: 'btn btn-primary' %>
+  <%= form.submit t('admin.featured_collections.form.submit'), class: 'btn btn-primary' %>
 <% end %>
