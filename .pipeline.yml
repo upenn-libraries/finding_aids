@@ -50,11 +50,11 @@ include:
 
   - component: $CI_SERVER_FQDN/devops/gitlab/components/docker/stage_finalize@~latest
     inputs:
-      job_image_tag: "29-dind"
       needs_copy:
         - trivy_scan
         - rspec
         - rubocop
+
   - component: $CI_SERVER_FQDN/devops/gitlab/components/tests/rubocop@~latest
     inputs:
       app_dir: "rails_app"
@@ -132,6 +132,10 @@ build_and_push_docker_images_production:
     - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
   variables:
     VAULT_AUTH_ROLE: ${VAULT_AUTH_ROLE_SIDEKIQ}
+
+rspec:
+  vars:
+    FINDING_AID_DISCOVERY_URL: "findingaids.test.com"
 
 deploy_staging:
   needs:
