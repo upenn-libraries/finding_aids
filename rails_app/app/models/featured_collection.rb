@@ -2,6 +2,9 @@
 
 # Featured collections shown on the homepage. Staff manage these
 # via the admin UI at /admin/featured_collections.
+#
+# Validates titles against Solr to ensure featured collections
+# actually exist in the index.
 class FeaturedCollection < ApplicationRecord
   validates :title, :repository, presence: true
   validate :title_must_exist_for_repository
