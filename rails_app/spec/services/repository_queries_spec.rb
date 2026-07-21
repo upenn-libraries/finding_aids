@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 describe RepositoryQueries do
-
   describe '.facet_counts' do
     before { seed_solr(documents) }
     after  { cleanup_solr(documents) }
