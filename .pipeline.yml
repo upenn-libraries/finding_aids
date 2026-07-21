@@ -136,8 +136,8 @@ build_and_push_docker_images_production:
     VAULT_AUTH_ROLE: ${VAULT_AUTH_ROLE_SIDEKIQ}
 
 rspec:
-  before_script:
-    - sleep 3600
+  # before_script:
+  #   - sleep 3600
   variables:
     FINDING_AID_DISCOVERY_URL: "findingaids.test.com"
 
