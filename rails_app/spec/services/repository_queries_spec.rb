@@ -3,9 +3,11 @@
 require 'rails_helper'
 
 describe RepositoryQueries do
-  let(:solr) { SolrService.new }
 
   describe '.facet_counts' do
+    before { seed_solr(documents) }
+    after  { cleanup_solr(documents) }
+
     let(:demo_repo) do
       attributes_for(:solr_document, repository_ssi: 'Test Repo Alpha')
     end
@@ -13,16 +15,6 @@ describe RepositoryQueries do
       [demo_repo,
        attributes_for(:solr_document, repository_ssi: 'Test Repo Beta'),
        attributes_for(:solr_document, repository_ssi: 'Test Repo Beta')]
-    end
-
-    before do
-      solr.add_many documents: documents
-      solr.commit
-    end
-
-    after do
-      solr.delete_by_ids documents.pluck(:id)
-      solr.commit
     end
 
     it 'returns an array of name/count hashes' do
@@ -50,6 +42,9 @@ describe RepositoryQueries do
   end
 
   describe '.addresses' do
+    before { seed_solr(documents) }
+    after  { cleanup_solr(documents) }
+
     let(:with_address) do
       attributes_for(:solr_document,
                      repository_ssi: 'Test Repo With Address',
@@ -61,16 +56,6 @@ describe RepositoryQueries do
                      repository_address_ssi: nil)
     end
     let(:documents) { [with_address, without_address] }
-
-    before do
-      solr.add_many documents: documents
-      solr.commit
-    end
-
-    after do
-      solr.delete_by_ids documents.pluck(:id)
-      solr.commit
-    end
 
     it 'returns a name-to-address hash' do
       results = described_class.addresses

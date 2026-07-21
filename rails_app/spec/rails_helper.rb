@@ -55,8 +55,8 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Devise::Test::IntegrationHelpers, type: :system
 
-  # Shared Solr seed/cleanup helpers for request specs
-  config.include SolrHelpers, type: :request
+  # Shared Solr seed/cleanup helpers
+  config.include SolrHelpers
 
   # Include helpers for ViewComponent specs
   config.include ViewComponent::TestHelpers, type: :component
