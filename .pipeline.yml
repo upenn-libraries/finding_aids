@@ -3,7 +3,6 @@ variables:
   GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${CI_JOB_ID}/${CI_PIPELINE_ID}/${CI_PROJECT_NAME}"
   VAULT_AUTH_ROLE_SIDEKIQ: "sidekiq_pro_ro"
   WAIT_FOR_SERVICES_TIMEOUT: "120"
-  CI_DEBUG_SERVICES: "true"
 
 include:
   - component: $CI_SERVER_FQDN/devops/gitlab/components/docker/stage_build@~latest
@@ -136,8 +135,6 @@ build_and_push_docker_images_production:
     VAULT_AUTH_ROLE: ${VAULT_AUTH_ROLE_SIDEKIQ}
 
 rspec:
-  # before_script:
-  #   - sleep 3600
   variables:
     FINDING_AID_DISCOVERY_URL: "findingaids.test.com"
 
