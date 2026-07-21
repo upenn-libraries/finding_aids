@@ -33,7 +33,7 @@
   </updateHandler>
 
   <!-- solr lib dirs -->
-  <lib dir="${solr.install.dir:../../../..}/modules/analysis-extras/lib" />
+  <!--<lib dir="${solr.install.dir:../../../..}/modules/analysis-extras/lib" />-->
 <!--  <lib dir="${solr.install.dir:../../../..}/modules/analysis-extras/lucene-libs" />-->
 
   <dataDir>${solr.data.dir:}</dataDir>
