@@ -8,7 +8,7 @@ module Ead
       # @param method [Symbol]
       # @return[Nokogiri::XML::Node]
       def to_html(node, method)
-        method.present? ? send(method, node) : generic_emphasis(node)
+        method.present? && self.class.method_defined?(method) ? send(method, node) : generic_emphasis(node)
       end
 
       def underline(node)
