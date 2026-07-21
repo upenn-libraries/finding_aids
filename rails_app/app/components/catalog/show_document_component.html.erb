@@ -1,5 +1,18 @@
 <%# Override Blacklight 9.0.0 template to implement custom layout %>
-<div class="document-main-section pl-margin-b-3xl">
+<% requestable = @document.requestable? %>
+<% if requestable %>
+  <meta name="repository" content="<%= @document.repository %>">
+  <meta name="title" content="<%= presenter.heading %>">
+  <meta name="call-num" content="<%= @document.call_num %>">
+<% end %>
+<div class="document-main-section pl-margin-b-3xl"
+     <% if requestable %>
+       data-controller="request"
+       data-request-storage-key-value="<%= helpers.request_storage_key(@document) %>"
+       data-request-aeon-url-value="<%= AeonRequest::AEON_URL %>"
+       data-request-prepare-url-value="<%= prepare_requests_path %>"
+       data-request-copy-value="<%= helpers.request_copy_value.to_json %>"
+     <% end %>>
   <div class="pl-padding-y-2xl" style="background: var(--pl-color-bg-subtle);">
     <div class="pl-viewport-margins">
 
@@ -52,7 +65,11 @@
           <%= render(DescriptionAccordionComponent.new(document: document, presenter: @presenter,
                                                        id: 'description-accordion')) %>
       </div>
-      <div id="inventory-sections" class="pl-margin-b-2xl">
+      <div id="inventory-sections" class="pl-margin-b-2xl"
+           <% if requestable %>
+             data-request-target="inventory"
+             data-action="change->request#toggleItem"
+           <% end %>>
         <div class="fa-section-header">
           <div>
             <h2 id="inventory"><%= t("show.sections.inventory.header") %></h2>
@@ -75,4 +92,10 @@
       </section>
     </div>
   </div>
+
+  <%# Screen-reader-only live region for request selection announcements. %>
+  <% if requestable %>
+    <span class="visually-hidden" aria-live="polite" data-request-target="liveRegion"></span>
+    <%= render RequestDialogComponent.new(repository: @document.repository, aeon_url: AeonRequest::AEON_URL) %>
+  <% end %>
 </div>

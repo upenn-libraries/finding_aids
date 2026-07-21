@@ -1,0 +1,130 @@
+<%# Multi-step request modal and fixed selection bar.
+    Driven by the `request` Stimulus controller (declared on a wrapper element
+    that also contains the inventory checkboxes). Targets use data-request-target;
+    actions use data-action="...->request#...". %>
+
+<meta name="csrf-token" content="<%= form_authenticity_token %>" data-request-target="meta">
+
+<dialog class="fa-visit__dialog" id="visit-dialog" aria-labelledby="visit-dialog-title" tabindex="-1"
+        data-request-target="dialog" data-action="close->request#onDialogClose">
+
+  <button type="button" class="pl-button fa-visit__dialog-close" aria-label="Close"
+          data-action="click->request#close">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  </button>
+
+  <p class="fa-small-name fa-visit__step" data-request-target="step"></p>
+  <h2 id="visit-dialog-title" data-request-target="title" class="pl-margin-b-2xs pl-margin-t-xs">
+    <%= t('show.sections.request.visit.title') %>
+  </h2>
+
+  <%# --- Step 1: Review selected items --- %>
+  <section data-request-target="reviewSection">
+    <p class="fa-small-name pl-margin-t-l"><%= t('show.sections.request.held_at') %></p>
+    <p class="pl-margin-b-m"><%= @repository %></p>
+    <p class="pl-margin-b-s" data-request-target="reviewLede">
+      <%= t('show.sections.request.visit.review_lede') %>
+    </p>
+    <p class="fa-visit__empty pl-margin-t-l" data-request-target="empty" hidden>
+      <%= t('show.sections.request.review_empty_html').html_safe %>
+    </p>
+    <ul class="fa-visit__list" data-request-target="list"></ul>
+    <div class="fa-visit__footer" data-request-target="reviewFooter">
+      <button type="button" class="pl-button" data-action="click->request#clearAll">
+        <%= t('show.sections.request.remove_all') %>
+      </button>
+      <button type="button" class="pl-button pl-button--success" data-action="click->request#goDetails">
+        <%= t('show.sections.request.continue') %>
+      </button>
+    </div>
+  </section>
+
+  <%# --- Step 2: Visit/request details --- %>
+  <section data-request-target="detailsSection" hidden>
+    <form class="fa-visit__form pl-margin-t-l" id="visit-form"
+          data-request-target="form" data-action="submit->request#submitDetails">
+      <div data-request-target="dateField">
+        <label>
+          <%= t('show.sections.request.date_label') %>
+          <span class="fa-visit__hint pl-margin-b-xs"><%= t('show.sections.request.date_hint') %></span>
+          <input type="date" name="retrieval-date" data-request-target="dateInput" required>
+        </label>
+      </div>
+      <label>
+        <%= t('show.sections.request.notes_label') %>
+        <textarea name="notes" rows="3" data-request-target="notes"></textarea>
+      </label>
+      <p data-request-target="formLede"></p>
+      <div class="fa-visit__footer">
+        <button type="button" class="pl-button" data-action="click->request#goReview">
+          <%= t('show.sections.request.back') %>
+        </button>
+        <button type="submit" class="pl-button pl-button--success">
+          <%= t('show.sections.request.continue') %>
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <%# --- Step 3: Auth (log in to Aeon) --- %>
+  <%# May be removed pending the Atlas Systems fix (issue #312). %>
+  <section data-request-target="authSection" hidden>
+    <p class="pl-margin-t-l pl-margin-b-s" data-request-target="authLede" tabindex="-1">
+      <%= t('show.sections.request.auth_lede_html').html_safe %>
+    </p>
+    <p class="pl-margin-b-m"><%= t('show.sections.request.auth_body') %></p>
+
+    <a href="<%= @aeon_url %>" target="_blank" rel="noopener" class="pl-button pl-button--accent">
+      <%= t('show.sections.request.login_link') %>
+    </a>
+
+    <label class="fa-visit__confirm pl-flex pl-gap-s pl-margin-t-m pl-margin-b-2xs" style="align-items: center;"
+           data-request-target="confirmLabel">
+      <input type="checkbox" data-request-target="confirmCheck"
+             data-action="change->request#toggleLogin">
+      <%= t('show.sections.request.confirm_login') %>
+    </label>
+    <p class="fa-visit__error" data-request-target="loginError" role="alert" hidden>
+      <%= t('show.sections.request.login_error') %>
+    </p>
+
+    <div class="fa-visit__footer">
+      <button type="button" class="pl-button" data-action="click->request#goDetails">
+        <%= t('show.sections.request.back') %>
+      </button>
+      <button type="button" class="pl-button pl-button--success" data-action="click->request#place">
+        <%= t('show.sections.request.send') %>
+      </button>
+    </div>
+  </section>
+
+  <%# --- Step 4: Confirmation --- %>
+  <section data-request-target="confirmSection" hidden>
+    <p class="pl-margin-y-l" data-request-target="confirmLede" tabindex="-1"></p>
+    <div class="fa-visit__footer">
+      <button type="button" class="pl-button pl-button--success" data-action="click->request#close">
+        <%= t('show.sections.request.done') %>
+      </button>
+    </div>
+  </section>
+
+</dialog>
+
+<%# Fixed bottom bar — surfaces selected count and opens either request flow. %>
+<div class="fa-visit__bar" data-request-target="bar" role="region"
+     aria-label="<%= t('show.sections.request.bar.region') %>" hidden>
+  <div class="pl-viewport-margins fa-visit__bar-content">
+    <p class="fa-visit__bar-text"><strong data-request-target="barCount"></strong></p>
+    <div class="pl-flex pl-gap-s" style="align-items: baseline;">
+      <button type="button" class="pl-button pl-button--success" data-action="click->request#openCopy">
+        <%= t('show.sections.request.bar.request_copies') %>
+      </button>
+      <span class="pl-caps"><%= t('show.sections.request.bar.or') %></span>
+      <button type="button" class="pl-button pl-button--success" data-action="click->request#openVisit">
+        <%= t('show.sections.request.bar.plan_visit') %>
+      </button>
+    </div>
+  </div>
+</div>

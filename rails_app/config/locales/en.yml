@@ -256,6 +256,51 @@ en:
       contact:
         header: 'Contact'
         guide_html: 'These materials are held by <strong>%{repository}</strong>. Contact them to schedule a visit or ask about your research.'
+      request:
+        # Per-type copy that adapts to the chosen request flow. The holding
+        # institution speaks to the researcher in the first person ("we"/"us").
+        visit:
+          title: 'Plan your visit'
+          review_lede: "These are the items you'd like to view on your visit."
+          step_details: 'Step 2 of 3 · Visit details'
+          form_lede: "We'll reply to confirm your date and have your items ready."
+          confirm: "Request sent. It's not booked yet, but we'll be in touch to confirm the details and ready your items."
+        copy:
+          title: 'Request copies'
+          review_lede: "These are the items you'd like digital copies of. We'll scan them and deliver the files to your Research Account."
+          step_details: 'Step 2 of 3 · Request details'
+          form_lede: "We'll review your request and be in touch about your scans."
+          confirm: "Request sent. We'll review it and be in touch about your scans."
+        step_review: 'Step 1 of 3 · Review'
+        step_auth: 'Step 3 of 3 · Log in'
+        held_at: 'Held at'
+        review_empty_html: 'Nothing selected yet. Use the <strong>checkbox</strong> next to any item to add it.'
+        remove_all: 'Remove all'
+        continue: 'Continue'
+        back: 'Back'
+        date_label: 'What date would you like to visit?'
+        date_hint: 'Pick a date at least a week out.'
+        notes_label: 'Anything else we should know? (optional)'
+        auth_lede_html: "To send this, log in to your Research Account (Aeon), our archive request system. It's a separate site that looks different from this one."
+        auth_body: "Sign in there, then come back to finish. Without logging in, your request won't reach us."
+        login_link: 'Log in to your Research Account'
+        confirm_login: "Yes, I've logged into my Research Account"
+        login_error: "Confirm you're logged in before you send this request."
+        send: 'Send request'
+        done: 'Done'
+        bar:
+          count_one: '1 item selected'
+          count_many: '%{count} items selected'
+          request_copies: 'Request copies'
+          plan_visit: 'Plan a visit'
+          region: 'Selected materials'
+          or: 'OR'
+        remove: 'Remove'
+        remove_aria: 'Remove %{title} from your request'
+        section_count: '· has %{count} selected'
+        announce_added: 'Added %{title}. %{count} selected.'
+        announce_removed: 'Removed %{title}. %{count} selected.'
+        no_container: 'No container listed'
 
 
 

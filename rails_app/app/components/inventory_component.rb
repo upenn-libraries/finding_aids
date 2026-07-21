@@ -87,9 +87,11 @@ class InventoryComponent < ViewComponent::Base
 
   # @return [ActiveSupport::SafeBuffer]
   def heading
-    request_span = content_tag(:span, nil, class: 'fa-visit__section-count fa-small-name') if @requestable
+    return content_tag(heading_tag, id: heading_id) { details_title(@entry) } unless @requestable
 
-    content_tag(heading_tag, id: heading_id) { safe_join [details_title(@entry), request_span].compact_blank }
+    request_span = content_tag(:span, nil, class: 'fa-visit__section-count fa-small-name',
+                               aria: { hidden: 'true' })
+    content_tag(heading_tag, id: heading_id) { safe_join [details_title(@entry), request_span] }
   end
 
   # @return [String]
