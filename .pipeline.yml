@@ -5,11 +5,6 @@ variables:
   WAIT_FOR_SERVICES_TIMEOUT: "120"
 
 include:
-  - project: "devops/gitlab/ci-templates/ruby"
-    ref: "sans-dind"
-    file:
-      - ".rspec.yml"
-
   - component: $CI_SERVER_FQDN/devops/gitlab/components/docker/stage_build@~latest
     inputs:
       job_image_tag: "29-dind"
@@ -55,14 +50,23 @@ include:
 
   - component: $CI_SERVER_FQDN/devops/gitlab/components/docker/stage_finalize@~latest
     inputs:
-      job_image_tag: "29-dind"
       needs_copy:
         - trivy_scan
-        - rspec_app_test
+        - rspec
         - rubocop
+
   - component: $CI_SERVER_FQDN/devops/gitlab/components/tests/rubocop@~latest
     inputs:
       app_dir: "rails_app"
+
+  - component: $CI_SERVER_FQDN/devops/gitlab/components/tests/rspec@~latest
+    inputs:
+      needs:
+        - "amend_manifest_development"
+      service_solr_collection_name: "finding-aid-discovery-test"
+      service_solr_configset_name: "finding-aid-discovery"
+      service_solr_image_tag: 9.3.0
+
   - component: $CI_SERVER_FQDN/devops/gitlab/components/deploy/deploy@~latest
     inputs:
       deploy_environment_url: "https://findingaids-staging.library.upenn.edu"
@@ -70,6 +74,7 @@ include:
       valid_principals: "${VALID_PRINCIPALS}"
       vault_auth_role: "${VAULT_AUTH_ROLE}"
       vault_ssh_client_role: "${VAULT_SSH_CLIENT_ROLE}"
+
   - component: $CI_SERVER_FQDN/devops/gitlab/components/deploy/deploy@~latest
     inputs:
       deploy_environment: "production"
@@ -129,80 +134,9 @@ build_and_push_docker_images_production:
   variables:
     VAULT_AUTH_ROLE: ${VAULT_AUTH_ROLE_SIDEKIQ}
 
-rspec_app_test:
-  stage: test
-  image: ${CI_REGISTRY_IMAGE}/${CI_PIPELINE_ID}:${CI_COMMIT_SHORT_SHA}-development
-  services:
-    - name: browserless/chrome:latest
-      alias: chrome
-      variables:
-        HEALTHCHECK_TCP_PORT: "3333"
-        PORT: 3333
-        CONCURRENT: 1
-        TIMEOUT: 1200000
-    - name: postgres:14
-      variables:
-        POSTGRES_DB: "${DATABASE_NAME}"
-        POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
-        POSTGRES_USER: "${DATABASE_USER}"
-    - name: solr:9.3.0
-      alias: solr
-      command: ["-c"]
-      variables:
-        HEALTHCHECK_TCP_PORT: "8983"
-        SOLR_HEAP: "6g"
-        SOLR_HOST: "solr"
-        SOLR_OPTS: "-Dsolr.disableConfigSetsCreateAuthChecks=true"
-        SOLR_MODULES: "analysis-extras"
-        ZK_CREATE_CHROOT: "true"
-  extends:
-    - .rspec
+rspec:
   variables:
-    CHROME_URL: "http://chrome:3000"
-    CONNECTION_TIMEOUT: -1
-    DATABASE_NAME: "finding_aid_discovery"
-    DATABASE_PASSWORD: "rspec_test"
-    DATABASE_USER: "rspec_test"
-    FF_NETWORK_PER_BUILD: "true"
     FINDING_AID_DISCOVERY_URL: "findingaids.test.com"
-    RAILS_ENV: "test"
-    RAILS_SYSTEM_TESTING_SCREENSHOT_HTML: "1"
-    SOLR_COLLECTION_NAME: "finding-aid-discovery-test"
-    SOLR_CONFIGSET_NAME: "finding-aid-discovery"
-    SOLR_PORT: "8983"
-    SOLR_TEST_URL: "http://solr:${SOLR_PORT}/solr/${SOLR_COLLECTION_NAME}"
-  before_script:
-    - apk update && apk add curl zip
-    - zip -rj ${SOLR_CONFIGSET_NAME}.zip ${CI_PROJECT_DIR}/rails_app/solr/conf/
-    - curl -X POST --header "Content-Type:application/octet-stream" --data-binary @${SOLR_CONFIGSET_NAME}.zip "http://solr:8983/solr/admin/configs?action=UPLOAD&name=${SOLR_CONFIGSET_NAME}"
-    - rm -fr ${SOLR_CONFIGSET_NAME}.zip
-    - curl "http://solr:${SOLR_PORT}/solr/admin/collections?action=CREATE&name=${SOLR_COLLECTION_NAME}&numShards=1&collection.configName=${SOLR_CONFIGSET_NAME}"
-  script:
-    - cd ${CI_PROJECT_DIR}/rails_app/
-    - bundle add rspec_junit_formatter
-    - bundle exec rake db:migrate
-    - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
-  needs:
-    - amend_manifest_development
-  coverage: '/\(\d+.\d+\%\) covered/'
-  artifacts:
-    paths:
-      - rails_app/tmp/coverage/index.html
-      - rails_app/tmp/capybara
-      - rails_app/rspec.xml
-    expire_in: 1 week
-    reports:
-      junit: rails_app/rspec.xml
-  rules:
-    - if: $DISABLE_RSPEC_TEST == "true"
-      when: never
-    - exists:
-        - rails_app/spec/**.rb
-        - rails_app/spec/**/**.rb
-  allow_failure: true
-  timeout: 15m
-  tags:
-    - build
 
 deploy_staging:
   needs:
