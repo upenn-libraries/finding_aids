@@ -6,8 +6,6 @@ module Geocoding
   #   Geocoding::Result.success(lat: 39.95, lng: -75.16)
   #   Geocoding::Result.failure
   #
-  # Replaces the boolean +failed+ flag previously threaded through
-  # Cache#store and Service#store_result.
   class Result
     attr_reader :lat, :lng
 

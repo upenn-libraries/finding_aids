@@ -4,17 +4,6 @@ require 'rails_helper'
 
 describe 'API index endpoints' do
   let(:data) { response.parsed_body }
-  let(:solr) { SolrService.new }
-
-  def seed_solr(records)
-    solr.add_many documents: records
-    solr.commit
-  end
-
-  def cleanup_solr(records)
-    solr.delete_by_ids(records.pluck(:id))
-    solr.commit
-  end
 
   context 'with endpoints' do
     let(:api_documents) do

@@ -75,7 +75,7 @@ module Geocoding
 
     # Atomic disk write via tempfile + rename.
     #
-    # @return [void]
+    # @return [nil]
     def persist
       FileUtils.mkdir_p(File.dirname(@path))
       Tempfile.create(['geocoder_cache', '.yml'], File.dirname(@path)) do |tmp|
@@ -83,6 +83,14 @@ module Geocoding
         tmp.close
         File.rename(tmp.path, @path)
       end
+    end
+
+    # Clear all in-memory entries without touching disk.
+    # Used to reset the cache between tests.
+    #
+    # @return [void]
+    def clear!
+      @entries = {}
     end
 
     private

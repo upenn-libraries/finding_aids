@@ -103,7 +103,7 @@ bundle exec rake tools:robotstxt
 ```
 
 #### Geocoding
-Repository locations are geocoded using the Nominatim (OpenStreetMap) API and cached in `tmp/geocoder_cache.yml`.
+Repository locations are geocoded using the Nominatim (OpenStreetMap) API and cached in `tmp/geocoder_cache.yml`. The cache is (re)built automatically at the end of each harvest (`PartnerHarvestJob`) and can be refreshed on demand with the rake task below.
 
 ```bash
 # Run geocoding (interactive — prompts when multiple results are returned)

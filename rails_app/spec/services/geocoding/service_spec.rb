@@ -15,7 +15,7 @@ describe Geocoding::Service do
   let(:coords) { { lat: 40.0087, lng: -75.3068 } }
 
   before do
-    cache.instance_variable_set(:@entries, {})
+    cache.clear!
     FileUtils.rm_f(cache_path)
   end
 
