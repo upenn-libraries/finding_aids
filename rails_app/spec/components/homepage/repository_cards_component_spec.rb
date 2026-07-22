@@ -7,8 +7,10 @@ RSpec.describe Homepage::RepositoryCardsComponent, type: :component do
 
   let(:repos) do
     [
-      HomepageData::Repository.new(name: 'Test Repository', slug: 'test', count: 100, lat: 39.95, lng: -75.16),
-      HomepageData::Repository.new(name: 'Another Repository', slug: 'another', count: 200, lat: 40.0, lng: -75.19)
+      HomepageData::Repository.new(name: 'Test Repository', slug: 'test', count: 100, lat: 39.95, lng: -75.16,
+                                   records_url: '/records?f%5Brepository_ssi%5D%5B%5D=Test%20Repository'),
+      HomepageData::Repository.new(name: 'Another Repository', slug: 'another', count: 200, lat: 40.0, lng: -75.19,
+                                   records_url: '/records?f%5Brepository_ssi%5D%5B%5D=Another%20Repository')
     ]
   end
 

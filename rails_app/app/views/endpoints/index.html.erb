@@ -1,7 +1,9 @@
 <h1>Endpoints</h1>
 
-<div class="text-end mb-4">
-  <%= link_to t('admin.actions.create'), new_endpoint_path, class: 'btn btn-outline-dark' %>
+<div class="d-flex justify-content-end">
+  <div class="btn-group mb-3">
+    <%= link_to t('admin.actions.create'), new_endpoint_path, class: 'btn btn-outline-dark' %>
+  </div>
 </div>
 
 <% if @endpoints.empty? %>

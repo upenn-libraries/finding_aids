@@ -31,12 +31,12 @@ module Ead
 
         # @return [Ead::Translation::Formatting]
         def formatting
-          @formatting ||= Ead::Translation::Formatting.new
+          @formatting ||= Formatting.new
         end
 
         # @return [Ead::Translation::List]
         def list
-          @list ||= Ead::Translation::List.new
+          @list ||= List.new
         end
 
         private
@@ -86,6 +86,8 @@ module Ead
         def convert_lists(node)
           node.xpath('.//list').each do |list_node|
             type = list_node.attr('type')
+            next unless type
+
             list.to_html(list_node, type.to_sym)
           end
         end

@@ -35,6 +35,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_13_000000) do
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
+  create_table "collection_guides", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.string "repository", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_collection_guides_on_active"
+  end
+
   create_table "endpoints", force: :cascade do |t|
     t.boolean "active", default: true, null: false
     t.bigint "aspace_instance_id"

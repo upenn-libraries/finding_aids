@@ -10,9 +10,6 @@ class SolrDocument
   ].freeze
 
   include Blacklight::Solr::Document
-  include EadTranslating
-  include EadTextExtracting
-
   # self.unique_key = 'id'
 
   # Support EAD XML export format
@@ -25,49 +22,20 @@ class SolrDocument
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
 
-  # @return [SolrDocument::ParsedEad]
+  # @return [Ead::Parsing::ArchivalDescription]
   def parsed_ead
-    @parsed_ead ||= SolrDocument::ParsedEad.new(fetch(XML_FIELD_NAME))
+    @parsed_ead ||= Ead::Parsing::ArchivalDescription.new(fetch(XML_FIELD_NAME))
   end
 
-  # @return [Array<Symbol>]
-  def description_sections
-    parsed_ead.class::OTHER_SECTIONS
+  # @return [Ead::Extraction::ArchivalDescription]
+  def ead_extraction
+    @ead_extraction ||= Ead::Extraction::ArchivalDescription.new(parsed_ead)
   end
 
-  # @return [String, nil]
-  def use_restrictions
-    translate(node: parsed_ead.userestrict, remove_head: true)
-  end
-
-  # @return [String, nil]
-  def access_restrictions
-    translate(node: parsed_ead.accessrestrict, remove_head: true)
-  end
-
-  # @return [String, nil]
-  def sponsor
-    translate(node: parsed_ead.sponsor, remove_head: true)
-  end
-
-  # @return [String, nil]
-  def date
-    translate(node: parsed_ead.date, remove_head: true)
-  end
-
-  # @return [String, nil]
-  def author
-    translate(node: parsed_ead.author, remove_head: true)
-  end
-
-  # @return [String, nil]
-  def publisher
-    translate(node: parsed_ead.publisher, remove_head: true)
-  end
-
-  # @return [String, nil]
-  def language_note
-    text_only(parsed_ead.langmaterial)
+  # Main accessor method for configured fields. Forwards messages to the ead_extraction.
+  # @param method [Symbol]
+  def extract(method)
+    ead_extraction.send method
   end
 
   # @return [Array<String> (frozen)]

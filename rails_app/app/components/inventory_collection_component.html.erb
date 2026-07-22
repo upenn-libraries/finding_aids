@@ -1,0 +1,9 @@
+<pennlibs-accordion class="pl-flex pl-flex-col pl-gap-m" id="inventory-accordion">
+  <% if @entries.any? %>
+    <% @entries.each_with_index do |entry, index| %>
+      <%= render(InventoryComponent.new(entry: entry, index: index + 1, requestable: @requestable)) %>
+    <% end %>
+  <% else %>
+    <div role="alert"><%= t('show.sections.inventory.none') %></div>
+  <% end %>
+</pennlibs-accordion>
