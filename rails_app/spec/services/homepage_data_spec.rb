@@ -3,10 +3,34 @@
 require 'rails_helper'
 
 describe HomepageData do
+  let(:cache) { Geocoding::Cache.new }
+  let(:coords) do
+    {
+      haverford: { lat: 40.0087, lng: -75.3068 },
+      hsp: { lat: 39.9496, lng: -75.1504 }
+    }
+  end
+  let(:facet_data) do
+    [
+      { name: 'Haverford College Quaker & Special Collections', count: 2100 },
+      { name: 'Historical Society of Pennsylvania', count: 300 }
+    ]
+  end
+  let(:address_data) do
+    {
+      'Haverford College Quaker & Special Collections' => '370 Lancaster Ave, Haverford, PA 19041',
+      'Historical Society of Pennsylvania' => '1300 Locust St, Philadelphia, PA 19107'
+    }
+  end
+
   before do
-    # Reset memoized instance variables between tests
     described_class.instance_variable_set(:@collection_guides, nil)
-    described_class.instance_variable_set(:@repositories, nil)
+  end
+
+  shared_context 'with solr stubs' do
+    before do
+      allow(RepositoryQueries).to receive_messages(facet_counts: facet_data, addresses: address_data)
+    end
   end
 
   describe '.collection_guides' do
@@ -27,60 +51,46 @@ describe HomepageData do
 
       expect(guides.map(&:name)).to include('John Wilbur papers')
     end
-
-    context 'when YAML file is missing' do
-      before do
-        allow(YAML).to receive(:safe_load_file).and_raise(Errno::ENOENT)
-      end
-
-      it 'returns an empty array' do
-        expect(described_class.collection_guides).to eq([])
-      end
-
-      it 'logs a warning' do
-        expect(Rails.logger).to receive(:warn).with(/missing or malformed/)
-        described_class.collection_guides
-      end
-    end
-
-    context 'when YAML is malformed' do
-      before do
-        allow(YAML).to receive(:safe_load_file).and_raise(Psych::SyntaxError)
-      end
-
-      it 'returns an empty array' do
-        expect(described_class.collection_guides).to eq([])
-      end
-    end
   end
 
   describe '.repositories' do
-    it 'returns an array of Repository objects' do
-      repos = described_class.repositories
+    include_context 'with solr stubs'
 
+    it 'builds Repository structs' do
+      cache.store('Haverford College Quaker & Special Collections', **coords[:haverford])
+      cache.store('Historical Society of Pennsylvania', **coords[:hsp])
+
+      repos = described_class.repositories(cache: cache)
       expect(repos).to all(be_a(HomepageData::Repository))
     end
 
-    it 'includes repository slugs from the YAML file' do
-      repos = described_class.repositories
+    it 'reads coordinates from cache' do
+      cache.store('Haverford College Quaker & Special Collections', **coords[:haverford])
 
-      expect(repos.map(&:slug)).to include('haverford-quaker')
+      repos = described_class.repositories(cache: cache)
+      haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
+      expect(haverford.lat).to eq(coords[:haverford][:lat])
+      expect(haverford.lng).to eq(coords[:haverford][:lng])
     end
 
-    it 'includes repository counts from the YAML file' do
-      repos = described_class.repositories
-
-      expect(repos.map(&:count)).to include(2065)
+    it 'generates slugs' do
+      repos = described_class.repositories(cache: cache)
+      expect(repos.map(&:slug)).to include('haverford-college-quaker-special-collections')
     end
 
-    context 'when YAML file is missing' do
-      before do
-        allow(YAML).to receive(:safe_load_file).and_raise(Errno::ENOENT)
-      end
+    it 'returns nil coordinates when address is missing' do
+      allow(RepositoryQueries).to receive(:addresses).and_return({})
+      repos = described_class.repositories(cache: cache)
+      haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
+      expect(haverford.lat).to be_nil
+    end
 
-      it 'returns an empty array' do
-        expect(described_class.repositories).to eq([])
-      end
+    it 'returns nil coordinates when cache has FAILED entry' do
+      cache.store_failure('Haverford College Quaker & Special Collections')
+
+      repos = described_class.repositories(cache: cache)
+      haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
+      expect(haverford.lat).to be_nil
     end
   end
 end
