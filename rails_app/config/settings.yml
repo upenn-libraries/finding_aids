@@ -1,4 +1,4 @@
-pennlibs_web_version: '1.4.0'
+pennlibs_web_version: '1.5.0-dev.0'
 
 solr:
   url: <%= ENV['SOLR_URL'] %>

@@ -142,7 +142,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'creators_ssim', label: I18n.t('fields.creators'), if: :json_request?
     config.add_index_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
     config.add_index_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents'),
-                                                          helper_method: :truncated_abstract
+                                                          helper_method: :expandable_abstract
 
     config.add_show_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents')
     config.add_show_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true

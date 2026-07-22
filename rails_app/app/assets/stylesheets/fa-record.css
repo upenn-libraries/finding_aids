@@ -582,6 +582,24 @@ table.table {
     }
 }
 
+/* Guide show page: break out of Bootstrap's container/row/column gutters so the
+ * page spans the full viewport. Blacklight wraps the show document in
+ * #main-container.container-fluid > .row > section.show-document (LayoutHelper#container_classes
+ * returns container-fluid here). We drop the container padding and dissolve the row/column
+ * wrappers with `display: contents`, so the header band can bleed to the viewport edges while
+ * each inner `.pl-viewport-margins` block controls the content gutters (matching the mockup). */
+.blacklight-catalog-show {
+    & #main-container {
+        max-width: none;
+        padding: 0;
+    }
+
+    & #main-container > .row,
+    & .show-document {
+        display: contents;
+    }
+}
+
 /* Guide page layout — TOC sidebar is opt-in, so single column by default.
    The sticky sidebar column only appears once someone turns the TOC on. */
 .fa-guide-layout {

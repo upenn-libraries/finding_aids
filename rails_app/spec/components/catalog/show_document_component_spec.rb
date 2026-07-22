@@ -17,61 +17,62 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
   end
 
   describe 'rendering header' do
-    let(:css) { 'div.document-main-section div.fa-guide-header' }
+    let(:intro) { '.fa-guide-header__intro' }
+    let(:aside) { '.fa-guide-header__institution' }
+    let(:metadata) { '.fa-guide-header__strip dl.fa-metadata div' }
 
     it 'shows the abstract in the header section' do
-      abstract_css =  "#{css} div.fa-guide-header__hero div.fa-guide-header__intro p"
-      expect(page).to have_css(abstract_css, text: document.fetch(:abstract_scope_contents_tsi))
+      expect(page).to have_css("#{intro} p", text: document.fetch(:abstract_scope_contents_tsi))
+    end
+
+    it 'wraps the abstract in an expand-text control' do
+      expect(page).to have_css("#{intro} p pennlibs-expand-text", text: document.fetch(:abstract_scope_contents_tsi))
     end
 
     it 'links to a repository facet search in the header aside' do
-      repo_css = "#{css} div.fa-guide-header__hero aside.fa-guide-header__institution p"
       link = view_context.search_catalog_path({ "f[repository_ssi][]": document.fetch(:repository_ssi),
                                                 only_path: true })
-      expect(page).to have_css("#{repo_css} a[href='#{link}']")
+      expect(page).to have_css("#{aside} p a[href='#{link}']")
     end
 
     it 'links to the contact section from the header aside' do
-      css = "#{css} aside.fa-guide-header__institution a.pl-button.pl-button--accent[href='#contact']"
-      expect(page).to have_css(css, text: I18n.t('show.aside.contact'))
+      expect(page).to have_css("#{aside} a.pl-button--accent[href='#contact']", text: I18n.t('show.aside.contact'))
     end
 
     it 'renders the collection title' do
-      title_css = "#{css} div.fa-guide-header__hero div.fa-guide-header__intro h1#guide-title"
-      expect(page).to have_css(title_css, text: presenter.heading)
+      expect(page).to have_css('h1#guide-title', text: presenter.heading)
+    end
+
+    it 'wraps the collection title in an expand-text control' do
+      expect(page).to have_css('#guide-title pennlibs-expand-text', text: presenter.heading)
     end
 
     it 'shows the access restrictions in the header aside' do
-      access_css = "#{css} div.fa-guide-header__hero aside.fa-guide-header__institution p"
-      expect(page).to have_css(access_css, text: document.extract(:access_restrictions))
+      expect(page).to have_css("#{aside} p", text: document.extract(:access_restrictions))
     end
 
     it 'renders collection overview metadata in the header strip' do
-      expect(page).to have_css("#{css} div.fa-guide-header__strip dl.fa-metadata")
+      expect(page).to have_css('.fa-guide-header__strip dl.fa-metadata')
     end
 
     it 'shows creator in the header strip' do
-      metadata_css = "#{css} div.fa-guide-header__strip dl.fa-metadata div"
-      expect(page).to have_css("#{metadata_css} dt", text: I18n.t('fields.creators'))
-      document.fetch(:creators_ssim).each { |creator| expect(page).to have_css("#{metadata_css} dd", text: creator) }
+      expect(page).to have_css("#{metadata} dt", text: I18n.t('fields.creators'))
+      document.fetch(:creators_ssim).each { |creator| expect(page).to have_css("#{metadata} dd", text: creator) }
     end
 
     it 'shows date in the header strip' do
-      metadata_css = "#{css} div.fa-guide-header__strip dl.fa-metadata div"
-      expect(page).to have_css("#{metadata_css} dt", text: I18n.t('fields.date'))
-      document.display_dates.each { |date| expect(page).to have_css("#{metadata_css} dd", text: date) }
+      expect(page).to have_css("#{metadata} dt", text: I18n.t('fields.date'))
+      document.display_dates.each { |date| expect(page).to have_css("#{metadata} dd", text: date) }
     end
 
     it 'shows extent in the header strip' do
-      metadata_css = "#{css} div.fa-guide-header__strip dl.fa-metadata div"
-      expect(page).to have_css("#{metadata_css} dt", text: I18n.t('fields.extent'))
-      document.fetch(:extent_ssim).each { |extent| expect(page).to have_css("#{metadata_css} dd", text: extent) }
+      expect(page).to have_css("#{metadata} dt", text: I18n.t('fields.extent'))
+      document.fetch(:extent_ssim).each { |extent| expect(page).to have_css("#{metadata} dd", text: extent) }
     end
 
     it 'shows the call number in the header strip' do
-      metadata_css = "#{css} div.fa-guide-header__strip dl.fa-metadata div"
-      expect(page).to have_css("#{metadata_css} dt", text: I18n.t('fields.pretty_unit_id'))
-      expect(page).to have_css("#{metadata_css} dd", text: document.fetch(:pretty_unit_id_ss))
+      expect(page).to have_css("#{metadata} dt", text: I18n.t('fields.pretty_unit_id'))
+      expect(page).to have_css("#{metadata} dd", text: document.fetch(:pretty_unit_id_ss))
     end
   end
 

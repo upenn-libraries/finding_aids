@@ -31,13 +31,14 @@ module ApplicationHelper
       .join(PAGE_TITLE_SEPARATOR)
   end
 
-  # Custom helper method use by Blacklight to truncate abstract.
+  # Blacklight helper that renders the abstract in search results wrapped in the
+  # design system's expand-text pattern, which clamps long text and offers an
+  # inline toggle to reveal the rest in place (replacing the old truncate-with-a-
+  # "(see more)"-link-to-the-record approach).
   # @param options [Hash]
   # @return [ActiveSupport::SafeBuffer]
-  def truncated_abstract(options)
-    truncate(options[:value].first, length: 1_000, separator: ' ') do
-      link_to '(see more)', solr_document_path(options[:document])
-    end
+  def expandable_abstract(options)
+    content_tag('pennlibs-expand-text', options[:value].first)
   end
 
   # @param options [Hash]
