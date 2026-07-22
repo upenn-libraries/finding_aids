@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Aeon::Request do
   let(:request) { described_class.new(params) }
   let(:params) { ActionController::Parameters.new(parameters) }
-  let(:repository) { Settings.aeon.locations.sample[:label] }
+  let(:repository) { Settings.aeon.locations.first[:label] }
   let(:parameters) { {} }
 
   describe '.allowed?' do
@@ -36,7 +36,7 @@ describe Aeon::Request do
     context 'with a supported location' do
       let(:parameters) { { repository: repository } }
 
-      it 'raises an exception' do
+      it 'does not raise an exception' do
         expect { request }.not_to raise_error
       end
     end
@@ -58,11 +58,11 @@ describe Aeon::Request do
     end
 
     let(:expected_item_metadata) do
-      { 'CallNumber_0' => 'test-call-num',
-        'ItemTitle_0' => 'Some old thing',
-        'ItemVolume_0' => 'Month January [111111111]',
-        'ItemIssue_0' => 'Page 6',
-        'Request_0' => 0 }
+      { 'CallNumber': 'test-call-num',
+        'ItemTitle': 'Some old thing',
+        'ItemVolume': 'Month January [111111111]',
+        'ItemIssue': 'Page 6',
+        'Request': 1 }
     end
 
     it 'has an array of Items' do
@@ -82,7 +82,7 @@ describe Aeon::Request do
 
       it 'includes a scheduled date field' do
         expect(request.fulfillment_fields).to eq(
-          { 'RequestType' => request_type, 'ScheduledDate' => '12/25/2026' }
+          { 'RequestType': request_type, 'ScheduledDate': '12/25/2026' }
         )
       end
     end
@@ -91,7 +91,7 @@ describe Aeon::Request do
       let(:request_type) { described_class::SCAN_REQUEST }
 
       it 'includes only the request type field' do
-        expect(request.fulfillment_fields).to eq({ 'RequestType' => request_type })
+        expect(request.fulfillment_fields).to eq({ 'RequestType': request_type })
       end
     end
   end

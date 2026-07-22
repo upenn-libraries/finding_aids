@@ -37,14 +37,19 @@ module Aeon
       @params = params
     end
 
+    # @return [Boolean]
+    def visit_request?
+      params[:request_type] == VISIT_REQUEST
+    end
+
     # Build indexed Item object from params, isolating individual collection requesting metadata
     # @return [Array[Aeon::Item]]
     def items
       @items ||= params['item'].map.with_index do |item, i|
-        volume, issue = item.split(':').map(&:strip)
-        volume += " [#{barcode(i)}]" if barcode(i).present?
-        container_info = { volume: volume, issue: issue }
-        Aeon::Item.new i + 1, container_info, self
+        Aeon::Item.new number: i + 1,
+                       description: item,
+                       request: self,
+                       barcode: params[:item_barcode][i]
       end
     end
 
@@ -62,7 +67,7 @@ module Aeon
 
     # @return [Hash{String (frozen)->String}]
     def fulfillment_fields
-      if params[:request_type] == VISIT_REQUEST
+      if visit_request?
         { RequestType: VISIT_REQUEST,
           ScheduledDate: formatted_retrieval_date }
       else
@@ -70,11 +75,10 @@ module Aeon
       end
     end
 
+    # Return an array of array with items fields. We can't use a hash here because we need duplicate "keys"
     # @return [Array<Array(String, String)>]
     def item_fields
-      items.flat_map do |item|
-        [['Request', item.number]] + item.to_h.to_a
-      end
+      items.flat_map(&:params_as_array)
     end
 
     # @return [String]
@@ -87,12 +91,7 @@ module Aeon
       params[:title]
     end
 
-    # @param index [Integer]
-    # @return [String]
-    def barcode(index)
-      params[:item_barcode][index]
-    end
-
+    # Return an array of arrays for use in rendering hidden form fields while allowing for duplicate keys
     # @return [Array<Array(String, String)>]
     def to_a
       BASE_PARAMS.to_a +
