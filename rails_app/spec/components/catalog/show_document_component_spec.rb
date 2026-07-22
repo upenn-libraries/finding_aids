@@ -17,9 +17,11 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
   end
 
   describe 'rendering header' do
-    let(:intro) { '.fa-guide-header__intro' }
-    let(:aside) { '.fa-guide-header__institution' }
-    let(:metadata) { '.fa-guide-header__strip dl.fa-metadata div' }
+    # Short CSS scopes for the header regions. Plain methods (not `let`) so they
+    # don't count against RSpec/MultipleMemoizedHelpers.
+    def intro = '.fa-guide-header__intro'
+    def aside = '.fa-guide-header__institution'
+    def metadata = '.fa-guide-header__strip dl.fa-metadata div'
 
     it 'shows the abstract in the header section' do
       expect(page).to have_css("#{intro} p", text: document.fetch(:abstract_scope_contents_tsi))
