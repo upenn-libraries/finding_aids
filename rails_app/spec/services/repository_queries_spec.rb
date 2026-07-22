@@ -24,7 +24,9 @@ describe RepositoryQueries do
       [
         attributes_for(:solr_document, repository_ssi: 'Repo A', title_tsi: 'Guide One'),
         attributes_for(:solr_document, repository_ssi: 'Repo A', title_tsi: 'Guide Two'),
-        attributes_for(:solr_document, repository_ssi: 'Repo B', title_tsi: 'Guide Three')
+        attributes_for(:solr_document, repository_ssi: 'Repo B', title_tsi: 'Guide Three'),
+        attributes_for(:solr_document, repository_ssi: 'Repo A', title_tsi: nil),
+        attributes_for(:solr_document, repository_ssi: nil, title_tsi: 'Orphan Title')
       ]
     end
 
@@ -33,6 +35,13 @@ describe RepositoryQueries do
 
       expect(results['Repo A']).to eq(['Guide One', 'Guide Two'])
       expect(results['Repo B']).to eq(['Guide Three'])
+    end
+
+    it 'excludes documents with blank repository or title' do
+      results = described_class.titles_by_repository
+
+      expect(results.keys).not_to include(nil)
+      expect(results['Repo A']).not_to include(nil)
     end
   end
 

@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
-# Homepage data from YAML files, the database, and Solr.
+# Homepage data from the database and Solr.
 #
 # Featured collections are curated via the FeaturedCollection admin.
 # Repository coordinates are looked up from the Geocoding::Cache.
 # Bulk geocoding (refresh!) lives in the service layer, not here.
 module HomepageData
-  REPOSITORIES_PATH = Rails.root.join('data/repositories.yml')
-  COLLECTION_GUIDES_PATH = Rails.root.join('data/collection_guides.yml')
   MAX_GUIDES = 8
 
-  CollectionGuide = Data.define(:identifier, :name, :collection)
   Repository = Data.define(:name, :slug, :count, :lat, :lng, :records_url)
 
   class << self
@@ -67,17 +64,6 @@ module HomepageData
       Rails.application.routes.url_helpers.search_catalog_path(
         f: { repository_ssi: [name] }
       )
-    end
-
-    # @param path [Pathname]
-    # @param struct_class [Class]
-    # @return [Array]
-    def load_yaml(path, struct_class)
-      YAML.safe_load_file(path, symbolize_names: true)
-          .map { |entry| struct_class.new(**entry.slice(*struct_class.members)) }
-    rescue StandardError => e
-      Rails.logger.warn "Homepage data file missing or malformed: #{path} - #{e.message}"
-      []
     end
   end
 end

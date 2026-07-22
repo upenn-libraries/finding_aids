@@ -205,6 +205,7 @@ en:
       status: 'Status Page'
       sidekiq: 'Sidekiq'
       sign_out: 'Log Out'
+      featured_collections: 'Featured Collections'
     users:
       uid: 'PennKey'
     endpoints:
@@ -212,8 +213,6 @@ en:
       aspace_instance:
         include_blank: 'Select an ASpace instance...'
       last_harvest_results: 'Last Harvest Results'
-    menu:
-      featured_collections: 'Featured Collections'
     actions:
       create: 'Add'
       edit: 'Edit'
@@ -271,3 +270,4 @@ en:
         title_blank: 'Select a repository first…'
         submit: 'Create Featured Collection'
       model_name: 'Featured collection'
+      back: 'Back'
