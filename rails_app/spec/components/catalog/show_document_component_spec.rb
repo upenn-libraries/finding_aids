@@ -17,8 +17,6 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
   end
 
   describe 'rendering header' do
-    # Short CSS scopes for the header regions. Plain methods (not `let`) so they
-    # don't count against RSpec/MultipleMemoizedHelpers.
     def intro = '.fa-guide-header__intro'
     def aside = '.fa-guide-header__institution'
     def metadata = '.fa-guide-header__strip dl.fa-metadata div'
