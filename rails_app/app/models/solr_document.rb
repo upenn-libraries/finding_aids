@@ -63,6 +63,11 @@ class SolrDocument
     fetch(:contact_emails_ssm).first
   end
 
+  # @return [Boolean]
+  def requestable?
+    Aeon::Request.allowed? repository_name: fetch(:repository_ssi)
+  end
+
   # @return [Hash{Symbol->Unknown}]
   def requesting_info
     { title: title, call_num: call_num, repository: repository }
