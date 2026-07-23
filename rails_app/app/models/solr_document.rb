@@ -68,7 +68,8 @@ class SolrDocument
     Aeon::Request.allowed? repository_name: fetch(:repository_ssi)
   end
 
-  # @return [Hash{Symbol->Unknown}]
+  # Record-level requesting info, needed for Aeon submissions. Will be supplemented with container-level data.
+  # @return [Hash{Symbol->String}]
   def requesting_info
     { title: title, call_num: call_num, repository: repository }
   end

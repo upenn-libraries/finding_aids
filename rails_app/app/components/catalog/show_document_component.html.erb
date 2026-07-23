@@ -52,7 +52,7 @@
           <%= render(DescriptionAccordionComponent.new(document: document, presenter: @presenter,
                                                        id: 'description-accordion')) %>
       </div>
-      <div id="inventory-sections" class="pl-margin-b-2xl">
+      <%= content_tag(:div, id: 'inventory-sections', class: 'pl-margin-b-2xl', data: @document.requesting_info) do %>
         <div class="fa-section-header">
           <div>
             <h2 id="inventory"><%= t("show.sections.inventory.header") %></h2>
@@ -65,7 +65,7 @@
           </button>
         </div>
         <%= render InventoryCollectionComponent.new(entries: inventory_entries, requestable: @document.requestable?) %>
-      </div>
+      <% end %>
       <section>
         <h2 id="contact"><%= t('show.sections.contact.header') %></h2>
         <p style="font-size: var(--pl-font-size-l);" class="pl-line-length pl-margin-b-m">

@@ -42,11 +42,9 @@
               <td data-th="<%= t('show.sections.inventory.dates') %>"><%= dates %></td>
               <td data-th="<%= t('show.sections.inventory.container') %>"><%= containers %></td>
               <% if @requestable %>
-                <td class="fa-visit__cell" data-title="<%= title_text %>" data-dates="<%= dates %>"
-                  data-container="<%= containers %>"
-                  data-th="<%= t('show.sections.inventory.select') %>">
+                <td class="fa-visit__cell" data-th="<%= t('show.sections.inventory.select') %>">
                   <label class="fa-visit__label">
-                    <input class="fa-visit__checkbox" type="checkbox" data-fa-request-id=<%= "#{heading_id}-item-#{i + 1}" %>>
+                    <%= check_box_tag :c_req, id: "#{heading_id}-item-#{i + 1}", class: 'fa-visit__checkbox', data: { container: join_containers(row_entry) } %>
                     <span class="visually-hidden"><%= t('show.sections.inventory.select_visually_hidden', title: title_text) %></span>
                   </label>
                 </td>
