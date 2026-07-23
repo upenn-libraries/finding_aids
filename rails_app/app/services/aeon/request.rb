@@ -9,7 +9,7 @@ module Aeon
   #  - special_request (String)
   #  - notes (String)
   #  - retrieval_date (String with date in YYYY-MM-DD format)
-  #  - save_for_later (Boolean)
+  #  - save_for_later (Boolean) I choose to only use this with LOAN requests
   #  - return_url (String)
   #  - item (Array of Strings)
   #  - item_barcode (Array of Strings)
@@ -59,16 +59,16 @@ module Aeon
         Notes: params[:notes].to_s }
     end
 
-    def settings_fields
-      { UserReview: params[:save_for_later] == '1' ? 'Yes' : 'No',
-        ReturnLinkUrl: params[:return_url].to_s,
+    def return_link_fields
+      { ReturnLinkUrl: params[:return_url].to_s,
         ReturnLinkSystemName: Settings.aeon.system_name }
     end
 
     # @return [Hash{String (frozen)->String}]
     def fulfillment_fields
       if visit_request?
-        { RequestType: VISIT_REQUEST,
+        { UserReview: params[:save_for_later] == '1' ? 'Yes' : 'No',
+          RequestType: VISIT_REQUEST,
           ScheduledDate: formatted_retrieval_date }
       else
         { RequestType: SCAN_REQUEST }
@@ -97,7 +97,7 @@ module Aeon
       BASE_PARAMS.to_a +
         note_fields.to_a +
         fulfillment_fields.to_a +
-        settings_fields.to_a +
+        return_link_fields.to_a +
         item_fields
     end
 
