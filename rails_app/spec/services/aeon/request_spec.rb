@@ -75,14 +75,16 @@ describe Aeon::Request do
   end
 
   describe '#fulfillment_fields' do
-    let(:parameters) { { repository: repository, request_type: request_type, retrieval_date: '2026-12-25' } }
+    let(:parameters) do
+      { repository: repository, request_type: request_type, retrieval_date: '2026-12-25', save_for_later: '0' }
+    end
 
     context 'with an in-person access request' do
       let(:request_type) { described_class::VISIT_REQUEST }
 
       it 'includes a scheduled date field' do
         expect(request.fulfillment_fields).to eq(
-          { 'RequestType': request_type, 'ScheduledDate': '12/25/2026' }
+          { 'RequestType': request_type, 'ScheduledDate': '12/25/2026', 'UserReview': 'No' }
         )
       end
     end
