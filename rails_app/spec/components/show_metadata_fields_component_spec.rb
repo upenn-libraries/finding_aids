@@ -19,7 +19,7 @@ RSpec.describe ShowMetadataFieldsComponent, type: :component do
       render_inline(described_class.new(fields: fields, dl_class: 'custom-dl'))
 
       expect(page).to have_css('dl.custom-dl')
-      expect(page).not_to have_css('dl.pl-dl')
+      expect(page).to have_no_css('dl.pl-dl')
     end
 
     it 'applies a custom dt class when given' do
@@ -65,7 +65,7 @@ RSpec.describe ShowMetadataFieldsComponent, type: :component do
     it 'does not render the component' do
       render_inline(described_class.new(fields: fields))
 
-      expect(page).not_to have_css('dl')
+      expect(page).to have_no_css('dl')
     end
   end
 end

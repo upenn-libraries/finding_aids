@@ -90,7 +90,7 @@ RSpec.describe InventoryComponent, type: :component do
       before { render_inline(described_class.new(entry: entry, index: 1)) }
 
       it 'does not render a table' do
-        expect(outer_entry_details).not_to have_css('> div > table.table--responsive-small', visible: :all)
+        expect(outer_entry_details).to have_no_css('> div > table.table--responsive-small', visible: :all)
       end
 
       it 'renders child entries as nested details' do

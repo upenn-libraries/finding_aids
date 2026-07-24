@@ -52,17 +52,17 @@ RSpec.describe DescriptionAccordionComponent, type: :component do
 
       it 'omits the missing description sections' do
         render_inline component
-        expect(page).not_to have_css('summary h3#custodhist')
+        expect(page).to have_no_css('summary h3#custodhist')
       end
 
       it 'omits the rights and citation details' do
         render_inline component
-        expect(page).not_to have_css('summary h3#rights')
+        expect(page).to have_no_css('summary h3#rights')
       end
 
       it 'omits subjects and headings details' do
         render_inline component
-        expect(page).not_to have_css('summary h3#topics')
+        expect(page).to have_no_css('summary h3#topics')
       end
     end
   end
