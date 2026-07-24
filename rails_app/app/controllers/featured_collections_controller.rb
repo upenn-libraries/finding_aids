@@ -18,15 +18,18 @@ class FeaturedCollectionsController < ApplicationController
 
   def create
     @guide = FeaturedCollection.new(guide_params)
-    return success(:create) if @guide.save
+    return create_success if @guide.save
 
-    flash_failure(:create)
+    create_failure
     render :new, status: :unprocessable_entity
   end
 
   def destroy
     @guide.destroy
-    success(:destroy)
+    flash.notice = I18n.t('admin.flash.destroy.success',
+                          class_name: FeaturedCollection.model_name.human,
+                          identifier: @guide.title)
+    redirect_to featured_collections_path
   end
 
   private
@@ -37,27 +40,25 @@ class FeaturedCollectionsController < ApplicationController
 
   def load_form_data
     @titles_by_repository = RepositoryQueries.titles_by_repository
-    @repositories = @titles_by_repository.keys.sort
   rescue StandardError => e
     Rails.logger.warn "FeaturedCollectionsController: failed to load form data - #{e.class}: #{e.message}"
     @titles_by_repository = {}
-    @repositories = []
   end
 
   def guide_params
     params.require(:featured_collection).permit(:title, :repository)
   end
 
-  def success(action)
-    flash.notice = I18n.t("admin.flash.#{action}.success",
-                          class_name: t('admin.featured_collections.form.model_name'),
+  def create_success
+    flash.notice = I18n.t('admin.flash.create.success',
+                          class_name: FeaturedCollection.model_name.human,
                           identifier: @guide.title)
     redirect_to featured_collections_path
   end
 
-  def flash_failure(action)
-    flash.alert = I18n.t("admin.flash.#{action}.failure",
-                         class_name: t('admin.featured_collections.form.model_name'),
+  def create_failure
+    flash.alert = I18n.t('admin.flash.create.failure',
+                         class_name: FeaturedCollection.model_name.human,
                          identifier: @guide.title,
                          error: @guide.errors.map(&:full_message).join(', '))
   end

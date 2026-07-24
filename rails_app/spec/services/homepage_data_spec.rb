@@ -52,7 +52,7 @@ describe HomepageData do
     end
 
     it 'limits to the featured collections max' do
-      create_list(:featured_collection, 10, repository: 'Test Repo')
+      create_list(:featured_collection, HomepageData::MAX_GUIDES + 1, repository: 'Test Repo')
 
       guides = described_class.collection_guides
 

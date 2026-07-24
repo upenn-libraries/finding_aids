@@ -6,13 +6,6 @@ export default class extends Controller {
 
   connect() {
     this.filterTitles();
-
-    // If editing an existing record, restore the selected title after filtering
-    if (this.titleTarget.dataset.selected) {
-      this.titleTarget.value = this.titleTarget.dataset.selected;
-    }
-
-    this.titleTarget.disabled = !this.repositoryTarget.value;
   }
 
   filterTitles() {

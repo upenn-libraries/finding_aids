@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Solr queries for repository data used on the homepage and in the admin form.
+# Solr queries for repository data used on the homepage, for featured
+# collection creation, and for FeaturedCollection model validation.
 class RepositoryQueries
   # @return [Array<Hash>] [{name:, count:}, ...] sorted by count descending
   def self.facet_counts
@@ -50,13 +51,11 @@ class RepositoryQueries
   #
   # @return [Hash{String => Array<String>}] repository name => sorted array of titles
   def self.titles_by_repository
-    grouped = Hash.new { |h, k| h[k] = [] }
-    titles_docs.each do |doc|
-      repo = doc['repository_ssi']
-      title = doc['title_tsi']
-      grouped[repo] << title if repo.present? && title.present?
-    end
-    grouped.transform_values(&:sort!).sort.to_h
+    valid_title_pairs
+      .group_by(&:first)
+      .transform_values { |pairs| pairs.map(&:last).sort }
+      .sort
+      .to_h
   end
 
   # @return [RSolr::Client]
@@ -74,5 +73,14 @@ class RepositoryQueries
     response.dig('response', 'docs') || []
   end
 
-  private_class_method :connection, :titles_docs
+  # @return [Array<Array(String, String)>] [[repo, title], ...] pairs with both present
+  def self.valid_title_pairs
+    titles_docs.filter_map do |doc|
+      repo = doc['repository_ssi']
+      title = doc['title_tsi']
+      [repo, title] if repo.present? && title.present?
+    end
+  end
+
+  private_class_method :connection, :titles_docs, :valid_title_pairs
 end

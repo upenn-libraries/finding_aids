@@ -1,5 +1,3 @@
 <h1><%= t('admin.featured_collections.new') %></h1>
 
-<%= render 'form' %>
-
-<%= link_to t('admin.featured_collections.back'), featured_collections_path, class: 'btn btn-outline-secondary mt-3' %>
+<%= render FeaturedCollections::FormComponent.new(guide: @guide, titles_by_repository: @titles_by_repository) %>
