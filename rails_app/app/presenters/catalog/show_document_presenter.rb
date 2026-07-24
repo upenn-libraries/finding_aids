@@ -10,5 +10,10 @@ module Catalog
       f = configuration[:show_fields].select { |_, field_config| field_config.group == group }
       field_presenters(f)
     end
+
+    # @return [ActiveSupport::SafeBuffer, nil]
+    def render_single_value(field)
+      field_value(configuration.show_fields[field]).first
+    end
   end
 end

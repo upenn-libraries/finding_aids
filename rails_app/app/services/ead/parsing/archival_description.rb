@@ -15,23 +15,28 @@ module Ead
         @nodes.remove_namespaces!
       end
 
-      # @return [Nokogiri::XML::Element] required element in <archdesc> node
+      def descriptions
+        OTHER_SECTIONS.flat_map { |section| send(section) }.compact_blank
+      end
+
+      # @return [Nokogiri::XML::Node, nil] required element in <archdesc> node
       def did
         @nodes.at_xpath('/ead/archdesc/did')
       end
 
-      # @return [Nokogiri::XML::Element]
+      # @return [Nokogiri::XML::Node, nil]
       def dsc
         @nodes.at_xpath('/ead/archdesc/dsc')
       end
 
-      # @return [Nokogir::XML::Element]
+      # @return [Nokogir::XML::Node, nil]
       def langmaterial
         did.at_xpath('langmaterial')
       end
 
       # Dynamically define accessor methods for sections found in the archdesc node
       (ADMIN_INFO_SECTIONS + OTHER_SECTIONS).each do |section|
+        # @return [Nokogiri::XML::NodeSet]
         define_method(section) do
           @nodes.xpath("/ead/archdesc/#{section}")
         end

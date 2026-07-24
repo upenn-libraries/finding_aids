@@ -5,107 +5,91 @@ module Ead
     module Inventory
       # Provides useful data about a single <c> or <c01> through <c12> component in the EAD used to describe
       # hierarchical groupings of collection materials.
-      class Entry
-        include EadTranslating
-        include EadTextExtracting
-
-        NODES = %w[c c01 c02 c03 c04 c05 c06 c07 c08 c09 c10 c11 c12].freeze
-        DESCRIPTIVE_METADATA_SECTIONS = %w[bioghist arrangement scopecontent odd relatedmaterial
-                                           userestrict altformavail].freeze
-        IDENTIFICATION_METADATA_SECTIONS = %w[physdesc materialspec physloc].freeze
-
-        attr_reader :node
-
-        # @param node [Nokogiri::XML::Node]
-        # @return [Nokogiri::XML::NodeSet]
-        def self.nodes(node)
-          node.xpath(NODES.map { |name| "./#{name}" }.join(' | '))
-        end
-
+      class Entry < Extraction::Base
+        ID_PREFIX = 'series'
         # @param node [Nokogiri::XML::Node]
         # @return [Array<Ead::Extraction::Inventory::Entry>]
         def self.build_entries(node)
-          nodes(node).map { |n| new(n) }
+          Parsing::Inventory.nodes(node).map { |n| new(Parsing::Inventory.new(n)) }
         end
 
-        # @param node [Nokogir::XML::Node]
-        def initialize(node)
-          @node = node
+        attr_reader :parser
+
+        def initialize(parser)
+          @parser = parser
+        end
+
+        # @param index [Integer]
+        # @param parent_id [String, nil]
+        # @return [String]
+        def id(index:, parent_id: nil)
+          "#{parent_id || ID_PREFIX}-#{index}"
         end
 
         # @return [String, nil]
         def unitid
-          text_only node.at_xpath("did/unitid[not(@audience='internal' or @type='aspace_uri')]")
+          text_only parser.unitid
         end
 
         # @return [String, nil]
         def origination
-          text_only node.at_xpath('did/origination')
+          text_only parser.origination
         end
 
         # @return [String, nil]
         def extent
-          text_only node.at_xpath('did/physdesc/extent')
+          text_only parser.extent
         end
 
         # @return [String, nil]
         def bulk_date
-          text_only node.at_xpath('did/unitdate[@type=\'bulk\']')
+          text_only parser.bulk_date
         end
 
         # @return [String, nil]
         def non_bulk_date
-          text_only node.at_xpath('did/unitdate[not(@type=\'bulk\')]')
+          text_only parser.non_bulk_date
         end
 
         # @return [ActiveSupport::SafeBuffer, nil]
         def title_html
-          @title_html ||= translate node: node.at_xpath('did/unittitle')
+          @title_html ||= translate node: parser.unittitle
         end
 
         # @return [String, nil]
         def title_text
-          text_only node.at_xpath('did/unittitle')
+          text_only parser.unittitle
         end
 
         # @return [Array<ActiveSupport::SafeBuffer>]
-        def descriptive_metadata
-          @descriptive_metadata ||= descriptive_metadata_nodes.filter_map { |node| translate(node: node) }
+        def descriptions
+          @descriptions ||= parser.descriptions.filter_map { |node| translate(node: node) }
         end
 
         # @return [Array<Hash>]
-        def descriptive_metadata_definitions
-          @descriptive_metadata_definitions ||= descriptive_metadata_nodes.filter_map do |section|
-            term = text_only(section.at_xpath('head'))
-            definition = translate(node: section, remove_head: true)
-            next if definition.blank?
-
-            { term: term, definition: definition }
+        def description_definitions
+          @description_definitions ||= definitions(parser.descriptions, remove_head: true) do |node, translation|
+            Definition.new(text_only(parser.head(node)) || I18n.t("sections.#{node.name}"), translation)
           end
         end
 
         # @return [Array<Hash>]
-        def identification_metadata_definitions
-          @identification_metadata_definitions ||= IDENTIFICATION_METADATA_SECTIONS.filter_map do |section|
-            identification_node = node.at_xpath("did/#{section}")
-            next unless identification_node
-
-            term = identification_node.attr('label') || I18n.t("inventory.sections.#{section}")
-
-            { term: term, definition: translate(node: identification_node) }
+        def identification_definitions
+          @identification_definitions ||= definitions(parser.identifications) do |node, translation|
+            Definition.new(node.attr('label') || I18n.t("inventory.sections.#{node.name}"), translation)
           end
         end
 
         # @return [Array<Ead::Extraction::Inventory::Container>]
         def containers
-          @containers ||= node.xpath('did/container').map do |c|
+          @containers ||= parser.container.map do |c|
             Container.new type: c.attr(:type), local_type: c.attr(:localtype), text: text_only(c), label: c.attr(:label)
           end
         end
 
         # @return [Array<Ead::Extraction::Inventory::DigitalObject>]
         def digital_objects
-          @digital_objects ||= node.xpath('./did/dao | ./dao').filter_map do |dao|
+          @digital_objects ||= parser.digital_objects.filter_map do |dao|
             href = dao.attr('href').to_s
             next unless DigitalObject.web_url?(href)
 
@@ -115,29 +99,25 @@ module Ead
 
         # @return [Array<Ead::Extraction::Inventory::Entry>]
         def children
-          @children ||= self.class.build_entries(node)
+          @children ||= self.class.build_entries(parser.node)
         end
 
         # @return [Boolean]
         def children?
           return @children.any? if defined?(@children)
 
-          first_child_node.present?
+          first_child.present?
         end
 
         # @return [Boolean]
         def additional_contents?
-          descriptive_metadata_nodes.any? || identification_metadata_definitions.any? || digital_objects.any?
+          parser.additional_metadata?
         end
 
-        private
+        def first_child
+          return @first_child if defined?(@first_child)
 
-        def descriptive_metadata_nodes
-          @descriptive_metadata_nodes ||= node.xpath(DESCRIPTIVE_METADATA_SECTIONS.join(' | '))
-        end
-
-        def first_child_node
-          @first_child_node ||= node.at_xpath(NODES.map { |name| "./#{name}" }.join(' | '))
+          @first_child = parser.first_child
         end
       end
     end

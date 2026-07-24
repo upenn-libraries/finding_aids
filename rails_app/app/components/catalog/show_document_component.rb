@@ -3,14 +3,15 @@
 module Catalog
   # Override Blacklight 9.0 component to customize layout
   class ShowDocumentComponent < Blacklight::DocumentComponent
+    include Turbo::FramesHelper
     # @return [ActiveSupport::SafeBuffer]
     def repository
-      render_single_value :repository_ssi
+      presenter.render_single_value(:repository_ssi)
     end
 
     # @return [ActiveSupport::SafeBuffer]
     def abstract
-      render_single_value :abstract_scope_contents_tsi
+      presenter.render_single_value(:abstract_scope_contents_tsi)
     end
 
     # @return [Enumerator<Blacklight::FieldPresenter>]
@@ -25,15 +26,12 @@ module Catalog
 
     # @return [Array<Ead::Extraction::Inventory::Entry>]
     def inventory_entries
-      Ead::Extraction::Inventory::Entry.build_entries(@document.parsed_ead.dsc)
+      @inventory_entries ||= Ead::Extraction::Inventory::Entry.build_entries(@document.parsed_ead.dsc)
     end
 
-    private
-
-    # @return [ActiveSupport::SafeBuffer]
-    def render_single_value(field)
-      field_config = presenter.configuration.show_fields.slice(field)
-      presenter.field_presenters(field_config) { |presenter| return presenter.render.first }
+    # @return [Class<Ead::Extraction::Inventory::EntryPresenter>]
+    def entry_presenter
+      Ead::Extraction::Inventory::EntryPresenter
     end
   end
 end

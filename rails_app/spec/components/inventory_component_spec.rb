@@ -372,14 +372,14 @@ RSpec.describe InventoryComponent, type: :component do
       entry = entry_for(<<~XML)
         <c02>
           <did><unittitle>Series</unittitle></did>
-          <scopecontent><head>Scope and Contents</head><p>Correspondence, 1960s.</p></scopecontent>
+          <scopecontent><head>Scope and Content</head><p>Correspondence, 1960s.</p></scopecontent>
         </c02>
       XML
 
       render_inline(described_class.new(entry: entry, index: 1))
       contents = page.first('td[data-th="Contents"] dl.pl-dl--inline', visible: :all)
 
-      expect(contents).to have_css('dt', text: 'Scope and Contents', visible: :all)
+      expect(contents).to have_css('dt', text: I18n.t('sections.scopecontent'), visible: :all)
       expect(contents).to have_css('dd', text: 'Correspondence, 1960s.', visible: :all)
     end
 

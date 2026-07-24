@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe DescriptionAccordionComponent, type: :component do
+RSpec.describe DescriptionComponent, type: :component do
   let(:document) { SolrDocument.new(attributes_for(:solr_document, :with_collection_data)) }
   let(:presenter) { Catalog::ShowDocumentPresenter.new(document, view_context, CatalogController.new.blacklight_config) }
   let(:component) { described_class.new(document: document, presenter: presenter, id: 'description-accordion') }

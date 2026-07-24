@@ -38,6 +38,11 @@ Rails.application.routes.draw do
     concerns :searchable
   end
 
+  get 'inventory/:id/details',
+      to: 'inventory#details',
+      as: :details_inventory,
+      constraints: { id: %r{[^/]+} }
+
   # Legacy ID lookup route
   get '/records/legacy/:id', to: 'legacy#redirect'
 

@@ -1,0 +1,29 @@
+<ul id="toc-list">
+  <li>
+    <a href="#guide-title"><%= presenter.heading %></a>
+  </li>
+  <li>
+    <a href="#description"><%= I18n.t('show.sections.description.header') %></a>
+    <ul>
+      <% document.extract(:description_definitions).each do |definition| %>
+        <li>
+          <%= link_to I18n.t("sections.#{definition.term}"), "##{definition.term}", data: { turbo: false } %>
+        </li>
+      <% end %>
+      <% if presenter.field_presenters_by_group(:rights_and_citation).any? %>
+        <li>
+          <%= link_to I18n.t("sections.rights_and_citation"), '#rights', data: { turbo: false } %>
+        </li>
+      <% end %>
+      <% if presenter.field_presenters_by_group(:subjects_and_headings).any? %>
+        <li>
+          <%= link_to I18n.t("sections.subjects_and_headings"), '#topics', data: { turbo: false } %>
+        </li>
+      <% end %>
+    </ul>
+  </li>
+<li>
+  <a href="#inventory"><%= I18n.t('show.sections.inventory.header') %></a>
+  <%= inventory_list %>
+</li>
+</ul>

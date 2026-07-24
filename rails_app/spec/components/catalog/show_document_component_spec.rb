@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Catalog::ShowDocumentComponent, type: :component do
+  include EadHelpers
   let(:document) { SolrDocument.new(attributes_for(:solr_document, :with_collection_data)) }
   let(:presenter) { Catalog::ShowDocumentPresenter.new(document, view_context, CatalogController.new.blacklight_config) }
   let(:component) { described_class.new(document: presenter) }
@@ -78,8 +79,24 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
   describe 'rendering table of contents' do
     let(:css) { 'div.document-main-section div.fa-guide-layout' }
 
-    it 'renders a table of contents navigation', pending: 'not implemented' do
+    it 'renders a table of contents navigation' do
       expect(page).to have_css("#{css} nav.fa-toc[aria-label='Table of contents'] ul li", text: presenter.heading)
+    end
+
+    it 'only renders one level deep' do
+      entry = entry_for(<<~XML, xpath: '//c01')
+        <c01 level="series">
+          <did><unittitle>Level 1</unittitle></did>
+          <c02>
+            <did><unittitle>Level 2</unittitle></did>
+          </c02>
+        </c01>
+      XML
+      allow(Ead::Extraction::Inventory::Entry).to receive(:build_entries).and_return([entry])
+      render_inline described_class.new(document: presenter)
+
+      expect(page).to have_css("#{css} nav.fa-toc[aria-label='Table of contents'] ul li", text: 'Level 1')
+      expect(page).to have_no_css("#{css} nav.fa-toc[aria-label='Table of contents'] ul li", text: 'Level 2')
     end
   end
 
@@ -115,13 +132,23 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
       expect(page).to have_css("#{css} button[data-pl-accordion-toggle='inventory-accordion']")
     end
 
+    it 'renders a turbo frame to load inventory collection' do
+      frame_css = "#{css} turbo-frame#inventory-frame[src='/inventory/#{document.id}/details']"
+      expect(page).to have_css(frame_css)
+    end
+
     it 'renders the description accordion component' do
       expect(page).to have_css("#{css} pennlibs-accordion#inventory-accordion")
     end
 
-    it 'renders inventory details' do
+    it 'renders top level inventory details' do
       detail_css = "#{css} pennlibs-accordion#inventory-accordion"
-      expect(page).to have_css("#{detail_css} details summary h3#series-1", text: 'Test Collection')
+      expect(page).to have_css("#{detail_css} details summary h3#series-1", text: 'Test Collection, 1900-1950')
+    end
+
+    it 'renders placeholders to indicate loading' do
+      detail_css = "#{css} pennlibs-accordion#inventory-accordion"
+      expect(page).to have_css("#{detail_css} details div p.placeholder-glow", visible: :all)
     end
   end
 
