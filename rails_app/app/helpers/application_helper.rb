@@ -31,13 +31,9 @@ module ApplicationHelper
       .join(PAGE_TITLE_SEPARATOR)
   end
 
-  # Blacklight helper that renders the abstract in search results wrapped in the
-  # design system's expand-text pattern, which clamps long text and offers an
-  # inline toggle to reveal the rest in place (replacing the old truncate-with-a-
-  # "(see more)"-link-to-the-record approach).
   # @param options [Hash]
   # @return [ActiveSupport::SafeBuffer]
-  def expandable_abstract(options)
+  def expandable_text(options)
     content_tag('pennlibs-expand-text', options[:value].first)
   end
 
