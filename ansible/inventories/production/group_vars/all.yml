@@ -1,4 +1,7 @@
 ---
+aspace_vault_values: "{{ lookup('community.hashi_vault.vault_kv2_get', 'finding-aids/aspace_credentials', engine_mount_point='kv-applications') }}"
+finaids_vault_values: "{{ lookup('community.hashi_vault.vault_kv2_get', 'finding-aids/production', engine_mount_point='kv-applications') }}"
+
 is_development: false
 
 # Docker swarm setup vars
