@@ -123,7 +123,7 @@ GEM
     config (5.6.1)
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
-    connection_pool (2.5.5)
+    connection_pool (3.0.2)
     crack (1.0.1)
       bigdecimal
       rexml
@@ -422,12 +422,12 @@ GEM
       nokogiri (>= 1.13.10)
       rexml
     securerandom (0.4.1)
-    sidekiq (8.0.10)
-      connection_pool (>= 2.5.0)
-      json (>= 2.9.0)
-      logger (>= 1.6.2)
-      rack (>= 3.1.0)
-      redis-client (>= 0.23.2)
+    sidekiq (8.1.6)
+      connection_pool (>= 3.0.0)
+      json (>= 2.16.0)
+      logger (>= 1.7.0)
+      rack (>= 3.2.0)
+      redis-client (>= 0.29.0)
     sidekiq-cron (2.4.0)
       cronex (>= 0.13.0)
       fugit (~> 1.8, >= 1.11.1)
@@ -493,7 +493,6 @@ DEPENDENCIES
   byebug
   capybara
   config
-  connection_pool (~> 2.5)
   cuprite
   debug
   devise
@@ -520,7 +519,7 @@ DEPENDENCIES
   rsolr (>= 1.0, < 3)
   rspec-rails (~> 8.0)
   sidekiq-cron
-  sidekiq-pro (~> 8)!
+  sidekiq-pro!
   simplecov
   sitemap_generator
   tzinfo-data
