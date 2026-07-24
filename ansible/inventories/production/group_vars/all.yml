@@ -1,4 +1,6 @@
 ---
+is_development: false
+
 # Docker swarm setup vars
 skip_repo: false
 skip_containerd: false
