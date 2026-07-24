@@ -127,7 +127,7 @@ RSpec.describe InventoryComponent, type: :component do
       before { render_inline(described_class.new(entry: entry, index: 1)) }
 
       it 'renders a table' do
-        expect(outer_entry_details).to have_css('table.table--responsive-small', visible: :all)
+        expect(outer_entry_details).to have_table(class: 'table--responsive-small', visible: :all)
       end
 
       it 'renders the Contents, Dates, and Containers table headers' do
@@ -237,7 +237,7 @@ RSpec.describe InventoryComponent, type: :component do
         render_inline(described_class.new(entry: entry, index: 1, requestable: true))
 
         expect(page).to have_css('th', text: 'Select', visible: :all)
-        expect(page).to have_css('input.fa-visit__checkbox', visible: :all)
+        expect(page).to have_field(class: 'fa-visit__checkbox', visible: :all)
       end
 
       it 'includes metadata in td data attributes' do
@@ -273,7 +273,7 @@ RSpec.describe InventoryComponent, type: :component do
         expect(page).to have_css(
           'td[data-th="Select"] span.visually-hidden',
           text: I18n.t('show.sections.inventory.select_visually_hidden',
-                       title: entry.title_text), visible: false
+                       title: entry.title_text), visible: :hidden
         )
       end
 
@@ -306,8 +306,8 @@ RSpec.describe InventoryComponent, type: :component do
         XML
 
         render_inline(described_class.new(entry: entry, index: 1, requestable: true))
-        expect(page).to have_css('details.fa-guide__details--subseries th', text: 'Select', visible: :all)
-        expect(page).to have_css('details.fa-guide__details--subseries input.fa-visit__checkbox', visible: :all)
+        expect(page).to have_css('details.fa-guide__details--subseries th', text: 'Select', visible: :hidden)
+        expect(page).to have_css('details.fa-guide__details--subseries input.fa-visit__checkbox', visible: :hidden)
       end
     end
 
@@ -317,7 +317,7 @@ RSpec.describe InventoryComponent, type: :component do
 
         render_inline(described_class.new(entry: entry, index: 1, requestable: false))
 
-        expect(page).to have_no_css('span.fa-visit__section-count', visible: :all)
+        expect(page).to have_no_field('span.fa-visit__section-count')
       end
 
       it 'does not render the select column' do
@@ -329,8 +329,8 @@ RSpec.describe InventoryComponent, type: :component do
         XML
         render_inline(described_class.new(entry: entry, index: 1, requestable: false))
 
-        expect(page).to have_no_css('th', text: 'Select')
-        expect(page).to have_no_css('input.fa-visit__checkbox')
+        expect(page).to have_no_field('th', text: 'Select')
+        expect(page).to have_no_field('input.fa-visit__checkbox')
       end
 
       it 'renders a nested details that span 3 columns' do
@@ -347,8 +347,8 @@ RSpec.describe InventoryComponent, type: :component do
 
         render_inline(described_class.new(entry: entry, index: 1, requestable: false))
 
-        expect(page).to have_css('td[colspan="3"]', visible: :all)
-        expect(page).to have_no_css('td[colspan="4"]')
+        expect(page).to have_css('td[colspan="3"]', visible: :hidden)
+        expect(page).to have_no_field('td[colspan="4"]')
       end
     end
   end
@@ -364,8 +364,8 @@ RSpec.describe InventoryComponent, type: :component do
 
       render_inline(described_class.new(entry: entry, index: 1))
       contents = page.first('td[data-th="Contents"] dl.pl-dl--inline', visible: :all)
-      expect(contents).to have_css('dt', text: 'Title', visible: :all)
-      expect(contents).to have_css('dd', text: 'Some Organization. Minutes', visible: :all)
+      expect(contents).to have_css('dt', text: 'Title', visible: :hidden)
+      expect(contents).to have_css('dd', text: 'Some Organization. Minutes', visible: :hidden)
     end
 
     it 'renders the descriptive metadata within a description list' do
@@ -379,8 +379,8 @@ RSpec.describe InventoryComponent, type: :component do
       render_inline(described_class.new(entry: entry, index: 1))
       contents = page.first('td[data-th="Contents"] dl.pl-dl--inline', visible: :all)
 
-      expect(contents).to have_css('dt', text: 'Scope and Contents', visible: :all)
-      expect(contents).to have_css('dd', text: 'Correspondence, 1960s.', visible: :all)
+      expect(contents).to have_css('dt', text: 'Scope and Contents', visible: :hidden)
+      expect(contents).to have_css('dd', text: 'Correspondence, 1960s.', visible: :hidden)
     end
 
     it 'renders identification metadata within a description list' do
@@ -393,8 +393,8 @@ RSpec.describe InventoryComponent, type: :component do
       render_inline(described_class.new(entry: entry, index: 1))
       contents = page.first('td[data-th="Contents"] dl.pl-dl--inline', visible: :all)
 
-      expect(contents).to have_css('dt', text: 'Extent Note', visible: :all)
-      expect(contents).to have_css('dd', text: '3 folders', visible: :all)
+      expect(contents).to have_css('dt', text: 'Extent Note', visible: :hidden)
+      expect(contents).to have_css('dd', text: '3 folders', visible: :hidden)
     end
 
     it "renders the entry's digital archival object links in a description list" do
@@ -407,8 +407,8 @@ RSpec.describe InventoryComponent, type: :component do
       render_inline(described_class.new(entry: entry, index: 1))
       contents = page.first('td[data-th="Contents"] dl.pl-dl--inline', visible: :all)
 
-      expect(contents).to have_css('dt', text: 'View Online', visible: :all)
-      expect(contents).to have_css('dd a[@href="https://example.com/scan01.pdf"]', text: 'Scan01', visible: :all)
+      expect(contents).to have_css('dt', text: 'View Online', visible: :hidden)
+      expect(contents).to have_css('dd a[@href="https://example.com/scan01.pdf"]', text: 'Scan01', visible: :hidden)
     end
   end
 end

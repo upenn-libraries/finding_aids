@@ -19,8 +19,8 @@ RSpec.describe DescriptionAccordionComponent, type: :component do
     it 'renders description section details' do
       render_inline component
       expect(page).to have_css('pennlibs-accordion details summary h3#bioghist', text: I18n.t('sections.bioghist'))
-      expect(page).to have_css('pennlibs-accordion details div', visible: false,
-                                                                 text: /This committee was established in/)
+      expect(page).to have_css('pennlibs-accordion details div',
+                               text: /This committee was established in/, visible: :hidden)
     end
 
     it 'renders rights and citation details' do
@@ -31,8 +31,8 @@ RSpec.describe DescriptionAccordionComponent, type: :component do
 
     it 'renders rights and citation data using a description list' do
       render_inline component
-      expect(page).to have_css('pennlibs-accordion details div dl dt', visible: false, text: 'Preferred Citation')
-      expect(page).to have_css('pennlibs-accordion details div dl dd', visible: false, text: 'Test citation')
+      expect(page).to have_css('pennlibs-accordion details div dl dt', text: 'Preferred Citation', visible: :hidden)
+      expect(page).to have_css('pennlibs-accordion details div dl dd', text: 'Test citation', visible: :hidden)
     end
 
     it 'renders subjects and headings details' do
@@ -43,8 +43,8 @@ RSpec.describe DescriptionAccordionComponent, type: :component do
 
     it 'renders a subject and headings data using a description list' do
       render_inline component
-      expect(page).to have_css('pennlibs-accordion div dl dt', visible: false, text: 'Subject')
-      expect(page).to have_css('pennlibs-accordion details div dl dd', visible: false, text: 'Testing')
+      expect(page).to have_css('pennlibs-accordion div dl dt', text: 'Subject', visible: :hidden)
+      expect(page).to have_css('pennlibs-accordion details div dl dd', text: 'Testing', visible: :hidden)
     end
 
     context 'with missing details' do
