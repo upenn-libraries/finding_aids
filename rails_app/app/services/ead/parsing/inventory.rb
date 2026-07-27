@@ -8,10 +8,16 @@ module Ead
       DESCRIPTIVE_NODES = %w[bioghist arrangement scopecontent odd relatedmaterial userestrict altformavail].freeze
       IDENTIFICATION_NODES = %w[physdesc materialspec physloc].freeze
 
-      # @param entry [Ead::Extraction::Inventory::Entry]
+      # @param node [Nokogiri::XML::Node]
       # @return [Nokogiri::XML::NodeSet]
       def self.nodes(node)
         node.xpath(INVENTORY_NODES.join(' | '))
+      end
+
+      # @param node [Nokogiri::XML::Node]
+      # @return [Nokogiri::XML::Node, nil]
+      def self.head(node)
+        node.at_xpath('head')
       end
 
       attr_reader :node
@@ -19,12 +25,6 @@ module Ead
       # @param node [Nokogiri::XML::Node]
       def initialize(node)
         @node = node
-      end
-
-      # @param node [Nokogiri::XML::Node]
-      # @return [Nokogiri::XML::Node, nil]
-      def head(node)
-        node.at_xpath('head')
       end
 
       # @return [Nokogiri::XML::Node, nil]
@@ -64,12 +64,12 @@ module Ead
 
       # @return [Nokogiri::XML::NodeSet]
       def descriptions
-        node.xpath(DESCRIPTIVE_NODES.join(' | ')).compact_blank
+        node.xpath(DESCRIPTIVE_NODES.join(' | '))
       end
 
       # @return [Nokogiri::XML::NodeSet]
       def identifications
-        node.xpath(IDENTIFICATION_NODES.map { |name| "did/#{name}" }.join('|')).compact_blank
+        node.xpath(IDENTIFICATION_NODES.map { |name| "did/#{name}" }.join(' | '))
       end
 
       # @return [Nokogiri::XML::NodeSet]

@@ -71,6 +71,8 @@ module Ead
         def description_definitions
           @description_definitions ||= node_text.definitions(parser.descriptions,
                                                              remove_head: true) do |node, translation|
+            next if translation.blank?
+
             node_text::Definition.new(node_text.text_only(parser.class.head(node)) || I18n.t("sections.#{node.name}"),
                                       translation)
           end
@@ -79,6 +81,8 @@ module Ead
         # @return [Array]
         def identification_definitions
           @identification_definitions ||= node_text.definitions(parser.identifications) do |node, translation|
+            next if translation.blank?
+
             node_text::Definition.new(node.attr('label') || I18n.t("inventory.sections.#{node.name}"), translation)
           end
         end
