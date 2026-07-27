@@ -12,6 +12,9 @@ import { Controller } from "@hotwired/stimulus"
 // the dialog's DOM. The native <dialog>, focus management, and required-field
 // validation are left to the platform.
 
+// %{name} interpolation for i18n-style templates (hoisted to avoid per-call recompile).
+const INTERP_RE = /%\{(\w+)\}/g
+
 // Connects to: data-controller="request"
 export default class extends Controller {
   static targets = [
@@ -20,13 +23,11 @@ export default class extends Controller {
     "detailsSection", "form", "dateField", "dateInput", "notes", "formLede",
     "authSection", "authLede", "confirmLabel", "confirmCheck", "loginError",
     "confirmSection", "confirmLede",
-    "bar", "barCount", "inventory", "liveRegion",
-    "meta"
+    "bar", "barCount", "inventory", "liveRegion"
   ]
 
   static values = {
     storageKey: String, // per-collection localStorage key
-    aeonUrl: String,    // Aeon login URL for the auth step link
     prepareUrl: String, // URL for the prepare action (e.g., /requests/prepare)
     copy: Object        // i18n copy variants + dynamic text
   }
@@ -147,7 +148,6 @@ export default class extends Controller {
 
   goReview() { this.goStep("review") }
   goDetails() { this.goStep("details") }
-  goAuth() { this.goStep("auth") }
 
   goStep(step) {
     this.state.step = step
@@ -181,7 +181,6 @@ export default class extends Controller {
       return
     }
 
-    // Build request params from form and selected items
     const params = this.buildRequestParams()
 
     try {
@@ -189,7 +188,7 @@ export default class extends Controller {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": this.metaTarget.content
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
         },
         body: JSON.stringify(params)
       })
@@ -207,7 +206,6 @@ export default class extends Controller {
     }
   }
 
-  // Build the params hash to send to the prepare action
   buildRequestParams() {
     const formData = new FormData(this.formTarget)
     const params = {
@@ -224,7 +222,6 @@ export default class extends Controller {
       item_barcode: []
     }
 
-    // Add selected items
     this.items.forEach((item) => {
       params.item.push(item.container || item.title)
       params.item_barcode.push(item.barcode || "")
@@ -233,13 +230,11 @@ export default class extends Controller {
     return params
   }
 
-  // Get content from a meta tag
   getMetaContent(name) {
     const meta = document.querySelector(`meta[name="${name}"]`)
     return meta ? meta.content : ""
   }
 
-  // Create a hidden form and submit it to Aeon
   submitToAeon(url, body) {
     const form = document.createElement("form")
     form.method = "POST"
@@ -247,7 +242,6 @@ export default class extends Controller {
     form.target = "_self"
     form.style.display = "none"
 
-    // Add all body params as hidden fields
     for (const [key, value] of Object.entries(body)) {
       const input = document.createElement("input")
       input.type = "hidden"
@@ -418,6 +412,6 @@ export default class extends Controller {
 
   // Minimal %{name} interpolation for i18n-style templates.
   interp(template, vars) {
-    return template.replace(/%\{(\w+)\}/g, (_, key) => (vars[key] ?? ""))
+    return template.replace(INTERP_RE, (_, key) => (vars[key] ?? ""))
   }
 }

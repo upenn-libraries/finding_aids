@@ -9,7 +9,6 @@
      <% if requestable %>
        data-controller="request"
        data-request-storage-key-value="<%= helpers.request_storage_key(@document) %>"
-       data-request-aeon-url-value="<%= AeonRequest::AEON_URL %>"
        data-request-prepare-url-value="<%= prepare_requests_path %>"
        data-request-copy-value="<%= helpers.request_copy_value.to_json %>"
      <% end %>>

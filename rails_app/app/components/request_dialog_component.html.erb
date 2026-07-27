@@ -3,8 +3,6 @@
     that also contains the inventory checkboxes). Targets use data-request-target;
     actions use data-action="...->request#...". %>
 
-<meta name="csrf-token" content="<%= form_authenticity_token %>" data-request-target="meta">
-
 <dialog class="fa-visit__dialog" id="visit-dialog" aria-labelledby="visit-dialog-title" tabindex="-1"
         data-request-target="dialog" data-action="close->request#onDialogClose">
 
