@@ -1,25 +1,17 @@
 import { Controller } from "@hotwired/stimulus"
+import RequestStorage from "aeon_request/storage"
+import RequestCheckboxes from "aeon_request/checkboxes"
+import RequestState from "aeon_request/state"
 
-// Request flow controller for the finding-aid show page.
-//
-// Reads checkbox state from the inventory table and walks the user through a
-// four-step modal: Review → Details → Auth → Confirm. Selections persist in
-// localStorage (per collection) so they survive navigation between <details>
-// sections and page reloads. Ported from the Philadelphia Area Archives
-// mockup's reference implementation.
-//
-// State is the single source of truth; render() is the only code that writes
-// the dialog's DOM. The native <dialog>, focus management, and required-field
-// validation are left to the platform.
-
-// %{name} interpolation for i18n-style templates (hoisted to avoid per-call recompile).
-const INTERP_RE = /%\{(\w+)\}/g
+// Stimulus controller for the finding-aid request modal (Review → Details →
+// Auth → Confirm). Orchestrates the aeon_request services and renders state
+// + selections to the dialog/bar DOM.
 
 // Connects to: data-controller="request"
 export default class extends Controller {
   static targets = [
     "dialog", "step", "title",
-    "reviewSection", "reviewLede", "reviewFooter", "empty", "list",
+    "reviewSection", "reviewLede", "reviewFooter", "empty", "list", "itemTemplate",
     "detailsSection", "form", "dateField", "dateInput", "notes", "formLede",
     "authSection", "authLede", "confirmLabel", "confirmCheck", "loginError",
     "confirmSection", "confirmLede",
@@ -27,72 +19,34 @@ export default class extends Controller {
   ]
 
   static values = {
-    storageKey: String, // per-collection localStorage key
-    prepareUrl: String, // URL for the prepare action (e.g., /requests/prepare)
-    copy: Object        // i18n copy variants + dynamic text
+    storageKey: String,
+    prepareUrl: String,
+    copy: Object
   }
 
   connect() {
-    // @type {{ requestType: 'visit'|'copy', step: string, confirmedLogin: boolean, loginError: boolean }}
-    this.state = { requestType: "visit", step: "review", confirmedLogin: false, loginError: false }
-    this.items = this.readStorage()
+    this.state = new RequestState()
+    this.storage = new RequestStorage(this.storageKeyValue)
+    this.checkboxes = new RequestCheckboxes(this.inventoryTarget)
+    this.items = this.storage.read()
 
-    // Block past dates on the visit field. The "at least a week out" hint is
-    // guidance, not enforced — staff would rather field a too-soon request
-    // than block it.
     this.dateInputTarget.min = new Date().toISOString().split("T")[0]
 
-    // Restore checked state from a previous session. Works inside closed
-    // <details>: the checkboxes are in the DOM either way. Stale ids (data
-    // regenerated since the items were saved) simply stay unchecked — the
-    // stored display fields still render in the dialog.
-    this.items.forEach((item) => {
-      const checkbox = this.findCheckbox(item.id)
-      if (checkbox) checkbox.checked = true
-    })
+    // Selections persist across reloads; ids that no longer match a checkbox stay unchecked.
+    this.checkboxes.setCheckedFor(this.items, true)
     this.updateBar()
   }
 
-  // --- Storage -----------------------------------------------------------
-
-  readStorage() {
-    try {
-      const stored = JSON.parse(localStorage.getItem(this.storageKeyValue))
-      if (stored && stored.v === 1 && Array.isArray(stored.items)) return stored.items
-    } catch (e) { /* fall through to empty */ }
-    return []
-  }
-
-  writeStorage() {
-    try {
-      localStorage.setItem(this.storageKeyValue, JSON.stringify({ v: 1, items: this.items }))
-    } catch (e) { /* storage may be unavailable; selections still work in-session */ }
-  }
-
-  findCheckbox(id) {
-    return this.inventoryTarget.querySelector(`[data-fa-request-id="${id}"]`)
-  }
-
-  // --- Inventory checkbox changes ---------------------------------------
-
-  // Event-delegated change handler on the inventory container. Only fires for
-  // checkboxes that carry a data-fa-request-id (the request checkboxes), so
-  // other controls in the inventory are ignored.
+  // Only handle request checkboxes (data-fa-request-id); ignore other inventory controls.
   toggleItem(event) {
     const checkbox = event.target
     if (!checkbox.dataset || !checkbox.dataset.faRequestId) return
 
     const id = checkbox.dataset.faRequestId
     if (checkbox.checked) {
-      const cell = checkbox.closest(".fa-visit__cell")
-      const item = {
-        id: id,
-        title: cell.dataset.title,
-        dates: cell.dataset.dates,
-        container: cell.dataset.container
-      }
+      const item = this.checkboxes.readItem(checkbox)
       this.items.push(item)
-      this.writeStorage()
+      this.storage.write(this.items)
       this.updateBar()
       this.announce(this.copyValue.announce_added, { title: item.title, count: this.items.length })
     } else {
@@ -104,14 +58,12 @@ export default class extends Controller {
     const index = this.items.findIndex((item) => item.id === id)
     if (index === -1) return
     const removed = this.items.splice(index, 1)[0]
-    this.writeStorage()
-    const checkbox = this.findCheckbox(id)
-    if (checkbox) checkbox.checked = false
+    this.storage.write(this.items)
+    this.checkboxes.setChecked(id, false)
     this.updateBar()
     this.announce(this.copyValue.announce_removed, { title: removed.title, count: this.items.length })
   }
 
-  // Remove button on a list item. id passed via data-request-id-param.
   removeItemButton(event) {
     const id = event.params.id
     this.removeItem(id)
@@ -123,24 +75,19 @@ export default class extends Controller {
   }
 
   clearAll() {
-    this.items.forEach((item) => {
-      const checkbox = this.findCheckbox(item.id)
-      if (checkbox) checkbox.checked = false
-    })
+    this.checkboxes.setCheckedFor(this.items, false)
     this.items = []
-    this.writeStorage()
+    this.storage.clear()
     this.updateBar()
     this.render()
     this.dialogTarget.focus()
   }
 
-  // --- Dialog state machine ---------------------------------------------
-
   openVisit() { this.openDialog("visit") }
   openCopy() { this.openDialog("copy") }
 
   openDialog(type) {
-    this.state = { requestType: type, step: "review", confirmedLogin: false, loginError: false }
+    this.state.openDialog(type)
     this.render()
     this.dialogTarget.showModal()
     this.focusStep()
@@ -150,32 +97,25 @@ export default class extends Controller {
   goDetails() { this.goStep("details") }
 
   goStep(step) {
-    this.state.step = step
-    this.state.loginError = false
+    this.state.goStep(step)
     this.render()
     this.focusStep()
   }
 
-  // The details step is a real <form>, so the required date validates natively
-  // on the visit path; a valid submit advances to the log-in gate. It never
-  // sends directly (see the gate below).
   submitDetails(event) {
     event.preventDefault()
     this.goStep("auth")
   }
 
-  // Log-in confirmation checkbox gates whether the request can be placed.
   toggleLogin(event) {
-    this.state.confirmedLogin = event.target.checked
-    if (event.target.checked) this.state.loginError = false
+    this.state.toggleLogin(event.target.checked)
     this.render()
   }
 
-  // Collect form data + selected items, POST to /requests/prepare,
-  // then submit a hidden form to Aeon (navigating away from the site).
+  // POST to /requests/prepare, then submit a hidden form to Aeon (navigates away).
   async place() {
     if (!this.state.confirmedLogin) {
-      this.state.loginError = true
+      this.state.failLogin()
       this.render()
       this.confirmCheckTarget.focus()
       return
@@ -200,6 +140,9 @@ export default class extends Controller {
       }
 
       const { url, body } = await response.json()
+      // Clear selections so a returning visitor doesn't re-request the same items.
+      this.items = []
+      this.storage.clear()
       this.submitToAeon(url, body)
     } catch (err) {
       console.error("Error preparing request:", err)
@@ -259,11 +202,8 @@ export default class extends Controller {
     this.dialogTarget.close()
   }
 
-  // Native <dialog> can also close via Escape; nothing to reset — selections
-  // persist and re-opening starts fresh at review.
+  // Native <dialog> can also close via Escape; nothing to reset.
   onDialogClose() { /* no-op */ }
-
-  // --- Render: the only code that writes dialog DOM ----------------------
 
   copyFor(key) {
     return this.copyValue[this.state.requestType][key]
@@ -274,31 +214,23 @@ export default class extends Controller {
     this.reviewLedeTarget.textContent = this.copyFor("review_lede")
     this.formLedeTarget.textContent = this.copyFor("form_lede")
 
-    // Three numbered steps: review, details, and confirming log-in. The final
-    // confirmation is a terminal state, so it carries no step count.
     this.stepTarget.textContent =
       this.state.step === "review" ? this.copyValue.step_review
       : this.state.step === "details" ? this.copyFor("step_details")
       : this.state.step === "auth" ? this.copyValue.step_auth
       : ""
 
-    // Date is for in-person visits only. Toggling `required` alongside the
-    // visibility matters: a hidden required field would block native submit
-    // on the copy path.
+    // Toggle `required` with visibility — a hidden required field would block submit on the copy path.
     const wantsDate = this.state.requestType === "visit"
     this.dateFieldTarget.hidden = !wantsDate
     this.dateInputTarget.required = wantsDate
 
-    // Log-in gate: reflect the confirmation, and flag the checkbox in the
-    // attention colour if they tried to send without it.
     this.confirmCheckTarget.checked = this.state.confirmedLogin
     this.loginErrorTarget.hidden = !this.state.loginError
     this.confirmLabelTarget.classList.toggle("fa-visit__confirm--error", this.state.loginError)
 
-    // Item list + empty-state (also toggles the review lede/actions).
     this.renderList()
 
-    // Show the active step, hide the rest.
     const sections = {
       review: this.reviewSectionTarget,
       details: this.detailsSectionTarget,
@@ -312,35 +244,18 @@ export default class extends Controller {
   renderList() {
     this.listTarget.textContent = ""
     this.emptyTarget.hidden = this.items.length > 0
-    // When empty, drop the intro line (it contradicts the "nothing selected"
-    // message) and the Remove all / Continue actions — leaving just the empty
-    // prompt, which points the visitor back to the Select boxes in the guide.
+    // When empty, hide the intro and actions; leave only the empty prompt.
     this.reviewLedeTarget.hidden = this.items.length === 0
     this.reviewFooterTarget.hidden = this.items.length === 0
 
     this.items.forEach((item) => {
-      const li = document.createElement("li")
-      li.className = "fa-visit__item"
-
-      const text = document.createElement("div")
-      const title = document.createElement("strong")
-      title.textContent = item.title
-      text.appendChild(title)
-      const meta = document.createElement("p")
-      meta.className = "fa-visit__meta"
-      meta.textContent = this.itemMeta(item) + (item.dates ? " · " + item.dates : "")
-      text.appendChild(meta)
-      li.appendChild(text)
-
-      const remove = document.createElement("button")
-      remove.type = "button"
-      remove.className = "pl-button"
-      remove.textContent = this.copyValue.remove
-      remove.setAttribute("aria-label", this.interp(this.copyValue.remove_aria, { title: item.title }))
-      remove.dataset.action = "click->request#removeItemButton"
-      remove.dataset.requestIdParam = item.id
-      li.appendChild(remove)
-
+      const li = this.itemTemplateTarget.content.firstElementChild.cloneNode(true)
+      li.querySelector("strong").textContent = item.title
+      li.querySelector(".fa-visit__meta").textContent = this.itemMeta(item) + (item.dates ? " · " + item.dates : "")
+      const button = li.querySelector("button")
+      button.textContent = this.copyValue.remove
+      button.setAttribute("aria-label", this.interp(this.copyValue.remove_aria, { title: item.title }))
+      button.dataset.requestIdParam = item.id
       this.listTarget.appendChild(li)
     })
   }
@@ -350,20 +265,14 @@ export default class extends Controller {
   }
 
   focusStep() {
-    let target
-    if (this.state.step === "details") {
-      target = this.state.requestType === "visit" ? this.dateInputTarget : this.notesTarget
-    } else if (this.state.step === "auth") {
-      target = this.authLedeTarget
-    } else if (this.state.step === "confirm") {
-      target = this.confirmLedeTarget
-    } else {
-      target = this.dialogTarget
+    const focusByStep = {
+      review: this.dialogTarget,
+      details: this.state.requestType === "visit" ? this.dateInputTarget : this.notesTarget,
+      auth: this.authLedeTarget,
+      confirm: this.confirmLedeTarget
     }
-    if (target) target.focus()
+    focusByStep[this.state.step]?.focus()
   }
-
-  // --- Bar + section counts ---------------------------------------------
 
   updateBar() {
     this.barCountTarget.textContent = this.formatCount(this.items.length)
@@ -379,17 +288,11 @@ export default class extends Controller {
       : this.interp(this.copyValue.bar_count_many, { count: n })
   }
 
-  // Tally selected items per inventory section and show it in each section's
-  // summary heading. The count is of checked descendants, so a series
-  // reflects everything across its subseries too. Spans are created lazily
-  // on first run; aria-hidden keeps the live-updating number out of the
-  // heading's accessible name (the live region carries the spoken feedback).
+  // aria-hidden keeps the live count out of the heading's accessible name (the live region carries spoken feedback).
   refreshSectionCounts() {
-    this.inventoryTarget.querySelectorAll("details").forEach((d) => {
-      const summary = d.querySelector(":scope > summary")
+    this.checkboxes.tally().forEach(({ section, count }) => {
+      const summary = section.querySelector(":scope > summary")
       if (!summary) return
-      // The InventoryComponent pre-renders this span (empty) when requestable;
-      // fall back to creating one if it's missing (e.g. older markup).
       let span = summary.querySelector(".fa-visit__section-count")
       if (!span) {
         const heading = summary.querySelector("h3, h4, h5, h6")
@@ -399,8 +302,7 @@ export default class extends Controller {
         span.setAttribute("aria-hidden", "true")
         heading.appendChild(span)
       }
-      const n = d.querySelectorAll("[data-fa-request-id]:checked").length
-      span.textContent = n ? this.interp(this.copyValue.section_count, { count: n }) : ""
+      span.textContent = count ? this.interp(this.copyValue.section_count, { count }) : ""
     })
   }
 
@@ -408,10 +310,7 @@ export default class extends Controller {
     if (this.hasLiveRegionTarget) this.liveRegionTarget.textContent = this.interp(template, vars)
   }
 
-  // --- Helpers -----------------------------------------------------------
-
-  // Minimal %{name} interpolation for i18n-style templates.
   interp(template, vars) {
-    return template.replace(INTERP_RE, (_, key) => (vars[key] ?? ""))
+    return template.replace(/%\{(\w+)\}/g, (_, key) => (vars[key] ?? ""))
   }
 }

@@ -28,6 +28,15 @@
     <p class="fa-visit__empty pl-margin-t-l" data-request-target="empty" hidden>
       <%= t('show.sections.request.review_empty_html').html_safe %>
     </p>
+    <template data-request-target="itemTemplate">
+      <li class="fa-visit__item">
+        <div>
+          <strong></strong>
+          <p class="fa-visit__meta"></p>
+        </div>
+        <button type="button" class="pl-button" data-action="click->request#removeItemButton"></button>
+      </li>
+    </template>
     <ul class="fa-visit__list" data-request-target="list"></ul>
     <div class="fa-visit__footer" data-request-target="reviewFooter">
       <button type="button" class="pl-button" data-action="click->request#clearAll">
