@@ -125,10 +125,21 @@
   This site has been made possible through a <a href="https://www.clir.org/">CLIR Hidden Collections</a> grant.
 </p>
 
-<p class="pl-margin-b-3xl">
-  <a href="https://pacscl.org/">
-    <img src="<%= image_url('pacscl-logo.png') %>" alt="PACSCL Homepage" width="30">
-  </a>
-  This site was developed collaboratively with the <a href="https://pacscl.org/">Philadelphia Area Consortium of
-  Special Collections Libraries (PACSCL)</a>.
-</p>
+    <p>
+      <a href="https://www.clir.org/">
+        <img src="<%= image_url('CLIR24.png') %>" alt="CLIR Homepage" class="inline pr-2">
+      </a>
+      This site has been made possible through a <a href="https://www.clir.org/">CLIR Hidden Collections</a> grant.
+    </p>
+
+    <p class="pl-margin-b-3xl">
+      <a href="https://pacscl.org/">
+        <img src="<%= image_url('pacscl-logo.png') %>" alt="PACSCL Homepage" width="30">
+      </a>
+      This site was developed collaboratively with the <a href="https://pacscl.org/">Philadelphia Area Consortium of
+      Special Collections Libraries (PACSCL)</a>.
+    </p>
+  </div>
+</div>
+
+<%= render Homepage::RegionalPartnershipComponent.new(repos: @regional_repos) %>

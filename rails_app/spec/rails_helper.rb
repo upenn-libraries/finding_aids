@@ -13,6 +13,7 @@ require 'webmock/rspec'
 require 'view_component/test_helpers'
 require 'capybara/rspec'
 require 'simplecov'
+require_relative 'support/solr_helpers'
 
 SimpleCov.start 'rails' do
   coverage_dir 'tmp/coverage'
@@ -53,6 +54,9 @@ RSpec.configure do |config|
   # Rspec Devise helpers
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Devise::Test::IntegrationHelpers, type: :system
+
+  # Shared Solr seed/cleanup helpers
+  config.include SolrHelpers
 
   # Include helpers for ViewComponent specs
   config.include ViewComponent::TestHelpers, type: :component

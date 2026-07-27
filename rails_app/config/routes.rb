@@ -26,10 +26,9 @@ Rails.application.routes.draw do
     resources :aspace_instances
   end
 
-  defaults format: :json do
-    get '/api/endpoints', to: 'api#endpoints', as: :endpoints_api
-    get '/api/repositories', to: 'api#repositories', as: :repositories_api
-  end
+  get '/api/endpoints', to: 'api#endpoints', as: :endpoints_api
+  get '/api/repositories', to: 'api#repositories', as: :repositories_api
+  get '/api/map_data', to: 'api#map_data', as: :map_data_api
 
   mount Blacklight::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new

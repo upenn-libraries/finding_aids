@@ -102,6 +102,14 @@ The robots.txt file is generate and added to the `public` folder at deploy time.
 bundle exec rake tools:robotstxt
 ```
 
+#### Geocoding
+Repository locations are geocoded using the Nominatim (OpenStreetMap) API and cached in `data/geocoder_cache.yml`. The cache is (re)built automatically at the end of each harvest (`PartnerHarvestJob`) and can be refreshed on demand with the rake task below.
+
+```bash
+# Refresh the geocode cache
+bundle exec rake geocode:refresh
+```
+
 ### Harvesting Sample Endpoints
 
 To harvest some of the endpoints in a local development environment:

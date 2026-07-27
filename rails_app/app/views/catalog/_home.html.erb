@@ -29,3 +29,5 @@
 <div class="fa-home-sections">
   <%= render Homepage::CollectionGuideCardsComponent.new(guides: @homepage_guides || []) %>
 </div>
+
+<%= render Homepage::RegionalPartnershipComponent.new(repos: @regional_repos) %>
