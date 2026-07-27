@@ -16,141 +16,133 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
     end
   end
 
-  describe 'rendering header' do
-    let(:css) { 'div.document-main-section div.fa-guide-header' }
-
-    it 'shows the abstract in the header section' do
-      abstract_css =  "#{css} div.fa-guide-header__hero div.fa-guide-header__intro p"
-      expect(page).to have_css(abstract_css, text: document.fetch(:abstract_scope_contents_tsi))
+  describe 'rendering the header intro' do
+    it 'shows the collection title in an expand-text control' do
+      expect(page).to have_css('.fa-guide-header__intro h1#guide-title pennlibs-expand-text',
+                               text: presenter.heading)
     end
 
-    it 'links to a repository facet search in the header aside' do
-      repo_css = "#{css} div.fa-guide-header__hero aside.fa-guide-header__institution p"
+    it 'shows the abstract in an expand-text control' do
+      expect(page).to have_css('.fa-guide-header__intro p pennlibs-expand-text',
+                               text: document.fetch(:abstract_scope_contents_tsi))
+    end
+  end
+
+  describe 'rendering the header aside' do
+    it 'links to a repository facet search' do
       link = view_context.search_catalog_path({ "f[repository_ssi][]": document.fetch(:repository_ssi),
                                                 only_path: true })
-      expect(page).to have_css("#{repo_css} a[href='#{link}']")
+      expect(page).to have_css("aside.fa-guide-header__institution p a[href='#{link}']")
     end
 
-    it 'links to the contact section from the header aside' do
-      css = "#{css} aside.fa-guide-header__institution a.pl-button.pl-button--accent[href='#contact']"
-      expect(page).to have_css(css, text: I18n.t('show.aside.contact'))
-    end
-
-    it 'renders the collection title' do
-      title_css = "#{css} div.fa-guide-header__hero div.fa-guide-header__intro h1#guide-title"
-      expect(page).to have_css(title_css, text: presenter.heading)
-    end
-
-    it 'shows the access restrictions in the header aside' do
-      access_css = "#{css} div.fa-guide-header__hero aside.fa-guide-header__institution p"
-      expect(page).to have_css(access_css, text: document.extract(:access_restrictions))
-    end
-
-    it 'renders collection overview metadata in the header strip' do
-      expect(page).to have_css("#{css} div.fa-guide-header__strip dl.fa-metadata")
-    end
-
-    it 'shows creator in the header strip' do
-      metadata_css = "#{css} div.fa-guide-header__strip dl.fa-metadata div"
-      expect(page).to have_css("#{metadata_css} dt", text: I18n.t('fields.creators'))
-      document.fetch(:creators_ssim).each { |creator| expect(page).to have_css("#{metadata_css} dd", text: creator) }
-    end
-
-    it 'shows date in the header strip' do
-      metadata_css = "#{css} div.fa-guide-header__strip dl.fa-metadata div"
-      expect(page).to have_css("#{metadata_css} dt", text: I18n.t('fields.date'))
-      document.display_dates.each { |date| expect(page).to have_css("#{metadata_css} dd", text: date) }
-    end
-
-    it 'shows extent in the header strip' do
-      metadata_css = "#{css} div.fa-guide-header__strip dl.fa-metadata div"
-      expect(page).to have_css("#{metadata_css} dt", text: I18n.t('fields.extent'))
-      document.fetch(:extent_ssim).each { |extent| expect(page).to have_css("#{metadata_css} dd", text: extent) }
-    end
-
-    it 'shows the call number in the header strip' do
-      metadata_css = "#{css} div.fa-guide-header__strip dl.fa-metadata div"
-      expect(page).to have_css("#{metadata_css} dt", text: I18n.t('fields.pretty_unit_id'))
-      expect(page).to have_css("#{metadata_css} dd", text: document.fetch(:pretty_unit_id_ss))
+    it 'links to the contact section' do
+      expect(page).to have_css("aside.fa-guide-header__institution a.pl-button--accent[href='#contact']",
+                               text: I18n.t('show.aside.contact'))
     end
   end
 
-  describe 'rendering table of contents' do
-    let(:css) { 'div.document-main-section div.fa-guide-layout' }
+  describe 'rendering the header metadata strip' do
+    it 'shows creator' do
+      expect(page).to have_css('.fa-guide-header__strip dl.fa-metadata div dt', text: I18n.t('fields.creators'))
+      document.fetch(:creators_ssim).each do |creator|
+        expect(page).to have_css('.fa-guide-header__strip dl.fa-metadata div dd', text: creator)
+      end
+    end
 
+    it 'shows date' do
+      expect(page).to have_css('.fa-guide-header__strip dl.fa-metadata div dt', text: I18n.t('fields.date'))
+      document.display_dates.each do |date|
+        expect(page).to have_css('.fa-guide-header__strip dl.fa-metadata div dd', text: date)
+      end
+    end
+
+    it 'shows extent' do
+      expect(page).to have_css('.fa-guide-header__strip dl.fa-metadata div dt', text: I18n.t('fields.extent'))
+      document.fetch(:extent_ssim).each do |extent|
+        expect(page).to have_css('.fa-guide-header__strip dl.fa-metadata div dd', text: extent)
+      end
+    end
+
+    it 'shows the call number' do
+      expect(page).to have_css('.fa-guide-header__strip dl.fa-metadata div dt',
+                               text: I18n.t('fields.pretty_unit_id'))
+      expect(page).to have_css('.fa-guide-header__strip dl.fa-metadata div dd',
+                               text: document.fetch(:pretty_unit_id_ss))
+    end
+  end
+
+  describe 'rendering the table of contents' do
     it 'renders a table of contents navigation', pending: 'not implemented' do
-      expect(page).to have_css("#{css} nav.fa-toc[aria-label='Table of contents'] ul li", text: presenter.heading)
+      expect(page).to have_css("div.fa-guide-layout nav.fa-toc[aria-label='Table of contents'] ul li",
+                               text: presenter.heading)
     end
   end
 
-  describe 'rendering description' do
-    let(:css) { 'div.document-main-section div.fa-guide-layout div#description-sections' }
-
+  describe 'rendering the description sections' do
     it 'renders the description section heading and guide text' do
-      section_css = "#{css} div.fa-section-header"
-
-      expect(page).to have_css("#{section_css} h2#description", text: I18n.t('show.sections.description.header'))
-      expect(page).to have_css("#{section_css} p", text: I18n.t('show.sections.description.guide'))
+      expect(page).to have_css('div#description-sections div.fa-section-header h2#description',
+                               text: I18n.t('show.sections.description.header'))
+      expect(page).to have_css('div#description-sections div.fa-section-header p',
+                               text: I18n.t('show.sections.description.guide'))
     end
 
     it 'renders an expand/collapse toggle button for the description accordion' do
-      expect(page).to have_css("#{css} button[data-pl-accordion-toggle='description-accordion']")
+      expect(page).to have_css("div#description-sections button[data-pl-accordion-toggle='description-accordion']")
     end
 
     it 'renders the description accordion component' do
-      expect(page).to have_css("#{css} pennlibs-accordion#description-accordion")
+      expect(page).to have_css('div#description-sections pennlibs-accordion#description-accordion')
     end
   end
 
-  describe 'rendering inventory' do
-    let(:css) { 'div.document-main-section div.fa-guide-layout div#inventory-sections' }
-
+  describe 'rendering the inventory sections' do
     it 'renders the inventory section heading and guide text' do
-      section_css = 'div.fa-section-header'
-      expect(page).to have_css("#{section_css} h2#inventory", text: I18n.t('show.sections.inventory.header'))
-      expect(page).to have_css("#{section_css} p", text: I18n.t('show.sections.inventory.guide'))
+      expect(page).to have_css('div#inventory-sections div.fa-section-header h2#inventory',
+                               text: I18n.t('show.sections.inventory.header'))
+      expect(page).to have_css('div#inventory-sections div.fa-section-header p',
+                               text: I18n.t('show.sections.inventory.guide'))
     end
 
     it 'renders an expand/collapse toggle button for the inventory accordion' do
-      expect(page).to have_css("#{css} button[data-pl-accordion-toggle='inventory-accordion']")
+      expect(page).to have_css("div#inventory-sections button[data-pl-accordion-toggle='inventory-accordion']")
     end
 
-    it 'renders the description accordion component' do
-      expect(page).to have_css("#{css} pennlibs-accordion#inventory-accordion")
+    it 'renders the inventory accordion component' do
+      expect(page).to have_css('div#inventory-sections pennlibs-accordion#inventory-accordion')
     end
 
     it 'renders inventory details' do
-      detail_css = "#{css} pennlibs-accordion#inventory-accordion"
-      expect(page).to have_css("#{detail_css} details summary h3#series-1", text: 'Test Collection')
+      expect(page).to have_css('pennlibs-accordion#inventory-accordion details summary h3#series-1',
+                               text: 'Test Collection')
     end
   end
 
-  describe 'rendering contact' do
-    let(:css) { 'div.document-main-section div.fa-guide-content section' }
-
+  describe 'rendering the contact section' do
     it 'renders the contact section heading' do
-      expect(page).to have_css("#{css} h2#contact", text: I18n.t('show.sections.contact.header'))
+      expect(page).to have_css('div.fa-guide-content section h2#contact',
+                               text: I18n.t('show.sections.contact.header'))
     end
 
     it "includes the document's repository in the contact guide text" do
-      expect(page).to have_css("#{css} p.pl-line-length.pl-margin-b-m",
+      expect(page).to have_css('div.fa-guide-content section p.pl-line-length.pl-margin-b-m',
                                text: /These materials are held by #{document.repository}/)
     end
 
     it 'shows repository address' do
-      expect(page).to have_css("#{css} dl.pl-dl dt", text: I18n.t('fields.repository_address'))
-      expect(page).to have_css("#{css} dl.pl-dl dd"), document.repository_address
+      expect(page).to have_css('div.fa-guide-content section dl.pl-dl dt',
+                               text: I18n.t('fields.repository_address'))
+      expect(page).to have_css('div.fa-guide-content section dl.pl-dl dd', text: document.repository_address)
     end
 
     it 'shows first contact email' do
-      expect(page).to have_css("#{css} dl.pl-dl dt", text: I18n.t('fields.contact_email'))
-      expect(page).to have_css("#{css} dl.pl-dl dd a[href='mailto:#{document.contact_email}']",
+      expect(page).to have_css('div.fa-guide-content section dl.pl-dl dt', text: I18n.t('fields.contact_email'))
+      expect(page).to have_css("div.fa-guide-content section dl.pl-dl dd a[href='mailto:#{document.contact_email}']",
                                text: document.contact_email)
     end
 
     it 'shows repository website' do
-      expect(page).to have_css("#{css} dl.pl-dl dt", text: I18n.t('fields.url'))
-      expect(page).to have_css("#{css} dl.pl-dl dd a[href='#{document.fetch(:link_url_ss)}']",
+      expect(page).to have_css('div.fa-guide-content section dl.pl-dl dt', text: I18n.t('fields.url'))
+      expect(page).to have_css("div.fa-guide-content section dl.pl-dl dd a[href='#{document.fetch(:link_url_ss)}']",
                                text: document.fetch(:link_url_ss))
     end
   end

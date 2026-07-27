@@ -7,9 +7,13 @@
         <div class="fa-guide-header__hero">
           <div class="fa-guide-header__intro">
 
-            <h1 id="guide-title" class="pl-margin-b-l"><%= presenter.heading %></h1>
+            <h1 id="guide-title" class="pl-margin-b-l">
+              <pennlibs-expand-text lines="3" variant="outline" style="--pl-expand-text-fade-bg: var(--pl-color-bg-subtle);"><%= presenter.heading %></pennlibs-expand-text>
+            </h1>
            <% if abstract %>
-              <p style="font-size: var(--pl-font-size-l);" class="pl-line-length"><%= abstract %></p>
+              <p style="font-size: var(--pl-font-size-l);" class="pl-line-length">
+                <pennlibs-expand-text variant="outline" style="--pl-expand-text-fade-bg: var(--pl-color-bg-subtle);" lines="7"><%= abstract %></pennlibs-expand-text>
+              </p>
           <% end %>
           </div>
 
@@ -34,7 +38,7 @@
     </div>
   </div>
 
-  <div class="fa-guide-layout pl-viewport-margins pl-margin-y-2xl fa-guide-layout--with-toc" style="max-width: 100%">
+  <div class="fa-guide-layout pl-viewport-margins pl-margin-y-2xl fa-guide-layout--with-toc">
     <nav id="guide-toc" class="fa-toc" aria-label="Table of contents"></nav>
     <div class="fa-guide-content">
       <div id="description-sections" class="pl-margin-b-2xl">
