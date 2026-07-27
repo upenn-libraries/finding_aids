@@ -3,27 +3,14 @@
 require 'rails_helper'
 
 describe RepositoryQueries do
-  let(:solr) { SolrService.new }
-
   # Shorthand for FactoryBot solr_document attributes.
   def solr_doc(overrides = {})
     attributes_for(:solr_document, overrides)
   end
 
-  shared_context 'with solr documents' do
-    before do
-      solr.add_many documents: documents
-      solr.commit
-    end
-
-    after do
-      solr.delete_by_ids documents.pluck(:id)
-      solr.commit
-    end
-  end
-
   describe '.titles_by_repository' do
-    include_context 'with solr documents'
+    before { seed_solr(documents) }
+    after  { cleanup_solr(documents) }
 
     let(:documents) do
       [
