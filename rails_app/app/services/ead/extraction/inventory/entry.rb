@@ -5,7 +5,7 @@ module Ead
     module Inventory
       # Provides useful data about a single <c> or <c01> through <c12> component in the EAD used to describe
       # hierarchical groupings of collection materials.
-      class Entry < Extraction::Base
+      class Entry
         ID_PREFIX = 'series'
         # @param node [Nokogiri::XML::Node]
         # @return [Array<Ead::Extraction::Inventory::Entry>]
@@ -13,10 +13,11 @@ module Ead
           Parsing::Inventory.nodes(node).map { |n| new(Parsing::Inventory.new(n)) }
         end
 
-        attr_reader :parser
+        attr_reader :parser, :node_text
 
-        def initialize(parser)
+        def initialize(parser, node_text: NodeText)
           @parser = parser
+          @node_text = node_text
         end
 
         # @param index [Integer]
@@ -28,62 +29,65 @@ module Ead
 
         # @return [String, nil]
         def unitid
-          text_only parser.unitid
+          node_text.text_only parser.unitid
         end
 
         # @return [String, nil]
         def origination
-          text_only parser.origination
+          node_text.text_only parser.origination
         end
 
         # @return [String, nil]
         def extent
-          text_only parser.extent
+          node_text.text_only parser.extent
         end
 
         # @return [String, nil]
         def bulk_date
-          text_only parser.bulk_date
+          node_text.text_only parser.bulk_date
         end
 
         # @return [String, nil]
         def non_bulk_date
-          text_only parser.non_bulk_date
+          node_text.text_only parser.non_bulk_date
         end
 
         # @return [ActiveSupport::SafeBuffer, nil]
         def title_html
-          @title_html ||= translate node: parser.unittitle
+          @title_html ||= node_text.translate node: parser.unittitle
         end
 
         # @return [String, nil]
         def title_text
-          text_only parser.unittitle
+          node_text.text_only parser.unittitle
         end
 
         # @return [Array<ActiveSupport::SafeBuffer>]
         def descriptions
-          @descriptions ||= parser.descriptions.filter_map { |node| translate(node: node) }
+          @descriptions ||= parser.descriptions.filter_map { |node| node_text.translate(node: node) }
         end
 
-        # @return [Array<Hash>]
+        # @return [Array]
         def description_definitions
-          @description_definitions ||= definitions(parser.descriptions, remove_head: true) do |node, translation|
-            Definition.new(text_only(parser.head(node)) || I18n.t("sections.#{node.name}"), translation)
+          @description_definitions ||= node_text.definitions(parser.descriptions,
+                                                             remove_head: true) do |node, translation|
+            node_text::Definition.new(node_text.text_only(parser.class.head(node)) || I18n.t("sections.#{node.name}"),
+                                      translation)
           end
         end
 
-        # @return [Array<Hash>]
+        # @return [Array]
         def identification_definitions
-          @identification_definitions ||= definitions(parser.identifications) do |node, translation|
-            Definition.new(node.attr('label') || I18n.t("inventory.sections.#{node.name}"), translation)
+          @identification_definitions ||= node_text.definitions(parser.identifications) do |node, translation|
+            node_text::Definition.new(node.attr('label') || I18n.t("inventory.sections.#{node.name}"), translation)
           end
         end
 
         # @return [Array<Ead::Extraction::Inventory::Container>]
         def containers
           @containers ||= parser.container.map do |c|
-            Container.new type: c.attr(:type), local_type: c.attr(:localtype), text: text_only(c), label: c.attr(:label)
+            Container.new type: c.attr(:type), local_type: c.attr(:localtype), text: node_text.text_only(c),
+                          label: c.attr(:label)
           end
         end
 
@@ -114,6 +118,7 @@ module Ead
           parser.additional_metadata?
         end
 
+        # @return [Boolean, nil]
         def first_child
           return @first_child if defined?(@first_child)
 
