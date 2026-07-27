@@ -4,8 +4,6 @@
 class InventoryController < ApplicationController
   include Blacklight::Searchable
 
-  delegate :blacklight_config, to: CatalogController
-
   before_action :load_document # Loading document for all actions to ensure the document is present in our instance.
 
   # GET /inventory/:id/details
@@ -17,15 +15,23 @@ class InventoryController < ApplicationController
 
   private
 
+  # @return [Catalog::ShowDocumentPresenter]
   def presenter
     Catalog::ShowDocumentPresenter.new(@document, view_context, blacklight_config)
   end
 
+  # @return [SolrDocument]
   def load_document
     @document = search_service.fetch(params[:id])
   end
 
+  # @return [Array<Ead::Extraction::Inventory::Entry>]
   def entries
     @entries ||= Ead::Extraction::Inventory::Entry.build_entries(@document.parsed_ead.dsc)
+  end
+
+  # @return [Blacklight::Configuration]
+  def blacklight_config
+    CatalogController.blacklight_config
   end
 end
