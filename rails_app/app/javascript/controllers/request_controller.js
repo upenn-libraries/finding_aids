@@ -162,7 +162,8 @@ export default class extends Controller {
       save_for_later: formData.get("save-for-later") === "on" ? "1" : "0",
       return_url: window.location.href,
       item: [],
-      item_barcode: []
+      item_barcode: [],
+      auth_type: "penn"
     }
 
     this.items.forEach((item) => {
@@ -214,11 +215,12 @@ export default class extends Controller {
     this.reviewLedeTarget.textContent = this.copyFor("review_lede")
     this.formLedeTarget.textContent = this.copyFor("form_lede")
 
-    this.stepTarget.textContent =
-      this.state.step === "review" ? this.copyValue.step_review
-      : this.state.step === "details" ? this.copyFor("step_details")
-      : this.state.step === "auth" ? this.copyValue.step_auth
-      : ""
+    const stepLabels = {
+      review: this.copyValue.step_review,
+      details: this.copyFor("step_details"),
+      auth: this.copyValue.step_auth
+    }
+    this.stepTarget.textContent = stepLabels[this.state.step] || ""
 
     // Toggle `required` with visibility — a hidden required field would block submit on the copy path.
     const wantsDate = this.state.requestType === "visit"

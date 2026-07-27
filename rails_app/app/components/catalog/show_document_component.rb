@@ -25,7 +25,7 @@ module Catalog
 
     # @return [Array<Ead::Extraction::Inventory::Entry>]
     def inventory_entries
-      Ead::Extraction::Inventory::Entry.build_entries(@document.parsed_ead.dsc)
+      Ead::Extraction::Inventory::Entry.build_entries(@document.parsed_ead.dsc) || []
     end
 
     private
