@@ -33,7 +33,7 @@ module Ead
         # @param nodeset [Nokogiri::XML::NodeSet, Array<Nokogiri::XML::Node>]
         # @param remove_head [Boolean]
         # @return [Array]
-        def definitions(nodeset, remove_head: false)
+        def map_translations(nodeset, remove_head: false)
           nodeset.filter_map do |node|
             translation = translate(node: node, remove_head: remove_head)
             next if translation.blank?

@@ -132,7 +132,7 @@ RSpec.describe Ead::Extraction::NodeText do
         </root>
       XML
 
-      definitions = described_class.definitions(nodes, remove_head: true) do |node, translation|
+      definitions = described_class.map_translations(nodes, remove_head: true) do |node, translation|
         [node.name, translation]
       end
 
@@ -141,7 +141,7 @@ RSpec.describe Ead::Extraction::NodeText do
     end
 
     it 'returns an empty array for no nodes' do
-      expect(described_class.definitions([])).to eq([])
+      expect(described_class.map_translations([])).to eq([])
     end
   end
 
