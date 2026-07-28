@@ -7,12 +7,12 @@
     <ul>
       <% document.extract(:description_definitions).each do |definition| %>
         <li>
-          <%= link_to I18n.t("sections.#{definition.term}"), "##{definition.term}", data: { turbo: false } %>
+          <%= link_to I18n.t("sections.#{definition.term}"), "##{definition.term}" %>
         </li>
       <% end %>
       <% if presenter.field_presenters_by_group(:rights_and_citation).any? %>
         <li>
-          <%= link_to I18n.t("sections.rights_and_citation"), '#rights', data: { turbo: false } %>
+          <%= link_to I18n.t("sections.rights_and_citation"), '#rights' %>
         </li>
       <% end %>
       <% if presenter.field_presenters_by_group(:subjects_and_headings).any? %>

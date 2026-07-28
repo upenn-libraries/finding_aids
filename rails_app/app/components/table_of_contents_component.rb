@@ -37,7 +37,7 @@ class TableOfContentsComponent < ViewComponent::Base
     children = entry_children(entry: entry, parent_id: entry_id, level: level + 1) if level < depth
 
     content_tag(:li) do
-      safe_join([link_to(entry.presenter.heading, "##{entry_id}", data: { turbo: false }), children].compact)
+      safe_join([link_to(entry.presenter.heading, "##{entry_id}"), children].compact)
     end
   end
 

@@ -37,7 +37,7 @@
   </div>
 
   <div class="fa-guide-layout pl-viewport-margins pl-margin-y-2xl fa-guide-layout--with-toc" style="max-width: 100%">
-    <nav id="guide-toc" class="fa-toc" aria-label="Table of contents">
+    <nav id="guide-toc" class="fa-toc" aria-label="Table of contents" data-turbo="false">
       <%= render(TableOfContentsComponent.new(document: @document, presenter: presenter, entries: inventory_entries, depth: 1)) %>
     </nav>
     <div class="fa-guide-content">
