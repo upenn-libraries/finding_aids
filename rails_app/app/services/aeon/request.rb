@@ -11,6 +11,7 @@ module Aeon
   #  - retrieval_date (String with date in YYYY-MM-DD format)
   #  - save_for_later (Boolean) I choose to only use this with LOAN requests
   #  - return_url (String)
+  #  - call_num (String) required by Penn Aeon - unique ID for the collection
   #  - item (Array of Strings)
   #  - item_barcode (Array of Strings)
   class Request
@@ -19,6 +20,7 @@ module Aeon
     SCAN_REQUEST = 'Copy'
     VISIT_REQUEST = 'Loan'
     BASE_PARAMS = { SystemID: Settings.aeon.system_id,
+                    AeonForm: 'ExternalRequest',
                     WebRequestForm: 'DefaultRequest',
                     SubmitButton: 'Submit Request' }.freeze
 
@@ -83,7 +85,7 @@ module Aeon
 
     # @return [String]
     def call_number
-      params[:call_num]
+      params[:call_num] || 'n/a'
     end
 
     # @return [String]
