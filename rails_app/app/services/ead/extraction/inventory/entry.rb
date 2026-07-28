@@ -128,6 +128,11 @@ module Ead
 
           @first_child = parser.first_child
         end
+
+        # @return [Ead::Extraction::Inventory::EntryPresenter]
+        def presenter
+          @presenter ||= EntryPresenter.new(self)
+        end
       end
     end
   end

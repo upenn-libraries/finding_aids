@@ -6,57 +6,60 @@ module Ead
       # Provides desired display data for Entry objects
       class EntryPresenter
         NO_TITLE = '(No Title)'
-        class << self
-          # @return [ActiveSupport::SafeBuffer, String]
-          def heading(entry)
-            title(title: entry.title_html, origination: entry.origination, date: date(entry),
-                  extent: extent_integer(entry))
-          end
 
-          # @return [ActiveSupport::SafeBuffer, String]
-          def condensed_heading(entry)
-            title(title: entry.title_html, origination: entry.origination)
-          end
+        attr_reader :entry
 
-          # @param entry [Ead::Extraction::Inventory::Entry]
-          # @return [String]
-          def date(entry)
-            non_bulk_date = entry.non_bulk_date
-            bulk_date = entry.bulk_date
+        # @param entry [Ead::Extraction::Inventory::Entry]
+        def initialize(entry)
+          @entry = entry
+        end
 
-            return if non_bulk_date.blank? && bulk_date.blank?
+        # @return [ActiveSupport::SafeBuffer, String]
+        def heading
+          title(title: entry.title_html, origination: entry.origination, date: date,
+                extent: extent_integer)
+        end
 
-            bulk_date = "(#{bulk_date})" if bulk_date
+        # @return [ActiveSupport::SafeBuffer, String]
+        def condensed_heading
+          title(title: entry.title_html, origination: entry.origination)
+        end
 
-            [non_bulk_date, bulk_date].compact_blank.join(' ')
-          end
+        # @return [String]
+        def date
+          non_bulk_date = entry.non_bulk_date
+          bulk_date = entry.bulk_date
 
-          # @param entry [Ead::Extraction::Inventory::Entry]
-          # @return [String]
-          def extent_integer(entry)
-            extent = entry.extent
-            extent ? " #{extent.gsub(/(\d+)\.0/, '\1')}." : ''
-          end
+          return if non_bulk_date.blank? && bulk_date.blank?
 
-          # @param entry [Ead::Extraction::Inventory::Entry]
-          # @return [String]
-          def join_containers(entry)
-            entry.containers.map(&:to_s).join(', ')
-          end
+          bulk_date = "(#{bulk_date})" if bulk_date
 
-          # @param title [ActiveSupport::SafeBuffer, String]
-          # @param origination [String, nil]
-          # @param date [String, nil]
-          # @param extent [String, nil]
-          # @param unitid [String, nil]
-          # @return [ActiveSupport::SafeBuffer, String]
-          def title(title:, origination: nil, date: nil, extent: nil, unitid: nil)
-            title = [unitid, origination, title].compact_blank.join('. ')
-            title = [title, date].compact_blank.join(', ')
-            title.concat extent if extent.present?
+          [non_bulk_date, bulk_date].compact_blank.join(' ')
+        end
 
-            ActiveSupport::SafeBuffer.new(title.presence || NO_TITLE)
-          end
+        # @return [String]
+        def extent_integer
+          extent = entry.extent
+          extent ? " #{extent.gsub(/(\d+)\.0/, '\1')}." : ''
+        end
+
+        # @return [String]
+        def join_containers
+          entry.containers.map(&:to_s).join(', ')
+        end
+
+        # @param title [ActiveSupport::SafeBuffer, String] sanitized title
+        # @param origination [String, nil]
+        # @param date [String, nil]
+        # @param extent [String, nil]
+        # @param unitid [String, nil]
+        # @return [ActiveSupport::SafeBuffer, String]
+        def title(title:, origination: nil, date: nil, extent: nil, unitid: nil)
+          title = [unitid, origination, title].compact_blank.join('. ')
+          title = [title, date].compact_blank.join(', ')
+          title.concat extent if extent.present?
+
+          ActiveSupport::SafeBuffer.new(title.presence || NO_TITLE)
         end
       end
     end
