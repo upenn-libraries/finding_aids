@@ -2,7 +2,7 @@
 <% document.extract(:description_definitions).each do |definition| %>
     <details class="fa-guide__details">
       <summary>
-        <h3 id="<%= definition.term %>"><%= t("sections.#{definition.term}") %></h3>
+        <h3 id="<%= definition.term %>"><%= t(definition.term, scope: "sections") %></h3>
       </summary>
       <div>
         <%= definition.translation %>

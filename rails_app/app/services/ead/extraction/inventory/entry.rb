@@ -73,8 +73,8 @@ module Ead
                                                              remove_head: true) do |node, translation|
             next if translation.blank?
 
-            node_text::Definition.new(node_text.text_only(parser.class.head(node)) || I18n.t("sections.#{node.name}"),
-                                      translation)
+            term = node_text.text_only(parser.class.head(node)) || I18n.t(node.name, scope: 'sections')
+            node_text::Definition.new(term, translation)
           end
         end
 
@@ -83,7 +83,7 @@ module Ead
           @identification_definitions ||= node_text.definitions(parser.identifications) do |node, translation|
             next if translation.blank?
 
-            node_text::Definition.new(node.attr('label') || I18n.t("inventory.sections.#{node.name}"), translation)
+            node_text::Definition.new(node.attr('label') || I18n.t(node.name, scope: 'inventory.sections'), translation)
           end
         end
 
