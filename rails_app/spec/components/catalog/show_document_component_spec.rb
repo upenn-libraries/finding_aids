@@ -77,12 +77,10 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
   end
 
   describe 'attaching stimulus controller' do
-    let(:css) { 'div.document-main-section div.fa-guide-layout[data-controller="guide-navigation"]' }
-
-    it 'attaches the stimulus controller with the expected attributes' do
-      action =
-        "[data-action='toggle->guide-navigation#handleDetailsToggle:capture click->guide-navigation#handleTocClick']"
-      expect(page).to have_css("#{css}#{action}")
+    it 'attaches the stimulus controller with the expected actions' do
+      section = page.find('div.document-main-section.pl-margin-b-3xl')
+      controller_actions = 'toggle->guide-navigation#handleDetailsToggle:capture click->guide-navigation#handleTocClick'
+      expect(section['data-action']).to eq controller_actions
     end
   end
 

@@ -1,5 +1,7 @@
 <%# Override Blacklight 9.0.0 template to implement custom layout %>
-<div class="document-main-section pl-margin-b-3xl">
+<div class="document-main-section pl-margin-b-3xl"
+     data-controller="guide-navigation"
+     data-action="toggle->guide-navigation#handleDetailsToggle:capture click->guide-navigation#handleTocClick">
   <div class="pl-padding-y-2xl" style="background: var(--pl-color-bg-subtle);">
     <div class="pl-viewport-margins">
 
@@ -34,9 +36,7 @@
     </div>
   </div>
 
-  <div class="fa-guide-layout pl-viewport-margins pl-margin-y-2xl fa-guide-layout--with-toc" style="max-width: 100%"
-       data-controller="guide-navigation"
-       data-action="toggle->guide-navigation#handleDetailsToggle:capture click->guide-navigation#handleTocClick">
+  <div class="fa-guide-layout pl-viewport-margins pl-margin-y-2xl fa-guide-layout--with-toc" style="max-width: 100%">
     <nav id="guide-toc" class="fa-toc" aria-label="Table of contents">
       <%= render(TableOfContentsComponent.new(document: @document, presenter: presenter, entries: inventory_entries, depth: 1)) %>
     </nav>
