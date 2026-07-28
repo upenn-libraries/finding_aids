@@ -14,7 +14,7 @@ module Ead
       # @return [Array]
       def description_definitions
         node_text.map_translations(parser.descriptions, remove_head: true) do |node, translation|
-          node_text::Definition.new(node.name, translation)
+          Definition.new(node.name, translation)
         end
       end
 

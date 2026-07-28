@@ -4,8 +4,6 @@ module Ead
   module Extraction
     # Utility class to extract text from XML node
     class NodeText
-      Definition = Data.define(:term, :translation)
-
       class << self
         # @param node [Nokogori::XML::Node]
         # @return [String, nil]
