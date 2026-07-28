@@ -3,17 +3,51 @@
 require 'rails_helper'
 
 describe RepositoryQueries do
+  # Shorthand for FactoryBot solr_document attributes.
+  def solr_doc(overrides = {})
+    attributes_for(:solr_document, overrides)
+  end
+
+  describe '.titles_by_repository' do
+    before { seed_solr(documents) }
+    after  { cleanup_solr(documents) }
+
+    let(:documents) do
+      [
+        solr_doc(repository_ssi: 'Repo A', title_tsi: 'Guide One'),
+        solr_doc(repository_ssi: 'Repo A', title_tsi: 'Guide Two'),
+        solr_doc(repository_ssi: 'Repo B', title_tsi: 'Guide Three'),
+        solr_doc(repository_ssi: 'Repo A', title_tsi: nil),
+        solr_doc(repository_ssi: nil, title_tsi: 'Orphan Title')
+      ]
+    end
+
+    it 'groups titles by repository, sorted alphabetically' do
+      results = described_class.titles_by_repository
+
+      expect(results['Repo A']).to eq(['Guide One', 'Guide Two'])
+      expect(results['Repo B']).to eq(['Guide Three'])
+    end
+
+    it 'excludes documents with blank repository or title' do
+      results = described_class.titles_by_repository
+
+      expect(results.keys).not_to include(nil)
+      expect(results['Repo A']).not_to include(nil)
+    end
+  end
+
   describe '.facet_counts' do
     before { seed_solr(documents) }
     after  { cleanup_solr(documents) }
 
     let(:demo_repo) do
-      attributes_for(:solr_document, repository_ssi: 'Test Repo Alpha')
+      solr_doc(repository_ssi: 'Test Repo Alpha')
     end
     let(:documents) do
       [demo_repo,
-       attributes_for(:solr_document, repository_ssi: 'Test Repo Beta'),
-       attributes_for(:solr_document, repository_ssi: 'Test Repo Beta')]
+       solr_doc(repository_ssi: 'Test Repo Beta'),
+       solr_doc(repository_ssi: 'Test Repo Beta')]
     end
 
     it 'returns an array of name/count hashes' do
@@ -45,14 +79,12 @@ describe RepositoryQueries do
     after  { cleanup_solr(documents) }
 
     let(:with_address) do
-      attributes_for(:solr_document,
-                     repository_ssi: 'Test Repo With Address',
-                     repository_address_ssi: '123 Main St, Philadelphia, PA 19104')
+      solr_doc(repository_ssi: 'Test Repo With Address',
+               repository_address_ssi: '123 Main St, Philadelphia, PA 19104')
     end
     let(:without_address) do
-      attributes_for(:solr_document,
-                     repository_ssi: 'Test Repo Without Address',
-                     repository_address_ssi: nil)
+      solr_doc(repository_ssi: 'Test Repo Without Address',
+               repository_address_ssi: nil)
     end
     let(:documents) { [with_address, without_address] }
 

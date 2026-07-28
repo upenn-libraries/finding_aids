@@ -31,13 +31,10 @@ module ApplicationHelper
       .join(PAGE_TITLE_SEPARATOR)
   end
 
-  # Custom helper method use by Blacklight to truncate abstract.
   # @param options [Hash]
   # @return [ActiveSupport::SafeBuffer]
-  def truncated_abstract(options)
-    truncate(options[:value].first, length: 1_000, separator: ' ') do
-      link_to '(see more)', solr_document_path(options[:document])
-    end
+  def expandable_text(options)
+    content_tag('pennlibs-expand-text', options[:value].first)
   end
 
   # @param options [Hash]

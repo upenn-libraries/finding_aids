@@ -39,7 +39,7 @@ describe 'Endpoint dashboard' do
     end
 
     it 'colors inactive endpoint' do
-      expect(page).to have_selector(".#{table_active_class(endpoint_inactive)}")
+      expect(page).to have_css(".#{table_active_class(endpoint_inactive)}")
     end
   end
 

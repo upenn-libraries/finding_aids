@@ -37,7 +37,7 @@ RSpec.describe Catalog::ConstraintsComponent, type: :component do
     let(:query_params) { { q: 'some query' } }
 
     it 'does not render the "All" query constraint' do
-      expect(page).not_to have_css('span.filter-value', text: I18n.t('blacklight.search.filters.all'))
+      expect(page).to have_no_css('span.filter-value', text: I18n.t('blacklight.search.filters.all'))
     end
   end
 end
