@@ -72,7 +72,7 @@
               <% inventory_entries.each_with_index do |entry, i| %>
                 <details class="fa-guide__details">
                   <summary>
-                    <h3 id="<%= entry.id(index: i + 1) %>"><%= entry_presenter.heading(entry) %></h3>
+                    <h3 id="<%= entry.id(index: i + 1) %>"><%= entry.presenter.heading %></h3>
                   </summary>
                   <div>
                     <p class="placeholder-glow mb-2">

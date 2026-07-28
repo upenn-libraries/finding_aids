@@ -19,7 +19,6 @@ class InventoryComponent < ViewComponent::Base
     @parent_id = parent_id
     @index = index
     @requestable = requestable
-    @presenter = Ead::Extraction::Inventory::EntryPresenter
   end
 
   # @return [ActiveSupport::SafeBuffer]
@@ -45,7 +44,7 @@ class InventoryComponent < ViewComponent::Base
                    links_definitions(entry)].compact_blank
       end
     else
-      @presenter.condensed_heading(entry)
+      entry.presenter.condensed_heading
     end
   end
 
@@ -65,7 +64,7 @@ class InventoryComponent < ViewComponent::Base
   def heading
     request_span = content_tag(:span, nil, class: 'fa-visit__section-count fa-small-name') if @requestable
 
-    content_tag(heading_tag, id: heading_id) { safe_join [@presenter.heading(@entry), request_span].compact_blank }
+    content_tag(heading_tag, id: heading_id) { safe_join [@entry.presenter.heading, request_span].compact_blank }
   end
 
   # @return [String]
@@ -94,7 +93,7 @@ class InventoryComponent < ViewComponent::Base
   # @param entry [Ead::Extraction::Inventory::Entry]
   # @return [Array<ActiveSupport::SafeBuffer>]
   def title_definition(entry)
-    [content_tag(:dt, 'Title'), content_tag(:dd, @presenter.condensed_heading(entry))]
+    [content_tag(:dt, 'Title'), content_tag(:dd, entry.presenter.condensed_heading)]
   end
 
   # @param entry [Ead::Extraction::Inventory::Entry]

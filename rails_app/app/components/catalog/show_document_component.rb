@@ -28,10 +28,5 @@ module Catalog
     def inventory_entries
       @inventory_entries ||= Ead::Extraction::Inventory::Entry.build_entries(@document.parsed_ead.dsc)
     end
-
-    # @return [Class<Ead::Extraction::Inventory::EntryPresenter>]
-    def entry_presenter
-      Ead::Extraction::Inventory::EntryPresenter
-    end
   end
 end
