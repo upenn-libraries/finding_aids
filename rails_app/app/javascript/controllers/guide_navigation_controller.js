@@ -1,14 +1,17 @@
 import { Controller } from "@hotwired/stimulus";
 
+// Passed to visibilityObserver as threshold for highlighting active/visible headings.
+const VISIBILITY_OPTIONS = { rootMargin: "0px 0px -30% 0px" }
+
+const ACTIVE_CLASS = "fa-toc--active"
+
 export default class extends Controller {
     connect() {
         this.turboFrame = this.element.querySelector("turbo-frame");
         this.pendingDetailsToggles = 0;
-        this.visibilityOptions = { rootMargin: "0px 0px -30% 0px" };
-        this.activeClass = "fa-toc--active";
         this.visibilityObserver = new IntersectionObserver(
             this.highlightVisibleHeadings,
-            this.visibilityOptions,
+            VISIBILITY_OPTIONS,
         );
 
         this.setup();
@@ -81,7 +84,7 @@ export default class extends Controller {
         entries.forEach((entry) => {
             const tocEntry = this.tocEntries.get(entry.target.id);
             if (!tocEntry) return;
-            tocEntry.link.classList?.toggle(this.activeClass, entry.isIntersecting);
+            tocEntry.link.classList?.toggle(ACTIVE_CLASS, entry.isIntersecting);
         });
     };
 
