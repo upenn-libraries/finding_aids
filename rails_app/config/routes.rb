@@ -24,6 +24,7 @@ Rails.application.routes.draw do
       member { post :harvest }
     end
     resources :aspace_instances
+    resources :featured_collections
   end
 
   get '/api/endpoints', to: 'api#endpoints', as: :endpoints_api

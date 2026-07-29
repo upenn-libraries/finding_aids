@@ -24,6 +24,8 @@ describe HomepageData do
   end
 
   before do
+    described_class.instance_variable_set(:@repositories, nil)
+    described_class.instance_variable_set(:@repositories_json, nil)
     described_class.instance_variable_set(:@collection_guides, nil)
   end
 
@@ -34,22 +36,27 @@ describe HomepageData do
   end
 
   describe '.collection_guides' do
-    it 'returns an array of CollectionGuide objects' do
-      guides = described_class.collection_guides
-
-      expect(guides).to all(be_a(HomepageData::CollectionGuide))
+    before do
+      allow(RepositoryQueries).to receive(:titles_by_repository).and_return(
+        'Test Repo' => ['Featured A', 'Featured B'] + (1..10).map { |i| "Test Collection #{i}" }
+      )
     end
 
-    it 'includes guide identifiers from the YAML file' do
+    it 'returns featured collection records' do
+      create(:featured_collection, title: 'Featured A', repository: 'Test Repo')
+
       guides = described_class.collection_guides
 
-      expect(guides.map(&:identifier)).to include('Haverford_HC.MC.856')
+      expect(guides).to all(be_a(FeaturedCollection))
+      expect(guides.first.title).to eq('Featured A')
     end
 
-    it 'includes guide names from the YAML file' do
+    it 'limits to the featured collections max' do
+      create_list(:featured_collection, HomepageData::MAX_GUIDES + 1, repository: 'Test Repo')
+
       guides = described_class.collection_guides
 
-      expect(guides.map(&:name)).to include('John Wilbur papers')
+      expect(guides.length).to eq(HomepageData::MAX_GUIDES)
     end
   end
 
