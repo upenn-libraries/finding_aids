@@ -33,9 +33,9 @@
               </td>
             </tr>
           <% else %>
-            <% dates = date(row_entry) %>
-            <% containers = join_containers(row_entry) %>
-            <% title_text = title(title: row_entry.title_text, origination: row_entry.origination) %>
+            <% dates = row_entry.presenter.date %>
+            <% containers = row_entry.presenter.join_containers %>
+            <% title_text = row_entry.presenter.title(title: row_entry.title_text, origination: row_entry.origination) %>
 
             <tr class="inventory-row">
               <td data-th="<%= t('show.sections.inventory.contents') %>"><%= contents_column(row_entry) %></td>

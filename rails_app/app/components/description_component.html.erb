@@ -1,11 +1,11 @@
 <pennlibs-accordion class="pl-flex pl-flex-col pl-gap-m" id="<%= @id %>">
-<% document.extract(:description_definitions).each do |description| %>
+<% document.extract(:description_definitions).each do |definition| %>
     <details class="fa-guide__details">
       <summary>
-        <h3 id="<%= description[:term] %>"><%= t("sections.#{description [:term]}") %></h3>
+        <h3 id="<%= definition.term %>"><%= t(definition.term, scope: "sections") %></h3>
       </summary>
       <div>
-        <%= description[:definition] %>
+        <%= definition.translation %>
       </div>
     </details>
 <% end %>

@@ -176,6 +176,7 @@ GEM
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (~> 0.7)
+    ffi (1.17.4-aarch64-linux-musl)
     ffi (1.17.4-x86_64-linux-musl)
     fugit (1.13.0)
       et-orbi (~> 1.4)
@@ -266,6 +267,8 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.5)
+    nokogiri (1.19.4-aarch64-linux-musl)
+      racc (~> 1.4)
     nokogiri (1.19.4-x86_64-linux-musl)
       racc (~> 1.4)
     omniauth (2.1.4)
@@ -282,6 +285,7 @@ GEM
     parser (3.3.12.0)
       ast (~> 2.4.1)
       racc
+    pg (1.6.3-aarch64-linux-musl)
     pg (1.6.3-x86_64-linux-musl)
     pp (0.6.4)
       prettyprint
@@ -483,6 +487,7 @@ GEM
     zeitwerk (2.8.2)
 
 PLATFORMS
+  aarch64-linux-musl
   x86_64-linux-musl
 
 DEPENDENCIES

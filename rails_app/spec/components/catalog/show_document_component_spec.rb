@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Catalog::ShowDocumentComponent, type: :component do
+  include EadHelpers
   let(:document) { SolrDocument.new(attributes_for(:solr_document, :with_collection_data)) }
   let(:presenter) { Catalog::ShowDocumentPresenter.new(document, view_context, CatalogController.new.blacklight_config) }
   let(:component) { described_class.new(document: presenter) }
@@ -71,10 +72,35 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
     end
   end
 
-  describe 'rendering the table of contents' do
-    it 'renders a table of contents navigation', pending: 'not implemented' do
-      expect(page).to have_css("div.fa-guide-layout nav.fa-toc[aria-label='Table of contents'] ul li",
-                               text: presenter.heading)
+  describe 'attaching stimulus controller' do
+    it 'attaches the stimulus controller with the expected actions' do
+      section = page.find('div.document-main-section.pl-margin-b-3xl')
+      controller_actions = 'toggle->guide-navigation#handleDetailsToggle:capture click->guide-navigation#handleTocClick'
+      expect(section['data-action']).to eq controller_actions
+    end
+  end
+
+  describe 'rendering table of contents' do
+    it 'renders a table of contents navigation' do
+      section = page.find('div.document-main-section div.fa-guide-layout')
+      toc_navigation = "nav.fa-toc[aria-label='Table of contents']"
+      expect(section).to have_css(toc_navigation, text: presenter.heading)
+    end
+
+    it 'only renders one level deep' do
+      entry = entry_for(<<~XML, xpath: '//c01')
+        <c01 level="series">
+          <did><unittitle>Level 1</unittitle></did>
+          <c02>
+            <did><unittitle>Level 2</unittitle></did>
+          </c02>
+        </c01>
+      XML
+      allow(Ead::Extraction::Inventory::Entry).to receive(:build_entries).and_return([entry])
+      render_inline described_class.new(document: presenter)
+
+      expect(page).to have_css("nav.fa-toc[aria-label='Table of contents'] ul li", text: 'Level 1')
+      expect(page).to have_no_css("nav.fa-toc[aria-label='Table of contents'] ul li", text: 'Level 2')
     end
   end
 
@@ -107,13 +133,21 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
       expect(page).to have_css("div#inventory-sections button[data-pl-accordion-toggle='inventory-accordion']")
     end
 
+    it 'renders a turbo frame to load inventory collection' do
+      expect(page).to have_css("turbo-frame#inventory-frame[src='/inventory/#{document.id}/details']")
+    end
+
     it 'renders the inventory accordion component' do
       expect(page).to have_css('div#inventory-sections pennlibs-accordion#inventory-accordion')
     end
 
-    it 'renders inventory details' do
+    it 'renders top level inventory details' do
       expect(page).to have_css('pennlibs-accordion#inventory-accordion details summary h3#series-1',
-                               text: 'Test Collection')
+                               text: 'Test Collection, 1900-1950')
+    end
+
+    it 'renders placeholders to indicate loading' do
+      expect(page).to have_css('pennlibs-accordion#inventory-accordion details div p.placeholder-glow', visible: :all)
     end
   end
 

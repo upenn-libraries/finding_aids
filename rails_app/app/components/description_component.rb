@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 # Renders accordion pattern containing description metadata
-class DescriptionAccordionComponent < ViewComponent::Base
+class DescriptionComponent < ViewComponent::Base
   attr_reader :document, :presenter
-
-  include EadTranslating
 
   # @param document [SolrDocument]
   # @param presenter [Catalog::ShowDocumentPresenter]

@@ -7,6 +7,7 @@ module EadHelpers
   # @return [Ead::Extraction::Inventory::Entry]
   def entry_for(xml, xpath: '//c | //c01 | //c02 | //c03')
     node = Nokogiri::XML(xml).at_xpath(xpath)
-    Ead::Extraction::Inventory::Entry.new(node)
+    parser = Ead::Parsing::Inventory.new(node)
+    Ead::Extraction::Inventory::Entry.new(parser)
   end
 end
