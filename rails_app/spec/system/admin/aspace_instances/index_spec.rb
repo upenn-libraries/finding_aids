@@ -11,7 +11,7 @@ describe 'ASpaceInstances index page' do
     end
 
     it 'does not display user index page' do
-      expect(page).not_to have_text('ASpace Instances')
+      expect(page).to have_no_text('ASpace Instances')
     end
 
     it 'redirects to login page' do

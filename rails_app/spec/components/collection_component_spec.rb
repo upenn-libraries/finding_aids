@@ -139,8 +139,8 @@ XML
 XML
     end
 
-    it { is_expected.not_to have_link 'Notebook A' }
-    it { is_expected.not_to have_link 'Notebook B' }
+    it { is_expected.to have_no_link 'Notebook A' }
+    it { is_expected.to have_no_link 'Notebook B' }
   end
 
   context 'with descriptive data sections' do

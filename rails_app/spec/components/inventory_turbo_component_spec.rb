@@ -45,9 +45,9 @@ RSpec.describe InventoryTurboComponent, type: :component do
     end
 
     it 'renders a nested inventory collection' do
-      css = 'turbo-frame#inventory-frame pennlibs-accordion#inventory-accordion'
-      expect(page).to have_css("#{css} details summary h4#series-1-1", visible: :all)
-      expect(page).to have_css("#{css} details summary h3#series-2")
+      section = page.find('turbo-frame#inventory-frame pennlibs-accordion#inventory-accordion')
+      expect(section).to have_css('details summary h4#series-1-1', visible: :all)
+      expect(section).to have_css('details summary h3#series-2')
     end
   end
 end

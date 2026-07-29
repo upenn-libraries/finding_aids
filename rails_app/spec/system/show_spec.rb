@@ -38,7 +38,7 @@ RSpec.describe 'Catalog Show' do
       visit solr_document_path(document[:id], anchor: 'series-1-1')
 
       expect(page).to have_css('details[open] summary h3#series-1')
-      expect(page).not_to have_css('details[open] summary h4#series-1-1', visible: :all)
+      expect(page).to have_no_css('details[open] summary h4#series-1-1', visible: :all)
     end
 
     it 'expands nested inventory containing URL location after turbo frame loads' do
