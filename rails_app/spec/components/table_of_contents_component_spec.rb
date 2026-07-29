@@ -20,8 +20,8 @@ RSpec.describe TableOfContentsComponent, type: :component do
 
         render_inline(described_class.new(document: document, presenter: presenter, entries: entries))
 
-        expect(page).to have_css('a[href="#series-1"]', text: 'Series One')
-        expect(page).to have_css('a[href="#series-2"]', text: 'Series Two')
+        expect(page).to have_link('Series One', href: '#series-1')
+        expect(page).to have_link('Series Two', href: '#series-2')
       end
 
       it 'nests a child link only when that child itself has children' do
@@ -39,7 +39,7 @@ RSpec.describe TableOfContentsComponent, type: :component do
 
         render_inline(described_class.new(document: document, presenter: presenter, entries: entries))
 
-        expect(page).not_to have_css('a', text: 'Child subseries')
+        expect(page).to have_no_css('a', text: 'Child subseries')
         expect(page).to have_css('a', text: 'Nested child subseries')
       end
 
@@ -64,8 +64,8 @@ RSpec.describe TableOfContentsComponent, type: :component do
 
         render_inline(described_class.new(document: document, presenter: presenter, entries: entries))
 
-        expect(page).to have_css('a[href="#series-1-2"]', text: 'Branch B')
-        expect(page).to have_css('a[href="#series-1-4"]', text: 'Branch D')
+        expect(page).to have_css('Branch B', href: '#series-1-2')
+        expect(page).to have_css('Branch D', href: '#series-1-4')
       end
 
       it 'obeys the depth provided' do
@@ -81,7 +81,7 @@ RSpec.describe TableOfContentsComponent, type: :component do
         render_inline(described_class.new(document: document, presenter: presenter, entries: [entry], depth: 1))
 
         expect(page).to have_css('a', text: 'Level 1')
-        expect(page).not_to have_css('a', text: 'Level 2')
+        expect(page).to have_no_css('a', text: 'Level 2')
       end
 
       it 'does not recurse past MAX_DEPTH' do
@@ -104,7 +104,7 @@ RSpec.describe TableOfContentsComponent, type: :component do
         render_inline(described_class.new(document: document, presenter: presenter, entries: [deeply_nested]))
 
         expect(page).to have_css('a', text: 'Level 3')
-        expect(page).not_to have_css('a', text: 'Level 4')
+        expect(page).to have_no_css('a', text: 'Level 4')
       end
     end
   end
