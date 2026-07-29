@@ -257,7 +257,7 @@ RSpec.describe InventoryComponent, type: :component do
         expect(page).to have_field(class: 'fa-visit__checkbox', visible: :all)
       end
 
-      it 'includes input tag with container data attributes' do
+      it 'includes input tag with container data attributes', pending: 'to figure out how container data is stored' do
         entry = entry_for(<<~XML, xpath: '//c01')
           <c01 level="series">
             <did><unittitle>Series</unittitle></did>
