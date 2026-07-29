@@ -64,8 +64,8 @@ RSpec.describe TableOfContentsComponent, type: :component do
 
         render_inline(described_class.new(document: document, presenter: presenter, entries: entries))
 
-        expect(page).to have_css('Branch B', href: '#series-1-2')
-        expect(page).to have_css('Branch D', href: '#series-1-4')
+        expect(page).to have_link('Branch B', href: '#series-1-2')
+        expect(page).to have_link('Branch D', href: '#series-1-4')
       end
 
       it 'obeys the depth provided' do
