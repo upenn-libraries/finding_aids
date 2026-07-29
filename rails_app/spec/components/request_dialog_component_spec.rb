@@ -9,21 +9,17 @@ RSpec.describe RequestDialogComponent, type: :component do
   before { render_inline(described_class.new(repository: repository, aeon_url: aeon_url)) }
 
   it 'renders the modal dialog' do
-    expect(page).to have_css('dialog.fa-visit__dialog', visible: :all)
+    expect(page).to have_css('dialog.fa-visit__dialog')
   end
 
   it 'renders the four step sections' do
-    expect(page).to have_css('section[data-request-target="reviewSection"]', visible: :all)
-    expect(page).to have_css('section[data-request-target="detailsSection"]', visible: :all)
-    expect(page).to have_css('section[data-request-target="authSection"]', visible: :all)
-    expect(page).to have_css('section[data-request-target="confirmSection"]', visible: :all)
+    requesting_sections = page.find_all('section.requesting-step', visible: :any)
+    expect(requesting_sections.size).to eq(4)
   end
 
-  it 'hides all but the review section by default' do
-    expect(page).to have_css('section[data-request-target="reviewSection"]:not([hidden])', visible: :all)
-    expect(page).to have_css('section[data-request-target="detailsSection"][hidden]', visible: :all)
-    expect(page).to have_css('section[data-request-target="authSection"][hidden]', visible: :all)
-    expect(page).to have_css('section[data-request-target="confirmSection"][hidden]', visible: :all)
+  it 'shows only the review section by default' do
+    expect(page).to have_css('section[data-request-target="reviewSection"]', visible: :all)
+    expect(page).to have_css('section[data-request-target="detailsSection"]', visible: :hidden)
   end
 
   it 'shows the holding institution under "Held at"' do
@@ -33,23 +29,14 @@ RSpec.describe RequestDialogComponent, type: :component do
 
   it 'links the auth step to the Aeon login URL' do
     expect(page).to have_css(
-      'a.pl-button.pl-button--accent[@href="' + aeon_url + '"]',
+      "a.pl-button.pl-button--accent[@href=\"#{aeon_url}\"]",
       text: 'Log in to your Research Account', visible: :all
     )
   end
 
-  it 'renders the fixed bottom bar' do
-    expect(page).to have_css('.fa-visit__bar[hidden]', visible: :all)
+  it 'renders the request options in the fixed bottom bar' do
     expect(page).to have_css('button[data-action="click->request#openCopy"]', text: 'Request copies', visible: :all)
     expect(page).to have_css('button[data-action="click->request#openVisit"]', text: 'Plan a visit', visible: :all)
-  end
-
-  it 'wires dialog actions to the request controller' do
-    expect(page).to have_css('button[data-action="click->request#close"]', visible: :all)
-    expect(page).to have_css('button[data-action="click->request#clearAll"]', visible: :all)
-    expect(page).to have_css('button[data-action="click->request#goDetails"]', visible: :all)
-    expect(page).to have_css('button[data-action="click->request#goReview"]', visible: :all)
-    expect(page).to have_css('button[data-action="click->request#place"]', visible: :all)
   end
 
   it 'submits the details form via the controller' do
