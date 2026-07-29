@@ -1,0 +1,40 @@
+<% @page_title = "Request to View Materials" %>
+
+<h2 class="mb-4"><%= t('requests.form.header') %></h2>
+
+<%#
+  This is working OK, but two issues remain:
+    - UserReview isn't producing the expected behaviro in Aeon
+    - The 'return link` stuff isn't working
+%>
+
+<% params = ActionController::Parameters.new(
+  repository: Settings.aeon.locations.sample[:label],
+  title: '1992 collection',
+  call_num: '123456',
+  request_type: Aeon::Request::SCAN_REQUEST,
+  special_request: 'Special request',
+  notes: 'Some notes',
+  retrieval_date: '2027-01-01',
+  save_for_later: false,
+  return_url: 'http://example.com',
+  item: ['Box 1:Folder 1', 'Box 2:Folder 1'],
+  item_barcode: ['1234', '5678']
+) %>
+
+<% request = Aeon::Request.new(params) %>
+
+<p>
+<%= pp request.inspect %>
+</p>
+
+<p>
+<%= pp request.to_a %>
+</p>
+
+<%= bootstrap_form_with id: 'aeonRequestForm', url: Settings.aeon.ere_endpoint, method: :post, authenticity_token: false do |form| %>
+  <% request.to_a.each do |key, value| %>
+    <%= form.hidden_field key, value: value %>
+  <% end %>
+  <%= form.submit 'Send request' %>
+<% end %>

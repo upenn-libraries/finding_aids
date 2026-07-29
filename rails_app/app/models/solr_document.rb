@@ -3,11 +3,6 @@
 # Blacklight class wrapping the retrieved Solr document
 class SolrDocument
   XML_FIELD_NAME = :xml_ss
-  REQUESTABLE_REPOSITORIES = [
-    AeonRequest::ARCHIVES_REPOSITORY_NAME,
-    AeonRequest::KATZ_REPOSITORY_NAME,
-    AeonRequest::KISLAK_REPOSITORY_NAME
-  ].freeze
 
   include Blacklight::Solr::Document
   # self.unique_key = 'id'
@@ -63,17 +58,18 @@ class SolrDocument
     fetch(:repository_address_ssi, nil)
   end
 
-  # @return [Boolean]
-  def requestable?
-    fetch(:repository_ssi, nil).in? REQUESTABLE_REPOSITORIES
-  end
-
   # @return [String, nil]
   def contact_email
     fetch(:contact_emails_ssm).first
   end
 
-  # @return [Hash{Symbol->Unknown}]
+  # @return [Boolean]
+  def requestable?
+    Aeon::Request.allowed? repository_name: fetch(:repository_ssi)
+  end
+
+  # Record-level requesting info, needed for Aeon submissions. Will be supplemented with container-level data.
+  # @return [Hash{Symbol->String}]
   def requesting_info
     { title: title, call_num: call_num, repository: repository }
   end
