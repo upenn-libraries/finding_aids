@@ -19,7 +19,7 @@ describe 'Search highlighting on record pages' do
 
   describe 'arrival highlighting' do
     context 'when visiting a record page with a query param' do
-      it 'highlights the query term and shows a match-count callout' do
+      it 'highlights the query term and shows a match-count callout', :aggregate_failures do
         visit solr_document_path(document_id, q: 'collection')
 
         expect(page).to have_css('mark.search-highlight', wait: 3)
@@ -51,8 +51,8 @@ describe 'Search highlighting on record pages' do
       it 'does not highlight or show the callout' do
         visit solr_document_path(document_id)
 
-        expect(page).to have_no_css('mark.search-highlight')
         expect(page).to have_css('[data-search-highlight-target="statusCallout"][hidden]', visible: :hidden)
+        expect(page).to have_no_css('mark.search-highlight')
       end
     end
   end
