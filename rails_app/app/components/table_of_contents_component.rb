@@ -9,6 +9,7 @@ class TableOfContentsComponent < ViewComponent::Base
   # @param document [SolrDocument]
   # @param presenter [Blacklight::DocumentPresenter]
   # @param entries [Array<Ead::Extraction::Inventory::Entry>]
+  # @param depth [Integer]
   def initialize(document:, presenter:, entries:, depth: MAX_DEPTH)
     @document = document
     @presenter = presenter
