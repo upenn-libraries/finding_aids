@@ -1,5 +1,7 @@
 <%# Override Blacklight 9.0.0 template to implement custom layout %>
-<div class="document-main-section pl-margin-b-3xl">
+<div class="document-main-section pl-margin-b-3xl"
+     data-controller="guide-navigation"
+     data-action="toggle->guide-navigation#handleDetailsToggle:capture click->guide-navigation#handleTocClick">
   <div class="pl-padding-y-2xl" style="background: var(--pl-color-bg-subtle);">
     <div class="pl-viewport-margins">
 
@@ -39,7 +41,9 @@
   </div>
 
   <div class="fa-guide-layout pl-viewport-margins pl-margin-y-2xl fa-guide-layout--with-toc">
-    <nav id="guide-toc" class="fa-toc" aria-label="Table of contents"></nav>
+    <nav id="guide-toc" class="fa-toc" aria-label="Table of contents" data-turbo="false">
+      <%= render(TableOfContentsComponent.new(document: @document, presenter: presenter, entries: inventory_entries, depth: 1)) %>
+    </nav>
     <div class="fa-guide-content">
       <div id="description-sections" class="pl-margin-b-2xl">
         <div class="fa-section-header">
@@ -53,8 +57,7 @@
                   data-pl-accordion-toggle="description-accordion">
           </button>
         </div>
-          <%= render(DescriptionAccordionComponent.new(document: document, presenter: @presenter,
-                                                       id: 'description-accordion')) %>
+          <%= render(DescriptionComponent.new(document: document, presenter: @presenter, id: 'description-accordion')) %>
       </div>
       <div id="inventory-sections" class="pl-margin-b-2xl">
         <div class="fa-section-header">
@@ -68,7 +71,26 @@
                   data-pl-accordion-toggle="inventory-accordion">
           </button>
         </div>
-        <%= render InventoryCollectionComponent.new(entries: inventory_entries, requestable: @document.requestable?) %>
+        <turbo-frame id="inventory-frame" src="<%= details_inventory_path(@document.id) %>">
+          <pennlibs-accordion class="pl-flex pl-flex-col pl-gap-m" id="inventory-accordion">
+              <% inventory_entries.each_with_index do |entry, i| %>
+                <details class="fa-guide__details">
+                  <summary>
+                    <h3 id="<%= entry.id(index: i + 1) %>"><%= entry.presenter.heading %></h3>
+                  </summary>
+                  <div>
+                    <p class="placeholder-glow mb-2">
+                      <span class="placeholder col-7"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                      <span class="placeholder col-8"></span>
+                    </p>
+                  </div>
+                </details>
+              <% end %>
+          </pennlibs-accordion>
+        </turbo-frame>
       </div>
       <section>
         <h2 id="contact"><%= t('show.sections.contact.header') %></h2>

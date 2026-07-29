@@ -265,6 +265,7 @@ en:
         container: 'Container'
         select: 'Select'
         select_visually_hidden: 'Select %{title}'
+        title: 'Title'
         none: 'Collection information not available'
       contact:
         header: 'Contact'

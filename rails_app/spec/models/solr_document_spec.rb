@@ -48,7 +48,7 @@ describe SolrDocument do
     end
 
     it 'responds to method calls for defined sections' do
-      Ead::Parsing::ArchivalDescription::OTHER_SECTIONS.each do |section|
+      Ead::Parsing::ArchivalDescription::DESCRIPTION_SECTIONS.each do |section|
         expect(parsed_ead).to respond_to section
       end
     end

@@ -5,46 +5,18 @@ require 'rails_helper'
 RSpec.describe Ead::Extraction::Inventory::Entry do
   include EadHelpers
 
-  describe '.nodes' do
-    it 'returns only immediate child component nodes' do
-      entry = entry_for(<<~XML)
-        <c01>
-          <c02 id="one" />
-          <c02 id="two">
-            <c03 id="three" />
-          </c02>
-        </c01>
-      XML
-
-      nodes = described_class.nodes(entry.node)
-
-      expect(nodes.map { |n| n['id'] }).to eq %w[one two]
-    end
-
-    it 'returns an empty NodeSet when there are no child components' do
-      entry = entry_for('<c01><did /></c01>')
-      expect(described_class.nodes(entry.node)).to be_empty
-    end
-  end
-
   describe '.build_entries' do
     it 'builds an Entry for each immediate child component' do
-      entry = entry_for(<<~XML)
-        <c01>
-          <c02 />
-          <c02 />
-        </c01>
-      XML
-
-      children = described_class.build_entries(entry.node)
+      node = Nokogiri::XML('<c01><c02 /><c02 /></c01>').at_xpath('//c01')
+      children = described_class.build_entries(node)
 
       expect(children.size).to eq 2
       expect(children).to all(be_a(described_class))
     end
 
     it 'returns an empty array when there are no child components' do
-      entry = entry_for '<c01><did /></c01>'
-      expect(described_class.build_entries(entry.node)).to eq []
+      node = Nokogiri::XML('<c01><did /></c01>').at_xpath('//c01')
+      expect(described_class.build_entries(node)).to eq []
     end
   end
 
@@ -170,7 +142,7 @@ RSpec.describe Ead::Extraction::Inventory::Entry do
     end
   end
 
-  describe '#descriptive_metadata' do
+  describe '#descriptions' do
     it 'returns descriptive metadata translated into html' do
       entry = entry_for(<<~XML)
         <c02>
@@ -179,23 +151,23 @@ RSpec.describe Ead::Extraction::Inventory::Entry do
         </c02>
       XML
 
-      expect(entry.descriptive_metadata).to eq ["<div><strong>Scope and Contents</strong></div>\n<p>Some text.</p>"]
+      expect(entry.descriptions).to eq ["<div><strong>Scope and Contents</strong></div>\n<p>Some text.</p>"]
     end
   end
 
-  describe '#descriptive_metadata_definitions' do
-    it 'splits each section into a term (from head) and translated definition' do
+  describe '#description_definitions' do
+    it 'splits each section into a term derived from node name and translated definition' do
       entry = entry_for(<<~XML)
         <c02>
           <did><unittitle>x</unittitle></did>
-          <scopecontent><head>Scope and Contents</head><p>Some description.</p></scopecontent>
+          <scopecontent><head>Scope and Content</head><p>Some description.</p></scopecontent>
         </c02>
       XML
 
-      definitions = entry.descriptive_metadata_definitions
+      definitions = entry.description_definitions
 
-      expect(definitions.first[:term]).to eq('Scope and Contents')
-      expect(definitions.first[:definition]).to include('Some description.')
+      expect(definitions.first.term).to eq(I18n.t('sections.scopecontent'))
+      expect(definitions.first.translation).to include('Some description.')
     end
 
     it 'excludes a section whose body is blank once the head is removed' do
@@ -206,12 +178,12 @@ RSpec.describe Ead::Extraction::Inventory::Entry do
         </c02>
       XML
 
-      expect(entry.descriptive_metadata_definitions).to be_empty
+      expect(entry.description_definitions).to be_empty
     end
   end
 
-  describe '#identification_metadata_definitions' do
-    it 'splits each section into a term and translated definition' do
+  describe '#identification_definitions' do
+    it 'splits each section into a term derived from node label and translated definition' do
       entry = entry_for(<<~XML)
          <c02>
           <did>
@@ -221,10 +193,10 @@ RSpec.describe Ead::Extraction::Inventory::Entry do
         </c02>
       XML
 
-      definitions = entry.identification_metadata_definitions
+      definitions = entry.identification_definitions
 
-      expect(definitions.first[:term]).to eq('Extent')
-      expect(definitions.first[:definition]).to include('1 Folder.')
+      expect(definitions.first.term).to eq('Extent')
+      expect(definitions.first.translation).to include('1 Folder.')
     end
 
     it 'uses a fallback term when there is no label' do
@@ -237,9 +209,9 @@ RSpec.describe Ead::Extraction::Inventory::Entry do
         </c02>
       XML
 
-      definitions = entry.identification_metadata_definitions
+      definitions = entry.identification_definitions
 
-      expect(definitions.first[:term]).to eq(I18n.t('inventory.sections.physdesc'))
+      expect(definitions.first.term).to eq(I18n.t('inventory.sections.physdesc'))
     end
   end
 
@@ -345,7 +317,7 @@ RSpec.describe Ead::Extraction::Inventory::Entry do
         </c01>
       XML
 
-      expect(entry.node).to receive(:at_xpath).once.and_call_original
+      expect(entry.parser.node).to receive(:at_xpath).once.and_call_original
 
       3.times { entry.children? }
     end
@@ -360,7 +332,7 @@ RSpec.describe Ead::Extraction::Inventory::Entry do
 
       entry.children
 
-      expect(entry.node).not_to receive(:at_xpath)
+      expect(entry.parser.node).not_to receive(:xpath)
 
       expect(entry.children?).to be true
     end

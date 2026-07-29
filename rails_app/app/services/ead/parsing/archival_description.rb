@@ -4,10 +4,10 @@ module Ead
   module Parsing
     # Provide access to Ead XML nodes
     class ArchivalDescription
-      ADMIN_INFO_SECTIONS = %w[publisher author date sponsor accessrestrict userestrict].freeze
-      OTHER_SECTIONS = %w[bioghist scopecontent arrangement relatedmaterials bibliography odd accruals
-                          custodhist altformavail originalsloc fileplan acqinfo otherfindaid phystech
-                          processinfo relatedmaterial separatedmaterial appraisal].freeze
+      ACCESS_SECTIONS = %w[accessrestrict userestrict].freeze
+      DESCRIPTION_SECTIONS = %w[bioghist scopecontent arrangement relatedmaterials bibliography odd accruals
+                                custodhist altformavail originalsloc fileplan acqinfo otherfindaid phystech
+                                processinfo relatedmaterial separatedmaterial appraisal].freeze
 
       # @param [String] xml
       def initialize(xml)
@@ -15,23 +15,48 @@ module Ead
         @nodes.remove_namespaces!
       end
 
-      # @return [Nokogiri::XML::Element] required element in <archdesc> node
+      def descriptions
+        DESCRIPTION_SECTIONS.flat_map { |section| send(section) }.compact_blank
+      end
+
+      # @return [Nokogiri::XML::Node, nil] required element in <archdesc> node
       def did
         @nodes.at_xpath('/ead/archdesc/did')
       end
 
-      # @return [Nokogiri::XML::Element]
+      # @return [Nokogiri::XML::Node, nil]
       def dsc
         @nodes.at_xpath('/ead/archdesc/dsc')
       end
 
-      # @return [Nokogir::XML::Element]
+      # @return [Nokogiri::XML::Node, nil]
+      def sponsor
+        @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt/sponsor')
+      end
+
+      # @return [Nokogiri::XML::Node, nil]
+      def author
+        @nodes.at_xpath('/ead/eadheader/filedesc/titlestmt/author')
+      end
+
+      # @return [Nokogiri::XML::Node, nil]
+      def publisher
+        @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt/publisher')
+      end
+
+      # @return [Nokogiri::XML::Node, nil]
+      def date
+        @nodes.at_xpath('/ead/eadheader/filedesc/publicationstmt//date')
+      end
+
+      # @return [Nokogir::XML::Node, nil]
       def langmaterial
         did.at_xpath('langmaterial')
       end
 
       # Dynamically define accessor methods for sections found in the archdesc node
-      (ADMIN_INFO_SECTIONS + OTHER_SECTIONS).each do |section|
+      (ACCESS_SECTIONS + DESCRIPTION_SECTIONS).each do |section|
+        # @return [Nokogiri::XML::NodeSet]
         define_method(section) do
           @nodes.xpath("/ead/archdesc/#{section}")
         end
