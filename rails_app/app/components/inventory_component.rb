@@ -93,7 +93,7 @@ class InventoryComponent < ViewComponent::Base
   # @param entry [Ead::Extraction::Inventory::Entry]
   # @return [Array<ActiveSupport::SafeBuffer>]
   def title_definition(entry)
-    [content_tag(:dt, 'Title'), content_tag(:dd, entry.presenter.condensed_heading)]
+    [content_tag(:dt, I18n.t('show.sections.inventory.title')), content_tag(:dd, entry.presenter.condensed_heading)]
   end
 
   # @param entry [Ead::Extraction::Inventory::Entry]
