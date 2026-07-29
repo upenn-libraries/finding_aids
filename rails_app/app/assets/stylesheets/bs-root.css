@@ -14,6 +14,15 @@ main {
   padding-block: 0;
 }
 
+.pl-typeset *+:is(h2, h3, h4, h5, h6) {
+  /* Bootstrap's Reboot zeroes heading margins (`h1..h6 { margin-top: 0 }`,
+     specificity 0,0,1). The design system spaces headings with
+     `:where(.pl-typeset) *+:is(h2..h6)`, but `:where()` is zero-specificity, so
+     Reboot wins and headings following other content lose their top margin.
+     Reassert the design-system spacing with a real class selector so it wins. */
+  margin-block-start: var(--pl-space-xl);
+}
+
 .btn,
 .form-control {
   transition: none;

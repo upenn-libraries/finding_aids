@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_01_153345) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_13_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -35,6 +35,15 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_01_153345) do
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
+  create_table "collection_guides", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.string "repository", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_collection_guides_on_active"
+  end
+
   create_table "endpoints", force: :cascade do |t|
     t.boolean "active", default: true, null: false
     t.bigint "aspace_instance_id"
@@ -49,6 +58,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_01_153345) do
     t.text "webpage_url"
     t.index ["aspace_instance_id"], name: "index_endpoints_on_aspace_instance_id"
     t.index ["slug"], name: "index_endpoints_on_slug", unique: true
+  end
+
+  create_table "featured_collections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "repository", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "searches", id: :serial, force: :cascade do |t|

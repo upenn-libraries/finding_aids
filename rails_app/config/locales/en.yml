@@ -9,7 +9,7 @@ en:
       subheading: 'Find your way into the primary sources held by archives in the Philadelphia area.'
       alt: 'An archival reading room'
     collection_guides:
-      heading: 'Collection guides'
+      heading: 'Featured collections'
       intro: >-
         A collection guide, sometimes called a finding aid, describes a single
         archival collection. It tells you where the collection came from, what's
@@ -51,23 +51,27 @@ en:
       submit_correction: "Suggest a correction"
   about:
     page_title: 'About'
-    header: 'About the Philadelphia Area Archives Site'
+    header: 'About'
+    lede: >-
+      Search collection guides from archives, libraries, and historical
+      societies across the Philadelphia area, all in one place. Each guide
+      shows you what a collection holds and where to see it.
+    headings:
+      overview: "What you'll find here"
+      contribute: 'Share your finding aids with us'
+      update: 'Update your finding aids'
+      add: 'Add your finding aids'
+      thanks: 'Special thanks'
   footer:
-    nav:
-      heading: 'Navigation'
+    archives:
+      heading: 'Philadelphia Area Archives'
       home: 'Home'
       about: 'About'
-      admin: 'Site Administration'
-    organizations:
-      heading: 'Organizations'
       pacscl: 'PACSCL'
-      hidden_coll_init: 'Hidden Collections Initiative for Pennsylvania Small Archival Repositories'
-    policies:
-      heading: 'Policies'
-      disclaimer: 'Disclaimer'
-      privacy: 'Privacy Policy'
-      a11y: 'Report Accessibility Issues and Get Help'
-      statement: 'Archival Description and Harmful Language'
+      statement: 'Statement on Archival Description and Harmful Language'
+    admin:
+      heading: 'Administration'
+      link: 'Site administration'
   legacy:
     redirect: 'The identifier for this item has been updated. Please use this page URL to access this item.'
   requests:
@@ -201,6 +205,7 @@ en:
       status: 'Status Page'
       sidekiq: 'Sidekiq'
       sign_out: 'Log Out'
+      featured_collections: 'Featured Collections'
     users:
       uid: 'PennKey'
     endpoints:
@@ -226,6 +231,18 @@ en:
       harvest:
         success: "Successfully enqueued harvest job for %{class_name} %{identifier}."
         failure: "Failed to enqueue harvest for %{class_name} %{identifier}: %{error}."
+    featured_collections:
+      heading: 'Featured Collections'
+      description: 'Picks appear first in the Featured collections section on the homepage.'
+      new: 'Feature a Collection'
+      empty: 'No featured collections yet. Add some to display on the homepage.'
+      confirm_destroy: 'Remove this pick?'
+      form:
+        repository_label: 'Repository'
+        repository_blank: 'Select a repository…'
+        title_label: 'Collection'
+        title_blank: 'Select a repository first…'
+        submit: 'Create Featured Collection'
   show:
     buttons:
       accordion_control:
@@ -243,9 +260,13 @@ en:
       inventory:
         header: 'Inventory'
         guide: 'Everything in this collection, in the order the archivist chose to help you understand it.'
+        contents: 'Contents'
+        dates: 'Dates'
+        container: 'Container'
+        select: 'Select'
+        select_visually_hidden: 'Select %{title}'
+        none: 'Collection information not available'
       contact:
         header: 'Contact'
         guide_html: 'These materials are held by <strong>%{repository}</strong>. Contact them to schedule a visit or ask about your research.'
-
-
 

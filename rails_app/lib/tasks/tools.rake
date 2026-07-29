@@ -2,6 +2,31 @@
 
 require 'csv'
 
+namespace :geocode do
+  desc 'Run geocoding refresh'
+  task refresh: :environment do
+    cache = Geocoding::Cache.new
+    service = Geocoding::Service.new(cache: cache)
+
+    updated = service.refresh!(RepositoryQueries.addresses) do |name, result|
+      puts Rainbow('─' * 60).bright.black
+      puts Rainbow("Processing: #{name}").bold.yellow
+
+      if result.success?
+        puts Rainbow("  ✓ #{result.lat}, #{result.lng}").green
+      else
+        puts Rainbow('  ✗ No results or API error').red
+      end
+    end
+
+    if updated.positive?
+      puts Rainbow("\n✅ Cache updated and saved to #{cache.path}\n").bold.green
+    else
+      puts Rainbow("\n✓ No updates needed\n").bold.cyan
+    end
+  end
+end
+
 namespace :tools do
   desc 'Harvest selected endpoints'
   task harvest_from: :environment do

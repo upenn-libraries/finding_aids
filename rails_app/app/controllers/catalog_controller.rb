@@ -142,7 +142,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'creators_ssim', label: I18n.t('fields.creators'), if: :json_request?
     config.add_index_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
     config.add_index_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents'),
-                                                          helper_method: :truncated_abstract
+                                                          helper_method: :expandable_text
 
     config.add_show_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents')
     config.add_show_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
@@ -167,7 +167,7 @@ class CatalogController < ApplicationController
                                               group: :subjects_and_headings
     config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true,
                                             group: :subjects_and_headings
-    config.add_show_field 'language_note', label: I18n.t('fields.language_note'), accessor: :language_note,
+    config.add_show_field 'language_note', label: I18n.t('fields.language_note'), accessor: :extract,
                                            if: :render_language_note?, group: :subjects_and_headings,
                                            presenter: Catalog::LanguageNotePresenter
     config.add_show_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), link_to_facet: true,
@@ -175,13 +175,13 @@ class CatalogController < ApplicationController
 
     # rights and citations
     config.add_show_field 'use_restrictions', label: I18n.t('fields.use'), group: :rights_and_citation,
-                                              accessor: :use_restrictions
+                                              accessor: :extract
     config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation'), group: :rights_and_citation
     config.add_show_field 'publisher', label: I18n.t('fields.publisher'), group: :rights_and_citation,
-                                       accessor: :publisher
-    config.add_show_field 'sponsor', label: I18n.t('fields.sponsor'), group: :rights_and_citation, accessor: :sponsor
-    config.add_show_field 'author', label: I18n.t('fields.author'), group: :rights_and_citation, accessor: :author
-    config.add_show_field 'date', label: I18n.t('fields.date'), group: :rights_and_citation, accessor: :date
+                                       accessor: :extract
+    config.add_show_field 'sponsor', label: I18n.t('fields.sponsor'), group: :rights_and_citation, accessor: :extract
+    config.add_show_field 'author', label: I18n.t('fields.author'), group: :rights_and_citation, accessor: :extract
+    config.add_show_field 'date', label: I18n.t('fields.date'), group: :rights_and_citation, accessor: :extract
     config.add_show_field 'donors_ssim', label: I18n.t('fields.donors'), link_to_facet: true,
                                          group: :rights_and_citation
 
@@ -224,6 +224,6 @@ class CatalogController < ApplicationController
   def load_homepage_data
     return if has_search_parameters?
 
-    @homepage_guides = HomepageData.collection_guides.sample(8)
+    @homepage_guides = HomepageData.collection_guides
   end
 end

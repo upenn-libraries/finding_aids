@@ -91,7 +91,7 @@ The site provides a few points for API access:
 
 All data is returned in JSON. Search and document responses make use of the [JSON::API schema](https://jsonapi.org/).
 
-> The raw EAD XML can be viewed by appending `/ead` to any record page URL (e.g., `https://finding-aid-discovery-dev.library.upenn.edu/records/TUBLOCKSON_BC008/ead`)
+> The raw EAD XML can be viewed by appending `/ead` to any record page URL (e.g., `https://findingaids-dev.library.upenn.edu/records/TUBLOCKSON_BC008/ead`)
 
 #### Sitemap
 The sitemap is generated via the [sitemap_generator](https://github.com/kjvarga/sitemap_generator) gem. It is generated at deploy in the `docker-entrypoint.sh` script if one isn't present and it is scheduled to be regenerated after each harvest. If a harvest is completed outside of the scheduled harvest the sitemap will have to be regenerated manually in order to reflect any changes. In most cases, its fine to wait until the next scheduled sitemap generation.
@@ -100,6 +100,14 @@ The sitemap is generated via the [sitemap_generator](https://github.com/kjvarga/
 The robots.txt file is generate and added to the `public` folder at deploy time. A different `robots.txt` is generated based on the environment. To manually create the `robots.txt` run:
 ```ruby
 bundle exec rake tools:robotstxt
+```
+
+#### Geocoding
+Repository locations are geocoded using the Nominatim (OpenStreetMap) API and cached in `data/geocoder_cache.yml`. The cache is (re)built automatically at the end of each harvest (`PartnerHarvestJob`) and can be refreshed on demand with the rake task below.
+
+```bash
+# Refresh the geocode cache
+bundle exec rake geocode:refresh
 ```
 
 ### Harvesting Sample Endpoints

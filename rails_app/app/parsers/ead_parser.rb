@@ -194,29 +194,19 @@ class EadParser
     end
   end
 
-  # Returns repository address provided, which often times includes phone number, email addresses and urls. For now,
-  # we are removing additional information, but in future we could include it.
+  # Returns a clean repository address suitable for geocoding.
+  # Strips phone numbers, emails, URLs, building names, and
+  # parenthetical notes.
   #
   # @param [Nokogiri::XML::Document] doc
-  # @return [String]
+  # @return [String, nil]
   def repository_address(doc)
-    # Attempt to extract repository address, if not found, try to extract publisher address if
-    # publisher and repository are the same.
-    repository_addresslines = doc.xpath('/ead/archdesc/did/repository/address/addressline')
-    publisher_name = doc.at_xpath('/ead/eadheader/filedesc/publicationstmt/publisher').try(:text).try(:strip)
-
-    addresslines = if repository_addresslines.present?
-                     repository_addresslines
-                   elsif publisher_name.eql?(repository(doc))
-                     doc.xpath('/ead/eadheader/filedesc/publicationstmt/address/addressline')
-                   end
-
+    addresslines = addresslines_from_xml(doc)
     return if addresslines.blank?
 
-    # Remove emails, URLs and phone numbers from address.
-    addresslines = addresslines.map { |a| a.try(:text).try(:strip) }
-                               .delete_if { |a| a.match?(/\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}|@|URL|http/) }
-    addresslines.presence&.join(', ')
+    lines = strip_non_address_text(addresslines)
+    lines = drop_building_name(lines)
+    clean_address_text(lines).presence
   end
 
   # https://www.loc.gov/ead/tglib/elements/origination.html
@@ -384,6 +374,46 @@ class EadParser
   end
 
   private
+
+  # @param [Nokogiri::XML::Document] doc
+  # @return [Array<Nokogiri::XML::Node>]
+  def addresslines_from_xml(doc)
+    repository_lines = doc.xpath('/ead/archdesc/did/repository/address/addressline')
+    return repository_lines if repository_lines.present?
+
+    publisher_name = doc.at_xpath('/ead/eadheader/filedesc/publicationstmt/publisher').try(:text).try(:strip)
+    return unless publisher_name.eql?(repository(doc))
+
+    doc.xpath('/ead/eadheader/filedesc/publicationstmt/address/addressline')
+  end
+
+  # @param lines [Array<Nokogiri::XML::Node>]
+  # @return [Array<String>]
+  def strip_non_address_text(lines)
+    lines.map { |a| a.try(:text).try(:strip) }
+         .delete_if { |a| a.match?(Geocoding::AddressCleaner::CONTACT_PATTERN) }
+  end
+
+  # Drops the first element when it looks like a building name
+  # rather than a street address.
+  # "Falvey Library, 800 E Lancaster Ave, Villanova, PA"
+  #   → "800 E Lancaster Ave, Villanova, PA"
+  #
+  # @param lines [Array<String>]
+  # @return [Array<String>]
+  def drop_building_name(lines)
+    return lines unless lines.length > 2 && lines.first.match?(Geocoding::AddressCleaner::BUILDING_NAME_PATTERN)
+
+    lines.drop(1)
+  end
+
+  # Join address lines and strip parenthetical notes.
+  #
+  # @param lines [Array<String>]
+  # @return [String]
+  def clean_address_text(lines)
+    Geocoding::AddressCleaner.clean(lines.join(', '))
+  end
 
   # Provide additional EAD specification validations, for example validating EAD XML namespace
   # @param [Nokogiri::XML::Document] doc

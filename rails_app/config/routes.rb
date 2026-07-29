@@ -24,12 +24,12 @@ Rails.application.routes.draw do
       member { post :harvest }
     end
     resources :aspace_instances
+    resources :featured_collections
   end
 
-  defaults format: :json do
-    get '/api/endpoints', to: 'api#endpoints', as: :endpoints_api
-    get '/api/repositories', to: 'api#repositories', as: :repositories_api
-  end
+  get '/api/endpoints', to: 'api#endpoints', as: :endpoints_api
+  get '/api/repositories', to: 'api#repositories', as: :repositories_api
+  get '/api/map_data', to: 'api#map_data', as: :map_data_api
 
   mount Blacklight::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new
