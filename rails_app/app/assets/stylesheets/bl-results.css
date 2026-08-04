@@ -1,0 +1,17 @@
+.sort-dropdown {
+  margin: 0 !important;
+}
+
+.search-widgets {
+  gap: var(--pl-space-s);
+  align-items: center;
+}
+
+.search-widgets .btn,
+.search-widgets .pl-button {
+  --bs-btn-padding-y: var(--pl-space-2xs);
+}
+
+.view-type-group .btn {
+  --bs-btn-padding-x: var(--pl-space-s);
+}

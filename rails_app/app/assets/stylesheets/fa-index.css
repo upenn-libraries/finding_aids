@@ -1,84 +1,9 @@
-/* Search results page layout.
+/* Search results page — mobile facets offcanvas.
  *
- * Blacklight renders the sidebar and results as Bootstrap columns inside a `.row`
- * (#main-container > .row > #content + #sidebar). We replace that with a CSS grid
- * (sidebar | content) and dissolve the intermediate `.row` wrappers with
- * `display: contents` so #sidebar/#content become direct grid items of #main-container.
- * The results count <h1> and the constraints/sort nav sit in the top row.
- */
-
-.blacklight-catalog-index {
-  /* Scope the results grid to pages that have a #content section (i.e. search results).
-     The homepage has no #content, so its #main-container is left as a default block. */
-  & #main-container:has(#content) {
-    display: flex;
-    gap: var(--pl-space-l) var(--pl-space-xl);
-    flex-direction: column;
-
-    width: 100%;
-    margin: 0px auto;
-    margin-top: var(--pl-space-m);
-    padding: 0 var(--pl-viewport-margins-gutter, 1em);
-
-    @media (min-width: 820px) {
-      display: grid;
-      grid-template-columns: 18rem 1fr;
-      align-items: start;
-    }
-
-    & h1 {
-      grid-column: 1;
-      grid-row: 1;
-    }
-
-    & #sidebar {
-      width: 100%;
-      grid-column: 1;
-      grid-row: 2;
-      order: initial !important;
-    }
-
-    & #content {
-      grid-column: 2;
-      grid-row: 2;
-      width: 100%;
-    }
-
-    & .sort-pagination {
-      border-bottom: none;
-    }
-  }
-
-  /* Dissolve Bootstrap's row wrappers so their children join the #main-container grid. */
-  & .row:has(#content) {
-    display: contents;
-  }
-
-  & .row:has(#main-flashes) {
-    display: contents;
-
-    & > * {
-      display: contents;
-    }
-  }
-
-  & #sidebar,
-  & #content,
-  & .sort-pagination,
-  & #content > .container {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-}
-
-/* Mobile facets: below the grid breakpoint, hide the desktop sidebar and surface
- * facets in an offcanvas panel instead. The filter button (in _sort_and_per_page)
- * toggles #facets-offcanvas; both the button and panel are hidden on desktop. */
-@media (max-width: 819px) {
-  .blacklight-catalog-index #main-container #sidebar {
-    display: none;
-  }
-}
+ * Below the grid breakpoint the desktop sidebar is hidden (see bl-layout.css) and
+ * facets are surfaced in an offcanvas panel instead. The filter button (in
+ * catalog/_sort_and_per_page) toggles #facets-offcanvas; both the button and the
+ * panel are hidden on desktop. */
 
 .fa-filter-btn {
   display: flex;
@@ -113,17 +38,5 @@
 
   .fa-facets-offcanvas {
     display: none;
-  }
-
-  /* Blacklight only reveals #facet-panel-collapse at lg (992px) via `d-lg-block`,
-   * and only hides its "Show facets" toggle via `d-lg-none` at the same point. But
-   * our desktop sidebar appears at 820px, so without this there is an 820–991px gap
-   * where the sidebar is visible yet its facets stay collapsed. Align both to 820px. */
-  #sidebar .facets-collapse {
-    display: block;
-  }
-
-  #sidebar .facet-toggle-button {
-    display: none !important;
   }
 }
