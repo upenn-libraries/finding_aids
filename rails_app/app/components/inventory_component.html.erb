@@ -8,10 +8,12 @@
     <% end %>
 
     <% if all_children_have_children? %>
-      <% @entry.children.each_with_index do |child, i| %>
-        <%= render InventoryComponent.new(entry: child, level: @level + 1, parent_id: heading_id, index: i + 1,
-                                          requestable: @requestable) %>
-      <% end %>
+      <pennlibs-accordion>
+        <% @entry.children.each_with_index do |child, i| %>
+          <%= render InventoryComponent.new(entry: child, level: @level + 1, parent_id: heading_id, index: i + 1,
+                                            requestable: @requestable) %>
+        <% end %>
+      </pennlibs-accordion>
     <% else %>
       <table class="table table--responsive-small">
         <thead>
@@ -28,8 +30,10 @@
           <% if row_entry.children? %>
             <tr class="inventory-row">
               <td colspan=<%= @requestable ? COLSPAN_MAX : COLSPAN_MIN %>>
-                <%= render InventoryComponent.new(entry: row_entry, level: @level + 1, parent_id: heading_id,
-                                                  index: i + 1, requestable: @requestable) %>
+                <pennlibs-accordion>
+                  <%= render InventoryComponent.new(entry: row_entry, level: @level + 1, parent_id: heading_id,
+                                                    index: i + 1, requestable: @requestable) %>
+                </pennlibs-accordion>
               </td>
             </tr>
           <% else %>

@@ -69,7 +69,8 @@
           <button id="toggle-description" type="button" class="pl-button pl-margin-b-m"
                   data-pl-expand-label="<%= t('show.buttons.accordion_control.expand') %>"
                   data-pl-collapse-label="<%= t('show.buttons.accordion_control.collapse') %>"
-                  data-pl-accordion-toggle="description-accordion">
+                  data-pl-accordion-toggle="description-accordion"
+                  data-pl-accordion-toggle-deep>
           </button>
         </div>
           <%= render(DescriptionComponent.new(document: document, presenter: @presenter, id: 'description-accordion')) %>
@@ -83,7 +84,9 @@
           <button id="toggle-inventory" type="button" class="pl-button pl-margin-b-m"
                   data-pl-expand-label="<%= t('show.buttons.accordion_control.expand') %>"
                   data-pl-collapse-label="<%= t('show.buttons.accordion_control.collapse') %>"
-                  data-pl-accordion-toggle="inventory-accordion">
+                  data-pl-accordion-toggle="inventory-accordion"
+                  data-pl-accordion-toggle-deep>
+                  
           </button>
         </div>
         <turbo-frame id="inventory-frame" src="<%= details_inventory_path(@document.id) %>">

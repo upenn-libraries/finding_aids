@@ -121,12 +121,9 @@ body {
         }
     }
 
-    & h3 {
-        margin-bottom: 0;
-    }
-
     & h3, h4, h5, h6 {
         scroll-margin-block: 1rem;
+        margin-bottom: 0;
     }
 
     & summary {
@@ -272,7 +269,7 @@ a.pl-button {
 }
 
 /* Subseries — nested within series, lazy rendered */
-.fa-guide__details--subseries {
+.fa-guide__details--subseries > summary + * {
     content-visibility: auto;
     contain-intrinsic-size: auto 300px;
 }
