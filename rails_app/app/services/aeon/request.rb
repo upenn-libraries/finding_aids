@@ -33,6 +33,11 @@ module Aeon
       Settings.aeon.locations.any? { |loc| loc[:label] == repository_name }
     end
 
+    # @return [String]
+    def self.aeon_request_endpoint
+      Settings.aeon.ere_endpoint
+    end
+
     # @param params [ActiveSupport::HashWithIndifferentAccess]
     def initialize(params)
       @repository = repository_info params[:repository].to_s

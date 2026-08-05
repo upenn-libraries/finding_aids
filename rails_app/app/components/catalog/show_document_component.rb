@@ -4,6 +4,19 @@ module Catalog
   # Override Blacklight 9.0 component to customize layout
   class ShowDocumentComponent < Blacklight::DocumentComponent
     include Turbo::FramesHelper
+
+    # Stimulus controllers to connect to the document section
+    # @return [String]
+    def connected_controller_names
+      controllers = if @document.requestable?
+                      %w[guide-navigation request]
+                    else
+                      ['guide-navigation']
+                    end
+
+      controllers.join(' ')
+    end
+
     # @return [ActiveSupport::SafeBuffer]
     def repository
       presenter.render_single_value(:repository_ssi)

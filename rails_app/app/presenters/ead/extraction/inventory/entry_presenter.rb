@@ -48,6 +48,15 @@ module Ead
           entry.containers.map(&:to_s).join(', ')
         end
 
+        # @return [Hash{Symbol->ActiveSupport::SafeBuffer}]
+        def requesting_data
+          {
+            containers: entry.containers.map(&:to_s).join('|'),
+            barcode: entry.containers.map(&:barcode).first,
+            title: heading
+          }
+        end
+
         # @param title [ActiveSupport::SafeBuffer, String] sanitized title
         # @param origination [String, nil]
         # @param date [String, nil]

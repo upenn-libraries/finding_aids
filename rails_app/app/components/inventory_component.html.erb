@@ -34,17 +34,16 @@
             </tr>
           <% else %>
             <% dates = row_entry.presenter.date %>
-            <% containers = row_entry.presenter.join_containers %>
             <% title_text = row_entry.presenter.title(title: row_entry.title_text, origination: row_entry.origination) %>
 
             <tr class="inventory-row">
               <td data-th="<%= t('show.sections.inventory.contents') %>"><%= contents_column(row_entry) %></td>
               <td data-th="<%= t('show.sections.inventory.dates') %>"><%= dates %></td>
-              <td data-th="<%= t('show.sections.inventory.container') %>"><%= containers %></td>
+              <td data-th="<%= t('show.sections.inventory.container') %>"><%= row_entry.presenter.join_containers %></td>
               <% if @requestable %>
                 <td class="fa-visit__cell" data-th="<%= t('show.sections.inventory.select') %>">
                   <label class="fa-visit__label">
-                    <input class="fa-visit__checkbox" type="checkbox" data-fa-request-id="<%= "#{heading_id}-item-#{i + 1}" %>">
+                    <%= checkbox_tag :itm, class: 'fa-visit__checkbox', data: { 'request-target': 'containerCheckbox', action: 'click->request#containerClicked' }.merge(row_entry.presenter.requesting_data)  %>
                     <span class="visually-hidden"><%= t('show.sections.inventory.select_visually_hidden', title: title_text) %></span>
                   </label>
                 </td>

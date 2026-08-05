@@ -1,12 +1,6 @@
 <%# Override Blacklight 9.0.0 template to implement custom layout %>
-<% requestable = @document.requestable? %>
-<% if requestable %>
-  <meta name="repository" content="<%= @document.repository %>">
-  <meta name="title" content="<%= presenter.heading %>">
-  <meta name="call-num" content="<%= @document.call_num %>">
-<% end %>
 <div class="document-main-section pl-margin-b-3xl"
-     data-controller="guide-navigation"
+     data-controller="<%= connected_controller_names %>"
      data-action="toggle->guide-navigation#handleDetailsToggle:capture click->guide-navigation#handleTocClick">
   <div class="pl-padding-y-2xl" style="background: var(--pl-color-bg-subtle);">
     <div class="pl-viewport-margins">
@@ -65,15 +59,7 @@
         </div>
           <%= render(DescriptionComponent.new(document: document, presenter: @presenter, id: 'description-accordion')) %>
       </div>
-      <div id="inventory-sections" class="pl-margin-b-2xl"
-           <% if requestable %>
-             data-controller="request"
-             data-request-storage-key-value="<%= helpers.request_storage_key(@document) %>"
-             data-request-prepare-url-value="<%= requests_prepare_path %>"
-             data-request-copy-value="<%= helpers.request_copy_value.to_json %>"
-             data-request-target="inventory"
-             data-action="change->request#toggleItem"
-           <% end %>>
+      <div id="inventory-sections" class="pl-margin-b-2xl">
         <div class="fa-section-header">
           <div>
             <h2 id="inventory"><%= t("show.sections.inventory.header") %></h2>
@@ -116,9 +102,10 @@
     </div>
   </div>
 
-  <%# Screen-reader-only live region for request selection announcements. %>
-  <% if requestable %>
-    <span class="visually-hidden" aria-live="polite" data-request-target="liveRegion"></span>
-    <%= render RequestDialogComponent.new(repository: @document.repository, aeon_url: AeonRequest::AEON_URL) %>
+  <% if @document.requestable? %>
+    <%# Screen-reader-only live region for request selection announcements. %>
+    <span class="visually-hidden" aria-live="polite" data-request-target="liveRegion"></span> <%# TODO: wire back up %>
+    <%# Render pinned bottom element and modal with all sections  %>
+    <%= render RequestDialogComponent.new(repository: @document.repository, aeon_url: Aeon::Request.aeon_request_endpoint) %>
   <% end %>
 </div>
