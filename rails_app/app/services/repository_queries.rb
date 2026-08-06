@@ -53,15 +53,19 @@ class RepositoryQueries
       end
     end
 
-    # Collection titles grouped by repository name.
-    #
-    # @return [Hash{String => Array<String>}] repository name => sorted array of titles
-    def titles_by_repository
-      valid_title_pairs
-        .group_by(&:first)
-        .transform_values { |pairs| pairs.map(&:last).sort }
-        .sort
-        .to_h
+    # @param [String] record_id
+    # @return [Hash, nil]
+    def featured_collection_data_for(record_id:)
+      response = connection.get('select', params: {
+        q: "id:#{record_id}",
+        fl: "#{SOLR_FIELD_REPOSITORY},#{SOLR_FIELD_TITLE}",
+        rows: 1
+      })
+      record = response.dig('response', 'docs')&.first
+
+      return nil unless record
+
+      { repository: record[SOLR_FIELD_REPOSITORY], title: record[SOLR_FIELD_TITLE] }
     end
 
     private
@@ -69,25 +73,6 @@ class RepositoryQueries
     # @return [RSolr::Client]
     def connection
       Blacklight.default_index.connection
-    end
-
-    # @return [Array<Hash>] Solr documents with repository_ssi and title_tsi
-    def titles_docs
-      response = connection.get('select', params: {
-                                  q: '*:*',
-                                  fl: "#{SOLR_FIELD_REPOSITORY},#{SOLR_FIELD_TITLE}",
-                                  rows: TITLES_MAX_ROWS
-                                })
-      response.dig('response', 'docs') || []
-    end
-
-    # @return [Array<Array(String, String)>] [[repo, title], ...] pairs with both present
-    def valid_title_pairs
-      titles_docs.filter_map do |doc|
-        repo = doc[SOLR_FIELD_REPOSITORY]
-        title = doc[SOLR_FIELD_TITLE]
-        [repo, title] if repo.present? && title.present?
-      end
     end
   end
 end

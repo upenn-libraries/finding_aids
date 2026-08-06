@@ -238,11 +238,8 @@ en:
       empty: 'No featured collections yet. Add some to display on the homepage.'
       confirm_destroy: 'Remove this pick?'
       form:
-        repository_label: 'Repository'
-        repository_blank: 'Select a repository…'
-        title_label: 'Collection'
-        title_blank: 'Select a repository first…'
-        submit: 'Create Featured Collection'
+        record_id: 'Record ID'
+        submit: 'Add Featured Collection'
   show:
     buttons:
       accordion_control:
