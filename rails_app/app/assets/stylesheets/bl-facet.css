@@ -150,3 +150,13 @@
     background: var(--pl-color-bg-subtle);
   }
 }
+
+@media (min-width: 820px) {
+  #sidebar .facets-collapse {
+    display: block;
+  }
+
+  #sidebar .facet-toggle-button {
+    display: none !important;
+  }
+}

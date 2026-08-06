@@ -9,11 +9,13 @@ en:
       subheading: 'Find your way into the primary sources held by archives in the Philadelphia area.'
       alt: 'An archival reading room'
     collection_guides:
-      heading: 'Featured collections'
-      intro: >-
+      heading: 'Collection guides'
+      intro_html: >-
         A collection guide, sometimes called a finding aid, describes a single
         archival collection. It tells you where the collection came from, what's
-        inside, and how it's arranged.
+        inside, and how it's arranged. Here's a featured sample, or
+        %{browse_all_link}.
+      browse_all: 'browse all collection guides'
     regional_partnership:
       heading: 'A regional partnership'
       intro_html: >-
@@ -232,8 +234,8 @@ en:
         success: "Successfully enqueued harvest job for %{class_name} %{identifier}."
         failure: "Failed to enqueue harvest for %{class_name} %{identifier}: %{error}."
     featured_collections:
-      heading: 'Featured Collections'
-      description: 'Picks appear first in the Featured collections section on the homepage.'
+      heading: 'Featured collection guides'
+      description: 'Picks appear first in the collections guides section on the homepage.'
       new: 'Feature a Collection'
       empty: 'No featured collections yet. Add some to display on the homepage.'
       confirm_destroy: 'Remove this pick?'
@@ -248,6 +250,9 @@ en:
       accordion_control:
         collapse: 'Collapse all'
         expand: 'Expand all'
+    toc:
+      heading: 'Table of contents'
+      jump_to: 'Jump to a section'
     aside:
         aria_label: 'Holding Institution'
         access: 'Access'

@@ -27,6 +27,7 @@
     font-weight: 600;
     text-decoration: none;
     font-size: var(--pl-font-size-xl);
+    font-size: clamp(var(--pl-font-size-l), 0.5cqi + 0.875rem, var(--pl-font-size-xl));
 
     &:hover {
       text-decoration: underline;

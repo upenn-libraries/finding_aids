@@ -54,6 +54,16 @@ export default class extends Controller {
 
         history.replaceState(null, "", link.hash);
 
+        // On small screens the table of contents is an offcanvas panel. Bootstrap focuses the
+        // toggle button once the panel has finished closing, which scrolls that button back
+        // into view and undoes the jump — so wait for the panel to close before scrolling.
+        // `.offcanvas-lg` is named explicitly: a responsive panel doesn't carry `.offcanvas`.
+        const panel = link.closest(".offcanvas.show, .offcanvas-lg.show");
+        if (panel) {
+            panel.addEventListener("hidden.bs.offcanvas", this.navigateToLocation, { once: true });
+            return;
+        }
+
         this.navigateToLocation();
     };
 
