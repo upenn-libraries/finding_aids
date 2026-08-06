@@ -23,16 +23,8 @@
         display: none !important;
     }
 
-    /* The chevron goes: nothing here toggles. */
     .fa-guide__details > summary::after {
         display: none !important;
-    }
-
-    /* Links can't be followed on paper. */
-    .fa-guide-content a[href^="http"]::after {
-        content: " (" attr(href) ")";
-        font-size: 0.85em;
-        word-break: break-all;
     }
 
     .fa-print-url {
