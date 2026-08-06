@@ -73,6 +73,10 @@ body {
     align-self: flex-start;
     background: var(--pl-color-bg-default);
     margin-bottom: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: var(--pl-space-m);
+    align-items: flex-start;
 }
 
 .fa-guide-header__institution p {
@@ -90,14 +94,6 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
     gap: var(--pl-space-m);
-}
-
-.fa-small-name {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.075rem;
-    vertical-align: middle;
-    font-weight: 600;
 }
 
 .fa-section-header {

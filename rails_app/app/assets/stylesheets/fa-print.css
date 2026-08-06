@@ -1,0 +1,46 @@
+.fa-print-url {
+    display: none;
+}
+
+@media print {
+    html {
+        font-size: 11pt;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        break-after: avoid;
+    }
+
+    /* Controls that do nothing on paper. The TOC panel is already hidden in
+       portrait — Bootstrap's offcanvas breakpoint — but becomes a sidebar in
+       landscape, where the page box is wide enough to match. */
+    .fa-toc,
+    .fa-toc-toggle,
+    [data-pl-accordion-toggle],
+    .fa-guide-header__institution .pl-button,
+    .fa-visit__cell,
+    table:has(.fa-visit__cell) th:last-child {
+        display: none !important;
+    }
+
+    /* The chevron goes: nothing here toggles. */
+    .fa-guide__details > summary::after {
+        display: none !important;
+    }
+
+    /* Links can't be followed on paper. */
+    .fa-guide-content a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.85em;
+        word-break: break-all;
+    }
+
+    .fa-print-url {
+        display: block !important;
+        word-break: break-all;
+    }
+
+    .fa-guide-layout {
+        margin-top: 0 !important;
+    }
+}
