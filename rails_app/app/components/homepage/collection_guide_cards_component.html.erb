@@ -1,15 +1,19 @@
 <section class="pl-padding-y-2xl">
   <div class="pl-viewport-margins">
     <h2 class="pl-margin-b-m"><%= t('homepage.collection_guides.heading') %></h2>
-    <p class="pl-line-length pl-margin-b-m"><%= t('homepage.collection_guides.intro') %></p>
+    <p class="pl-line-length pl-margin-b-xl">
+      <%= t('homepage.collection_guides.intro_html',
+            browse_all_link: link_to(t('homepage.collection_guides.browse_all'),
+                                    search_catalog_path(q: '', search_field: 'all_fields'))) %>
+    </p>
 
     <ol class="fa-cards fa-cards--capped">
       <% @guides.each do |guide| %>
-        <li class="fa-cards__card">
-          <h3 class="fa-cards__card-heading">
-            <%= link_to guide.title, guide_url(guide), class: 'fa-cards__card-link' %>
+        <li class="fa-card">
+          <h3 class="fa-card__heading">
+            <%= link_to guide.title, guide_url(guide), class: 'fa-card__link' %>
           </h3>
-          <p class="fa-cards__card-sub"><%= guide.repository %></p>
+          <p class="fa-card__description"><%= guide.repository %></p>
         </li>
       <% end %>
     </ol>
