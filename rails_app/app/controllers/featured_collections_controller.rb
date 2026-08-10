@@ -17,13 +17,13 @@ class FeaturedCollectionsController < ApplicationController
 
   def create
     data = RepositoryQueries.featured_collection_data_for(record_id: guide_params[:record_id])
-    return create_failure('No record with that ID exists') unless data.present?
+    return create_failure('No record with that ID exists') if data.blank?
 
     @guide = FeaturedCollection.new({ record_id: guide_params[:record_id] }.merge(data))
     return create_success if @guide.save
 
     create_failure(@guide.errors.full_messages)
-    render :new, status: :unprocessable_entity
+    render :new, status: :unprocessable_content
   end
 
   def destroy
@@ -48,7 +48,8 @@ class FeaturedCollectionsController < ApplicationController
   end
 
   def create_failure(message)
+    @guide ||= FeaturedCollection.new
     flash.alert = message
-    redirect_to featured_collections_path
+    render :new, status: :unprocessable_content
   end
 end

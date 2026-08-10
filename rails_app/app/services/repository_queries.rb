@@ -57,10 +57,10 @@ class RepositoryQueries
     # @return [Hash, nil]
     def featured_collection_data_for(record_id:)
       response = connection.get('select', params: {
-        q: "id:#{record_id}",
-        fl: "#{SOLR_FIELD_REPOSITORY},#{SOLR_FIELD_TITLE}",
-        rows: 1
-      })
+                                  q: "id:#{record_id}",
+                                  fl: "#{SOLR_FIELD_REPOSITORY},#{SOLR_FIELD_TITLE}",
+                                  rows: 1
+                                })
       record = response.dig('response', 'docs')&.first
 
       return nil unless record

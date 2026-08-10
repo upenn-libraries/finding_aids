@@ -4,12 +4,14 @@ require 'rails_helper'
 
 RSpec.describe 'FeaturedCollections', type: :request do
   let(:user) { create(:user) }
+  let(:fc) { create :featured_collection }
+  let(:lookup_response) do
+    { title: fc.title, repository: fc.repository }
+  end
 
   before do
     sign_in user
-    allow(RepositoryQueries).to receive(:titles_by_repository).and_return(
-      'Test Repo' => ['Valid Title', 'Another Title']
-    )
+    allow(RepositoryQueries).to receive(:featured_collection_data_for).and_return(lookup_response)
   end
 
   describe 'GET /admin/featured_collections' do
@@ -19,9 +21,8 @@ RSpec.describe 'FeaturedCollections', type: :request do
     end
 
     it 'lists featured collections' do
-      create(:featured_collection, title: 'Valid Title', repository: 'Test Repo')
       get featured_collections_path
-      expect(response.body).to include('Valid Title')
+      expect(response.body).to include(fc.record_id)
     end
   end
 
@@ -37,16 +38,18 @@ RSpec.describe 'FeaturedCollections', type: :request do
       it 'creates a featured collection and redirects' do
         expect {
           post featured_collections_path,
-               params: { featured_collection: { title: 'Valid Title', repository: 'Test Repo' } }
+               params: { featured_collection: { record_id: fc.record_id } }
         }.to change(FeaturedCollection, :count).by(1)
         expect(response).to redirect_to(featured_collections_path)
       end
     end
 
-    context 'with invalid params' do
+    context 'with a record that does not exist' do
+      let(:lookup_response) { nil }
+
       it 're-renders the form with unprocessable_entity' do
         post featured_collections_path,
-             params: { featured_collection: { title: 'Missing Title', repository: 'Test Repo' } }
+             params: { featured_collection: { record_id: 'NOPE9999' } }
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -54,7 +57,6 @@ RSpec.describe 'FeaturedCollections', type: :request do
 
   describe 'DELETE /admin/featured_collections/:id' do
     it 'destroys the featured collection and redirects' do
-      fc = create(:featured_collection, title: 'Valid Title', repository: 'Test Repo')
       expect {
         delete featured_collection_path(fc)
       }.to change(FeaturedCollection, :count).by(-1)

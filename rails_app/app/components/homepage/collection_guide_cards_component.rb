@@ -14,7 +14,7 @@ module Homepage
     # @param guide [FeaturedCollection]
     # @return [String]
     def guide_url(guide)
-      solr_document_path(q: guide.id)
+      solr_document_path(id: guide.record_id)
     end
   end
 end

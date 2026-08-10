@@ -6,6 +6,7 @@ class CreateFeaturedCollections < ActiveRecord::Migration[8.1]
       t.string :record_id, null: false
       t.string :title
       t.string :repository
+      t.timestamps
     end
   end
 end
