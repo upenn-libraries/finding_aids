@@ -15,6 +15,8 @@
     <thead>
     <tr>
       <th scope="col"><%= t('admin.featured_collections.form.record_id') %></th>
+      <th scope="col"><%= t('admin.featured_collections.form.title') %></th>
+      <th scope="col"><%= t('admin.featured_collections.form.repository') %></th>
       <th scope="col"></th>
     </tr>
     </thead>
@@ -22,6 +24,8 @@
     <% @guides.each do |guide| %>
       <tr>
         <td><%= guide.record_id %></td>
+        <td><%= guide.title %></td>
+        <td><%= guide.repository %></td>
         <td><%= button_to t('admin.actions.destroy'), featured_collection_path(guide), method: :delete, class: 'btn btn-sm btn-outline-danger', form: { data: { turbo_confirm: t('admin.featured_collections.confirm_destroy') } } %></td>
       </tr>
     <% end %>

@@ -16,10 +16,11 @@ class FeaturedCollectionsController < ApplicationController
   end
 
   def create
+    @guide = FeaturedCollection.new
     data = RepositoryQueries.featured_collection_data_for(record_id: guide_params[:record_id])
-    return create_failure('No record with that ID exists') if data.blank?
+    return create_failure(t('admin.featured_collections.messages.not_found')) if data.blank?
 
-    @guide = FeaturedCollection.new({ record_id: guide_params[:record_id] }.merge(data))
+    @guide.assign_attributes(record_id: guide_params[:record_id], **data)
     return create_success if @guide.save
 
     create_failure(@guide.errors.full_messages)
@@ -28,7 +29,7 @@ class FeaturedCollectionsController < ApplicationController
 
   def destroy
     @guide.destroy
-    flash.notice = 'Featured collection removed.'
+    flash.notice = t('admin.featured_collections.messages.removed')
     redirect_to featured_collections_path
   end
 
@@ -43,12 +44,11 @@ class FeaturedCollectionsController < ApplicationController
   end
 
   def create_success
-    flash.notice = 'Successfully added featured collection.'
+    flash.notice = t('admin.featured_collections.messages.added')
     redirect_to featured_collections_path
   end
 
   def create_failure(message)
-    @guide ||= FeaturedCollection.new
     flash.alert = message
     render :new, status: :unprocessable_content
   end

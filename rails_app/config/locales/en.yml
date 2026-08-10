@@ -221,15 +221,6 @@ en:
       destroy: 'Delete'
       harvest: 'Run Harvest'
     flash:
-      create:
-        success: "Successfully added %{class_name} %{identifier}."
-        failure: "Failed to add %{class_name}: %{error}."
-      update:
-        success: "Successfully updated %{class_name} %{identifier}."
-        failure: "Failed to update %{class_name} %{identifier}: %{error}."
-      destroy:
-        success: " Successfully deleted %{class_name} %{identifier}."
-        failure: "Failed to delete %{class_name} %{identifier}: %{error}."
       harvest:
         success: "Successfully enqueued harvest job for %{class_name} %{identifier}."
         failure: "Failed to enqueue harvest for %{class_name} %{identifier}: %{error}."
@@ -241,7 +232,13 @@ en:
       confirm_destroy: 'Remove this pick?'
       form:
         record_id: 'Record ID'
+        title: 'Title'
+        repository: 'Repository'
         submit: 'Add Featured Collection'
+      messages:
+        added: 'Successfully added featured collection.'
+        removed: 'Featured collection removed.'
+        not_found: 'No record with that ID exists.'
   show:
     buttons:
       accordion_control:

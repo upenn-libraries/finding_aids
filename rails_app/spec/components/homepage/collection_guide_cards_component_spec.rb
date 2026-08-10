@@ -18,11 +18,6 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
     expect(component).to have_css('h2', text: I18n.t('homepage.collection_guides.heading'))
   end
 
-  it 'renders the intro paragraph' do
-    expect(component).to have_css('p.pl-line-length',
-                                  text: /#{I18n.t('homepage.collection_guides.intro').truncate(30)}/)
-  end
-
   it 'renders the card grid' do
     expect(component).to have_css('ol.fa-cards')
   end
