@@ -224,6 +224,7 @@ class CatalogController < ApplicationController
   def load_homepage_data
     return if has_search_parameters?
 
+    @hero_image = HomepageData.hero_images.sample
     @homepage_guides = HomepageData.collection_guides
   end
 end

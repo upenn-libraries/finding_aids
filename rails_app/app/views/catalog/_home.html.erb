@@ -2,7 +2,7 @@
   <%= render HeaderHeroComponent.new(blacklight_config: blacklight_config) do |hero| %>
     <% hero.with_picture do %>
       <picture hero="art-direction">
-        <%= image_tag 'moelis-reading-room.jpg', alt: t('homepage.hero.alt') %>
+        <%= image_tag @hero_image.file, alt: @hero_image.alt_text %>
       </picture>
     <% end %>
     <% hero.with_heading do %>

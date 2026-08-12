@@ -1,5 +1,9 @@
 pennlibs_web_version: '1.5.0'
 
+homepage_images:
+  - file: moelis-reading-room.jpg
+    alt_text: An archival reading room
+
 solr:
   url: <%= ENV['SOLR_URL'] %>
 
