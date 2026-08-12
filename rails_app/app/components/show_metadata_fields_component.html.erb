@@ -2,7 +2,7 @@
 <% fields.each do |field| %>
     <%= wrapper do %>
       <%= content_tag(:dt, field.label, class: @dt_class) %>
-      <% truncated_headings_list(field: field).each do |value| %>
+      <% headings_list(field: field).each do |value| %>
         <dd><%= value %></dd>
       <% end %>
     <% end %>
