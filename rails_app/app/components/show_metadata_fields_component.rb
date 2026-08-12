@@ -29,11 +29,14 @@ class ShowMetadataFieldsComponent < ViewComponent::Base
 
   # @param field [Blacklight::FieldPresenter]
   # @return [Array]
-  def truncated_headings_list(field:)
+  def headings_list(field:)
     values = field.render
     return values if !@truncate || values.length <= LIST_LENGTH_LIMIT
 
-    see_all_link = link_to t('show.sections.overview.see_all_entries', field: field.label), HEADINGS_SECTION_ID
+    see_all_link = link_to(
+      t('show.sections.overview.see_all_entries', field: field.label), HEADINGS_SECTION_ID, data: { turbo: false }
+    )
+
     values.first(LIST_LENGTH_LIMIT - 1) << see_all_link
   end
 
