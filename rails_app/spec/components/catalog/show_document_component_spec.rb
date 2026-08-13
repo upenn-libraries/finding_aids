@@ -75,8 +75,9 @@ RSpec.describe Catalog::ShowDocumentComponent, type: :component do
   describe 'attaching stimulus controller' do
     it 'attaches the stimulus controller with the expected actions' do
       section = page.find('div.document-main-section.pl-margin-b-3xl')
-      controller_actions = 'toggle->guide-navigation#handleDetailsToggle:capture click->guide-navigation#handleTocClick'
-      expect(section['data-action']).to eq controller_actions
+      expect(section['data-action']).to eq(
+        'toggle->guide-navigation#handleDetailsToggle:capture click->guide-navigation#handleDetailLinkClick'
+      )
     end
   end
 

@@ -34,7 +34,7 @@ class ShowMetadataFieldsComponent < ViewComponent::Base
     return values if !@truncate || values.length <= LIST_LENGTH_LIMIT
 
     see_all_link = link_to(
-      t('show.sections.overview.see_all_entries', field: field.label), HEADINGS_SECTION_ID, data: { turbo: false }
+      t('show.sections.overview.see_all_entries', field: field.label), HEADINGS_SECTION_ID
     )
 
     values.first(LIST_LENGTH_LIMIT - 1) << see_all_link
