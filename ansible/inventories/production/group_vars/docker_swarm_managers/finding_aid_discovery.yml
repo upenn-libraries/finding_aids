@@ -1,6 +1,6 @@
 ---
 finding_aid_discovery_build_docker_image: false
-finding_aid_discovery_docker_image: "finding_aid_discovery"
+finding_aid_discovery_docker_image_name: "finding_aid_discovery"
 finding_aid_discovery_docker_image_tag: "{{ image_tag }}"
 finding_aid_discovery_rails_env: "production"
 finding_aid_discovery_replicas: 3
