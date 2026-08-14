@@ -7,7 +7,7 @@ module Catalog
     # @param group [Symbol]
     # [Enumerator<Blacklight::FieldPresenter>]
     def field_presenters_by_group(group)
-      f = configuration[:show_fields].select { |_, field_config| field_config.group == group }
+      f = configuration[:show_fields].select { |_, field_config| Array.wrap(field_config.group).include?(group) }
       field_presenters(f)
     end
 

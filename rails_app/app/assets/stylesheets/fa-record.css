@@ -6,239 +6,6 @@ body {
     background: var(--pl-color-bg-default);
 }
 
-.pl-button {
-    border: none;
-    outline: none;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--pl-space-2xs);
-    padding: var(--pl-space-xs) var(--pl-space-m);
-    font-size: 1rem;
-    line-height: 1.5;
-    font-family: var(--pl-font-family);
-    border-radius: var(--pl-border-radius);
-
-    background: var(--pl-color-bg-subtle);
-    color: var(--pl-color-fg-default);
-}
-
-.pl-button:hover {
-    cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: var(--pl-link-text-underline-offset);
-    text-decoration-thickness: var(--pl-link-text-decoration-thickness);
-}
-
-.pl-button:focus {
-    box-shadow: var(--pl-focus-box-shadow);
-}
-
-.pl-button--accent {
-    background: var(--pl-color-bg-accent-emphasis);
-    color: var(--pl-color-fg-on-emphasis);
-}
-
-.pl-button--success {
-    background: var(--pl-color-bg-success-emphasis);
-    color: var(--pl-color-fg-on-emphasis);
-}
-
-.pl-button--attention {
-    background: var(--pl-color-bg-attention-emphasis);
-    color: var(--pl-color-fg-on-emphasis);
-}
-
-.home-section {
-    padding: var(--pl-space-xl) 0;
-}
-
-/* Cards — mirrors the Digital Collections pattern */
-.fa-cards {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: var(--pl-space-m) var(--pl-space-s);
-    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-}
-
-.fa-cards__card {
-    position: relative;
-    width: 100%;
-}
-
-.fa-cards__card-img {
-    box-shadow: rgba(140, 149, 159, 0.3) 0px 3px 6px 0px;
-    border-radius: var(--pl-border-radius-subtle);
-    width: 100%;
-    border: solid 2px var(--pl-color-fg-default);
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
-    display: block;
-}
-
-.fa-cards__card-placeholder {
-    border-radius: var(--pl-border-radius-subtle);
-    aspect-ratio: 3 / 2;
-    background: var(--pl-color-bg-subtle-brand);
-    display: block;
-    width: 100%;
-}
-
-.fa-cards__card-heading {
-    margin: 0;
-    padding-top: var(--pl-space-s);
-    font-size: var(--pl-font-size-m);
-    font-family: var(--pl-font-family);
-    line-height: 1.4;
-
-    &::after {
-        content: none;
-    }
-}
-
-.fa-cards__card-sub {
-    margin: 0.25rem 0 0;
-    color: var(--pl-color-fg-subtle);
-    font-size: var(--pl-font-size-s);
-}
-
-.fa-cards__card-link {
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-    }
-}
-
-/* Home sections — limit visible cards to one or two rows per breakpoint */
-.fa-home-sections {
-    & .fa-cards {
-        grid-template-columns: repeat(2, 1fr);
-
-        & .fa-cards__card { display: none; }
-        & .fa-cards__card:nth-child(-n+4) { display: block; }
-
-        @media (min-width: 520px) {
-            grid-template-columns: repeat(3, 1fr);
-            & .fa-cards__card:nth-child(-n+6) { display: block; }
-            & .fa-cards__card:nth-child(n+7) { display: none; }
-        }
-
-        @media (min-width: 720px) {
-            grid-template-columns: repeat(4, 1fr);
-            & .fa-cards__card:nth-child(-n+8) { display: block; }
-            & .fa-cards__card:nth-child(n+9) { display: none; }
-        }
-
-        @media (min-width: 1000px) {
-            grid-template-columns: repeat(5, 1fr);
-            & .fa-cards__card:nth-child(-n+5) { display: block; }
-            & .fa-cards__card:nth-child(n+6) { display: none; }
-        }
-
-        @media (min-width: 1200px) {
-            grid-template-columns: repeat(6, 1fr);
-            & .fa-cards__card:nth-child(-n+6) { display: block; }
-            & .fa-cards__card:nth-child(n+7) { display: none; }
-        }
-
-        /* @media (min-width: 1400px) {
-          grid-template-columns: repeat(7, 1fr);
-          & .fa-cards__card:nth-child(-n+7) { display: block; }
-          & .fa-cards__card:nth-child(n+8) { display: none; }
-        } */
-    }
-}
-
-.fa-home-lede {
-    font-size: var(--pl-font-size-l);
-}
-
-.previews__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-}
-
-.previews__header h2 {
-    margin: 0;
-}
-
-.previews {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-    gap: 2rem;
-}
-
-.previews li {
-    position: relative;
-    margin: 0;
-}
-
-.previews figure {
-    margin: 0;
-}
-
-.preview__image-frame {
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    aspect-ratio: 3 / 2;
-    box-shadow: rgba(140, 149, 159, 0.3) 0px 3px 6px 0px;
-    border-radius: var(--pl-border-radius-subtle);
-    border: solid 1px var(--pl-color-fg-subtle);
-}
-
-.preview__image-frame pennlibs-fallback-img {
-    object-fit: cover;
-    object-position: top;
-    inline-size: 100%;
-    block-size: 100%;
-    width: 100%;
-}
-
-.previews figcaption {
-    display: block;
-    margin-top: 1rem;
-}
-
-.previews figcaption p {
-    margin: 0.25rem 0 0;
-    color: var(--pl-color-fg-subtle);
-    font-size: var(--pl-font-size-s);
-}
-
-.previews figcaption a:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.previews figcaption a {
-    display: block;
-    color: var(--pl-color-fg-default);
-    text-decoration: none;
-}
-
-.previews figcaption a:hover {
-    text-decoration: underline;
-}
-
-.previews h3 {
-    font-size: var(--pl-font-size-default, 1rem);
-    font-weight: 400;
-    margin: 0;
-    line-height: 1.4;
-}
-
 /* Any author display value (flex, grid, inline-flex…) silently defeats the
    hidden attribute, which has bitten three separate elements now. Enforce it
    globally: hidden means hidden. */
@@ -254,14 +21,6 @@ body {
     position: absolute;
     white-space: nowrap;
     width: 1px;
-}
-
-.paa-search-box__container {
-    align-items: center;
-
-    & a {
-        color: var(--pl-color-fg-on-emphasis);
-    }
 }
 
 /* Header search wrapper (the slot="end" div). flex:1 + min-width:0 lets it
@@ -285,85 +44,9 @@ body {
     }
 }
 
-.paa-search-box {
-    background: var(--pl-color-bg-default);
-    border-radius: 1.25rem;
-    padding: var(--pl-space-2xs);
-    padding-left: var(--pl-space-m);
-    box-shadow: rgba(140, 149, 159, 0.2) 0px 3px 6px 0px;
-    border: solid 1px var(--pl-color-penn-blue);
-    display: flex;
-    gap: var(--pl-space-s);
-    flex-grow: 1;
-    max-width: 100%;
-}
-
-/* In the header, cap the pill and push it to the right of the row. */
-.fa-header-search .paa-search-box {
-    margin-left: auto;
-
-    @media (min-width: 1001px) {
-        max-width: 28rem;
-    }
-}
-
-pennlibs-header[theme=dark] {
-    .paa-search-box {
-        background: var(--pl-color-bg-subtle);
-    }
-}
-
-.paa-search-box__input-label {
-    width: 100%;
-    display: flex;
-    align-items: flex-end;
-}
-
-.paa-search-box__input {
-    all: unset;
-    flex-grow: 1;
-    box-sizing: border-box;
-    padding: var(--pl-space-xs) var(--pl-space-2xs);
-    cursor: text;
-    width: 100%;
-    /* font-size: var(--pl-font-size-l); */
-
-    &::placeholder {
-        all: unset;
-        color: var(--color-fg-subtle);
-    }
-}
-
-.paa-search-box__button {
-    text-wrap: nowrap;
-    /* padding: var(--pl-space-xs) var(--pl-space-l); */
-    /* font-size: var(--pl-font-size-l); */
-}
-
-*:focus {
-    box-shadow: var(--pl-focus-box-shadow);
-}
-
-/* Or modify for your situation */
 *:focus {
     box-shadow: 0 0 0 2px var(--pl-color-bg-accent), 0 0 0 4px var(--pl-color-fg-default);
     outline: none;
-}
-
-.pl-breadcrumb {
-    color: var(--pl-color-fg-sublte);
-    display: flex;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.pl-breadcrumb__item + .pl-breadcrumb__item::before {
-    content: "/";
-    padding: 0 var(--pl-space-s);
-}
-
-.pl-breadcrumb__item {
 }
 
 /* Guide-page header: stacked hero row (intro + institution) + metadata strip below */
@@ -376,7 +59,7 @@ pennlibs-header[theme=dark] {
 .fa-guide-header__hero {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--pl-space-xl);
+    gap: var(--pl-space-m);
 }
 
 @media (min-width: 900px) {
@@ -389,6 +72,7 @@ pennlibs-header[theme=dark] {
 .fa-guide-header__institution {
     align-self: flex-start;
     background: var(--pl-color-bg-default);
+    margin-bottom: 0 !important;
 }
 
 .fa-guide-header__institution p {
@@ -402,15 +86,10 @@ pennlibs-header[theme=dark] {
 .fa-metadata {
     list-style: none;
     padding: 0;
+    margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
     gap: var(--pl-space-m);
-}
-
-.fa-toc-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--pl-space-2xs);
 }
 
 .fa-small-name {
@@ -429,11 +108,6 @@ pennlibs-header[theme=dark] {
     gap: var(--pl-space-s);
 }
 
-.fa-section-header__actions {
-    display: flex;
-    gap: var(--pl-space-xs);
-}
-
 .fa-guide__details {
     border-radius: var(--pl-border-radius);
     background: var(--pl-color-bg-subtle);
@@ -447,12 +121,9 @@ pennlibs-header[theme=dark] {
         }
     }
 
-    & h3 {
-        margin-bottom: 0;
-    }
-
     & h3, h4, h5, h6 {
         scroll-margin-block: 1rem;
+        margin-bottom: 0;
     }
 
     & summary {
@@ -495,136 +166,41 @@ pennlibs-header[theme=dark] {
     }
 }
 
-/* Table — from design system */
-table.table {
-    border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;
-}
-
-.table caption,
-.table th {
-    text-align: left;
-}
-
-.table caption {
-    color: var(--pl-color-fg-subtle);
-}
-
-.table tr > * {
-    border-bottom: solid 1px var(--pl-color-bg-subtle-brand);
-    padding: var(--pl-space-xs) 0;
-    vertical-align: top;
-
-    @media only screen and (max-width: 721px) {
-        padding: var(--pl-space-2xs) 0;
-    }
-}
-
-.table tr > *:not(:last-child) {
-    padding-right: 1rem;
-}
-
-.table th {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.075rem;
-    vertical-align: middle;
-    font-weight: 600;
-}
-
-.table tr > *[data-th]:before {
-    content: attr(data-th) ':\00a0';
-    display: none;
-}
-
-.table tr > td[data-th]:before {
-    font-weight: 600;
-}
-
-/* Every series/subseries renders its own inventory table. Fixing the column
-   widths keeps Detail / Container / Select aligned from one table to the next,
-   so nothing shifts as you scroll down the guide. Scoped above the stacking
-   breakpoint — the widths must not apply once rows stack. */
-@media only screen and (min-width: 721px) {
-    .table--responsive-small {
-        table-layout: fixed;
-    }
-
-    /* Contents (1) is left unset, so it absorbs the remaining width — it leads the
-       scan, so it gets the most room. */
-    .table--responsive-small th:nth-child(2),
-    .table--responsive-small td:nth-child(2) { width: 8rem; }  /* Dates */
-    .table--responsive-small th:nth-child(3),
-    .table--responsive-small td:nth-child(3) { width: 14rem; }  /* Container (Box/Folder) */
-    .table--responsive-small th:nth-child(4),
-    .table--responsive-small td:nth-child(4) { width: 3.5rem; }   /* Select */
-}
-
-@media only screen and (max-width: 720px) {
-    .table--responsive-small thead {
-        position: absolute;
-        clip: rect(0 0 0 0);
-        clip-path: inset(50%);
-        white-space: nowrap;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
-    }
-
-    .table--responsive-small tr > * {
-        display: block;
-    }
-
-    .table--responsive-small tr > *:not(:last-child) {
-        padding-right: 0;
-        border-bottom: none;
-    }
-
-    .table--responsive-small tr > *[data-th]:before {
-        display: inline;
-    }
-}
-
-/* Guide show page: break out of Bootstrap's container/row/column gutters so the
- * page spans the full viewport. Blacklight wraps the show document in
- * #main-container.container-fluid > .row > section.show-document (LayoutHelper#container_classes
- * returns container-fluid here). We drop the container padding and dissolve the row/column
- * wrappers with `display: contents`, so the header band can bleed to the viewport edges while
- * each inner `.pl-viewport-margins` block controls the content gutters (matching the mockup). */
-.blacklight-catalog-show {
-    & #main-container {
-        max-width: none;
-        padding: 0;
-    }
-
-    & #main-container > .row,
-    & .show-document {
-        display: contents;
-    }
-}
-
 /* Guide page layout — TOC sidebar is opt-in, so single column by default.
-   The sticky sidebar column only appears once someone turns the TOC on. */
+ *
+ * The nav carries Bootstrap's `.offcanvas-lg`: below lg (992px) it is a slide-in panel,
+ * at lg and up it is an ordinary element and takes the sidebar column. Bootstrap scopes
+ * the panel's `position: fixed` to `@media (max-width: 991.98px)`, so everything that
+ * makes it a sidebar has to be scoped to lg and up to match — this stylesheet loads after
+ * Bootstrap's, so an unscoped `position: sticky` on .fa-toc would beat the fixed
+ * positioning the panel depends on and the panel would render inline. */
 .fa-guide-layout {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--pl-space-2xl);
 }
 
-.fa-guide-layout--with-toc {
-    grid-template-columns: 18rem 1fr;
-}
+@media (min-width: 992px) {
+    .fa-guide-layout--with-toc {
+        grid-template-columns: 18rem 1fr;
+    }
 
-.fa-toc {
-    position: sticky;
-    top: var(--pl-space-l);
-    align-self: start;
-    max-height: calc(100vh - var(--pl-space-2xl));
-    overflow-y: auto;
-    padding-right: var(--pl-space-m);
-}
+    .fa-toc {
+        position: sticky;
+        top: var(--pl-space-l);
+        align-self: start;
+        max-height: calc(100vh - var(--pl-space-2xl));
+        overflow-y: auto;
+        padding-right: var(--pl-space-m);
+        scrollbar-color: var(--pl-color-fg-subtle) var(--pl-color-bg-subtle);
+    }
 
+    /* Bootstrap turns .offcanvas-body into a flex container at this breakpoint; the TOC
+       is a plain list, so put it back into normal flow. */
+    .fa-toc .offcanvas-body {
+        display: block;
+    }
+}
 
 .fa-toc ul {
     list-style: none;
@@ -662,60 +238,38 @@ table.table {
     scroll-margin-top: var(--pl-space-l);
 }
 
-@media (max-width: 720px) {
-    .fa-guide-layout {
-        grid-template-columns: 1fr;
+/* Mobile table of contents — the panel, and the button that opens it. */
+.fa-toc {
+    --bs-offcanvas-width: min(90vw, 400px);
+}
+
+/* Stop a scroll gesture that reaches the end of the panel from carrying on into the page
+   behind it. */
+.fa-toc .offcanvas-body {
+    overscroll-behavior: contain;
+}
+
+/* The toggle defaults to hidden and is switched on only below the panel breakpoint:
+   failing closed means a stray override can't leak the button onto desktop. */
+.fa-toc-toggle {
+    display: none;
+    align-items: center;
+    gap: var(--pl-space-2xs);
+    margin-bottom: var(--pl-space-l);
+}
+
+@media (max-width: 991.98px) {
+    .fa-toc-toggle {
+        display: inline-flex;
     }
-
-    .fa-toc {
-        position: static;
-    }
-}
-
-/* Visit callout */
-.fa-visit-callout {
-    padding: var(--pl-space-xl);
-    background: var(--pl-color-bg-subtle);
-    border-radius: var(--pl-border-radius-subtle);
-}
-
-.fa-visit-callout h2 {
-    margin-top: 0;
-}
-
-.fa-visit-callout p {
-    max-width: var(--pl-line-length);
 }
 
 a.pl-button {
     text-decoration: none;
 }
 
-.fa-header-actions {
-    display: none;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--pl-space-s);
-    flex-direction: row;
-    margin-top: var(--pl-space-l);
-}
-
-.paa-search-box--within {
-    background: var(--pl-color-bg-default);
-    max-width: 100%;
-    width: 32rem;
-
-    & .paa-search-box__input {
-        padding: var(--pl-space-2xs) var(--pl-space-2xs)
-    }
-
-    & .paa-search-box__button {
-        padding: var(--pl-space-2xs) var(--pl-space-xs);
-    }
-}
-
 /* Subseries — nested within series, lazy rendered */
-.fa-guide__details--subseries {
+.fa-guide__details--subseries > summary + * {
     content-visibility: auto;
     contain-intrinsic-size: auto 300px;
 }
@@ -723,14 +277,6 @@ a.pl-button {
 .fa-guide__details--subseries summary h4 {
     font-size: var(--pl-font-size-default);
     margin: 0;
-}
-
-/* Highlight matched text from search */
-mark.search-highlight {
-    background: var(--pl-color-bg-attention-emphasis);
-    color: var(--pl-color-fg-on-emphasis);
-    border-radius: var(--pl-border-radius-subtle);
-    outline: 2px var(--pl-color-bg-attention-emphasis) solid;
 }
 
 .pl-callout {
@@ -742,15 +288,8 @@ mark.search-highlight {
     border-left-color: var(--pl-color-fg-accent);
 }
 
-
 h4, h5, h6 {
     font-size: 1rem
-}
-/* A row's title, dates, and any scope/contents, physical description, and
-   digital object links render as a description list. pl-dl--inline puts each
-   label + value on its own line. */
-.fa-inventory-detail {
-
 }
 
 /* Your visit — collect inventory items to request from the archive */
@@ -817,163 +356,6 @@ h4, h5, h6 {
     }
 }
 
-/* These receive focus programmatically (modal open, step changes) purely to
-   move AT into the dialog / announce the result — they're not interactive, so
-   suppress the global *:focus ring that would otherwise land on them. */
-.fa-visit__dialog:focus,
-#visit-confirm-lede:focus {
-    box-shadow: none;
-    outline: none;
-}
-
-.fa-visit__dialog {
-    /* No position override here: a modal <dialog> is position:fixed by UA
-       default (that's what pins it to the viewport), and that fixed box is
-       already the containing block for the absolute close button. Setting
-       position:relative previously made the dialog scroll with the page. */
-    width: min(34rem, calc(100vw - 2rem));
-    margin: auto; /* recenter — pl-reset strips the user-agent dialog margins */
-    border: 1px solid var(--pl-color-fg-subtle);
-    border-radius: var(--pl-border-radius-subtle);
-    padding: var(--pl-space-xl);
-}
-
-.fa-visit__dialog-close {
-    position: absolute;
-    top: var(--pl-space-s);
-    right: var(--pl-space-s);
-}
-
-.fa-visit__dialog::backdrop {
-    backdrop-filter: blur(var(--pl-space-2xs));
-    --bl-modal-backdrop-bg: rgb(from var(--pl-color-fg-default) r g b / 0.25);
-}
-
-.fa-visit__dialog h2:focus {
-    outline: none;
-}
-
-.fa-visit__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    max-height: 50vh;
-    overflow-y: auto;
-}
-
-.fa-visit__item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--pl-space-m);
-    padding: var(--pl-space-s) 0;
-    border-bottom: solid 1px var(--pl-color-bg-subtle-brand);
-}
-
-.fa-visit__meta {
-    margin: 0;
-    color: var(--pl-color-fg-subtle);
-}
-
-.fa-visit__footer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: var(--pl-space-s);
-    margin-top: var(--pl-space-l);
-}
-
-.fa-visit__form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--pl-space-m);
-}
-
-.fa-visit__form label {
-    display: flex;
-    flex-direction: column;
-    gap: var(--pl-space-3xs);
-    font-weight: 600;
-}
-
-.fa-visit__form .fa-visit__hint {
-    font-weight: normal;
-}
-
-.fa-visit__form input,
-.fa-visit__form textarea {
-    font: inherit;
-    font-weight: normal;
-    padding: var(--pl-space-xs);
-    border: 1px solid var(--pl-color-fg-subtle);
-    border-radius: var(--pl-border-radius-subtle);
-}
-
-.fa-visit__form input:focus-visible,
-.fa-visit__form textarea:focus-visible {
-    box-shadow: var(--pl-focus-box-shadow);
-    outline: none;
-}
-
-.fa-visit__disclaimer {
-    color: var(--pl-color-fg-subtle);
-    font-size: 0.8rem;
-}
-
-.fa-visit__error {
-    color: var(--pl-color-fg-attention);
-    font-size: 0.9rem;
-}
-
-.fa-visit__confirm--error input {
-    outline: 2px solid var(--pl-color-fg-attention);
-    outline-offset: 2px;
-}
-
-.fa-visit__aside-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--pl-space-s);
-}
-
-/* Full-width bar pinned to the bottom of the viewport, surfaced (via JS) only
-   while scrolled into the inventory — content is constrained with the same
-   viewport margins as the rest of the page. */
-.fa-visit__bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    padding: var(--pl-space-s) 0;
-    box-shadow: rgba(140, 149, 159, 0.2) 0px 3px 6px 0px;
-    backdrop-filter: blur(var(--pl-space-m));
-    background: rgb(from var(--pl-color-bg-default) r g b / 0.75);
-    border-top: 1px solid var(--pl-color-fg-subtle);
-}
-
-.fa-visit__bar-content {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--pl-space-s) var(--pl-space-m);
-
-    & .pl-button--success {
-        box-shadow: rgba(140, 149, 159, 0.2) 0px 3px 6px 0px;
-    }
-}
-
-.fa-visit__bar-text {
-    margin: 0;
-}
-
-/* Reserve room so the fixed bar never covers the last of the page content
-   (the bar shows whenever ≥1 item is selected). */
-body.fa-visit-bar-visible {
-    margin-bottom: 1rem;
-}
-
 /* At-a-glance tally of selected items, shown inline in each inventory
    section's summary heading (after the title, before the disclosure arrow).
    Carries .fa-small-name too: the smaller size keeps it within the heading's
@@ -986,31 +368,3 @@ body.fa-visit-bar-visible {
     display: none;
 }
 
-/* Step cue above the dialog title (fa-small-name supplies the small caps). */
-.fa-visit__step {
-    margin: 0 0 var(--pl-space-2xs);
-    color: var(--pl-color-fg-subtle);
-}
-
-.fa-visit__step:empty {
-    display: none;
-}
-
-/* .pl-button sets display, which would otherwise defeat the hidden attribute
-   (e.g. the bottom bar before it's surfaced) */
-.pl-button[hidden] {
-    display: none;
-}
-
-.pl-caps,
-.pl-caps--subtle {
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.075rem;
-    text-transform: uppercase;
-    vertical-align: middle;
-}
-
-.pl-caps--subtle {
-    color: var(--pl-color-fg-subtle);
-}

@@ -21,8 +21,10 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
   end
 
   it 'renders the intro paragraph' do
-    expect(component).to have_css('p.pl-line-length',
-                                  text: /#{I18n.t('homepage.collection_guides.intro').truncate(30)}/)
+    expect(component).to have_css(
+      'p.pl-line-length',
+      text: /#{I18n.t('homepage.collection_guides.intro_html', browse_all_link: '').truncate(30)}/
+    )
   end
 
   it 'renders the card grid' do
@@ -30,7 +32,7 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
   end
 
   it 'renders a card for each guide' do
-    expect(component).to have_css('.fa-cards__card', count: 2)
+    expect(component).to have_css('.fa-card', count: 2)
   end
 
   it 'renders guide names as search links' do
@@ -41,8 +43,8 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
   end
 
   it 'renders guide repository names as subtitle text' do
-    expect(component).to have_css('.fa-cards__card-sub', text: 'Test Institution')
-    expect(component).to have_css('.fa-cards__card-sub', text: 'Another Institution')
+    expect(component).to have_css('.fa-card__description', text: 'Test Institution')
+    expect(component).to have_css('.fa-card__description', text: 'Another Institution')
   end
 
   context 'with an empty guide list' do
@@ -52,7 +54,7 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
 
     it 'renders the grid with no cards' do
       expect(component).to have_css('ol.fa-cards')
-      expect(component).to have_no_css('.fa-cards__card')
+      expect(component).to have_no_css('.fa-card')
     end
   end
 end

@@ -45,19 +45,28 @@ export default class extends Controller {
         history.replaceState(null, "", `#${heading.id}`);
     };
 
-    // Action attached to this controller. Ensures clicking on nested table of contents links opens all the parent details
-    handleTocClick = (event) => {
-        const link = event.target.closest(".fa-toc a[href^='#']");
+    // Action attached to this controller. Ensures clicking on a show page link that references a nested detail element
+    // opens all the parent detail elements
+    handleDetailLinkClick = (event) => {
+        const link = event.target.closest(".show-document a[href^='#']");
         if (!link) return;
 
         event.preventDefault();
 
         history.replaceState(null, "", link.hash);
 
+        // On small screens the table of contents is an offcanvas panel. Bootstrap focuses the
+        // toggle button once the panel has finished closing, which scrolls that button back
+        // into view and undoes the jump — so wait for the panel to close before scrolling.
+        // `.offcanvas-lg` is named explicitly: a responsive panel doesn't carry `.offcanvas`.
+        const panel = link.closest(".offcanvas.show, .offcanvas-lg.show");
+        if (panel) {
+            panel.addEventListener("hidden.bs.offcanvas", this.navigateToLocation, { once: true });
+            return;
+        }
+
         this.navigateToLocation();
     };
-
-
 
     // Map to connect headings to table of content links. Keys are heading ids, and value is an object containing both
     // table of contents link and heading elements
