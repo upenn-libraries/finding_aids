@@ -1,5 +1,10 @@
 <%# Fixed bottom bar — surfaces selected count and opens either request flow. %>
 <div class="fa-visit__bar" data-request-target="requestBar" data-request-active="false"
+     data-request-endpoint="<%= Settings.aeon.ere_endpoint %>"
+     data-request-system-id="<%= Settings.aeon.system_id %>"
+     data-request-aeon-form="<%= Settings.aeon.aeon_form %>"
+     data-request-web-request-form="<%= Settings.aeon.web_request_form %>"
+     data-request-submit-value="<%= Settings.aeon.submit_value %>"
      role="region" aria-label="<%= t('show.sections.request.bar.region') %>" hidden>
   <div class="pl-viewport-margins fa-visit__bar-content">
     <p class="fa-visit__bar-text" data-request-target="requestBarText"><strong>1</strong> selected item</p>

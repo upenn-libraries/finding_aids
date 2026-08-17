@@ -2,6 +2,58 @@ import { Controller } from "@hotwired/stimulus"
 
 const STEPS = ['review', 'submit']
 
+class AeonRequest {
+    // configData should be dataset from requestBar
+    constructor(configData, formData = new FormData()) {
+        this.items = 0
+        this.formData = formData
+        this.addConfigFields(configData)
+    }
+
+    addConfigFields(configData) {
+        this.submitUrl = configData.requestEndpoint
+        this.formData.append('SystemID', configData.requestSystemId)
+        this.formData.append('AeonForm', configData.requestAeonForm)
+        this.formData.append('WebRequestForm', configData.requestWebRequestForm)
+        this.formData.append('SubmitButton', configData.requestSubmitValue)
+    }
+
+    addScanFulfillmentFields() {
+        this.formData.append('RequestType', 'Copy')
+    }
+
+    addLoanFulfillmentFields() {
+        this.formData.append('RequestType', 'Loan')
+        this.formData.append('UserReview', 'No') // TODO: r u sure?
+    }
+
+
+    /* TODO: add these with index value in param name
+     * Request: number,
+     *   CallNumber: request.call_number,
+     *   ItemTitle: request.title,
+     *   Site: repository.site,
+     *   SubLocation: repository.sublocation,
+     *   Location: repository.location,
+     *   ItemVolume: volume,
+     *   ItemIssue: issue
+     */
+
+    addItem(selectedChackbox) {
+        this.items += 1
+        this.formData.append('field', 'value')
+    }
+
+    addLoanSubmitFields() {
+        // TODO: add fields from step2
+    }
+
+    addScanSubmitFields() {
+
+    }
+
+}
+
 export default class extends Controller {
     static targets = [
         'requestBar', 'requestBarText',
@@ -23,6 +75,7 @@ export default class extends Controller {
 
     connect() {
         this.activeValue = this.selectedItems().length > 0
+        this.aeonRequest = new AeonRequest(this.requestBarTarget.dataset)
     }
 
     // -- value callbacks --
@@ -81,7 +134,9 @@ export default class extends Controller {
     }
 
     itemsSelected() {
-        // build hidden fields for request? store in object?
+        this.selectedItems().forEach(item_input => {
+            // this.
+        })
         this.currentStepValue = 'submit'
     }
 
@@ -91,7 +146,7 @@ export default class extends Controller {
 
     submitRequest() {
         const aeonRequest = {}
-        // TODO: build form and submit
+        // TODO: submit form
     }
 
     // -- support functions --

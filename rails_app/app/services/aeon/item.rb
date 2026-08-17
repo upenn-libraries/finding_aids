@@ -20,7 +20,7 @@ module Aeon
 
     # @return [String]
     def volume
-      barcode.present? ? "#{@volume} [#{@barcode}]" : volume
+      barcode.present? ? "#{@volume} [#{@barcode}]" : @volume
     end
 
     # @return [Hash{Symbol->Unknown}]
