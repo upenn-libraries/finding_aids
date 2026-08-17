@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Aeon
+  # TODO: functionality remaining here is to be ported to JS
   class Request
     # @return [Hash{String (frozen)->String}]
     def note_fields
