@@ -278,8 +278,8 @@ RSpec.describe InventoryComponent, type: :component do
 
         render_inline(described_class.new(entry: entry, index: 1, requestable: true))
 
-        css = 'input[data-containers="Box 1|Folder 1"]'
-        expect(page).to have_css(css, visible: :all)
+        expect(page).to have_css('input[data-volume="Box 1"]', visible: :all)
+        expect(page).to have_css('input[data-issue="Folder 1"]', visible: :all)
       end
 
       it 'renders visually hidden span' do

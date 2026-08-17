@@ -65,7 +65,7 @@ class SolrDocument
 
   # @return [Boolean]
   def requestable?
-    Aeon::Request.allowed? repository_name: fetch(:repository_ssi)
+    Settings.aeon.locations.any? { |loc| loc[:label] == fetch(:repository_ssi) }
   end
 
   # Record-level requesting info, needed for Aeon submissions. Will be supplemented with container-level data.

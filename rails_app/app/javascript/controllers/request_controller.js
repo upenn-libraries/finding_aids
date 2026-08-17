@@ -7,15 +7,15 @@ class AeonRequest {
     constructor(configData, formData = new FormData()) {
         this.items = 0
         this.formData = formData
-        this.addConfigFields(configData)
+        this.configData = configData
+        this.addConfigFields()
     }
 
-    addConfigFields(configData) {
-        this.submitUrl = configData.requestEndpoint
-        this.formData.append('SystemID', configData.requestSystemId)
-        this.formData.append('AeonForm', configData.requestAeonForm)
-        this.formData.append('WebRequestForm', configData.requestWebRequestForm)
-        this.formData.append('SubmitButton', configData.requestSubmitValue)
+    addConfigFields() {
+        this.formData.append('SystemID', this.configData.requestSystemId)
+        this.formData.append('AeonForm', this.configData.requestAeonForm)
+        this.formData.append('WebRequestForm', this.configData.requestWebRequestForm)
+        this.formData.append('SubmitButton', this.configData.requestSubmitValue)
     }
 
     addScanFulfillmentFields() {
@@ -27,21 +27,21 @@ class AeonRequest {
         this.formData.append('UserReview', 'No') // TODO: r u sure?
     }
 
-
-    /* TODO: add these with index value in param name
-     * Request: number,
-     *   CallNumber: request.call_number,
-     *   ItemTitle: request.title,
-     *   Site: repository.site,
-     *   SubLocation: repository.sublocation,
-     *   Location: repository.location,
-     *   ItemVolume: volume,
-     *   ItemIssue: issue
-     */
-
-    addItem(selectedChackbox) {
+     addItem(itemData) {
         this.items += 1
-        this.formData.append('field', 'value')
+        const volumeInfo = itemData.barcode ? `${itemData.volume} [${itemData.barcode}]` : itemData.volume
+        this.formData.append(this.indexParamName(this.items, 'Request'), this.items)
+        this.formData.append(this.indexParamName(this.items, 'Site'), this.configData.requestSite)
+        this.formData.append(this.indexParamName(this.items, 'Location'), this.configData.requestLocation)
+        this.formData.append(this.indexParamName(this.items, 'Sublocation'), this.configData.requestSubLocation)
+        this.formData.append(this.indexParamName(this.items, 'CallNumber'), (itemData.call_number || 'n/a'))
+        this.formData.append(this.indexParamName(this.items, 'ItemVolume'), volumeInfo)
+        this.formData.append(this.indexParamName(this.items, 'ItemIssue'), itemData.issue)
+
+    }
+
+    indexParamName(index, name) {
+        return `${name}_${index}`
     }
 
     addLoanSubmitFields() {
@@ -95,6 +95,7 @@ export default class extends Controller {
         this.itemListArea().querySelector('.fa-visit__list').innerHTML = ''
         this.activeValue = this.selectedItems().length > 0
         this.requestDialogTarget.close()
+        this.aeonRequest = null
         this.currentStepValue = ""
     }
 
@@ -119,7 +120,7 @@ export default class extends Controller {
     removeItem(event) {
         const li = event.target.parentElement
         const checkbox = this.selectedItems().find(item => (
-            item.dataset.containers.replace('|',', ') ===
+            [item.dataset.volume, item.dataset.issue].join(', ') ===
             li.querySelector('.fa-visit__meta').textContent )
         )
         checkbox.checked = false
@@ -134,9 +135,7 @@ export default class extends Controller {
     }
 
     itemsSelected() {
-        this.selectedItems().forEach(item_input => {
-            // this.
-        })
+        this.selectedItems().forEach(item => { this.aeonRequest.addItem(item.dataset) })
         this.currentStepValue = 'submit'
     }
 
@@ -145,19 +144,33 @@ export default class extends Controller {
     }
 
     submitRequest() {
-        const aeonRequest = {}
-        // TODO: submit form
+        const form = document.createElement('form')
+        form.method = 'POST'
+        form.action = this.aeonRequest.configData.requestEndpoint
+        form.hidden = true
+
+        for (const [name, value] of this.aeonRequest.formData) {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = name;
+            input.value = value;
+            form.appendChild(input);
+        }
+
+        document.body.append(form)
+        form.submit()
     }
 
     // -- support functions --
 
+
     buildItemList() {
         this.toggleItemListElements()
         this.itemListArea().querySelector('.fa-visit__list').innerHTML = ''
-        this.selectedItems().forEach(item_input => {
+        this.selectedItems().forEach(item => {
             const li = this.listItemTemplateTarget.content.firstElementChild.cloneNode(true)
-            li.querySelector('strong').innerHTML = item_input.dataset.title
-            li.querySelector('.fa-visit__meta').textContent = item_input.dataset.containers.replace('|',', ')
+            li.querySelector('strong').innerHTML = item.dataset.title
+            li.querySelector('.fa-visit__meta').textContent = [item.dataset.volume, item.dataset.issue].join(', ')
             this.itemListArea().querySelector('.fa-visit__list').appendChild(li)
         })
     }

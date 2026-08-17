@@ -51,7 +51,8 @@ module Ead
         # @return [Hash{Symbol->ActiveSupport::SafeBuffer}]
         def requesting_data
           {
-            containers: entry.containers.map(&:to_s).join('|'),
+            volume: entry.containers.map(&:to_s).first,
+            issue: entry.containers.map(&:to_s).second,
             barcode: entry.containers.map(&:barcode).first,
             title: heading
           }

@@ -7,6 +7,12 @@
 class RequestDialogComponent < ViewComponent::Base
   # @param repository [String] holding institution name, shown under "Held at"
   def initialize(repository:)
-    @repository = repository
+    @repository = repository_info(repository_name: repository)
+  end
+
+  private
+
+  def repository_info(repository_name: repository_name)
+    Settings.aeon.locations.find { |loc| loc[:label] == repository_name }
   end
 end
