@@ -27,11 +27,11 @@ RSpec.describe Homepage::RepositoryCardsComponent, type: :component do
   end
 
   it 'renders the card grid' do
-    expect(component).to have_css('ol.fa-cards')
+    expect(component).to have_css('ol.pl-cards')
   end
 
   it 'renders a card for each repository' do
-    expect(component).to have_css('.fa-card', count: 2)
+    expect(component).to have_css('.pl-card', count: 2)
   end
 
   it 'renders repository names as links to filtered search' do
@@ -46,8 +46,8 @@ RSpec.describe Homepage::RepositoryCardsComponent, type: :component do
   end
 
   it 'renders repository guide counts as subtitle text' do
-    expect(component).to have_css('.fa-card__description', text: '100 guides')
-    expect(component).to have_css('.fa-card__description', text: '200 guides')
+    expect(component).to have_css('.pl-card__description', text: '100 guides')
+    expect(component).to have_css('.pl-card__description', text: '200 guides')
   end
 
   context 'with an empty repository list' do
@@ -56,8 +56,8 @@ RSpec.describe Homepage::RepositoryCardsComponent, type: :component do
     end
 
     it 'renders the grid with no cards' do
-      expect(component).to have_css('ol.fa-cards')
-      expect(component).to have_no_css('.fa-card')
+      expect(component).to have_css('ol.pl-cards')
+      expect(component).to have_no_css('.pl-card')
     end
   end
 end
