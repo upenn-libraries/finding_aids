@@ -36,8 +36,7 @@ export default class extends Controller {
     }
 
     expandForPrint = () => {
-        this.closedForPrint = [...this.element.querySelectorAll("details:not([open])")];
-        this.pendingDetailsToggles += this.closedForPrint.length;
+        this.closedForPrint = this.element.querySelectorAll("details:not([open])");
         this.closedForPrint.forEach((details) => {
             details.open = true;
         });
