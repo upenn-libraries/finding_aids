@@ -64,9 +64,10 @@ export default class extends Controller {
         history.replaceState(null, "", `#${heading.id}`);
     };
 
-    // Action attached to this controller. Ensures clicking on nested table of contents links opens all the parent details
-    handleTocClick = (event) => {
-        const link = event.target.closest(".fa-toc a[href^='#']");
+    // Action attached to this controller. Ensures clicking on a show page link that references a nested detail element
+    // opens all the parent detail elements
+    handleDetailLinkClick = (event) => {
+        const link = event.target.closest(".show-document a[href^='#']");
         if (!link) return;
 
         event.preventDefault();
@@ -85,8 +86,6 @@ export default class extends Controller {
 
         this.navigateToLocation();
     };
-
-
 
     // Map to connect headings to table of content links. Keys are heading ids, and value is an object containing both
     // table of contents link and heading elements

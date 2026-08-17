@@ -259,6 +259,8 @@ en:
         held_at: 'Held At'
         contact: 'Contact this archive'
     sections:
+      overview:
+        see_all_entries: 'All %{field} values'
       description:
         header: 'Description'
         guide: "Where the collection came from, what's inside, and how you can use it."
