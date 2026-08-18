@@ -17,6 +17,9 @@ export default class extends Controller {
         this.setup();
 
         if (this.turboFrame) this.turboFrame.loaded.then(() => this.setup());
+
+        window.addEventListener("beforeprint", this.expandForPrint);
+        window.addEventListener("afterprint", this.collapseAfterPrint);
     }
 
     // Sets up page before and after turbo frame loads
@@ -28,7 +31,23 @@ export default class extends Controller {
 
     disconnect() {
         this.visibilityObserver.disconnect();
+        window.removeEventListener("beforeprint", this.expandForPrint);
+        window.removeEventListener("afterprint", this.collapseAfterPrint);
     }
+
+    expandForPrint = () => {
+        this.closedForPrint = this.element.querySelectorAll("details:not([open])");
+        this.closedForPrint.forEach((details) => {
+            details.open = true;
+        });
+    };
+
+    collapseAfterPrint = () => {
+        this.closedForPrint?.forEach((details) => {
+            details.open = false;
+        });
+        this.closedForPrint = null;
+    };
 
     // Action attached to this controller. Ensures opening a details updates the Url with the correct hash
     handleDetailsToggle = (event) => {
