@@ -1,5 +1,5 @@
 <%# Fixed bottom bar — surfaces selected count and opens either request flow. %>
-<div class="fa-visit__bar" data-request-target="requestBar" data-request-active="false"
+<div class="fa-request__bar" data-request-target="requestBar" data-request-active="false"
      data-request-endpoint="<%= Settings.aeon.ere_endpoint %>"
      data-request-system-id="<%= Settings.aeon.system_id %>"
      data-request-aeon-form="<%= Settings.aeon.aeon_form %>"
@@ -9,8 +9,8 @@
      data-request-sub-location="<%= @repository.sublocation %>"
      data-request-site="<%= @repository.site %>"
      role="region" aria-label="<%= t('show.sections.request.bar.region') %>" hidden>
-  <div class="pl-viewport-margins fa-visit__bar-content">
-    <p class="fa-visit__bar-text" data-request-target="requestBarText"><strong>1</strong> selected item</p>
+  <div class="pl-viewport-margins fa-request__bar-content">
+    <p class="fa-request__bar-text" data-request-target="requestBarText"><strong>1</strong> selected item</p>
     <div class="pl-flex pl-gap-s" style="align-items: baseline;">
       <button type="button" class="pl-button pl-button--success" data-action="click->request#initiateCopyRequest">
         <%= t('show.sections.request.bar.request_copies') %>
@@ -25,9 +25,9 @@
 
 <%# ---- Dialog & sections ----  %>
 
-<dialog class="fa-visit__dialog" aria-labelledby="visit-dialog-title" tabindex="-1"
+<dialog class="fa-request__dialog" aria-labelledby="visit-dialog-title" tabindex="-1"
         data-request-target="requestDialog">
-  <button type="button" class="pl-button fa-visit__dialog-close" aria-label="Close"
+  <button type="button" class="pl-button fa-request__dialog-close" aria-label="Close"
           data-action="click->request#close">
     <%# TODO: make a component or partial for this SVG %>
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -35,7 +35,7 @@
     </svg>
   </button>
 
-  <p class="fa-small-name fa-visit__step">Step <span data-request-target="stepNumber">1</span> of 2</p>
+  <p class="pl-caps fa-request__step">Step <span data-request-target="stepNumber">1</span> of 2</p>
   <h2 id="visit-dialog-title" data-request-target="modalTitle" class="pl-margin-b-2xs pl-margin-t-xs"
       data-scan-title="<%= t('show.sections.request.copy.title') %>"
       data-visit-title="<%= t('show.sections.request.visit.title') %>">
@@ -43,28 +43,28 @@
 
   <%# --- Step 1: Review selected items --- %>
   <section data-request-target="stepSection" data-request-section="review" data-request-type="scan" hidden>
-    <p class="fa-small-name pl-margin-t-l"><%= t('show.sections.request.held_at') %></p>
+    <p class="pl-caps pl-margin-t-l"><%= t('show.sections.request.held_at') %></p>
     <p class="pl-margin-b-m"><%= @repository.label %></p>
     <div data-request-target="scanItemListArea">
-      <p class="pl-margin-b-s fa-visit__review-lede">
+      <p class="pl-margin-b-s fa-request__review-lede">
         <%= t('show.sections.request.copy.review_lede') %>
       </p>
-      <p class="fa-visit__empty pl-margin-t-l" hidden>
+      <p class="fa-request__empty pl-margin-t-l" hidden>
         <%= t('show.sections.request.review_empty_html').html_safe %>
       </p>
       <template data-request-target="listItemTemplate">
-        <li class="fa-visit__item">
+        <li class="fa-request__item">
           <div>
             <strong></strong>
-            <p class="fa-visit__meta"></p>
+            <p class="fa-request__meta"></p>
           </div>
           <button type="button" class="pl-button" data-action="click->request#removeItem">Remove</button>
         </li>
       </template>
-      <ul class="fa-visit__list"></ul>
+      <ul class="fa-request__list"></ul>
     </div>
 
-    <div class="fa-visit__footer">
+    <div class="fa-request__footer">
       <button type="button" class="pl-button" data-action="click->request#clearAll">
         <%= t('show.sections.request.remove_all') %>
       </button>
@@ -76,17 +76,17 @@
 
   <%# -- step1 visit -- %>
   <section data-request-target="stepSection" data-request-section="review" data-request-type="visit" hidden>
-    <p class="fa-small-name pl-margin-t-l"><%= t('show.sections.request.held_at') %></p>
-    <p class="pl-margin-b-m"><%= @repository %></p>
+    <p class="pl-caps pl-margin-t-l"><%= t('show.sections.request.held_at') %></p>
+    <p class="pl-margin-b-m"><%= @repository.label %></p>
     <div data-request-target="visitItemListArea">
-      <p class="pl-margin-b-s fa-visit__review-lede">
+      <p class="pl-margin-b-s fa-request__review-lede">
         <%= t('show.sections.request.visit.review_lede') %>
       </p>
-      <p class="fa-visit__empty pl-margin-t-l" hidden>
+      <p class="fa-request__empty pl-margin-t-l" hidden>
         <%= t('show.sections.request.review_empty_html').html_safe %>
       </p>
-      <ul class="fa-visit__list"></ul>
-      <div class="fa-visit__footer">
+      <ul class="fa-request__list"></ul>
+      <div class="fa-request__footer">
         <button type="button" class="pl-button" data-action="click->request#clearAll">
           <%= t('show.sections.request.remove_all') %>
         </button>
@@ -99,7 +99,7 @@
 
   <%# --- Step 2: Submit scan --- %>
   <section data-request-target="stepSection" data-request-section="submit" data-request-type="scan" hidden>
-    <form class="fa-visit__form pl-margin-t-l" data-request-target="scanForm">
+    <form class="fa-request__form pl-margin-t-l" data-request-target="scanForm">
       <label>
         <%= t('show.sections.request.notes_label') %>
         <textarea name="notes" rows="3"></textarea>
@@ -107,7 +107,7 @@
       <p>
         Submitting this request will take you into your Research Account. You will be able to review, revise or cancel your request there.
       </p>
-      <div class="fa-visit__footer">
+      <div class="fa-request__footer">
         <button type="button" class="pl-button" data-action="click->request#backToReview">
           <%= t('show.sections.request.back') %>
         </button>
@@ -120,11 +120,11 @@
 
   <%# -- step2 submit visit  %>
   <section data-request-target="stepSection" data-request-section="submit" data-request-type="visit" hidden>
-    <form class="fa-visit__form pl-margin-t-l" data-request-target="visitForm">
+    <form class="fa-request__form pl-margin-t-l" data-request-target="visitForm">
       <div>
         <label>
           <%= t('show.sections.request.date_label') %>
-          <span class="fa-visit__hint pl-margin-b-xs"><%= t('show.sections.request.date_hint') %></span>
+          <span class="fa-request__hint pl-margin-b-xs"><%= t('show.sections.request.date_hint') %></span>
           <input type="date" name="retrieval-date" required>
         </label>
       </div>
@@ -135,7 +135,7 @@
       <p>
         Submitting this request will take you into your Research Account. You will be able to review, revise or cancel your request there.
       </p>
-      <div class="fa-visit__footer">
+      <div class="fa-request__footer">
         <button type="button" class="pl-button" data-action="click->request#backToReview">
           <%= t('show.sections.request.back') %>
         </button>

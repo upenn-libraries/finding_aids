@@ -39,7 +39,7 @@ class InventoryComponent < ViewComponent::Base
   # @return [ActiveSupport::SafeBuffer, String, nil]
   def contents_column(entry)
     if entry.additional_contents?
-      content_tag(:dl, class: 'pl-dl--inline fa-inventory-detail') do
+      content_tag(:dl, class: 'pl-dl--inline fa-inventory__detail') do
         safe_join [title_definition(entry), description_definitions(entry), identification_definitions(entry),
                    links_definitions(entry)].compact_blank
       end
@@ -62,7 +62,7 @@ class InventoryComponent < ViewComponent::Base
 
   # @return [ActiveSupport::SafeBuffer]
   def heading
-    request_span = content_tag(:span, nil, class: 'fa-visit__section-count pl-caps') if @requestable
+    request_span = content_tag(:span, nil, class: 'fa-request__section-count pl-caps') if @requestable
 
     content_tag(heading_tag, id: heading_id) { safe_join [@entry.presenter.heading, request_span].compact_blank }
   end

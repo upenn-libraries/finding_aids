@@ -25,6 +25,6 @@ module RequestsHelper
   # @param document [SolrDocument]
   # @return [String] per-collection localStorage key for request selections
   def request_storage_key(document)
-    "fa-visit:#{document.id}"
+    "fa-request:#{document.id}"
   end
 end

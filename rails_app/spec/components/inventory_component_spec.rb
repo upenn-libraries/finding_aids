@@ -89,7 +89,7 @@ RSpec.describe InventoryComponent, type: :component do
 
       it 'does not render a table' do
         outer_entry_details = page.first('details.fa-guide__details')
-        expect(outer_entry_details).to have_no_css('> div > table.table--responsive-small', visible: :all)
+        expect(outer_entry_details).to have_no_css('> div > table.fa-table--responsive-small', visible: :all)
       end
 
       it 'renders child entries as nested details' do
@@ -126,12 +126,12 @@ RSpec.describe InventoryComponent, type: :component do
 
       it 'renders a table' do
         outer_entry_details = page.first('details.fa-guide__details')
-        expect(outer_entry_details).to have_table(class: 'table--responsive-small', visible: :all)
+        expect(outer_entry_details).to have_table(class: 'fa-table--responsive-small', visible: :all)
       end
 
       it 'renders the Contents table header' do
         outer_entry_details = page.first('details.fa-guide__details')
-        table_header = '> div > table.table--responsive-small > thead > tr > th'
+        table_header = '> div > table.fa-table--responsive-small > thead > tr > th'
         expect(outer_entry_details).to have_css(table_header, count: 1,
                                                               text: I18n.t('show.sections.inventory.contents'),
                                                               visible: :all)
@@ -139,14 +139,14 @@ RSpec.describe InventoryComponent, type: :component do
 
       it 'renders the Dates table headers' do
         outer_entry_details = page.first('details.fa-guide__details')
-        table_header = '> div > table.table--responsive-small > thead > tr > th'
+        table_header = '> div > table.fa-table--responsive-small > thead > tr > th'
         expect(outer_entry_details).to have_css(table_header, count: 1, text: I18n.t('show.sections.inventory.dates'),
                                                               visible: :all)
       end
 
       it 'renders the Container table headers' do
         outer_entry_details = page.first('details.fa-guide__details')
-        table_header = '> div > table.table--responsive-small > thead > tr > th'
+        table_header = '> div > table.fa-table--responsive-small > thead > tr > th'
         expect(outer_entry_details).to have_css(table_header, count: 1,
                                                               text: I18n.t('show.sections.inventory.container'),
                                                               visible: :all)
@@ -154,27 +154,27 @@ RSpec.describe InventoryComponent, type: :component do
 
       it 'renders a row for each entry' do
         outer_entry_details = page.first('details.fa-guide__details')
-        expect(outer_entry_details).to have_css(' > div > table.table--responsive-small > tr.inventory-row',
+        expect(outer_entry_details).to have_css(' > div > table.fa-table--responsive-small > tr.fa-inventory__row',
                                                 count: 2, visible: :all)
       end
 
       it 'renders the Contents' do
         outer_entry_details = page.first('details.fa-guide__details')
-        contents = ' > div > table.table--responsive-small > tr.inventory-row > td[data-th="Contents"]'
+        contents = ' > div > table.fa-table--responsive-small > tr.fa-inventory__row > td[data-th="Contents"]'
         expect(outer_entry_details).to have_css(contents, text: 'Subseries A', count: 1, visible: :all)
         expect(outer_entry_details).to have_css(contents, text: 'Subseries B', count: 1, visible: :all)
       end
 
       it 'renders the Dates' do
         outer_entry_details = page.first('details.fa-guide__details')
-        dates = '> div > table.table--responsive-small > tr.inventory-row > td[data-th="Dates"]'
+        dates = '> div > table.fa-table--responsive-small > tr.fa-inventory__row > td[data-th="Dates"]'
         expect(outer_entry_details).to have_css(dates, text: '1909', count: 1, visible: :all)
         expect(outer_entry_details).to have_css(dates, text: '1910-1919', count: 1, visible: :all)
       end
 
       it 'renders the Containers' do
         outer_entry_details = page.first('details.fa-guide__details')
-        containers = ' > div > table.table--responsive-small > tr.inventory-row > td[data-th="Container"]'
+        containers = ' > div > table.fa-table--responsive-small > tr.fa-inventory__row > td[data-th="Container"]'
         expect(outer_entry_details).to have_css(containers, text: 'Box 1, Folder 1', count: 1, visible: :all)
         expect(outer_entry_details).to have_css(containers, text: 'Box 2, Folder 1-10', count: 1, visible: :all)
       end
@@ -235,7 +235,7 @@ RSpec.describe InventoryComponent, type: :component do
         outer_entry_details = page.first('details.fa-guide__details')
 
         expect(outer_entry_details).to have_css('> div > table > tr', text: 'Subseries A', visible: :all)
-        expect(page).to have_css('tr.inventory-row', count: 1, visible: :all)
+        expect(page).to have_css('tr.fa-inventory__row', count: 1, visible: :all)
       end
     end
 
@@ -245,7 +245,7 @@ RSpec.describe InventoryComponent, type: :component do
 
         render_inline(described_class.new(entry: entry, index: 1, requestable: true))
 
-        expect(page).to have_css('span.fa-visit__section-count', visible: :all)
+        expect(page).to have_css('span.fa-request__section-count', visible: :all)
       end
 
       it 'renders the select column' do
@@ -254,7 +254,7 @@ RSpec.describe InventoryComponent, type: :component do
         render_inline(described_class.new(entry: entry, index: 1, requestable: true))
 
         expect(page).to have_css('th', text: 'Select', visible: :all)
-        expect(page).to have_field(class: 'fa-visit__checkbox', visible: :all)
+        expect(page).to have_field(class: 'fa-request__checkbox', visible: :all)
       end
 
       it 'includes input tag with container data attributes' do
@@ -324,7 +324,7 @@ RSpec.describe InventoryComponent, type: :component do
 
         render_inline(described_class.new(entry: entry, index: 1, requestable: true))
         expect(page).to have_css('details.fa-guide__details--subseries th', text: 'Select', visible: :hidden)
-        expect(page).to have_css('details.fa-guide__details--subseries input.fa-visit__checkbox', visible: :hidden)
+        expect(page).to have_css('details.fa-guide__details--subseries input.fa-request__checkbox', visible: :hidden)
       end
     end
 
@@ -334,7 +334,7 @@ RSpec.describe InventoryComponent, type: :component do
 
         render_inline(described_class.new(entry: entry, index: 1, requestable: false))
 
-        expect(page).to have_no_field('span.fa-visit__section-count')
+        expect(page).to have_no_field('span.fa-request__section-count')
       end
 
       it 'does not render the select column' do
@@ -347,7 +347,7 @@ RSpec.describe InventoryComponent, type: :component do
         render_inline(described_class.new(entry: entry, index: 1, requestable: false))
 
         expect(page).to have_no_field('th', text: 'Select')
-        expect(page).to have_no_field('input.fa-visit__checkbox')
+        expect(page).to have_no_field('input.fa-request__checkbox')
       end
 
       it 'renders a nested details that span 3 columns' do

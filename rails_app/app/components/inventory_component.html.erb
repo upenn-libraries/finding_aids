@@ -15,7 +15,7 @@
         <% end %>
       </pennlibs-accordion>
     <% else %>
-      <table class="table table--responsive-small">
+      <table class="fa-table fa-table--responsive-small">
         <thead>
         <tr>
           <th><%= t('show.sections.inventory.contents') %></th>
@@ -28,7 +28,7 @@
         </thead>
         <% row_entries.each_with_index do |row_entry, i| %>
           <% if row_entry.children? %>
-            <tr class="inventory-row">
+            <tr class="fa-inventory__row">
               <td colspan=<%= @requestable ? COLSPAN_MAX : COLSPAN_MIN %>>
                 <pennlibs-accordion>
                   <%= render InventoryComponent.new(entry: row_entry, level: @level + 1, parent_id: heading_id,
@@ -40,14 +40,14 @@
             <% dates = row_entry.presenter.date %>
             <% title_text = row_entry.presenter.title(title: row_entry.title_text, origination: row_entry.origination) %>
 
-            <tr class="inventory-row">
+            <tr class="fa-inventory__row">
               <td data-th="<%= t('show.sections.inventory.contents') %>"><%= contents_column(row_entry) %></td>
               <td data-th="<%= t('show.sections.inventory.dates') %>"><%= dates %></td>
               <td data-th="<%= t('show.sections.inventory.container') %>"><%= row_entry.presenter.join_containers %></td>
               <% if @requestable %>
-                <td class="fa-visit__cell" data-th="<%= t('show.sections.inventory.select') %>">
-                  <label class="fa-visit__label">
-                    <%= checkbox_tag :itm, class: 'fa-visit__checkbox', data: { 'request-target': 'containerCheckbox', action: 'click->request#containerClicked' }.merge(row_entry.presenter.requesting_data)  %>
+                <td class="fa-request__cell" data-th="<%= t('show.sections.inventory.select') %>">
+                  <label class="fa-request__label">
+                    <%= checkbox_tag :itm, class: 'fa-request__checkbox', data: { 'request-target': 'containerCheckbox', action: 'click->request#containerClicked' }.merge(row_entry.presenter.requesting_data)  %>
                     <span class="visually-hidden"><%= t('show.sections.inventory.select_visually_hidden', title: title_text) %></span>
                   </label>
                 </td>

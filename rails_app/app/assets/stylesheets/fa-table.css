@@ -1,0 +1,74 @@
+table.fa-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.fa-table caption,
+.fa-table th {
+  text-align: left;
+}
+
+.fa-table caption {
+  color: var(--pl-color-fg-subtle);
+}
+
+.fa-table tr > * {
+  border-bottom: solid 1px var(--pl-color-bg-subtle-brand);
+  padding: var(--pl-space-xs) 0;
+  vertical-align: top;
+}
+
+.fa-table tr > *:not(:last-child) {
+  padding-right: 1rem;
+}
+
+.fa-table th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.075rem;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+.fa-table p + p {
+  margin-top: var(--pl-space-xs);
+}
+
+.fa-table tr > *[data-th]:before {
+  content: attr(data-th) ':\00a0';
+  display: none;
+}
+
+.fa-table tr > td[data-th]:before {
+  font-weight: 600;
+}
+
+@media only screen and (max-width: 720px) {
+  .fa-table--responsive-small thead {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px);
+    clip: rect(1px, 1px, 1px, 1px);
+  }
+
+  .fa-table--responsive-small tr > * {
+    display: block;
+  }
+
+  .fa-table--responsive-small tr > *:not(:last-child) {
+    border-bottom: 0;
+    padding-bottom: 0;
+    padding-right: 0;
+  }
+
+  .fa-table--responsive-small tr > *[data-th]:not(th) + *[data-th] {
+    padding-top: 0;
+  }
+
+  .fa-table--responsive-small tr > *[data-th]:before {
+    display: inline;
+  }
+}

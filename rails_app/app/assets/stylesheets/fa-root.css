@@ -1,5 +1,9 @@
 /* Foundational app-wide styles (prefix: "fa-"). */
 
+:root {
+  --fa-box-shadow-raised: rgba(140, 149, 159, 0.2) 0px 3px 6px 0px;
+}
+
 /* Focus indicator — the Penn Libraries design system focus pattern, applied globally to
  * every interactive element (buttons, links, form controls, etc.).
  * See https://designsystem.library.upenn.edu/patterns/focus/

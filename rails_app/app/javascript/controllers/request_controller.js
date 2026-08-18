@@ -92,7 +92,7 @@ export default class extends Controller {
     // -- actions from elements --
 
     close() {
-        this.itemListArea().querySelector('.fa-visit__list').innerHTML = ''
+        this.itemListArea().querySelector('.fa-request__list').innerHTML = ''
         this.activeValue = this.selectedItems().length > 0
         this.requestDialogTarget.close()
         this.aeonRequest = null
@@ -121,7 +121,7 @@ export default class extends Controller {
         const li = event.target.parentElement
         const checkbox = this.selectedItems().find(item => (
             [item.dataset.volume, item.dataset.issue].join(', ') ===
-            li.querySelector('.fa-visit__meta').textContent )
+            li.querySelector('.fa-request__meta').textContent )
         )
         checkbox.checked = false
         li.remove()
@@ -129,7 +129,7 @@ export default class extends Controller {
     }
 
     clearAll() {
-        this.itemListArea().querySelector('.fa-visit__list').innerHTML = ''
+        this.itemListArea().querySelector('.fa-request__list').innerHTML = ''
         this.selectedItems().forEach(item_input => { item_input.checked = false })
         this.toggleItemListElements()
     }
@@ -166,12 +166,12 @@ export default class extends Controller {
 
     buildItemList() {
         this.toggleItemListElements()
-        this.itemListArea().querySelector('.fa-visit__list').innerHTML = ''
+        this.itemListArea().querySelector('.fa-request__list').innerHTML = ''
         this.selectedItems().forEach(item => {
             const li = this.listItemTemplateTarget.content.firstElementChild.cloneNode(true)
             li.querySelector('strong').innerHTML = item.dataset.title
-            li.querySelector('.fa-visit__meta').textContent = [item.dataset.volume, item.dataset.issue].join(', ')
-            this.itemListArea().querySelector('.fa-visit__list').appendChild(li)
+            li.querySelector('.fa-request__meta').textContent = [item.dataset.volume, item.dataset.issue].join(', ')
+            this.itemListArea().querySelector('.fa-request__list').appendChild(li)
         })
     }
 
@@ -212,9 +212,9 @@ export default class extends Controller {
 
     toggleItemListElements() {
         const itemIsSelected = this.selectedItems().length > 0
-        this.itemListArea().querySelector('.fa-visit__empty').hidden = itemIsSelected
-        this.itemListArea().querySelector('.fa-visit__review-lede').hidden = !itemIsSelected
-        this.activeSection().querySelector('.fa-visit__footer').hidden = !itemIsSelected
+        this.itemListArea().querySelector('.fa-request__empty').hidden = itemIsSelected
+        this.itemListArea().querySelector('.fa-request__review-lede').hidden = !itemIsSelected
+        this.activeSection().querySelector('.fa-request__footer').hidden = !itemIsSelected
     }
 
     initializeModal() {
