@@ -2,7 +2,11 @@
   <%= render HeaderHeroComponent.new(blacklight_config: blacklight_config) do |hero| %>
     <% hero.with_picture do %>
       <picture hero="art-direction">
-        <%= image_tag @hero_image.file, alt: @hero_image.alt_text %>
+        <% if (narrow_src = hero_narrow_path(@hero_image)) %>
+          <%= tag.source srcset: hero_wide_srcset(@hero_image), sizes: '100vw',
+                         media: HeroHelper::WIDE_CROP_MEDIA %>
+          <%= image_tag narrow_src, alt: @hero_image.alt_text, fetchpriority: 'high' %>
+        <% end %>
       </picture>
     <% end %>
     <% hero.with_heading do %>

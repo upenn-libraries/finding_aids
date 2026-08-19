@@ -1,7 +1,7 @@
-pennlibs_web_version: '1.5.0'
+pennlibs_web_version: '1.6.0-dev.3'
 
 homepage_images:
-  - file: moelis-reading-room.jpg
+  - basename: moelis-reading-room
     alt_text: An archival reading room
 
 solr:
