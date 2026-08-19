@@ -1,58 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
+import AeonRequest from "aeon_request"
 
 const STEPS = ['review', 'submit']
-
-class AeonRequest {
-    // configData should be dataset from requestBar
-    constructor(configData, formData = new FormData()) {
-        this.items = 0
-        this.formData = formData
-        this.configData = configData
-        this.addConfigFields()
-    }
-
-    addConfigFields() {
-        this.formData.append('SystemID', this.configData.requestSystemId)
-        this.formData.append('AeonForm', this.configData.requestAeonForm)
-        this.formData.append('WebRequestForm', this.configData.requestWebRequestForm)
-        this.formData.append('SubmitButton', this.configData.requestSubmitValue)
-    }
-
-    addScanFulfillmentFields() {
-        this.formData.append('RequestType', 'Copy')
-    }
-
-    addLoanFulfillmentFields() {
-        this.formData.append('RequestType', 'Loan')
-        this.formData.append('UserReview', 'No') // TODO: r u sure?
-    }
-
-     addItem(itemData) {
-        this.items += 1
-        const volumeInfo = itemData.barcode ? `${itemData.volume} [${itemData.barcode}]` : itemData.volume
-        this.formData.append(this.indexParamName(this.items, 'Request'), this.items)
-        this.formData.append(this.indexParamName(this.items, 'Site'), this.configData.requestSite)
-        this.formData.append(this.indexParamName(this.items, 'Location'), this.configData.requestLocation)
-        this.formData.append(this.indexParamName(this.items, 'Sublocation'), this.configData.requestSubLocation)
-        this.formData.append(this.indexParamName(this.items, 'CallNumber'), (itemData.call_number || 'n/a'))
-        this.formData.append(this.indexParamName(this.items, 'ItemVolume'), volumeInfo)
-        this.formData.append(this.indexParamName(this.items, 'ItemIssue'), itemData.issue)
-
-    }
-
-    indexParamName(index, name) {
-        return `${name}_${index}`
-    }
-
-    addLoanSubmitFields() {
-        // TODO: add fields from step2
-    }
-
-    addScanSubmitFields() {
-
-    }
-
-}
 
 export default class extends Controller {
     static targets = [
@@ -95,7 +44,7 @@ export default class extends Controller {
         this.itemListArea().querySelector('.fa-request__list').innerHTML = ''
         this.activeValue = this.selectedItems().length > 0
         this.requestDialogTarget.close()
-        this.aeonRequest = null
+        this.aeonRequest.reset()
         this.currentStepValue = ""
     }
 
@@ -104,17 +53,18 @@ export default class extends Controller {
         this.activeValue = selected > 0
         this.requestBarTextTarget.innerHTML =
             `<strong>${selected}</strong> item${selected === 1 ? '' : 's'} selected`
-        // TODO: update heading of event.target parent panel with count
     }
 
     initiateCopyRequest() {
         this.typeValue = 'scan'
         this.initializeModal()
+        this.aeonRequest.addScanFulfillmentFields()
     }
 
     initiateVisitRequest() {
         this.typeValue = 'visit'
         this.initializeModal()
+        this.aeonRequest.addLoanFulfillmentFields()
     }
 
     removeItem(event) {
@@ -143,26 +93,34 @@ export default class extends Controller {
         this.currentStepValue = 'review'
     }
 
-    submitRequest() {
-        const form = document.createElement('form')
+    submitRequest(event) {
+        event.preventDefault()
+        const form = event.target
         form.method = 'POST'
         form.action = this.aeonRequest.configData.requestEndpoint
-        form.hidden = true
+        event.submitter.disabled = true
 
-        for (const [name, value] of this.aeonRequest.formData) {
-            const input = document.createElement("input");
-            input.type = "hidden";
-            input.name = name;
-            input.value = value;
-            form.appendChild(input);
+        // swap date fields and format for Aeon
+        const rawScheduledDate = new FormData(form).get('rawScheduledDate')
+        if(rawScheduledDate) {
+            const [yyyy, mm, dd] = rawScheduledDate.split('-')
+            this.aeonRequest.formData.set('ScheduledDate', `${mm}/${dd}/${yyyy}`)
+            form.querySelector('[name="rawScheduledDate"]')?.remove()
         }
 
-        document.body.append(form)
+        // append prior values
+        for (const [name, value] of this.aeonRequest.formData) {
+            const input = document.createElement("input")
+            input.type = "hidden"
+            input.name = name
+            input.value = value
+            form.appendChild(input)
+        }
+
         form.submit()
     }
 
     // -- support functions --
-
 
     buildItemList() {
         this.toggleItemListElements()

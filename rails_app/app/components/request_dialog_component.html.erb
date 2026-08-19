@@ -1,10 +1,10 @@
-<%# Fixed bottom bar — surfaces selected count and opens either request flow. %>
 <div class="fa-request__bar" data-request-target="requestBar" data-request-active="false"
      data-request-endpoint="<%= Settings.aeon.ere_endpoint %>"
      data-request-system-id="<%= Settings.aeon.system_id %>"
      data-request-aeon-form="<%= Settings.aeon.aeon_form %>"
      data-request-web-request-form="<%= Settings.aeon.web_request_form %>"
      data-request-submit-value="<%= Settings.aeon.submit_value %>"
+     data-request-system-name="<%= Settings.aeon.system_name %>"
      data-request-location="<%= @repository.location %>"
      data-request-sub-location="<%= @repository.sublocation %>"
      data-request-site="<%= @repository.site %>"
@@ -23,13 +23,10 @@
   </div>
 </div>
 
-<%# ---- Dialog & sections ----  %>
-
 <dialog class="fa-request__dialog" aria-labelledby="visit-dialog-title" tabindex="-1"
         data-request-target="requestDialog">
   <button type="button" class="pl-button fa-request__dialog-close" aria-label="Close"
           data-action="click->request#close">
-    <%# TODO: make a component or partial for this SVG %>
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
     </svg>
@@ -41,7 +38,7 @@
       data-visit-title="<%= t('show.sections.request.visit.title') %>">
   </h2>
 
-  <%# --- Step 1: Review selected items --- %>
+  <%# --- Step 1: Scan --- %>
   <section data-request-target="stepSection" data-request-section="review" data-request-type="scan" hidden>
     <p class="pl-caps pl-margin-t-l"><%= t('show.sections.request.held_at') %></p>
     <p class="pl-margin-b-m"><%= @repository.label %></p>
@@ -74,7 +71,7 @@
     </div>
   </section>
 
-  <%# -- step1 visit -- %>
+  <%# -- Step 1: visit -- %>
   <section data-request-target="stepSection" data-request-section="review" data-request-type="visit" hidden>
     <p class="pl-caps pl-margin-t-l"><%= t('show.sections.request.held_at') %></p>
     <p class="pl-margin-b-m"><%= @repository.label %></p>
@@ -99,10 +96,10 @@
 
   <%# --- Step 2: Submit scan --- %>
   <section data-request-target="stepSection" data-request-section="submit" data-request-type="scan" hidden>
-    <form class="fa-request__form pl-margin-t-l" data-request-target="scanForm">
+    <form class="fa-request__form pl-margin-t-l" data-action="submit->request#submitRequest">
       <label>
         <%= t('show.sections.request.notes_label') %>
-        <textarea name="notes" rows="3"></textarea>
+        <textarea name="Notes" rows="3"></textarea>
       </label>
       <p>
         Submitting this request will take you into your Research Account. You will be able to review, revise or cancel your request there.
@@ -111,26 +108,26 @@
         <button type="button" class="pl-button" data-action="click->request#backToReview">
           <%= t('show.sections.request.back') %>
         </button>
-        <button class="pl-button pl-button--success" data-action="click->request#submitRequest">
+        <button class="pl-button pl-button--success">
           Submit Request
         </button>
       </div>
     </form>
   </section>
 
-  <%# -- step2 submit visit  %>
+  <%# -- Step 2: submit visit --  %>
   <section data-request-target="stepSection" data-request-section="submit" data-request-type="visit" hidden>
-    <form class="fa-request__form pl-margin-t-l" data-request-target="visitForm">
+    <form class="fa-request__form pl-margin-t-l" data-action="submit->request#submitRequest">
       <div>
         <label>
           <%= t('show.sections.request.date_label') %>
           <span class="fa-request__hint pl-margin-b-xs"><%= t('show.sections.request.date_hint') %></span>
-          <input type="date" name="retrieval-date" required>
+          <input type="date" name="rawScheduledDate" min="<%= earliest_date_available %>" required>
         </label>
       </div>
       <label>
         <%= t('show.sections.request.notes_label') %>
-        <textarea name="notes" rows="3"></textarea>
+        <textarea name="Notes" rows="3"></textarea>
       </label>
       <p>
         Submitting this request will take you into your Research Account. You will be able to review, revise or cancel your request there.
@@ -139,8 +136,8 @@
         <button type="button" class="pl-button" data-action="click->request#backToReview">
           <%= t('show.sections.request.back') %>
         </button>
-        <button class="pl-button pl-button--success" data-action="click->request#submitRequest">
-          Submit Request
+        <button class="pl-button pl-button--success">
+          <%= t('show.sections.request.send') %>
         </button>
       </div>
     </form>

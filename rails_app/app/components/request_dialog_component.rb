@@ -9,4 +9,14 @@ class RequestDialogComponent < ViewComponent::Base
   def initialize(repository:)
     @repository = Settings.aeon.locations.find { |loc| loc[:label] == repository }
   end
+
+  # @return [Boolean]
+  def render?
+    @repository.present?
+  end
+
+  # @return [String]
+  def earliest_date_available
+    1.week.from_now.to_date.iso8601
+  end
 end

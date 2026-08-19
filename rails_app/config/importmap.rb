@@ -8,5 +8,5 @@ pin 'bootstrap', to: 'https://ga.jspm.io/npm:bootstrap@5.3.8/dist/js/bootstrap.j
 pin '@hotwired/stimulus', to: 'stimulus.min.js'
 pin '@hotwired/stimulus-loading', to: 'stimulus-loading.js'
 pin_all_from 'app/javascript/controllers', under: 'controllers'
-pin_all_from 'app/javascript/aeon_request', under: 'aeon_request'
+pin 'aeon_request', to: 'aeon_request.js'
 pin '@hotwired/turbo-rails', to: 'turbo.min.js'
