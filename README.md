@@ -91,8 +91,6 @@ For Rails application details (tests, harvesting tasks, style guide, and general
 
 Solr runs in [SolrCloud mode](https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode), using Apache ZooKeeper for centralized cluster management.
 
-[ZooNavigator](https://github.com/elkozmon/zoonavigator) is used to manage ZooKeeper in deployed environments.
-
 Access Solr Admin at:  
 [http://findingaids-dev.library.upenn.int/solr/#/](http://findingaids-dev.library.upenn.int/solr/#/)
 

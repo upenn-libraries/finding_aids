@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.4.9'
+ruby '3.4.10'
 
 gem 'archivesspace-client'
 gem 'blacklight', '~> 9'
@@ -23,7 +23,7 @@ gem 'omniauth', '~> 2'
 gem 'omniauth-saml'
 gem 'pg', '~> 1.1'
 gem 'propshaft'
-gem 'puma', '~> 6.0'
+gem 'puma', '~> 7.0'
 gem 'rails', '~> 8.0'
 gem 'rainbow'
 gem 'rsolr', '>= 1.0', '< 3'

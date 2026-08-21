@@ -62,7 +62,7 @@ class InventoryComponent < ViewComponent::Base
 
   # @return [ActiveSupport::SafeBuffer]
   def heading
-    request_span = content_tag(:span, nil, class: 'fa-visit__section-count fa-small-name') if @requestable
+    request_span = content_tag(:span, nil, class: 'fa-visit__section-count pl-caps') if @requestable
 
     content_tag(heading_tag, id: heading_id) { safe_join [@entry.presenter.heading, request_span].compact_blank }
   end

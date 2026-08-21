@@ -1,6 +1,6 @@
 /* Homepage + shared section styling — ported from the finding-aids-prototype.
  * The homepage's full-bleed layout override lives in bl-layout.css (it targets
- * Blacklight's #main-container); the card grids are in fa-cards.css.
+ * Blacklight's #main-container); the card grids are in pl-cards.css.
  * The hero (<pennlibs-hero>) is styled by the Penn Libraries design system. */
 
 /* Regional-partnership band (site-wide, above the footer). Order: map, then heading + cards. */

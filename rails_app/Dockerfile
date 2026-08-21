@@ -3,7 +3,7 @@
 ARG BUNDLE_HOME=vendor/bundle
 
 # Image tag
-ARG IMAGE_TAG=3.4.9-alpine3.23
+ARG IMAGE_TAG=3.4.10-alpine3.23
 
 # The root of our app
 ARG PROJECT_ROOT=/home/app
@@ -103,7 +103,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 COPY --from=base ${PROJECT_ROOT} ${PROJECT_ROOT}
 
 RUN mkdir -p ${PROJECT_ROOT}/app/assets/builds/ && \
-    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x bundle exec rake assets:precompile && \
+    SECRET_KEY_BASE_DUMMY=1 FINDING_AID_DISCOVERY_URL=x bundle exec rails assets:precompile && \
     find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
     find bin -type f -exec chmod 744 {} + && \
@@ -165,7 +165,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 COPY --from=base ${PROJECT_ROOT} ${PROJECT_ROOT}
 
 RUN mkdir -p ${PROJECT_ROOT}/app/assets/builds/ && \
-    SECRET_KEY_BASE=x FINDING_AID_DISCOVERY_URL=x bundle exec rake assets:precompile && \
+    SECRET_KEY_BASE_DUMMY=1 FINDING_AID_DISCOVERY_URL=x bundle exec rails assets:precompile && \
     find . -type d -exec chmod 755 {} + && \
     find . -type f -exec chmod 644 {} + && \
     find bin -type f -exec chmod 744 {} + && \

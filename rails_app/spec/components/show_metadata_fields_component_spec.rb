@@ -3,10 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe ShowMetadataFieldsComponent, type: :component do
-  let(:field) { instance_double(Blacklight::FieldPresenter, label: 'Title', render: ['Sample value']) }
+  let(:field) { instance_double(Blacklight::FieldPresenter, label: 'Title', render: values) }
+  let(:fields) { [field] }
 
   context 'when fields are present' do
-    let(:fields) { [field] }
+    let(:values) { ['Sample value'] }
 
     it 'renders a definition list with the label and value' do
       render_inline(described_class.new(fields: fields))
@@ -39,11 +40,13 @@ RSpec.describe ShowMetadataFieldsComponent, type: :component do
 
       expect(page).to have_css('dl > div > dt')
     end
+  end
+
+  context 'with multiple distinct values' do
+    let(:values) { %w[Cats Dogs] }
 
     it 'renders multiple values for a single field as separate dd elements' do
-      multi_value_field = instance_double(Blacklight::FieldPresenter, label: 'Subjects', render: %w[Cats Dogs])
-
-      render_inline(described_class.new(fields: [multi_value_field]))
+      render_inline(described_class.new(fields: fields))
 
       expect(page).to have_css('dd', text: 'Cats')
       expect(page).to have_css('dd', text: 'Dogs')
@@ -56,6 +59,22 @@ RSpec.describe ShowMetadataFieldsComponent, type: :component do
 
       labels = page.all('dt').map(&:text)
       expect(labels).to eq(%w[Title Creator])
+    end
+  end
+
+  context 'when the truncate option is true' do
+    let(:values) { Array.new(described_class::LIST_LENGTH_LIMIT + 1) { 'Sample title' } }
+
+    it 'truncates the list' do
+      render_inline(described_class.new(fields: fields, truncate: true))
+      labels = page.all('dd').map(&:text)
+      expect(labels.length).to eq(described_class::LIST_LENGTH_LIMIT)
+    end
+
+    it 'includes a link as the last array element' do
+      render_inline(described_class.new(fields: fields, truncate: true))
+      labels = page.all('dd').map(&:text)
+      expect(labels.last).to match(/#{I18n.t('show.sections.overview.see_all_entries', field: field.label)}/)
     end
   end
 

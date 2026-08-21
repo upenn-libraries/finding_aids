@@ -8,13 +8,13 @@
                                      data: { blacklight_modal: 'trigger', turbo: false })) %>
     </p>
 
-    <ol class="fa-cards fa-cards--capped">
+    <ol class="pl-cards fa-cards--capped">
       <% @repos.each do |repo| %>
-        <li class="fa-card">
-          <h3 class="fa-card__heading">
-            <%= link_to repo.name, repository_facet_url(repo.name), class: 'fa-card__link' %>
+        <li class="pl-card">
+          <h3 class="pl-card__heading">
+            <%= link_to repo.name, repository_facet_url(repo.name), class: 'pl-card__link' %>
           </h3>
-          <p class="fa-card__description"><%= t('homepage.regional_partnership.guides_count',
+          <p class="pl-card__description"><%= t('homepage.regional_partnership.guides_count',
                                               count: number_with_delimiter(repo.count)) %></p>
         </li>
       <% end %>
