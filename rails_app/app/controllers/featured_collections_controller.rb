@@ -24,7 +24,6 @@ class FeaturedCollectionsController < ApplicationController
     return create_success if @guide.save
 
     create_failure(@guide.errors.full_messages)
-    render :new, status: :unprocessable_content
   end
 
   def destroy
