@@ -26,7 +26,7 @@ RSpec.describe Homepage::CollectionGuideCardsComponent, type: :component do
     expect(component).to have_css('.fa-card', count: 2)
   end
 
-  it 'renders guide names as search links' do
+  it 'renders guide names as record page links' do
     expect(component).to have_link(guide_one.title, href: solr_document_path(id: guide_one.record_id))
     expect(component).to have_link(guide_two.title, href: solr_document_path(id: guide_two.record_id))
   end

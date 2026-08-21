@@ -55,6 +55,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_13_000000) do
     t.string "record_id", null: false
     t.string "repository"
     t.string "title"
+    t.index ["record_id"], name: "index_featured_collections_on_record_id", unique: true
   end
 
   create_table "searches", id: :serial, force: :cascade do |t|
