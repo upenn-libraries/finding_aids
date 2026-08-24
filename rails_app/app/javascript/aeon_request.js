@@ -24,17 +24,31 @@ export default class AeonRequest {
         this.formData.append('UserReview', 'No')
     }
 
-    addItem(itemData) {
-        this.items += 1
-        const volumeInfo = itemData.barcode ? `${itemData.volume} [${itemData.barcode}]` : itemData.volume
-        this.formData.append('Request', this.items)
-        this.appendItemFields(this.items, {
-            Site: this.configData.requestSite,
-            Location: this.configData.requestLocation,
-            Sublocation: this.configData.requestSubLocation,
-            CallNumber: itemData.call_number || 'n/a',
-            ItemVolume: volumeInfo,
-            ItemIssue: itemData.issue
+    addItems(items) {
+        const mergedItems = {}
+
+        // merge issues with same volume
+        items.forEach(item => {
+            mergedItems[item.dataset.volume] ||= {
+                issues: [],
+                barcode: item.dataset.barcode,
+                call_number: item.dataset.call_number
+            }
+            mergedItems[item.dataset.volume].issues.push(item.dataset.issue)
+        })
+
+        // add merged items to formData
+        Object.entries(mergedItems).forEach(([volume, item]) => {
+            this.items += 1
+            this.formData.append('Request', this.items)
+            this.appendItemFields(this.items, {
+                Site: this.configData.requestSite,
+                Location: this.configData.requestLocation,
+                Sublocation: this.configData.requestSubLocation,
+                CallNumber: item.call_number || 'n/a',
+                ItemVolume: item.barcode ? `${volume} [${item.barcode}]` : volume,
+                ItemIssue: item.issues.join(', ')
+            })
         })
     }
 

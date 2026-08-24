@@ -85,7 +85,7 @@ export default class extends Controller {
     }
 
     itemsSelected() {
-        this.selectedItems().forEach(item => { this.aeonRequest.addItem(item.dataset) })
+        this.aeonRequest.addItems(this.selectedItems())
         this.currentStepValue = 'submit'
     }
 
