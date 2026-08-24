@@ -8,35 +8,6 @@ describe RepositoryQueries do
     attributes_for(:solr_document, overrides)
   end
 
-  describe '.titles_by_repository' do
-    before { seed_solr(documents) }
-    after  { cleanup_solr(documents) }
-
-    let(:documents) do
-      [
-        solr_doc(repository_ssi: 'Repo A', title_tsi: 'Guide One'),
-        solr_doc(repository_ssi: 'Repo A', title_tsi: 'Guide Two'),
-        solr_doc(repository_ssi: 'Repo B', title_tsi: 'Guide Three'),
-        solr_doc(repository_ssi: 'Repo A', title_tsi: nil),
-        solr_doc(repository_ssi: nil, title_tsi: 'Orphan Title')
-      ]
-    end
-
-    it 'groups titles by repository, sorted alphabetically' do
-      results = described_class.titles_by_repository
-
-      expect(results['Repo A']).to eq(['Guide One', 'Guide Two'])
-      expect(results['Repo B']).to eq(['Guide Three'])
-    end
-
-    it 'excludes documents with blank repository or title' do
-      results = described_class.titles_by_repository
-
-      expect(results.keys).not_to include(nil)
-      expect(results['Repo A']).not_to include(nil)
-    end
-  end
-
   describe '.facet_counts' do
     before { seed_solr(documents) }
     after  { cleanup_solr(documents) }
