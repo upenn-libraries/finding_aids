@@ -11,10 +11,10 @@ module HomepageData
   Repository = Data.define(:name, :slug, :count, :lat, :lng, :records_url)
 
   class << self
-    # Staff-picked collections shown on the homepage, up to MAX_GUIDES.
+    # Random selection of selected guides to be shown on the homepage, up to MAX_GUIDES.
     # @return [Array<FeaturedCollection>]
     def collection_guides
-      FeaturedCollection.order(:created_at).limit(MAX_GUIDES).to_a
+      FeaturedCollection.order('RANDOM()').limit(MAX_GUIDES).to_a
     end
 
     # @param cache [Geocoding::Cache, nil] pass to bypass memoization

@@ -23,36 +23,16 @@ describe HomepageData do
     }
   end
 
-  before do
-    described_class.instance_variable_set(:@repositories, nil)
-    described_class.instance_variable_set(:@repositories_json, nil)
-    described_class.instance_variable_set(:@collection_guides, nil)
-  end
-
-  shared_context 'with solr stubs' do
-    before do
-      allow(RepositoryQueries).to receive_messages(facet_counts: facet_data, addresses: address_data)
-    end
-  end
-
   describe '.collection_guides' do
-    before do
-      allow(RepositoryQueries).to receive(:titles_by_repository).and_return(
-        'Test Repo' => ['Featured A', 'Featured B'] + (1..10).map { |i| "Test Collection #{i}" }
-      )
-    end
-
     it 'returns featured collection records' do
-      create(:featured_collection, title: 'Featured A', repository: 'Test Repo')
+      collection = create :featured_collection
 
-      guides = described_class.collection_guides
-
-      expect(guides).to all(be_a(FeaturedCollection))
-      expect(guides.first.title).to eq('Featured A')
+      expect(described_class.collection_guides).to all(be_a(FeaturedCollection))
+      expect(described_class.collection_guides.first.title).to eq(collection.title)
     end
 
     it 'limits to the featured collections max' do
-      create_list(:featured_collection, HomepageData::MAX_GUIDES + 1, repository: 'Test Repo')
+      create_list(:featured_collection, HomepageData::MAX_GUIDES + 1)
 
       guides = described_class.collection_guides
 
@@ -61,9 +41,11 @@ describe HomepageData do
   end
 
   describe '.repositories' do
-    include_context 'with solr stubs'
+    before do
+      allow(RepositoryQueries).to receive_messages(facet_counts: facet_data, addresses: address_data)
+    end
 
-    it 'builds Repository structs' do
+    it 'builds Repository data objects' do
       cache.store('Haverford College Quaker & Special Collections', **coords[:haverford])
       cache.store('Historical Society of Pennsylvania', **coords[:hsp])
 
