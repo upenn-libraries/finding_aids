@@ -12,8 +12,6 @@ export default class extends Controller {
         'listItemTemplate', 'scanItemListArea', 'visitItemListArea'
     ]
 
-
-    // keep state in the DOM - this is Stimulus
     static values = {
         active: { type: Boolean, default: false },
         type: { type: String, default: '' },
@@ -51,19 +49,20 @@ export default class extends Controller {
     containerClicked() {
         const selected = this.selectedItems().length
         this.activeValue = selected > 0
-        this.requestBarTextTarget.innerHTML =
-            `<strong>${selected}</strong> item${selected === 1 ? '' : 's'} selected`
+        this.updateStatus(selected)
     }
 
     initiateCopyRequest() {
         this.typeValue = 'scan'
         this.initializeModal()
+        this.updateStatus()
         this.aeonRequest.addScanFulfillmentFields()
     }
 
     initiateVisitRequest() {
         this.typeValue = 'visit'
         this.initializeModal()
+        this.updateStatus()
         this.aeonRequest.addLoanFulfillmentFields()
     }
 
@@ -75,6 +74,7 @@ export default class extends Controller {
         )
         checkbox.checked = false
         li.remove()
+        this.updateStatus()
         this.toggleItemListElements()
     }
 
@@ -82,6 +82,7 @@ export default class extends Controller {
         this.itemListArea().querySelector('.fa-request__list').innerHTML = ''
         this.selectedItems().forEach(item_input => { item_input.checked = false })
         this.toggleItemListElements()
+        this.updateStatus()
     }
 
     itemsSelected() {
@@ -121,6 +122,11 @@ export default class extends Controller {
     }
 
     // -- support functions --
+
+    updateStatus(checkedCount = this.selectedItems().length) {
+        this.requestBarTextTarget.innerHTML =
+            `<strong>${checkedCount}</strong> item${checkedCount === 1 ? '' : 's'} selected`
+    }
 
     buildItemList() {
         this.toggleItemListElements()

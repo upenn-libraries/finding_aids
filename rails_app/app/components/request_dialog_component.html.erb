@@ -10,7 +10,7 @@
      data-request-site="<%= @repository.site %>"
      role="region" aria-label="<%= t('show.sections.request.bar.region') %>" hidden>
   <div class="pl-viewport-margins fa-request__bar-content">
-    <p class="fa-request__bar-text" data-request-target="requestBarText"><strong>1</strong> selected item</p>
+    <p class="fa-request__bar-text" role="status" aria-live="polite" data-request-target="requestBarText"></p>
     <div class="pl-flex pl-gap-s" style="align-items: baseline;">
       <button type="button" class="pl-button pl-button--success" data-action="click->request#initiateCopyRequest">
         <%= t('show.sections.request.bar.request_copies') %>
@@ -23,7 +23,7 @@
   </div>
 </div>
 
-<dialog class="fa-request__dialog" aria-labelledby="visit-dialog-title" tabindex="-1"
+<dialog class="fa-request__dialog" aria-modal="true" aria-labelledby="dialog-title" tabindex="-1"
         data-request-target="requestDialog">
   <button type="button" class="pl-button fa-request__dialog-close" aria-label="Close"
           data-action="click->request#close">
@@ -33,7 +33,7 @@
   </button>
 
   <p class="pl-caps fa-request__step">Step <span data-request-target="stepNumber">1</span> of 2</p>
-  <h2 id="visit-dialog-title" data-request-target="modalTitle" class="pl-margin-b-2xs pl-margin-t-xs"
+  <h2 id="dialog-title" data-request-target="modalTitle" class="pl-margin-b-2xs pl-margin-t-xs"
       data-scan-title="<%= t('show.sections.request.copy.title') %>"
       data-visit-title="<%= t('show.sections.request.visit.title') %>">
   </h2>
@@ -101,15 +101,13 @@
         <%= t('show.sections.request.notes_label') %>
         <textarea name="Notes" rows="3"></textarea>
       </label>
-      <p>
-        Submitting this request will take you into your Research Account. You will be able to review, revise or cancel your request there.
-      </p>
+      <p><%= t('show.sections.request.submitting_note') %></p>
       <div class="fa-request__footer">
         <button type="button" class="pl-button" data-action="click->request#backToReview">
           <%= t('show.sections.request.back') %>
         </button>
         <button class="pl-button pl-button--success">
-          Submit Request
+          <%= t('show.sections.request.send') %>
         </button>
       </div>
     </form>
@@ -129,9 +127,7 @@
         <%= t('show.sections.request.notes_label') %>
         <textarea name="Notes" rows="3"></textarea>
       </label>
-      <p>
-        Submitting this request will take you into your Research Account. You will be able to review, revise or cancel your request there.
-      </p>
+      <p><%= t('show.sections.request.submitting_note') %></p>
       <div class="fa-request__footer">
         <button type="button" class="pl-button" data-action="click->request#backToReview">
           <%= t('show.sections.request.back') %>
