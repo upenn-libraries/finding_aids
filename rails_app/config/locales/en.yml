@@ -288,7 +288,7 @@ en:
         date_label: 'What date would you like to visit?'
         date_hint: 'Pick a date at least a week out.'
         notes_label: 'Anything else we should know? (optional)'
-        submitting_note: '        Submitting this request will take you into your Research Account. You will be able to review, revise or cancel your request there.'
+        submitting_note: 'Submitting this request will take you into your Research Account. You will be able to review, revise or cancel your request there.'
         send: 'Send request'
         bar:
           request_copies: 'Request copies'
