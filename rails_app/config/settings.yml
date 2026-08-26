@@ -1,8 +1,15 @@
 pennlibs_web_version: '1.5.0'
 
 homepage_images:
-  - file: moelis-reading-room.jpg
-    alt_text: An archival reading room
+  - alt_text: An archival reading room
+    sources:
+      - media: '(min-width: 48em)'
+        srcset:
+          - file: moelis-reading-room-wide-1600w.webp
+            descriptor: 1600w
+          - file: moelis-reading-room-wide-2000w.webp
+            descriptor: 2000w
+    default: moelis-reading-room-narrow.webp
 
 solr:
   url: <%= ENV['SOLR_URL'] %>

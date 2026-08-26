@@ -1,9 +1,16 @@
 <% content_for(:header) do %>
   <%= render HeaderHeroComponent.new(blacklight_config: blacklight_config) do |hero| %>
     <% hero.with_picture do %>
-      <picture hero="art-direction">
-        <%= image_tag @hero_image.file, alt: @hero_image.alt_text %>
-      </picture>
+      <%= picture_tag hero: 'art-direction' do %>
+        <% @hero_image.sources.each do |source| %>
+          <% set = [] %>
+          <% source.srcset.each do |e| %>
+            <% set += ["#{image_path(e.file)} #{e.descriptor}"] %>
+          <% end %>
+          <%= tag.source(srcset: set.join(', '), media: source.media, sizes: '100vw') %>
+        <% end %>
+        <%= image_tag @hero_image.default, alt: @hero_image.alt_text %>
+      <% end %>
     <% end %>
     <% hero.with_heading do %>
       <h1 hero="heading"><%= t('homepage.hero.heading') %></h1>
