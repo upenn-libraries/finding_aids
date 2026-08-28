@@ -1,17 +1,17 @@
 <%# Override Blacklight 9.0.0 template to implement custom layout %>
 <div class="document-main-section pl-margin-b-3xl"
      data-controller="guide-navigation"
-     data-action="toggle->guide-navigation#handleDetailsToggle:capture click->guide-navigation#handleTocClick">
+     data-action="toggle->guide-navigation#handleDetailsToggle:capture click->guide-navigation#handleDetailLinkClick">
   <div class="pl-padding-y-2xl" style="background: var(--pl-color-bg-subtle);">
     <div class="pl-viewport-margins">
-
+      <p class="fa-print-url pl-caps"><%= helpers.solr_document_url(document) %></p>
       <div class="fa-guide-header">
         <div class="fa-guide-header__hero">
           <div class="fa-guide-header__intro">
-
             <h1 id="guide-title" class="pl-margin-b-l">
               <pennlibs-expand-text lines="3" variant="outline" style="--pl-expand-text-fade-bg: var(--pl-color-bg-subtle);"><%= presenter.heading %></pennlibs-expand-text>
             </h1>
+            
             <% if abstract.present? %>
               <p style="font-size: var(--pl-font-size-l);">
                 <pennlibs-expand-text variant="outline" style="--pl-expand-text-fade-bg: var(--pl-color-bg-subtle);" lines="7"><%= abstract %></pennlibs-expand-text>
@@ -20,11 +20,16 @@
           </div>
 
           <aside class="fa-guide-header__institution pl-callout" aria-label="<%= t('show.aside.aria_label') %>">
-            <p class="fa-small-name pl-margin-b-2xs"><%= t('show.aside.held_at') %></p>
-            <p class="pl-margin-b-m"><%= repository %></p>
+            
+            <p>
+              <span class="pl-caps pl-block"><%= t('show.aside.held_at') %></span>
+              <%= repository %>
+            </p>
             <% if document.extract(:access_restrictions) %>
-              <p class="fa-small-name pl-margin-b-2xs"><%= t('show.aside.access') %></p>
-              <div class="pl-margin-b-m"><pennlibs-expand-text lines="5"><%= document.extract(:access_restrictions) %></pennlibs-expand-text></div>
+              <div class="pl-flex pl-flex-col pl-gap-2xs">
+                <span class="pl-caps pl-block"><%= t('show.aside.access') %></span>
+                <pennlibs-expand-text lines="5"><%= document.extract(:access_restrictions) %></pennlibs-expand-text>
+              </div>
             <% end %>
 
             <a href="#contact" class="pl-button pl-button--accent"><%=t('show.aside.contact') %></a>
@@ -33,8 +38,9 @@
         <div class="fa-guide-header__strip">
           <%= render ShowMetadataFieldsComponent.new(fields: collection_overview,
                                                      dl_class: 'fa-metadata',
-                                                     dt_class: 'fa-small-name',
-                                                     wrapper_tag: 'div') %>
+                                                     dt_class: 'pl-caps',
+                                                     wrapper_tag: 'div',
+                                                     truncate: true) %>
         </div>
       </div>
     </div>

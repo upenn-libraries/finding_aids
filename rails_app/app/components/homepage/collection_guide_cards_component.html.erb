@@ -7,13 +7,13 @@
                                     search_catalog_path(q: '', search_field: 'all_fields'))) %>
     </p>
 
-    <ol class="fa-cards fa-cards--capped">
+    <ol class="pl-cards fa-cards--capped">
       <% @guides.each do |guide| %>
-        <li class="fa-card">
-          <h3 class="fa-card__heading">
-            <%= link_to guide.title, guide_search_url(guide), class: 'fa-card__link' %>
+        <li class="pl-card">
+          <h3 class="pl-card__heading">
+            <%= link_to guide.title, guide_url(guide), class: 'pl-card__link' %>
           </h3>
-          <p class="fa-card__description"><%= guide.repository %></p>
+          <p class="pl-card__description"><%= guide.repository %></p>
         </li>
       <% end %>
     </ol>

@@ -13,8 +13,8 @@ module Homepage
 
     # @param guide [FeaturedCollection]
     # @return [String]
-    def guide_search_url(guide)
-      helpers.search_action_path(q: guide.title)
+    def guide_url(guide)
+      solr_document_path(id: guide.record_id)
     end
   end
 end

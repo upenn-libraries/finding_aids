@@ -149,7 +149,7 @@ class CatalogController < ApplicationController
 
     # collection overview
     config.add_show_field 'creators_ssim', label: I18n.t('fields.creators'), link_to_facet: true,
-                                           group: :collection_overview
+                                           group: %i[collection_overview subjects_and_headings]
     config.add_show_field 'display_date_ssim', label: I18n.t('fields.date'), group: :collection_overview
     config.add_show_field 'extent_ssim', label: I18n.t('fields.extent'), group: :collection_overview
     config.add_show_field 'pretty_unit_id_ss', label: I18n.t('fields.pretty_unit_id'), group: :collection_overview

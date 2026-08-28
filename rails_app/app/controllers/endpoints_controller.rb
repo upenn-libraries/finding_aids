@@ -28,7 +28,7 @@ class EndpointsController < ApplicationController
     else
       alert_failure action: :create, class_name: @endpoint.class, identifier: @endpoint.slug,
                     error: @endpoint.errors.map(&:full_message).join(', ')
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -39,7 +39,7 @@ class EndpointsController < ApplicationController
     else
       alert_failure action: :update, class_name: @endpoint.class, identifier: @endpoint.slug,
                     error: @endpoint.errors.map(&:full_message).join(', ')
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
@@ -52,7 +52,7 @@ class EndpointsController < ApplicationController
   rescue StandardError => e
     alert_failure action: :harvest, class_name: @endpoint.class.name, identifier: @endpoint.slug,
                   error: e.message
-    redirect_to endpoint_path(@endpoint), status: :unprocessable_entity
+    redirect_to endpoint_path(@endpoint), status: :unprocessable_content
   end
 
   private

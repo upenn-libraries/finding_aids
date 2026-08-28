@@ -2,7 +2,8 @@
 
 FactoryBot.define do
   factory :featured_collection do
-    sequence(:title) { |n| "Test Collection #{n}" }
-    repository { 'Test Repository' }
+    sequence(:record_id) { |n| "TEST#{n}" }
+    title { Faker::Book.title }
+    repository { Faker::Company.name }
   end
 end

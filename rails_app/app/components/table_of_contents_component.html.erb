@@ -17,13 +17,13 @@
       <% end %>
       <% if presenter.field_presenters_by_group(:subjects_and_headings).any? %>
         <li>
-          <%= link_to I18n.t("sections.subjects_and_headings"), '#topics', data: { turbo: false } %>
+          <%= link_to I18n.t("sections.subjects_and_headings"), ShowMetadataFieldsComponent::HEADINGS_SECTION_ID, data: { turbo: false } %>
         </li>
       <% end %>
     </ul>
   </li>
-<li>
-  <a href="#inventory"><%= I18n.t('show.sections.inventory.header') %></a>
-  <%= inventory_list %>
-</li>
+  <li>
+    <a href="#inventory"><%= I18n.t('show.sections.inventory.header') %></a>
+    <%= inventory_list %>
+  </li>
 </ul>
