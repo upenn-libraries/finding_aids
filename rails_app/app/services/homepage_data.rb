@@ -15,7 +15,8 @@ module HomepageData
       Settings.homepage_images
     end
 
-    # Random selection of selected guides to be shown on the homepage, up to MAX_GUIDES.    # @return [Array<FeaturedCollection>]
+    # Random selection of selected guides to be shown on the homepage, up to MAX_GUIDES.
+    # @return [Array<FeaturedCollection>]
     def collection_guides
       FeaturedCollection.order('RANDOM()').limit(MAX_GUIDES).to_a
     end
