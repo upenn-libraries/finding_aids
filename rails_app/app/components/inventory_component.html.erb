@@ -47,7 +47,10 @@
               <% if @requestable %>
                 <td class="fa-request__cell" data-th="<%= t('show.sections.inventory.select') %>">
                   <label class="fa-request__label">
-                    <%= checkbox_tag :itm, class: 'fa-request__checkbox', data: { 'request-target': 'containerCheckbox', action: 'click->request#containerClicked' }.merge(row_entry.presenter.requesting_data)  %>
+                    <%= checkbox_tag :itm, class: 'fa-request__checkbox',
+                                     data: { 'request-target': 'containerCheckbox',
+                                             action: 'click->request#containerClicked' }
+                                       .merge(row_entry.presenter.requesting_data)  %>
                     <span class="visually-hidden"><%= t('show.sections.inventory.select_visually_hidden', title: title_text) %></span>
                   </label>
                 </td>

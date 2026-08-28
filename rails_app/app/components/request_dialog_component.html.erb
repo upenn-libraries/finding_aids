@@ -5,9 +5,11 @@
      data-request-web-request-form="<%= Settings.aeon.web_request_form %>"
      data-request-submit-value="<%= Settings.aeon.submit_value %>"
      data-request-system-name="<%= Settings.aeon.system_name %>"
-     data-request-location="<%= @repository.location %>"
-     data-request-sub-location="<%= @repository.sublocation %>"
-     data-request-site="<%= @repository.site %>"
+     data-request-location="<%= @repository_info.location %>"
+     data-request-sub-location="<%= @repository_info.sublocation %>"
+     data-request-site="<%= @repository_info.site %>"
+     data-request-title="<%= @title %>"
+     data-request-call-num="<%= @call_num %>"
      role="region" aria-label="<%= t('show.sections.request.bar.region') %>" hidden>
   <div class="pl-viewport-margins fa-request__bar-content">
     <p class="fa-request__bar-text" role="status" aria-live="polite" data-request-target="requestBarText"></p>
@@ -41,7 +43,7 @@
   <%# --- Step 1: Scan --- %>
   <section data-request-target="stepSection" data-request-section="review" data-request-type="scan" hidden>
     <p class="pl-caps pl-margin-t-l"><%= t('show.sections.request.held_at') %></p>
-    <p class="pl-margin-b-m"><%= @repository.label %></p>
+    <p class="pl-margin-b-m"><%= @repository_info.label %></p>
     <div data-request-target="scanItemListArea">
       <p class="pl-margin-b-s fa-request__review-lede">
         <%= t('show.sections.request.copy.review_lede') %>
@@ -74,7 +76,7 @@
   <%# -- Step 1: visit -- %>
   <section data-request-target="stepSection" data-request-section="review" data-request-type="visit" hidden>
     <p class="pl-caps pl-margin-t-l"><%= t('show.sections.request.held_at') %></p>
-    <p class="pl-margin-b-m"><%= @repository.label %></p>
+    <p class="pl-margin-b-m"><%= @repository_info.label %></p>
     <div data-request-target="visitItemListArea">
       <p class="pl-margin-b-s fa-request__review-lede">
         <%= t('show.sections.request.visit.review_lede') %>

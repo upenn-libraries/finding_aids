@@ -13,6 +13,11 @@ export default class AeonRequest {
         this.formData.append('SubmitButton', this.configData.requestSubmitValue)
         this.formData.append('ReturnLinkUrl', window.location)
         this.formData.append('ReturnLinkSystemName', this.configData.requestSystemName)
+        this.formData.append('Site', this.configData.requestSite)
+        this.formData.append('Location', this.configData.requestLocation)
+        this.formData.append('Sublocation', this.configData.requestSubLocation)
+        this.formData.append('CallNumber', this.configData.requestCallNumber || 'n/a')
+        this.formData.append('Title', this.configData.requestTitle)
     }
 
     addScanFulfillmentFields() {
@@ -34,7 +39,7 @@ export default class AeonRequest {
                 barcode: item.dataset.barcode,
                 call_number: item.dataset.call_number
             }
-            mergedItems[item.dataset.volume].issues.push(item.dataset.issue)
+            mergedItems[item.dataset.volume].issues.push(`${item.dataset.issue} [${item.dataset.title}]`)
         })
 
         // add merged items to formData
@@ -42,12 +47,9 @@ export default class AeonRequest {
             this.items += 1
             this.formData.append('Request', this.items)
             this.appendItemFields(this.items, {
-                Site: this.configData.requestSite,
-                Location: this.configData.requestLocation,
-                Sublocation: this.configData.requestSubLocation,
-                CallNumber: item.call_number || 'n/a',
-                ItemVolume: item.barcode ? `${volume} [${item.barcode}]` : volume,
-                ItemIssue: item.issues.join(', ')
+                ItemVolume: volume,
+                ItemIssue: item.issues.join(', '), // TODO: we could hit character limit here of 256 - truncate or stop merging volumes
+                ItemNumber: item.barcode,
             })
         })
     }

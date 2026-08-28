@@ -130,6 +130,6 @@
     <%# Screen-reader-only live region for request selection announcements. %>
     <span class="visually-hidden" aria-live="polite" data-request-target="liveRegion"></span> <%# TODO: wire back up %>
     <%# Render pinned bottom element and modal with all sections  %>
-    <%= render RequestDialogComponent.new(repository: @document.repository) %>
+    <%= render RequestDialogComponent.new(document: @document) %>
   <% end %>
 </div>
