@@ -26,7 +26,7 @@ class HeroPictureComponent < Blacklight::Component
   #                  see: https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/srcset
   def srcset_from(source)
     source.srcset
-          .map { |e| ["#{image_path(e.file)} #{e.descriptor}"] }
+          .map { |e| "#{image_path(e.file)} #{e.descriptor}" }
           .join(', ')
   end
 
