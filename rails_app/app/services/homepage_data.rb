@@ -11,6 +11,11 @@ module HomepageData
   Repository = Data.define(:name, :slug, :count, :lat, :lng, :records_url)
 
   class << self
+    # @return [Config::Options] homepage data from config
+    def hero_images
+      Settings.homepage_images
+    end
+
     # Random selection of selected guides to be shown on the homepage, up to MAX_GUIDES.
     # @return [Array<FeaturedCollection>]
     def collection_guides

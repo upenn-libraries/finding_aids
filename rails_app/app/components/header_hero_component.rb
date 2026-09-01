@@ -9,7 +9,7 @@ class HeaderHeroComponent < Blacklight::Component
   renders_one :header, lambda {
     HeaderComponent.new(blacklight_config: blacklight_config, theme: :dark)
   }
-  renders_one :picture
+  renders_one :picture, HeroPictureComponent
   renders_one :heading
   renders_one :subheading
 

@@ -1,0 +1,96 @@
+homepage_images:
+  - alt_text: Demonstrators holding a banner for the Negro Trade Union Leadership Council and the Jewish Labor Committee
+    sources:
+      - media: '(min-width: 48em)'
+        srcset:
+          - file: temple-desktop-1440w.webp
+            descriptor: 1440w
+          - file: temple-desktop-2080w.webp
+            descriptor: 2080w
+          - file: temple-desktop-2560w.webp
+            descriptor: 2560w
+          - file: temple-desktop-3200w.webp
+            descriptor: 3200w
+      - media: '(max-width: 47.99em)'
+        srcset:
+          - file: temple-phone.webp
+            descriptor: 700w
+          - file: temple-phone@2x.webp
+            descriptor: 1400w
+    default: temple-desktop-1440w.webp
+  - alt_text: A hand-colored bird's-eye view of Philadelphia from the Delaware River, crowded with sailing ships and a paddle steamer
+    sources:
+      - media: '(min-width: 48em)'
+        srcset:
+          - file: free-desktop-1440w.webp
+            descriptor: 1440w
+          - file: free-desktop-2080w.webp
+            descriptor: 2080w
+          - file: free-desktop-2560w.webp
+            descriptor: 2560w
+          - file: free-desktop-3200w.webp
+            descriptor: 3200w
+      - media: '(max-width: 47.99em)'
+        srcset:
+          - file: free-phone.webp
+            descriptor: 700w
+          - file: free-phone@2x.webp
+            descriptor: 1400w
+    default: free-desktop-1440w.webp
+  - alt_text: A group portrait of women graduates in caps and gowns, seated in three rows
+    sources:
+      - media: '(min-width: 48em)'
+        srcset:
+          - file: drexel-desktop-1440w.webp
+            descriptor: 1440w
+          - file: drexel-desktop-2080w.webp
+            descriptor: 2080w
+          - file: drexel-desktop-2560w.webp
+            descriptor: 2560w
+          - file: drexel-desktop-3200w.webp
+            descriptor: 3200w
+      - media: '(max-width: 47.99em)'
+        srcset:
+          - file: drexel-phone.webp
+            descriptor: 700w
+          - file: drexel-phone@2x.webp
+            descriptor: 1400w
+    default: drexel-desktop-1440w.webp
+  - alt_text: An open register with rows of names and hometowns written in fountain pen
+    sources:
+      - media: '(min-width: 48em)'
+        srcset:
+          - file: thomas-desktop-1440w.webp
+            descriptor: 1440w
+          - file: thomas-desktop-2080w.webp
+            descriptor: 2080w
+          - file: thomas-desktop-2560w.webp
+            descriptor: 2560w
+          - file: thomas-desktop-3200w.webp
+            descriptor: 3200w
+      - media: '(max-width: 47.99em)'
+        srcset:
+          - file: thomas-phone.webp
+            descriptor: 700w
+          - file: thomas-phone@2x.webp
+            descriptor: 1400w
+    default: thomas-desktop-1440w.webp
+  - alt_text: A hand-colored print of Quakers dancing in a ring on a green hillside
+    sources:
+      - media: '(min-width: 48em)'
+        srcset:
+          - file: swarthmore-desktop-1440w.webp
+            descriptor: 1440w
+          - file: swarthmore-desktop-2080w.webp
+            descriptor: 2080w
+          - file: swarthmore-desktop-2560w.webp
+            descriptor: 2560w
+          - file: swarthmore-desktop-3200w.webp
+            descriptor: 3200w
+      - media: '(max-width: 47.99em)'
+        srcset:
+          - file: swarthmore-phone.webp
+            descriptor: 700w
+          - file: swarthmore-phone@2x.webp
+            descriptor: 1400w
+    default: swarthmore-desktop-1440w.webp
