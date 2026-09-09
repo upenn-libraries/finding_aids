@@ -1,8 +1,11 @@
 export default class AeonRequest {
-    constructor(configData, formData = new FormData()) {
+    constructor(configData, formData = new FormData(),
+                joinVolumes = true, includeTitles = true) {
         this.items = 0;
         this.formData = formData;
         this.configData = configData;
+        this.joinVolumes = joinVolumes;
+        this.includeTitles = includeTitles;
         this.addConfigFields();
     }
 
@@ -30,28 +33,45 @@ export default class AeonRequest {
     }
 
     addItems(items) {
-        const mergedItems = {};
+        const processedItems = new Map();
 
-        // merge issues with same volume
         items.forEach(item => {
-            mergedItems[item.dataset.volume] ||= {
-                issues: [],
-                barcode: item.dataset.barcode,
-                call_number: item.dataset.call_number
-            };
-            mergedItems[item.dataset.volume].issues.push(`${item.dataset.issue} [${item.dataset.title}]`);
-        })
+            this.addProcessedItem(processedItems, item);
+        });
 
-        // add merged items to formData
-        Object.entries(mergedItems).forEach(([volume, item]) => {
+        for (const item of processedItems.values()) {
             this.items += 1;
             this.formData.append('Request', this.items);
             this.appendItemFields(this.items, {
-                ItemVolume: volume,
-                ItemIssue: item.issues.join(', '), // TODO: we could hit character limit here of 256 - truncate or stop merging volumes
+                ItemVolume: item.volume,
+                ItemIssue: item.issues.join(', ').slice(0, 255),
                 ItemNumber: item.barcode,
             });
-        });
+        }
+    }
+
+    addProcessedItem(processedItems, item) {
+        const volume = item.dataset.volume;
+        const issue = this.stripMarkup(
+            this.includeTitles
+                ? `${item.dataset.issue} [${item.dataset.title}]`
+                : item.dataset.issue
+        );
+
+        const key = this.joinVolumes
+            ? volume
+            : Symbol(); // symbol is a arbitrary unique value
+
+        if (!processedItems.has(key)) {
+            processedItems.set(key, {
+                volume,
+                issues: [],
+                barcode: item.dataset.barcode,
+                call_number: item.dataset.call_number
+            });
+        }
+
+        processedItems.get(key).issues.push(issue);
     }
 
     appendItemFields(index, fields) {
@@ -62,5 +82,10 @@ export default class AeonRequest {
 
     reset() {
         this.formData = new FormData();
+    }
+
+    stripMarkup(html){
+        let doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.body.textContent || "";
     }
 }
