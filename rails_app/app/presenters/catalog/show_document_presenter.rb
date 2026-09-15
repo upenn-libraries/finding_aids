@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Catalog
-  # Custom DocumentPresenter copied from Blacklight 9.0.0 to facilitate rendering configured metadata fields across
+  # Custom DocumentPresenter copied from Blacklight v9.1.0 to facilitate rendering configured metadata fields across
   # show page
   class ShowDocumentPresenter < Blacklight::DocumentPresenter
     # @param group [Symbol]

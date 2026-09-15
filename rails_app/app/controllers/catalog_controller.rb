@@ -20,6 +20,7 @@ class CatalogController < ApplicationController
     config.show.document_component = Catalog::ShowDocumentComponent
     config.show.document_presenter_class = Catalog::ShowDocumentPresenter
     config.advanced_search.enabled = false
+    config.dark_mode_support = false
 
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository

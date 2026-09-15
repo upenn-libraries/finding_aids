@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Overrides Blacklight::SearchButtonComponent from Blacklight 9.0.0 to render a visible text
+# Overrides Blacklight::SearchButtonComponent from Blacklight v9.1.0 to render a visible text
 # label (e.g. "Search") rather than Blacklight's icon with a hidden label. A visible label
 # offers more affordances, such as being able to target the control with voice control.
 module Catalog

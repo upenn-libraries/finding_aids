@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Catalog
-  # Custom Blacklight::FieldPresenter subclass based on Blacklight 9.0.0
+  # Custom Blacklight::FieldPresenter subclass based on Blacklight v9.1.0
   class EmailFieldPresenter < Catalog::FieldPresenter
     def values
       @values ||= if json_request?

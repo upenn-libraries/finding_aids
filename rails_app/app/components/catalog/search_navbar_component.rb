@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Overrides Blacklight::SearchNavbarComponent from Blacklight 9.0.0 to use the configured search bar
+# Overrides Blacklight::SearchNavbarComponent from Blacklight v9.1.0 to use the configured search bar
 # component (or the default) without advanced search or autocomplete params.
 # Set a custom search bar in the catalog controller via:
 #   config.index.search_bar_component = MySearchBarComponent
