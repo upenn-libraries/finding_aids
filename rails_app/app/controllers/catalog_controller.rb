@@ -20,6 +20,9 @@ class CatalogController < ApplicationController
     config.show.document_component = Catalog::ShowDocumentComponent
     config.show.document_presenter_class = Catalog::ShowDocumentPresenter
     config.advanced_search.enabled = false
+
+    # Disable "dark mode" switcher, even though we don't render the BL default header content. If we want to enable
+    # support, changes to local styles and BL code for the <head> section needs to be added.
     config.dark_mode_support = false
 
     ## Class for sending and receiving requests from a search index
