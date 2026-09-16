@@ -7,7 +7,6 @@ en:
     hero:
       heading: 'Stories held in archives'
       subheading: 'Find your way into the primary sources held by archives in the Philadelphia area.'
-      alt: 'An archival reading room'
     collection_guides:
       heading: 'Collection guides'
       intro_html: >-
