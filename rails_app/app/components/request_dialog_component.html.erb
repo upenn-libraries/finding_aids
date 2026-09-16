@@ -1,16 +1,4 @@
-<div class="fa-request__bar" data-request-target="requestBar" data-request-active="false"
-     data-request-endpoint="<%= Settings.aeon.ere_endpoint %>"
-     data-request-system-id="<%= Settings.aeon.system_id %>"
-     data-request-aeon-form="<%= Settings.aeon.aeon_form %>"
-     data-request-web-request-form="<%= Settings.aeon.web_request_form %>"
-     data-request-submit-value="<%= Settings.aeon.submit_value %>"
-     data-request-system-name="<%= Settings.aeon.system_name %>"
-     data-request-location="<%= @repository_info.location %>"
-     data-request-sub-location="<%= @repository_info.sublocation %>"
-     data-request-site="<%= @repository_info.site %>"
-     data-request-title="<%= @title %>"
-     data-request-call-num="<%= @call_num %>"
-     role="region" aria-label="<%= t('show.sections.request.bar.region') %>" hidden>
+<%= bar_wrapper_div do %>
   <div class="pl-viewport-margins fa-request__bar-content">
     <p class="fa-request__bar-text" role="status" aria-live="polite" data-request-target="requestBarText"></p>
     <div class="pl-flex pl-gap-s" style="align-items: baseline;">
@@ -23,7 +11,7 @@
       </button>
     </div>
   </div>
-</div>
+<% end %>
 
 <dialog class="fa-request__dialog" aria-modal="true" aria-labelledby="dialog-title" tabindex="-1"
         data-request-target="requestDialog">

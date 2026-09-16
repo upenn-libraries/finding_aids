@@ -98,7 +98,7 @@ export default class extends Controller {
         event.preventDefault();
         const form = event.target;
         form.method = 'POST';
-        form.action = this.aeonRequest.configData.requestEndpoint;
+        form.action = this.aeonRequest.configData.requestEreEndpoint;
         event.submitter.disabled = true;
 
         // swap date fields and format for Aeon
