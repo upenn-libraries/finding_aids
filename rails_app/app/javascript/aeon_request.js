@@ -11,8 +11,6 @@ export default class AeonRequest {
         this.formData.append('AeonForm', this.configData.requestAeonForm);
         this.formData.append('WebRequestForm', this.configData.requestWebRequestForm);
         this.formData.append('SubmitButton', this.configData.requestSubmitValue);
-        this.formData.append('ReturnLinkUrl', window.location);
-        this.formData.append('ReturnLinkSystemName', this.configData.requestSystemName);
         this.formData.append('Site', this.configData.requestSite);
         this.formData.append('Location', this.configData.requestLocation);
         this.formData.append('Sublocation', this.configData.requestSublocation);

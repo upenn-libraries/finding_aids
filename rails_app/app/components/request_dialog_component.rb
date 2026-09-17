@@ -4,7 +4,7 @@
 # that supports submitting requests to Aeon.
 class RequestDialogComponent < ViewComponent::Base
   # Settings values from `aeon` key to include as data attributes for reference by Stimulus controller
-  DATA_SETTINGS = %i[ere_endpoint system_id aeon_form web_request_form submit_value system_name].freeze
+  DATA_SETTINGS = %i[ere_endpoint system_id aeon_form web_request_form submit_value].freeze
 
   # @param document [SolrDocument] the record
   def initialize(document:)

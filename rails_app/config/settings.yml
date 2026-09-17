@@ -4,7 +4,6 @@ aeon:
   url: 'https://aeon.library.upenn.edu'
   ere_endpoint: 'https://aeon.library.upenn.edu/aeon/aeon.dll'
   system_id: 'PennFindingAidsSite'
-  system_name: 'Penn Finding Aids site'
   aeon_form: 'ExternalRequest'
   web_request_form: 'DefaultRequest'
   submit_value: 'Submit Request'
