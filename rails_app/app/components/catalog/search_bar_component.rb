@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Overrides Blacklight::SearchBarComponent from Blacklight 9.0.0 to apply the fa-search-box
+# Overrides Blacklight::SearchBarComponent from Blacklight v9.1.0 to apply the fa-search-box
 # styling and render a custom search button with a visible label.
 module Catalog
   # Overrides Blacklight::SearchBarComponent to apply the fa-search-box

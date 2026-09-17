@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Catalog
-  # Local component copied from Blacklight v9.0 to change start over link destination and styles,
+  # Local component copied from Blacklight v9.1.0 to change start over link destination and styles,
   # as well as add a tooltip and aria tag.
   class StartOverButtonComponent < Blacklight::Component
     def call

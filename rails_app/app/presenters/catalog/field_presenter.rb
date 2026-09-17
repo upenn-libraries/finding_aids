@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Catalog
-  # Overrides Blacklight::FieldPresenter based on Blacklight 9.0.0 to ensure fields are not joined and
+  # Overrides Blacklight::FieldPresenter based on Blacklight v9.1.0 to ensure fields are not joined and
   # html links are not included in json responses.
   class FieldPresenter < Blacklight::FieldPresenter
     private
