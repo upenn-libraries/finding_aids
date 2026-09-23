@@ -52,9 +52,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_13_000000) do
   end
 
   create_table "featured_collections", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "record_id", null: false
     t.string "repository"
     t.string "title"
+    t.datetime "updated_at", null: false
     t.index ["record_id"], name: "index_featured_collections_on_record_id", unique: true
   end
 
