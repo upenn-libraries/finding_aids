@@ -97,17 +97,22 @@ export default class extends Controller {
     submitRequest(event) {
         event.preventDefault();
         const form = event.target;
+        const submitFormData = new FormData(form);
         form.method = 'POST';
         form.action = this.aeonRequest.configData.requestEreEndpoint;
         event.submitter.disabled = true;
 
         // swap date fields and format for Aeon
-        const rawScheduledDate = new FormData(form).get('rawScheduledDate');
+        const rawScheduledDate = submitFormData.get('rawScheduledDate');
         if(rawScheduledDate) {
-            const [yyyy, mm, dd] = rawScheduledDate.split('-');
-            this.aeonRequest.formData.set('ScheduledDate', `${mm}/${dd}/${yyyy}`);
+            this.aeonRequest.addScheduledDate(rawScheduledDate);
             form.querySelector('[name="rawScheduledDate"]')?.remove();
         }
+
+        // set UserReview param based on checkbox state - only present if checked
+        const rawUserReview = submitFormData.get('rawUserReview');
+        this.aeonRequest.addUserReview(rawUserReview);
+        form.querySelector('[name="rawUserReview"]')?.remove();
 
         // append prior values
         for (const [name, value] of this.aeonRequest.formData) {

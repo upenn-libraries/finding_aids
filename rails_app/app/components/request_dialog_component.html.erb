@@ -91,6 +91,10 @@
         <%= t('show.sections.request.notes_label') %>
         <textarea name="Notes" rows="3"></textarea>
       </label>
+      <label class="fa-request__save">
+        <input class="fa-request__checkbox" type="checkbox" name="rawUserReview" value="Yes" />
+        <%= t('show.sections.request.user_review_label') %>
+      </label>
       <p><%= t('show.sections.request.submitting_note') %></p>
       <div class="fa-request__footer">
         <button type="button" class="pl-button" data-action="click->request#backToReview">
@@ -116,6 +120,10 @@
       <label>
         <%= t('show.sections.request.notes_label') %>
         <textarea name="Notes" rows="3"></textarea>
+      </label>
+      <label class="fa-request__save">
+        <input class="fa-request__checkbox" type="checkbox" name="rawUserReview" value="Yes" />
+        <%= t('show.sections.request.user_review_label') %>
       </label>
       <p><%= t('show.sections.request.submitting_note') %></p>
       <div class="fa-request__footer">

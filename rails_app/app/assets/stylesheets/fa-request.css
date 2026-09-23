@@ -191,6 +191,15 @@ body:has(.fa-request__bar:not([hidden])) {
   outline: none;
 }
 
+.fa-request__form .fa-request__save {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--pl-space-s);
+  cursor: pointer;
+}
+
 .fa-request__hint {
   font-size: var(--pl-font-size-s);
   font-weight: normal;

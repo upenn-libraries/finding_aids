@@ -11,12 +11,13 @@ export default class AeonRequest {
         this.formData.append('AeonForm', this.configData.requestAeonForm);
         this.formData.append('WebRequestForm', this.configData.requestWebRequestForm);
         this.formData.append('SubmitButton', this.configData.requestSubmitValue);
+        this.formData.append('ReturnLinkUrl', window.location);
+        this.formData.append('ReturnLinkSystemName', 'Penn Finding Aids site');
         this.formData.append('Site', this.configData.requestSite);
         this.formData.append('Location', this.configData.requestLocation);
         this.formData.append('Sublocation', this.configData.requestSublocation);
         this.formData.append('CallNumber', this.configData.requestCallNumber || 'n/a');
         this.formData.append('Title', this.configData.requestTitle);
-        this.formData.append('UserReview', 'No');
     }
 
     addScanFulfillmentFields() {
@@ -61,6 +62,15 @@ export default class AeonRequest {
         Object.entries(fields).forEach(([name, value]) => {
             this.formData.append(`${name}_${index}`, value);
         })
+    }
+
+    addUserReview(rawValue) {
+        this.formData.append('UserReview', rawValue === 'Yes' ? 'Yes' : 'No');
+    }
+
+    addScheduledDate(rawDate) {
+        const [yyyy, mm, dd] = rawDate.split('-');
+        this.formData.append('ScheduledDate', `${mm}/${dd}/${yyyy}`);
     }
 
     reset() {
