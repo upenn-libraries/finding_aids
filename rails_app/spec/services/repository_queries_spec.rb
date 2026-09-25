@@ -73,10 +73,10 @@ describe RepositoryQueries do
       expect(results).to have_key('Test Repo With Address')
     end
 
-    it 'excludes repositories without addresses' do
+    it 'includes repositories without addresses' do
       results = described_class.addresses
 
-      expect(results).not_to have_key('Test Repo Without Address')
+      expect(results).to have_key('Test Repo Without Address')
     end
   end
 end
