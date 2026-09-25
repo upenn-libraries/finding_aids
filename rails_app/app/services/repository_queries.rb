@@ -31,29 +31,29 @@ class RepositoryQueries
       response.dig('facet_counts', 'facet_fields', SOLR_FIELD_REPOSITORY) || []
     end
 
-    # Returns one representative address per repository, including repositories without .
+    # Returns one representative address per repository, including repositories without address values present.
     #
     # @return [Hash{String => String}] repository name => address string
     def addresses
       response = connection.get('select', params: {
-        q: '*:*',
-        rows: 0,
-        'json.facet' => JSON.generate(
-          repositories: {
-            type: 'terms',
-            field: SOLR_FIELD_REPOSITORY,
-            limit: -1,
-            facet: {
-              addresses: {
-                type: 'terms',
-                field: SOLR_FIELD_ADDRESS,
-                limit: 1,
-                sort: 'count desc'
-              }
-            }
-          }
-        )
-      })
+                                  q: '*:*',
+                                  rows: 0,
+                                  'json.facet' => JSON.generate(
+                                    repositories: {
+                                      type: 'terms',
+                                      field: SOLR_FIELD_REPOSITORY,
+                                      limit: -1,
+                                      facet: {
+                                        addresses: {
+                                          type: 'terms',
+                                          field: SOLR_FIELD_ADDRESS,
+                                          limit: 1,
+                                          sort: 'count desc'
+                                        }
+                                      }
+                                    }
+                                  )
+                                })
       response['facets']['repositories']['buckets'].to_h do |repository|
         address = repository['addresses']['buckets'].first
 
