@@ -1,3 +1,4 @@
+---
 'University of Pennsylvania: Biddle Law Library':
   :lat: 39.9538945
   :lng: -75.1932583
@@ -108,7 +109,7 @@ The Center for Art in Wood:
   :lng: -75.1448564
 Chadds Ford Historical Society:
   :lat: 39.875043550198484
-  :lng:  -75.59211006840302
+  :lng: -75.59211006840302
 Chester Heights CampMeeting Association:
   :lat: 39.887667841342
   :lng: -75.46619792963337
@@ -262,3 +263,354 @@ Solebury Township Historical Society:
 'Princeton University Library: Manuscripts Division':
   :lat: 40.349452920267346
   :lng: -74.65728393277197
+Haverford College Quaker & Special Collections:
+  :lat: 40.0127321
+  :lng: -75.3008264
+Swarthmore College Peace Collection:
+  :lat: 39.9029154
+  :lng: -75.3552419
+Friends Historical Library of Swarthmore College:
+  :lat: 39.9029154
+  :lng: -75.3552419
+Bryn Mawr College:
+  :lat: 40.027863740689384
+  :lng: -75.31450241739665
+Historical Society of the Eastern Pennsylvania Conference of the United Methodist Church:
+  :lat:
+  :lng:
+  :_failed: true
+Historical Society of Montgomery County:
+  :lat: 40.1261716
+  :lng: -75.3288103
+Historical Society of Frankford:
+  :lat: 40.0156081
+  :lng: -75.0868591
+Lower Merion Historical Society:
+  :lat: 40.01329958222791
+  :lng: -75.24220028720966
+James A. Michener Art Museum Archives:
+  :lat: 40.3085531
+  :lng: -75.126051
+Newtown Historic Association:
+  :lat: 40.22772121686652
+  :lng: -74.93613434306167
+Historical Society of the Phoenixville Area:
+  :lat: 40.1326579
+  :lng: -75.5161752
+Tri-County Heritage Library:
+  :lat: 40.202595
+  :lng: -75.8363155
+Millbrook Society:
+  :lat: 40.1782318
+  :lng: -75.1054471
+Malvern Historical Commission:
+  :lat: 40.68960171647257
+  :lng: -81.18004350571528
+Lansdale Historical Society:
+  :lat: 40.2392132
+  :lng: -75.2810946
+Margaret R. Grundy Memorial Library:
+  :lat: 40.097914
+  :lng: -74.849884
+Westtown School Archives:
+  :lat: 39.949701
+  :lng: -75.5393447
+Historical Society of Fort Washington:
+  :lat: 40.132962681734604
+  :lng: -75.21415301484642
+Worcester Historical Society:
+  :lat: 40.2414952
+  :lng: -75.2837862
+Historical Society of Tacony:
+  :lat: 40.024304
+  :lng: -75.041885
+Wissahickon Valley Historical Society:
+  :lat: 40.157658540629306
+  :lng: -75.27409890440966
+Haverford Township Historical Society:
+  :lat:
+  :lng:
+  :_failed: true
+Media Historic Archives Commission:
+  :lat: 39.9192590354841
+  :lng: -75.38951507568261
+Mummers Museum:
+  :lat: 39.93343
+  :lng: -75.1475665
+New Hope Historical Society:
+  :lat: 40.362964
+  :lng: -74.951361
+Springfield Township Historical Society (Montgomery County, Pa.):
+  :lat: 40.1032906
+  :lng: -75.2129115
+The Historical Society  of Trappe, Collegeville, Perkiomen Valley:
+  :lat: 40.1968367
+  :lng: -75.4711206
+Limerick Township Historical Society:
+  :lat: 40.235406
+  :lng: -75.534736
+Wallace Township Archives:
+  :lat: 40.0889905
+  :lng: -75.7718794
+Historical Society of Bensalem Township:
+  :lat: 40.1092039
+  :lng: -74.9461189
+John James Audubon Center at Mill Grove:
+  :lat: 40.1230717
+  :lng: -75.4418365
+Perkasie Historical Society:
+  :lat: 40.372363
+  :lng: -75.296963
+Upper Moreland Historical Association:
+  :lat: 40.1444315
+  :lng: -75.1176573
+Woodmere Art Museum:
+  :lat: 40.0831275
+  :lng: -75.2194984
+Yardley Historical Association:
+  :lat: 40.2423509
+  :lng: -74.8410603
+Greek American Heritage Museum:
+  :lat: 39.946358684784094
+  :lng: -75.15494839636055
+Historical Society of Hilltown Township:
+  :lat: 40.3421755
+  :lng: -75.2345751
+Kennett Township Historical Commission:
+  :lat: 39.8487901
+  :lng: -75.6620183
+Morris Arboretum Archives:
+  :lat: 40.0776914
+  :lng: -75.2389943
+National Iron & Steel Heritage Museum:
+  :lat: 39.9831616
+  :lng: -75.8238355
+Tredyffrin Easttown Historical Society:
+  :lat: 40.04411259817371
+  :lng: -75.44146272241508
+Uwchlan Township Historical Commission:
+  :lat: 40.0483113
+  :lng: -75.6320069
+Charlestown Historical Society:
+  :lat:
+  :lng:
+  :_failed: true
+Lower Makefield Historical Society:
+  :lat: 40.2351274
+  :lng: -74.8309913
+Montgomery Township Historical Society:
+  :lat: 40.2473291
+  :lng: -75.2437854
+Stenton:
+  :lat: 40.023911
+  :lng: -75.15448
+Union Library of Hatboro:
+  :lat: 40.1736251
+  :lng: -75.1073411
+Archives of the Associated Alumni of the Central High School of Philadelphia:
+  :lat: 40.0373634
+  :lng: -75.1505745
+Dabbs Woodfin Library and Archives at Newlin Grist Mill:
+  :lat: 39.89023119643028
+  :lng: -75.50603948149606
+Eastern State Penitentiary:
+  :lat: 39.9683406
+  :lng: -75.1726626
+'Free Library of Philadelphia: Archives':
+  :lat: 39.959553389463345
+  :lng: -75.17105748511054
+Horsham Preservation and Historical Association:
+  :lat: 40.21510011151972
+  :lng: -75.15297649444753
+Presbyterian Historical Society:
+  :lat: 39.94306
+  :lng: -75.1500003
+Sharon Hill Historical Society:
+  :lat: 41.2326846981869
+  :lng: -80.50383064940101
+Springfield Township Historical Society (Bucks County, Pa.):
+  :lat: 40.529510770783176
+  :lng: -75.29656550205272
+Thornbury Historical Society:
+  :lat: 39.93386164720037
+  :lng: -75.52733831118375
+Warwick Township Historical Society:
+  :lat: 40.236403636798336
+  :lng: -75.09180480590999
+Welsh Valley Preservation Society:
+  :lat:
+  :lng:
+  :_failed: true
+Williamson College of the Trades (Williamson Free School of Mechanical Trades):
+  :lat: 39.9065003
+  :lng: -75.4235288
+Aston Township Historical Society:
+  :lat: 39.867598683692115
+  :lng: -75.42083928485866
+Christian C. Sanderson Museum:
+  :lat: 39.873133352379924
+  :lng: -75.59124872731091
+Elwyn Historical Archives and Museum:
+  :lat: 39.9058214
+  :lng: -75.4156719
+Haycock Historical Society:
+  :lat: 40.4731795
+  :lng: -75.248034
+Historic Sugartown, Inc.:
+  :lat: 40.00080744436297
+  :lng: -75.50802748249912
+Johnson House Historic Site:
+  :lat: 40.0433544
+  :lng: -75.1812224
+Lower Pottsgrove Historical Society:
+  :lat: 40.2451578
+  :lng: -75.5942358
+Marple Historical Society:
+  :lat:
+  :lng:
+  :_failed: true
+Mill at Anselma Preservation and Educational Trust:
+  :lat: 40.0951038
+  :lng: -75.6168681
+Nether Providence Historical Society:
+  :lat: 39.9004076
+  :lng: -75.3684828
+Newtown Square Historical Society:
+  :lat: 39.9868117
+  :lng: -75.4007633
+Philadelphia Clef Club of Jazz and Performing Arts:
+  :lat: 39.9416093
+  :lng: -75.1657661
+Plumstead Historical Society:
+  :lat:
+  :lng:
+  :_failed: true
+Radnor Hunt Archives:
+  :lat: 39.9931087
+  :lng: -75.4801708
+Richard Wall House Museum:
+  :lat: 40.078550834569015
+  :lng: -75.12853296816859
+Southampton Baptist Corporation:
+  :lat: 40.1839075
+  :lng: -75.0355299
+Tinicum Township Historical Society:
+  :lat: 39.8623456
+  :lng: -75.3009991
+Tyler Arboretum:
+  :lat: 39.9346326
+  :lng: -75.4416216
+Upper Darby Historical Society:
+  :lat: 39.9470238
+  :lng: -75.2921044
+Village Improvement Association of Doylestown:
+  :lat: 40.3067939
+  :lng: -75.1465981
+Welkinweir:
+  :lat: 40.154544070830546
+  :lng: -75.6809285290322
+West Caln Township Historical Commission:
+  :lat: 40.0106604
+  :lng: -75.8427244
+West Nantmeal Township Historical Commission:
+  :lat: 40.1568172
+  :lng: -75.8330943
+Wharton Esherick Museum:
+  :lat: 40.0831909
+  :lng: -75.4934994
+Wissahickon Valley Watershed Association:
+  :lat: 40.1467627
+  :lng: -75.2258798
+American Baptist Historical Society:
+  :lat:
+  :lng:
+  :_failed: true
+Bridesburg Historical Society:
+  :lat:
+  :lng:
+  :_failed: true
+Bucks County Civil War Round Table Library and Museum:
+  :lat: 40.3124897
+  :lng: -75.1294373
+Chichester Historical Society:
+  :lat: 39.829487075742186
+  :lng: -75.45551623069578
+Eugenio M. de Hostos Archives at Taller Puertorriqueño:
+  :lat: 39.992709
+  :lng: -75.1397827
+First Unitarian Church of Philadelphia Archives:
+  :lat: 39.9527313
+  :lng: -75.176399
+Friends' Central School Archives:
+  :lat: 39.98488880496528
+  :lng: -75.26260504560643
+Historic Waynesborough:
+  :lat: 40.0326369
+  :lng: -75.4729006
+John Gloucester Memorial and Historical Society:
+  :lat: 39.9739477
+  :lng: -75.2096731
+Laurel Hill Cemetery:
+  :lat: 40.0021955
+  :lng: -75.1869072
+Mikveh Israel Archives:
+  :lat: 39.9527237
+  :lng: -75.1635262
+Moore Archives at Historic Yellow Springs:
+  :lat: 40.0951038
+  :lng: -75.6168681
+Museum of the American Revolution:
+  :lat: 39.948282968130954
+  :lng: -75.14577509022615
+New London Area Historical Society:
+  :lat:
+  :lng:
+  :_failed: true
+Old Eagle School:
+  :lat: 40.051484705361986
+  :lng: -75.40371883517302
+Pennepack Baptist Historical Foundation:
+  :lat: 40.0812892
+  :lng: -75.0512821
+Pennypacker Mills:
+  :lat: 40.25570651985541
+  :lng: -75.45874861739105
+Philadelphia Folksong Society:
+  :lat: 40.0531539
+  :lng: -75.1958801
+Philadelphia Society of Free Letts:
+  :lat: 39.9617962
+  :lng: -75.149649
+Pottsgrove Manor:
+  :lat: 40.2479868
+  :lng: -75.6596345
+St. David's Episcopal Church Parish Archives:
+  :lat: 40.0276095
+  :lng: -75.4040818
+St. Peter's Episcopal Church:
+  :lat: 39.9431577
+  :lng: -75.1476659
+Sunrise Mill:
+  :lat: 40.1146022
+  :lng: -75.3446458
+The Archives at the School in Rose Valley:
+  :lat: 39.8987229
+  :lng: -75.3907485
+The Archives of the Episcopal Church:
+  :lat: 30.326883
+  :lng: -97.716941
+The Wilma Theater:
+  :lat: 39.9471856
+  :lng: -75.1643043
+Upper Uwchlan Township Historic Commission:
+  :lat: 40.079471
+  :lng: -75.6883979
+Villiger Archives of St. Joseph's Preparatory School:
+  :lat: 39.9731156
+  :lng: -75.1648873
+William M. Lennox Archives Center at Malvern Retreat House:
+  :lat: 40.0289332
+  :lng: -75.5092169
+Woodlands Mansion and Cemetery:
+  :lat: 39.946759
+  :lng: -75.20691
