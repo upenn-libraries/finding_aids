@@ -45,7 +45,7 @@ module HomepageData
     def build_repositories(cache)
       counts = RepositoryQueries.facet_counts
       cache.entries.filter_map do |repo, entry|
-        next if entry.key?(:failed)
+        next if entry.key?(:_failed)
 
         count = counts.find { |e| e[:name] == repo }
         next unless count
@@ -54,7 +54,7 @@ module HomepageData
           name: repo,
           count: count[:count],
           records_url: records_url_for(repo),
-          **entry
+          lat: entry[:lat], lng: entry[:lng]
         )
       end
     end
