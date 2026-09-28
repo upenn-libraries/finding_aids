@@ -43,16 +43,17 @@ module HomepageData
     # @param cache [Geocoding::Cache]
     # @return [Array<Repository>]
     def build_repositories(cache)
-      RepositoryQueries.facet_counts.filter_map do |repo|
-        name = repo[:name]
-        coords = cache[name]
-        next unless coords || cache.failed?(name)
+      counts = RepositoryQueries.facet_counts
+      cache.entries.filter_map do |repo, entry|
+        next if entry.key?(:failed)
+        count = counts.find { |e| e[:name] == repo }
+        next unless count
 
         Repository.new(
-          name: name,
-          count: repo[:count],
-          records_url: records_url_for(name),
-          **coords
+          name: repo,
+          count: count[:count],
+          records_url: records_url_for(repo),
+          **entry
         )
       end
     end
