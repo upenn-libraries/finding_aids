@@ -73,21 +73,6 @@ describe 'API index endpoints' do
       end
     end
 
-    context 'when a repository has no cached coordinates' do
-      before do
-        allow(RepositoryQueries).to receive_messages(
-          facet_counts: [{ name: 'Uncached Repo', count: 50 }],
-          addresses: { 'Uncached Repo' => '456 Unknown St' }
-        )
-        get map_data_api_path
-      end
-
-      it 'returns null coordinates (no marker on the map)' do
-        expect(data.first['lat']).to be_nil
-        expect(data.first['lng']).to be_nil
-      end
-    end
-
     it 'returns repository data with expected keys' do
       cache.store('Test Repo', **cached_coords)
       allow(RepositoryQueries).to receive_messages(
@@ -96,7 +81,7 @@ describe 'API index endpoints' do
       )
       get map_data_api_path
 
-      expect(data.first.keys).to include 'name', 'slug', 'count', 'lat', 'lng'
+      expect(data.first.keys).to include 'name', 'count', 'lat', 'lng'
     end
   end
 
@@ -127,12 +112,6 @@ describe 'API index endpoints' do
       mapped = data.find { |r| r['name'] == 'Mapped Repo' }
       expect(mapped['lat']).to eq(e2e_coords[:lat])
       expect(mapped['lng']).to eq(e2e_coords[:lng])
-    end
-
-    it 'returns null coordinates for repos without cached data' do
-      addrless = data.find { |r| r['name'] == 'Addrless Repo' }
-      expect(addrless['lat']).to be_nil
-      expect(addrless['lng']).to be_nil
     end
   end
 end

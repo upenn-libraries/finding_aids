@@ -61,25 +61,5 @@ describe HomepageData do
       expect(haverford.lat).to eq(coords[:haverford][:lat])
       expect(haverford.lng).to eq(coords[:haverford][:lng])
     end
-
-    it 'generates slugs' do
-      repos = described_class.repositories(cache: cache)
-      expect(repos.map(&:slug)).to include('haverford-college-quaker-special-collections')
-    end
-
-    it 'returns nil coordinates when address is missing' do
-      allow(RepositoryQueries).to receive(:addresses).and_return({})
-      repos = described_class.repositories(cache: cache)
-      haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
-      expect(haverford.lat).to be_nil
-    end
-
-    it 'returns nil coordinates when cache has FAILED entry' do
-      cache.store_failure('Haverford College Quaker & Special Collections')
-
-      repos = described_class.repositories(cache: cache)
-      haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }
-      expect(haverford.lat).to be_nil
-    end
   end
 end

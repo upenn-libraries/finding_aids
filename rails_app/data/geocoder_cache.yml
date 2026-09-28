@@ -304,8 +304,9 @@ Millbrook Society:
   :lat: 40.1782318
   :lng: -75.1054471
 Malvern Historical Commission:
-  :lat: 40.68960171647257
-  :lng: -81.18004350571528
+  :lat:
+  :lng:
+  :_failed: true
 Lansdale Historical Society:
   :lat: 40.2392132
   :lng: -75.2810946

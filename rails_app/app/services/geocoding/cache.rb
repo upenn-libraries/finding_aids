@@ -25,43 +25,25 @@ module Geocoding
       @path = Pathname.new(path)
     end
 
-    # ── public query API ──────────────────────────────────────────────
-
-    # @param name [String] repository name
-    # @return [Hash, nil] the cached entry or nil
-    delegate :[], to: :entries
-
     # @param name [String] repository name
     # @return [Boolean] true when a previously-failed entry exists
     def failed?(name)
       entries.dig(name, :_failed) == true
     end
 
-    # @param name [String] repository name
-    # @return [Boolean] true when a successfully-cached coordinate entry exists
-    def cached?(name)
-      entries.dig(name, :lat).present?
-    end
+    # ── public query API ──────────────────────────────────────────────
 
-    # Look up an entry from cache.  Returns the coordinate hash on success,
-    # BLANK when the entry is missing or was previously recorded as failed.
-    #
     # @param name [String] repository name
-    # @return [Hash]
-    def fetch(name)
-      return self[name] if cached?(name)
-      return BLANK if failed?(name)
-
-      BLANK
-    end
+    # @return [Hash, nil] the cached entry or nil
+    delegate :[], to: :entries
 
     # ── write API ─────────────────────────────────────────────────────
 
     # Store a successful geocode result.
     #
     # @param name [String]
-    # @param lat  [Float]
-    # @param lng  [Float]
+    # @param lat [Float]
+    # @param lng [Float]
     def store(name, lat:, lng:)
       @entries = entries.merge(name => { lat: lat, lng: lng })
     end
@@ -93,8 +75,6 @@ module Geocoding
       @entries = {}
     end
 
-    private
-
     # Lazily loads the geocoding cache from disk (YAML file).
     # Acquires a shared lock on the file, then reads from the locked handle.
     #
@@ -102,6 +82,8 @@ module Geocoding
     def entries
       @entries ||= load_from_disk.freeze
     end
+
+    private
 
     # @return [Hash]
     def load_from_disk
