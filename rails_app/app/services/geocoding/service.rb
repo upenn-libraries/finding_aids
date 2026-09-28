@@ -39,17 +39,18 @@ module Geocoding
     #
     # @param addresses [Hash{String => String}] name → address
     # @yield [name, result] optional progress hook
-    # @return [Integer] count of new geocodings performed
+    # @return [Integer] count of addresses considered
     def run!(addresses)
-      pending = addresses.select { |name, address| needs_geocoding?(name, address) }
-      pending.each do |name, address|
+      addresses.each do |name, address|
+        next if address.empty?
+
         result = geocode(address)
         apply_result(name, result)
         yield(name, result) if block_given?
       end
 
-      @cache.persist if pending.any?
-      pending.size
+      @cache.persist
+      addresses.size
     end
 
     private

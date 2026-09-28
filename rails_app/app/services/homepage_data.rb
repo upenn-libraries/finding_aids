@@ -46,6 +46,7 @@ module HomepageData
       counts = RepositoryQueries.facet_counts
       cache.entries.filter_map do |repo, entry|
         next if entry.key?(:failed)
+
         count = counts.find { |e| e[:name] == repo }
         next unless count
 

@@ -48,14 +48,6 @@ describe Geocoding::Service do
       expect(cache['Haverford']).to eq(coords)
     end
 
-    it 'skips failed addresses' do
-      cache.store_failure('Failed')
-      expect(Geocoder).not_to receive(:search)
-
-      count = service.run!('Failed' => 'Bad address')
-      expect(count).to eq(0)
-    end
-
     it 'stores failed entry when geocoding returns no results' do
       allow(Geocoder).to receive(:search).and_return([])
       count = service.run!('NoResults' => 'Nowhere')
@@ -70,10 +62,10 @@ describe Geocoding::Service do
       expect(cache.failed?('Error')).to be true
     end
 
-    it 'skips blank addresses' do
+    it 'does not perform a lookup for blank addresses' do
       expect(Geocoder).not_to receive(:search)
       count = service.run!('Blank' => '')
-      expect(count).to eq(0)
+      expect(count).to eq(1)
     end
 
     it 'persists cache when updates occurred' do

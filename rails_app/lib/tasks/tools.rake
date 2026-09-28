@@ -4,10 +4,12 @@ require 'csv'
 
 namespace :geocode do
   desc 'Rebuild geocoding cache'
-  task refresh: :environment do
-    service = Geocoding::Service.new cache: Geocoding::Cache.new
+  task rebuild: :environment do
+    cache = Geocoding::Cache.new
+    service = Geocoding::Service.new cache: cache
+    addresses = RepositoryQueries.addresses.select { |_, address| address.present? }
 
-    updated = service.run!(RepositoryQueries.addresses) do |name, result|
+    updated = service.run!(addresses) do |name, result|
       puts Rainbow('─' * 60).bright.black
       puts Rainbow("Processing: #{name}").bold.yellow
 
