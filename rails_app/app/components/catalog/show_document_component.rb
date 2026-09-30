@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Catalog
-  # Override Blacklight 9.0 component to customize layout
+  # Override Blacklight v9.2.1 component to customize layout
   class ShowDocumentComponent < Blacklight::DocumentComponent
     include Turbo::FramesHelper
     # @return [ActiveSupport::SafeBuffer]
