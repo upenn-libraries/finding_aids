@@ -80,12 +80,12 @@ export default class extends Controller {
 
     clearAll() {
         this.itemListArea().querySelector('.fa-request__list').innerHTML = '';
-        this.selectedItems().forEach(item_input => { item_input.checked = false });
+        this.selectedItems().forEach(itemInput => { itemInput.checked = false });
         this.toggleItemListElements();
         this.updateStatus();
     }
 
-    itemsSelected() {
+    continueToSubmit() {
         this.aeonRequest.addItems(this.selectedItems());
         this.currentStepValue = 'submit';
     }
