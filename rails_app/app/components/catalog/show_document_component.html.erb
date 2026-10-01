@@ -125,9 +125,5 @@
       </section>
     </div>
   </div>
-
-  <% if @document.requestable? %>
-    <%# Render pinned bottom element and modal with sections %>
-    <%= render RequestDialogComponent.new(document: @document) %>
-  <% end %>
+  <%= render RequestDialogComponent.new(document: @document) %>
 </div>

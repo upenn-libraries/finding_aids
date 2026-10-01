@@ -5,15 +5,14 @@ module Catalog
   class ShowDocumentComponent < Blacklight::DocumentComponent
     include Turbo::FramesHelper
 
+    GUIDE_NAVIGATION_CONTROLLER = 'guide-navigation'
+    REQUEST_DIALOG_CONTROLLER = 'request'
+
     # Stimulus controllers to connect to the document section
     # @return [String]
     def connected_controller_names
-      controllers = if @document.requestable?
-                      %w[guide-navigation request]
-                    else
-                      ['guide-navigation']
-                    end
-
+      controllers = [GUIDE_NAVIGATION_CONTROLLER]
+      controllers << REQUEST_DIALOG_CONTROLLER if @document.requestable?
       controllers.join(' ')
     end
 
