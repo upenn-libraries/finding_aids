@@ -1,0 +1,16 @@
+<section data-request-target="stepSection" data-request-section="submit" data-request-type="<%= request_type %>" hidden>
+  <form class="fa-request__form pl-margin-t-l" data-action="submit->request#submitRequest">
+    <% input_controls.each do |input| %>
+      <%= send("#{input}_input") %>
+    <% end %>
+    <p><%= t('show.sections.request.submitting_note') %></p>
+    <div class="fa-request__footer">
+      <button type="button" class="pl-button" data-action="click->request#backToReview">
+        <%= t('show.sections.request.back') %>
+      </button>
+      <button class="pl-button pl-button--success">
+        <%= t('show.sections.request.send') %>
+      </button>
+    </div>
+  </form>
+</section>

@@ -275,7 +275,7 @@ en:
           title: 'Plan your visit'
           review_lede: "These are the items you'd like to view on your visit."
           form_lede: "We'll reply to confirm your date and have your items ready."
-        copy:
+        scan:
           title: 'Request copies'
           review_lede: "These are the items you'd like digital copies of. We'll scan them and deliver the files to your Research Account."
           form_lede: "We'll review your request and be in touch about your scans."
