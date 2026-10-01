@@ -5,23 +5,23 @@ variables:
   WAIT_FOR_SERVICES_TIMEOUT: "120"
 
 include:
+  - component: $CI_SERVER_FQDN/devops/gitlab/components/general/vault_jwt_auth@~latest
+    inputs:
+      vault_auth_role: "${VAULT_AUTH_ROLE}"
+
   - component: $CI_SERVER_FQDN/devops/gitlab/components/docker/stage_build@~latest
     inputs:
-      job_image_tag: "29-dind"
       docker_build_context: "rails_app/"
       docker_build_secrets: "--secret id=sidekiq_pro_credentials,env=SIDEKIQ_PRO_CREDENTIALS"
       docker_target: "base"
-      dockerfile_path: "rails_app/"
       job_suffix: "_base"
       stage: "build_base"
 
   - component: $CI_SERVER_FQDN/devops/gitlab/components/docker/stage_build@~latest
     inputs:
-      job_image_tag: "29-dind"
       docker_build_context: "rails_app/"
       docker_build_secrets: "--secret id=sidekiq_pro_credentials,env=SIDEKIQ_PRO_CREDENTIALS"
       docker_target: "development"
-      dockerfile_path: "rails_app/"
       job_suffix: "_development"
       needs_build:
         - "amend_manifest_base"
@@ -29,11 +29,9 @@ include:
 
   - component: $CI_SERVER_FQDN/devops/gitlab/components/docker/stage_build@~latest
     inputs:
-      job_image_tag: "29-dind"
       docker_build_context: "rails_app/"
       docker_build_secrets: "--secret id=sidekiq_pro_credentials,env=SIDEKIQ_PRO_CREDENTIALS"
       docker_target: "production"
-      dockerfile_path: "rails_app/"
       job_suffix: "_production"
       needs_build:
         - "amend_manifest_base"
@@ -43,7 +41,6 @@ include:
   - component: $CI_SERVER_FQDN/devops/gitlab/components/sast/trivy@~latest
     inputs:
       docker_tag_to_scan: "${CI_COMMIT_SHA}"
-      job_image_tag: "29-dind"
       needs:
         - "amend_manifest_production"
       stage: "test"
@@ -65,7 +62,7 @@ include:
         - "amend_manifest_development"
       service_solr_collection_name: "finding-aid-discovery-test"
       service_solr_configset_name: "finding-aid-discovery"
-      service_solr_image_tag: 9.3.0
+      service_solr_image_tag: "9.3.0"
 
   - component: $CI_SERVER_FQDN/devops/gitlab/components/deploy/deploy@~latest
     inputs:
@@ -84,14 +81,10 @@ include:
       valid_principals: "${VALID_PRINCIPALS}"
       vault_auth_role: "${VAULT_AUTH_ROLE}"
       vault_ssh_client_role: "${VAULT_SSH_CLIENT_ROLE}"
-  - component: gitlab.library.upenn.edu/devops/gitlab/components/general/vault_jwt_auth@~latest
-    inputs:
-      vault_auth_role: "${VAULT_AUTH_ROLE}"
-  - component: gitlab.library.upenn.edu/devops/gitlab/components/general/install_hashicorp_vault@~latest
 
 workflow:
   rules:
-  - when: always
+    - when: always
 
 stages:
   - build_base
@@ -101,38 +94,23 @@ stages:
   - finalize
   - deploy
 
-build_and_push_docker_images_base:
+.sidekiq_build:
   extends:
     - .vault_jwt_auth
   before_script:
-    - !reference [.install_hashicorp_vault, before_script]
     - !reference [.vault_jwt_auth, before_script]
-    - !reference [.auth_gitlab_registry, before_script]
     - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
   variables:
     VAULT_AUTH_ROLE: ${VAULT_AUTH_ROLE_SIDEKIQ}
+
+build_and_push_docker_images_base:
+  extends: .sidekiq_build
 
 build_and_push_docker_images_development:
-  extends:
-    - .vault_jwt_auth
-  before_script:
-    - !reference [.install_hashicorp_vault, before_script]
-    - !reference [.vault_jwt_auth, before_script]
-    - !reference [.auth_gitlab_registry, before_script]
-    - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
-  variables:
-    VAULT_AUTH_ROLE: ${VAULT_AUTH_ROLE_SIDEKIQ}
+  extends: .sidekiq_build
 
 build_and_push_docker_images_production:
-  extends:
-    - .vault_jwt_auth
-  before_script:
-    - !reference [.install_hashicorp_vault, before_script]
-    - !reference [.vault_jwt_auth, before_script]
-    - !reference [.auth_gitlab_registry, before_script]
-    - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
-  variables:
-    VAULT_AUTH_ROLE: ${VAULT_AUTH_ROLE_SIDEKIQ}
+  extends: .sidekiq_build
 
 rspec:
   variables:
