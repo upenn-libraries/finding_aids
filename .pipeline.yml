@@ -99,18 +99,22 @@ stages:
     - .vault_jwt_auth
   before_script:
     - !reference [.vault_jwt_auth, before_script]
-    - export SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
+    - SIDEKIQ_PRO_CREDENTIALS="$(vault kv get -field=credentials ${VAULT_SIDEKIQ_ENDPOINT})"
+    - export SIDEKIQ_PRO_CREDENTIALS
   variables:
     VAULT_AUTH_ROLE: ${VAULT_AUTH_ROLE_SIDEKIQ}
 
 build_and_push_docker_images_base:
   extends: .sidekiq_build
+  before_script: !reference [.sidekiq_build, before_script]
 
 build_and_push_docker_images_development:
   extends: .sidekiq_build
+  before_script: !reference [.sidekiq_build, before_script]
 
 build_and_push_docker_images_production:
   extends: .sidekiq_build
+  before_script: !reference [.sidekiq_build, before_script]
 
 rspec:
   variables:
