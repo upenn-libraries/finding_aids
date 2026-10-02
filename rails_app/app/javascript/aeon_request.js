@@ -23,6 +23,10 @@ export default class AeonRequest {
         return this.VISIT_REQUEST_TYPE;
     }
 
+    endpoint() {
+        return this.configData.requestEreEndpoint;
+    }
+
     addConfigFields() {
         this.formData.append('SystemID', this.SYSTEM_ID);
         this.formData.append('AeonForm', this.AEON_FORM);
@@ -37,12 +41,9 @@ export default class AeonRequest {
         this.formData.append('Title', this.configData.requestTitle);
     }
 
-    addScanFulfillmentFields() {
-        this.formData.append('RequestType', 'Copy');
-    }
-
-    addLoanFulfillmentFields() {
-        this.formData.append('RequestType', 'Loan');
+    addFulfillmentFields(type) {
+        const requestType = type === this.scanRequestType() ? 'Copy' : 'Visit';
+        this.formData.append('RequestType', requestType);
     }
 
     addItems(items) {

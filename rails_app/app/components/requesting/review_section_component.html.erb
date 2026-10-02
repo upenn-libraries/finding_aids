@@ -1,7 +1,7 @@
 <section data-request-target="stepSection" data-request-section="review" data-request-type="<%= request_type %>" hidden>
   <p class="pl-caps pl-margin-t-l"><%= t('show.sections.request.held_at') %></p>
   <p class="pl-margin-b-m"><%= repository %></p>
-  <div data-request-target="<%= list_area_target %>">
+  <div>
     <p class="pl-margin-b-s fa-request__review-lede">
       <%= review_lede %>
     </p>
@@ -17,7 +17,7 @@
         <button type="button" class="pl-button" data-action="click->request#removeItem"><%= t('show.sections.request.remove') %></button>
       </li>
     </template>
-    <ul class="fa-request__list"></ul>
+    <ul class="fa-request__list" data-request-target="<%= list_area_target %>"></ul>
     <div class="fa-request__footer">
       <button type="button" class="pl-button" data-action="click->request#clearAll">
         <%= t('show.sections.request.remove_all') %>

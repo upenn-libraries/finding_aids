@@ -12,7 +12,7 @@ export default class extends Controller {
         'containerCheckbox',
         'requestDialog', 'modalTitle', 'stepNumber',
         'stepSection',
-        'listItemTemplate', 'scanItemListArea', 'visitItemListArea'
+        'listItemTemplate', 'scanItemList', 'visitItemList'
     ];
 
     static values = {
@@ -42,7 +42,7 @@ export default class extends Controller {
     // -- actions from elements --
 
     close() {
-        this.itemListArea().querySelector('.fa-request__list').innerHTML = ''
+        this.itemListArea().innerHTML = ''
         this.activeValue = this.selectedItems().length > 0
         this.requestDialogTarget.close()
         this.aeonRequest.reset()
@@ -55,18 +55,11 @@ export default class extends Controller {
         this.updateStatus(selected);
     }
 
-    initiateCopyRequest() {
-        this.typeValue = this.aeonRequest.scanRequestType();
+    initiateRequest({ params: { type }}) {
+        this.typeValue = type;
         this.initializeModal();
         this.updateStatus();
-        this.aeonRequest.addScanFulfillmentFields();
-    }
-
-    initiateVisitRequest() {
-        this.typeValue = this.aeonRequest.visitRequestType();
-        this.initializeModal();
-        this.updateStatus();
-        this.aeonRequest.addLoanFulfillmentFields();
+        this.aeonRequest.addFulfillmentFields(type);
     }
 
     removeItem(event) {
@@ -82,7 +75,7 @@ export default class extends Controller {
     }
 
     clearAll() {
-        this.itemListArea().querySelector('.fa-request__list').innerHTML = '';
+        this.itemListArea().innerHTML = '';
         this.selectedItems().forEach(itemInput => { itemInput.checked = false });
         this.toggleItemListElements();
         this.updateStatus();
@@ -101,7 +94,7 @@ export default class extends Controller {
         const form = event.target;
         const submitFormData = new FormData(form);
         form.method = 'POST';
-        form.action = this.aeonRequest.configData.requestEreEndpoint;
+        form.action = this.aeonRequest.endpoint;
         event.submitter.disabled = true;
 
         this.aeonRequest.addItems(this.selectedItems());
@@ -139,12 +132,12 @@ export default class extends Controller {
 
     buildItemList() {
         this.toggleItemListElements();
-        this.itemListArea().querySelector('.fa-request__list').innerHTML = '';
+        this.itemListArea().innerHTML = '';
         this.selectedItems().forEach(item => {
             const li = this.listItemTemplateTarget.content.firstElementChild.cloneNode(true);
             li.querySelector('strong').innerHTML = item.dataset.title;
             li.querySelector('.fa-request__meta').textContent = [item.dataset.volume, item.dataset.issue].join(', ');
-            this.itemListArea().querySelector('.fa-request__list').appendChild(li);
+            this.itemListArea().appendChild(li);
         });
     }
 
@@ -173,9 +166,9 @@ export default class extends Controller {
 
     itemListArea() {
         if(this.typeValue === this.aeonRequest.scanRequestType()) {
-            return this.scanItemListAreaTarget;
+            return this.scanItemListTarget;
         } else {
-            return this.visitItemListAreaTarget;
+            return this.visitItemListTarget;
         }
     }
 
@@ -185,8 +178,8 @@ export default class extends Controller {
 
     toggleItemListElements() {
         const itemIsSelected = this.selectedItems().length > 0;
-        this.itemListArea().querySelector('.fa-request__empty').hidden = itemIsSelected;
-        this.itemListArea().querySelector('.fa-request__review-lede').hidden = !itemIsSelected;
+        this.activeSection().querySelector('.fa-request__empty').hidden = itemIsSelected;
+        this.activeSection().querySelector('.fa-request__review-lede').hidden = !itemIsSelected;
         this.activeSection().querySelector('.fa-request__footer').hidden = !itemIsSelected;
     }
 

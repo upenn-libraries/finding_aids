@@ -34,6 +34,14 @@ module Requesting
       end
     end
 
+    def button(type:)
+      label = t("show.sections.request.bar.#{type}.button")
+      tag.button(label, type: 'button', class: 'pl-button pl-button--success',
+                        data: { action: 'click->request#initiateRequest',
+                                'request-type-param': type }
+      )
+    end
+
     def visit_type
       VISIT_REQUEST
     end

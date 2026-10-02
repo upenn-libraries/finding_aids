@@ -2,27 +2,23 @@
   <div class="pl-viewport-margins fa-request__bar-content">
     <p class="fa-request__bar-text" role="status" aria-live="polite" data-request-target="requestBarText"></p>
     <div class="pl-flex pl-gap-s" style="align-items: baseline;">
-      <button type="button" class="pl-button pl-button--success" data-action="click->request#initiateCopyRequest">
-        <%= t('show.sections.request.bar.request_copies') %>
-      </button>
+      <%= button(type: scan_type) %>
       <span class="pl-caps"><%= t('show.sections.request.bar.or') %></span>
-      <button type="button" class="pl-button pl-button--success" data-action="click->request#initiateVisitRequest">
-        <%= t('show.sections.request.bar.plan_visit') %>
-      </button>
+      <%= button(type: visit_type) %>
     </div>
   </div>
 <% end %>
 
 <dialog class="fa-request__dialog" aria-modal="true" aria-labelledby="dialog-title" tabindex="-1"
         data-request-target="requestDialog" data-action="close->request#close">
-  <button type="button" class="pl-button fa-request__dialog-close" aria-label="Close"
+  <button type="button" class="pl-button fa-request__dialog-close" aria-label="<%= t('show.sections.request.close') %>"
           data-action="click->request#close">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
     </svg>
   </button>
 
-  <p class="pl-caps fa-request__step">Step <span data-request-target="stepNumber">1</span> of 2</p>
+  <p class="pl-caps fa-request__step"><%= t('show.sections.request.bar.step_html') %></p>
   <h2 id="dialog-title" data-request-target="modalTitle" class="pl-margin-b-2xs pl-margin-t-xs"
       data-scan-title="<%= t('show.sections.request.scan.title') %>"
       data-visit-title="<%= t('show.sections.request.visit.title') %>">
@@ -32,8 +28,4 @@
   <%= render Requesting::ReviewSectionComponent.new(request_type: scan_type, repository: @repository_info.label) %>
   <%= render Requesting::SubmitSectionComponent.new(request_type: visit_type) %>
   <%= render Requesting::SubmitSectionComponent.new(request_type: scan_type) %>
-
-
-
-
 </dialog>
