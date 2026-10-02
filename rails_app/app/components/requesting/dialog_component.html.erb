@@ -28,8 +28,8 @@
       data-visit-title="<%= t('show.sections.request.visit.title') %>">
   </h2>
 
-  <%= render Requesting::SelectionsSectionComponent.new(request_type: visit_type, repository: @repository_info.label) %>
-  <%= render Requesting::SelectionsSectionComponent.new(request_type: scan_type, repository: @repository_info.label) %>
+  <%= render Requesting::ReviewSectionComponent.new(request_type: visit_type, repository: @repository_info.label) %>
+  <%= render Requesting::ReviewSectionComponent.new(request_type: scan_type, repository: @repository_info.label) %>
   <%= render Requesting::SubmitSectionComponent.new(request_type: visit_type) %>
   <%= render Requesting::SubmitSectionComponent.new(request_type: scan_type) %>
 

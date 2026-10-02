@@ -281,6 +281,7 @@ en:
           form_lede: "We'll review your request and be in touch about your scans."
         held_at: 'Held at'
         review_empty_html: 'Nothing selected yet. Use the <strong>checkbox</strong> next to any item to add it.'
+        remove: 'Remove'
         remove_all: 'Remove all'
         continue: 'Continue'
         back: 'Back'

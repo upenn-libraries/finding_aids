@@ -2,7 +2,7 @@
 
 module Requesting
   # Renders dialog section for confirming the selection of items
-  class SelectionsSectionComponent < ViewComponent::Base
+  class ReviewSectionComponent < ViewComponent::Base
     attr_reader :request_type, :repository
 
     def initialize(request_type:, repository:)
