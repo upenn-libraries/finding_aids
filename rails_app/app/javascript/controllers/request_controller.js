@@ -1,7 +1,10 @@
 import { Controller } from "@hotwired/stimulus";
 import AeonRequest from "aeon_request";
 
-const STEPS = ['review', 'submit'];
+const REVIEW_STEP = 'review'
+const SUBMIT_STEP = 'submit'
+const STEPS = [REVIEW_STEP, SUBMIT_STEP];
+
 
 export default class extends Controller {
     static targets = [
@@ -53,14 +56,14 @@ export default class extends Controller {
     }
 
     initiateCopyRequest() {
-        this.typeValue = 'scan';
+        this.typeValue = this.aeonRequest.scanRequestType();
         this.initializeModal();
         this.updateStatus();
         this.aeonRequest.addScanFulfillmentFields();
     }
 
     initiateVisitRequest() {
-        this.typeValue = 'visit';
+        this.typeValue = this.aeonRequest.visitRequestType();
         this.initializeModal();
         this.updateStatus();
         this.aeonRequest.addLoanFulfillmentFields();
@@ -86,12 +89,11 @@ export default class extends Controller {
     }
 
     continueToSubmit() {
-        this.aeonRequest.addItems(this.selectedItems());
-        this.currentStepValue = 'submit';
+        this.currentStepValue = SUBMIT_STEP;
     }
 
     backToReview() {
-        this.currentStepValue = 'review';
+        this.currentStepValue = REVIEW_STEP;
     }
 
     submitRequest(event) {
@@ -101,6 +103,8 @@ export default class extends Controller {
         form.method = 'POST';
         form.action = this.aeonRequest.configData.requestEreEndpoint;
         event.submitter.disabled = true;
+
+        this.aeonRequest.addItems(this.selectedItems());
 
         // swap date fields and format for Aeon
         const rawScheduledDate = submitFormData.get('rawScheduledDate');
@@ -146,7 +150,7 @@ export default class extends Controller {
 
     setModalTitle() {
         const dataset = this.modalTitleTarget.dataset;
-        this.modalTitleTarget.textContent = this.typeValue === 'scan' ? dataset.scanTitle : dataset.visitTitle;
+        this.modalTitleTarget.textContent = this.typeValue === this.aeonRequest.scanRequestType() ? dataset.scanTitle : dataset.visitTitle;
     }
 
     activateCurrentStep() {
@@ -168,7 +172,7 @@ export default class extends Controller {
     }
 
     itemListArea() {
-        if(this.typeValue === 'scan') {
+        if(this.typeValue === this.aeonRequest.scanRequestType()) {
             return this.scanItemListAreaTarget;
         } else {
             return this.visitItemListAreaTarget;
@@ -189,7 +193,7 @@ export default class extends Controller {
     initializeModal() {
         this.setModalTitle();
         this.requestDialogTarget.showModal();
-        this.currentStepValue = 'review';
+        this.currentStepValue = REVIEW_STEP;
         this.buildItemList();
     }
 }

@@ -4,6 +4,8 @@ export default class AeonRequest {
     AEON_FORM = 'ExternalRequest'
     WEB_REQUEST_FORM = 'DefaultRequest'
     SUBMIT_VALUE = 'Submit Request'
+    SCAN_REQUEST_TYPE = 'scan'
+    VISIT_REQUEST_TYPE = 'visit'
     TEXT_FIELD_CHAR_LIMIT = 255
 
     constructor(configData, formData = new FormData()) {
@@ -11,6 +13,14 @@ export default class AeonRequest {
         this.formData = formData;
         this.configData = configData;
         this.addConfigFields();
+    }
+
+    scanRequestType() {
+        return this.SCAN_REQUEST_TYPE;
+    }
+
+    visitRequestType() {
+        return this.VISIT_REQUEST_TYPE;
     }
 
     addConfigFields() {
@@ -82,5 +92,6 @@ export default class AeonRequest {
 
     reset() {
         this.formData = new FormData();
+        this.items = 0;
     }
 }
