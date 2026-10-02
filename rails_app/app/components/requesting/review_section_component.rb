@@ -5,7 +5,7 @@ module Requesting
   class ReviewSectionComponent < ViewComponent::Base
     attr_reader :request_type, :repository
 
-    # @param request_type [String] scan or visit
+    # @param request_type [Symbol] scan or visit
     # @param repository [String] name for display
     def initialize(request_type:, repository:)
       @request_type = request_type

@@ -1,14 +1,3 @@
-<%= bar_wrapper_div do %>
-  <div class="pl-viewport-margins fa-request__bar-content">
-    <p class="fa-request__bar-text" role="status" aria-live="polite" data-request-target="requestBarText"></p>
-    <div class="pl-flex pl-gap-s" style="align-items: baseline;">
-      <%= button(type: scan_type) %>
-      <span class="pl-caps"><%= t('show.sections.request.bar.or') %></span>
-      <%= button(type: visit_type) %>
-    </div>
-  </div>
-<% end %>
-
 <dialog class="fa-request__dialog" aria-modal="true" aria-labelledby="dialog-title" tabindex="-1"
         data-request-target="requestDialog" data-action="close->request#close">
   <button type="button" class="pl-button fa-request__dialog-close" aria-label="<%= t('show.sections.request.close') %>"
@@ -24,8 +13,8 @@
       data-visit-title="<%= t('show.sections.request.visit.title') %>">
   </h2>
 
-  <%= render Requesting::ReviewSectionComponent.new(request_type: visit_type, repository: @repository_info.label) %>
-  <%= render Requesting::ReviewSectionComponent.new(request_type: scan_type, repository: @repository_info.label) %>
-  <%= render Requesting::SubmitSectionComponent.new(request_type: visit_type) %>
-  <%= render Requesting::SubmitSectionComponent.new(request_type: scan_type) %>
+  <%= render Requesting::ReviewSectionComponent.new(request_type: RequestingComponent::VISIT_REQUEST, repository: repository_name) %>
+  <%= render Requesting::ReviewSectionComponent.new(request_type: RequestingComponent::SCAN_REQUEST, repository: repository_name) %>
+  <%= render Requesting::SubmitSectionComponent.new(request_type: RequestingComponent::VISIT_REQUEST) %>
+  <%= render Requesting::SubmitSectionComponent.new(request_type: RequestingComponent::SCAN_REQUEST) %>
 </dialog>

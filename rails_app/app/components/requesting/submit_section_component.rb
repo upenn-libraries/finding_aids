@@ -11,6 +11,8 @@ module Requesting
       visit: %i[date notes save_for_later],
       scan: %i[notes save_for_later]
     }.freeze
+
+    # @param request_type [Symbol]
     def initialize(request_type:)
       @request_type = request_type
     end
@@ -21,7 +23,7 @@ module Requesting
     end
 
     def input_controls
-      INPUTS[request_type.to_sym]
+      INPUTS[request_type]
     end
 
     def notes_input
