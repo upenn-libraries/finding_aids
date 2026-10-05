@@ -94,7 +94,7 @@ export default class extends Controller {
         const form = event.target;
         const submitFormData = new FormData(form);
         form.method = 'POST';
-        form.action = this.aeonRequest.endpoint;
+        form.action = this.aeonRequest.endpoint();
         event.submitter.disabled = true;
 
         this.aeonRequest.addItems(this.selectedItems());
