@@ -18,8 +18,8 @@
     .fa-toc-toggle,
     [data-pl-accordion-toggle],
     .fa-guide-header__institution .pl-button,
-    .fa-visit__cell,
-    table:has(.fa-visit__cell) th:last-child {
+    .fa-request__cell,
+    table:has(.fa-request__cell) th:last-child {
         display: none !important;
     }
 

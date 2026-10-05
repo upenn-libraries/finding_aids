@@ -64,10 +64,12 @@
 * Add fa-*.css imports here as product-specific features are built.
 */
 @import url('fa-root.css');
+@import url('fa-table.css');
 @import url('fa-search-bar.css');
 @import url('fa-index.css');
 @import url('fa-home.css');
 @import url('fa-results.css');
 @import url('fa-record.css');
 @import url('fa-cards.css');
+@import url('fa-request.css');
 @import url('fa-print.css');

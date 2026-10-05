@@ -270,4 +270,33 @@ en:
       contact:
         header: 'Contact'
         guide_html: 'These materials are held by <strong>%{repository}</strong>. Contact them to schedule a visit or ask about your research.'
-
+      request:
+        visit:
+          title: 'Plan your visit'
+          review_lede: "These are the items you'd like to view on your visit."
+          form_lede: "We'll reply to confirm your date and have your items ready."
+        scan:
+          title: 'Request copies'
+          review_lede: "These are the items you'd like digital copies of. We'll scan them and deliver the files to your Research Account."
+          form_lede: "We'll review your request and be in touch about your scans."
+        held_at: 'Held at'
+        review_empty_html: 'Nothing selected yet. Use the <strong>checkbox</strong> next to any item to add it.'
+        remove: 'Remove'
+        remove_all: 'Remove all'
+        continue: 'Continue'
+        back: 'Back'
+        close: 'Close'
+        date_label: 'What date would you like to visit?'
+        date_hint: 'Pick a date at least a week out.'
+        notes_label: 'Anything else we should know? (optional)'
+        user_review_label: 'Save this request for later'
+        submitting_note: 'Submitting this request will take you into your Research Account. You will be able to review, revise or cancel your request there.'
+        send: 'Send request'
+        step_html: 'Step <span data-request-target="stepNumber">1</span> of 2'
+        bar:
+          region: 'Selected materials'
+          or: 'OR'
+          scan:
+            button: 'Request copies'
+          visit:
+            button: 'Plan a visit'
