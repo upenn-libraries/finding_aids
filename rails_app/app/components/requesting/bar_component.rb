@@ -38,6 +38,7 @@ module Requesting
     private
 
     # @param type [Symbol]
+    # @return [ActiveSupport::SafeBuffer]
     def button(type:)
       label = t("show.sections.request.bar.#{type}.button")
       tag.button(label, type: 'button', class: 'pl-button pl-button--success',

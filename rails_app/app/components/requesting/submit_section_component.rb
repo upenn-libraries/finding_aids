@@ -22,10 +22,14 @@ module Requesting
       REQUEST_DATE_MINIMUM_WEEKS_OUT.week.from_now.to_date.iso8601
     end
 
+    # @return [ActiveSupport::SafeBuffer]
     def input_controls
-      INPUTS[request_type]
+      safe_join(INPUTS.fetch(request_type).map { |input| send(:"#{input}_input") })
     end
 
+    private
+
+    # @return [ActiveSupport::SafeBuffer]
     def notes_input
       tag.label do
         safe_join([
@@ -35,6 +39,7 @@ module Requesting
       end
     end
 
+    # @return [ActiveSupport::SafeBuffer]
     def save_for_later_input
       tag.label(class: 'fa-request__save') do
         safe_join([
@@ -44,6 +49,7 @@ module Requesting
       end
     end
 
+    # @return [ActiveSupport::SafeBuffer]
     def date_input
       tag.div do
         tag.label do
