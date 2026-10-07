@@ -84,9 +84,12 @@ RSpec.describe Ead::Extraction::Inventory::EntryPresenter do
       expect(presenter.title(title: nil)).to eq('(No Title)')
     end
 
-    it 'returns a SafeBuffer' do
+    it 'returns a sanitized string with allowed tags retained but links removed' do
       presenter = described_class.new(instance_double(entry_class))
-      expect(presenter.title(title: 'Letters')).to be_a(ActiveSupport::SafeBuffer)
+      title = presenter.title(title: 'On the <emph>Ship</emph>',
+                              extent: ' <a href="https://buymyproduct.co">5 boxes</a>')
+      expect(title).to be_a(ActiveSupport::SafeBuffer)
+      expect(title).to eq('On the <emph>Ship</emph> 5 boxes')
     end
   end
 
