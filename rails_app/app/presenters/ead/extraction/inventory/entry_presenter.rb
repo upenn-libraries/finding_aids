@@ -5,6 +5,9 @@ module Ead
     module Inventory
       # Provides desired display data for Entry objects
       class EntryPresenter
+        include ActionView::Helpers::SanitizeHelper
+
+        ALLOWED_TITLE_TAGS = %w[emph strong].freeze
         NO_TITLE = '(No Title)'
 
         attr_reader :entry
@@ -69,7 +72,7 @@ module Ead
           title = [title, date].compact_blank.join(', ')
           title.concat extent if extent.present?
 
-          ActiveSupport::SafeBuffer.new(title.presence || NO_TITLE)
+          sanitize(title.presence || NO_TITLE, tags: ALLOWED_TITLE_TAGS)
         end
       end
     end
