@@ -31,17 +31,17 @@ module Geocoding
 
       Result.success(lat: best.latitude, lng: best.longitude)
     rescue StandardError => e
-      Rails.logger.warn "Geocoding::Service: #{e.class}: #{e.message}"
+      Rails.logger.warn "Error during geocoder lookup: #{e.class}: #{e.message}"
       Result.failure
     end
 
     # Bulk-geocode all addresses and persist to cache file.
     #
-    # @param addresses [Hash{String => String}] name → address
+    # @param addresses_map [Hash{String => String}] name → address
     # @yield [name, result] optional progress hook
     # @return [Integer] count of addresses considered
-    def run!(addresses)
-      addresses.each do |name, address|
+    def run!(addresses_map)
+      addresses_map.each do |name, address|
         next if address.empty?
 
         result = geocode(address)
@@ -50,22 +50,17 @@ module Geocoding
       end
 
       @cache.persist
-      addresses.size
+      addresses_map.size
     end
 
     private
-
-    # @return [Boolean] true when this entry should be sent to the geocoding API
-    def needs_geocoding?(name, address)
-      address.present? && !@cache.failed?(name)
-    end
 
     # @param name [String]
     # @param result [Geocoding::Result]
     def apply_result(name, result)
       return @cache.store_failure(name) unless result.success?
 
-      @cache.store(name, lat: result.lat, lng: result.lng)
+      @cache.store(name: name, lat: result.lat, lng: result.lng)
     end
   end
 end

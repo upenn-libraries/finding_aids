@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Geocoding::Service do
-  subject(:service) { described_class.new(cache: cache, api_delay: 0) }
+  subject(:service) { described_class.new(cache: cache, api_delay: 0.0) }
 
   let(:cache_path) { Rails.root.join('tmp/geocoder_cache_test.yml') }
   let(:cache) { Geocoding::Cache.new(path: cache_path) }
@@ -59,7 +59,7 @@ describe Geocoding::Service do
       allow(Geocoder).to receive(:search).and_raise(StandardError, 'boom')
       count = service.run!('Error' => 'Bad address')
       expect(count).to eq(1)
-      expect(cache.failed?('Error')).to be true
+      expect(cache['Error'][:_failed]).to be true
     end
 
     it 'does not perform a lookup for blank addresses' do

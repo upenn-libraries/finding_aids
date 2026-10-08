@@ -26,25 +26,15 @@ module Geocoding
     end
 
     # @param name [String] repository name
-    # @return [Boolean] true when a previously-failed entry exists
-    def failed?(name)
-      entries.dig(name, :_failed) == true
-    end
-
-    # ── public query API ──────────────────────────────────────────────
-
-    # @param name [String] repository name
     # @return [Hash, nil] the cached entry or nil
     delegate :[], to: :entries
-
-    # ── write API ─────────────────────────────────────────────────────
 
     # Store a successful geocode result.
     #
     # @param name [String]
     # @param lat [Float]
     # @param lng [Float]
-    def store(name, lat:, lng:)
+    def store(name:, lat:, lng:)
       @entries = entries.merge(name => { lat: lat, lng: lng })
     end
 
@@ -55,7 +45,7 @@ module Geocoding
       @entries = entries.merge(name => FAILED.dup)
     end
 
-    # Atomic disk write via tempfile + rename.
+    # Disk write via tempfile + rename.
     #
     # @return [nil]
     def persist
@@ -76,7 +66,6 @@ module Geocoding
     end
 
     # Lazily loads the geocoding cache from disk (YAML file).
-    # Acquires a shared lock on the file, then reads from the locked handle.
     #
     # @return [Hash{String => Hash}] repository name → coordinate data
     def entries
@@ -88,7 +77,6 @@ module Geocoding
     # @return [Hash]
     def load_from_disk
       File.open(@path, File::RDONLY) do |f|
-        f.flock(File::LOCK_SH)
         YAML.safe_load(f.read, permitted_classes: [Symbol], aliases: true) || {}
       end
     rescue Errno::ENOENT
