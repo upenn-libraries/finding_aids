@@ -182,9 +182,9 @@ en:
     subjects_and_headings: 'Subjects and headings'
   sorts:
     relevance: 'Relevance'
-    year_desc: 'Year (descending)'
+    year_desc: 'Year (newest first)'
     year_asc: 'Year (oldest first)'
-    title_desc: 'Title (descending)'
+    title_desc: 'Title (Z-A)'
     title_asc: 'Title (A–Z)'
   messages:
     access_clarification_html: "This is a finding aid. It is a description of archival material held at the <b>%{repository}</b>. Unless otherwise noted, the materials described below are physically available in their reading room, and not digitally available through the web."
