@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Catalog
-  # Override component from Blacklight v9.1.0 to add an "All" constraint pill
+  # Override component from Blacklight v9.2.1 to add an "All" constraint pill
   # when no search constraints are present.
   class ConstraintsComponent < Blacklight::ConstraintsComponent
     # @return [Boolean]

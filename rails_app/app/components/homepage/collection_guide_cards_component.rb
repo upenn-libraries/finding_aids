@@ -11,10 +11,16 @@ module Homepage
       @guides = guides
     end
 
+    # @return [ActiveSupport::SafeBuffer]
+    def browse_all_link
+      link_to(t('homepage.collection_guides.browse_all'),
+              helpers.search_catalog_path(q: '', search_field: 'all_fields', sort: 'title-asc'))
+    end
+
     # @param guide [FeaturedCollection]
     # @return [String]
     def guide_url(guide)
-      solr_document_path(id: guide.record_id)
+      helpers.solr_document_path(id: guide.record_id)
     end
   end
 end

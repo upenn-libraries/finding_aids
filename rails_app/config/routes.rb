@@ -52,12 +52,6 @@ Rails.application.routes.draw do
     member { get '/ead', to: 'catalog#show', defaults: { format: 'ead' } } # get raw EAD XML
   end
 
-  resources :requests, only: %i[create] do
-    collection do
-      post 'prepare'
-    end
-  end
-
   scope :status do
     get '/', to: 'status#index', as: :endpoints_status
     get '/:id', to: 'status#show', as: :endpoint_status

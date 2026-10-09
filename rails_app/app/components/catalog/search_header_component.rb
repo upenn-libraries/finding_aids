@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Catalog
-  # Overriding component from Blacklight v9.1.0 to support:
+  # Overriding component from Blacklight v9.2.1 to support:
   #   - combination of constraints/sort into one nav
   #   - removal of "did you mean" spellcheck suggestions area
   #   - usage of local StartOverButton component

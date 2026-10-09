@@ -9,6 +9,7 @@ module Homepage
       @repos = repos
     end
 
+    # @return [Boolean]
     def render?
       @repos.present?
     end

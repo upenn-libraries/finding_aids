@@ -5,6 +5,9 @@ module Ead
     module Inventory
       # Provides desired display data for Entry objects
       class EntryPresenter
+        include ActionView::Helpers::SanitizeHelper
+
+        ALLOWED_TITLE_TAGS = %w[emph strong].freeze
         NO_TITLE = '(No Title)'
 
         attr_reader :entry
@@ -48,6 +51,16 @@ module Ead
           entry.containers.map(&:to_s).join(', ')
         end
 
+        # @return [Hash{Symbol->ActiveSupport::SafeBuffer}]
+        def requesting_data
+          {
+            volume: entry.containers.map(&:to_s).first,
+            issue: entry.containers.map(&:to_s).second,
+            barcode: entry.containers.map(&:barcode).first,
+            title: heading
+          }
+        end
+
         # @param title [ActiveSupport::SafeBuffer, String] sanitized title
         # @param origination [String, nil]
         # @param date [String, nil]
@@ -59,7 +72,7 @@ module Ead
           title = [title, date].compact_blank.join(', ')
           title.concat extent if extent.present?
 
-          ActiveSupport::SafeBuffer.new(title.presence || NO_TITLE)
+          sanitize(title.presence || NO_TITLE, tags: ALLOWED_TITLE_TAGS)
         end
       end
     end
