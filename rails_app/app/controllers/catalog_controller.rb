@@ -103,12 +103,12 @@ class CatalogController < ApplicationController
 
     config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true, collapse: false
     config.add_facet_field 'record_source', label: I18n.t('fields.record_source'), query: {
-      upenn: { label: 'University of Pennsylvania', fq: 'upenn_record_bsi:true' },
-      non_upenn: { label: 'Other PACSCL Partners', fq: 'upenn_record_bsi:false' }
-    }
+      upenn: { label: I18n.t('facets.record_source.upenn'), fq: 'upenn_record_bsi:true' },
+      non_upenn: { label: I18n.t('facets.record_source.non_upenn'), fq: 'upenn_record_bsi:false' }
+    }, if: :record_source_facet_param_present?
     config.add_facet_field 'online_content', label: I18n.t('fields.online_content'), query: {
-      yes: { label: 'Has Online Content', fq: 'online_content_bsi:true' },
-      no: { label: 'Not Available', fq: 'online_content_bsi:false' }
+      yes: { label: I18n.t('facets.online_content.yes'), fq: 'online_content_bsi:true' },
+      no: { label: I18n.t('facets.online_content.no'), fq: 'online_content_bsi:false' }
     }
     config.add_facet_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), limit: true
     config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.topics.corpnames'), limit: true
@@ -216,13 +216,19 @@ class CatalogController < ApplicationController
   end
 
   def upenn
-    redirect_to search_catalog_path({ 'f[record_source][]': 'upenn' })
+    redirect_to search_catalog_path({ 'f[record_source][]': 'upenn', sort: 'title-asc' })
   end
 
   private
 
+  # @return [Boolean]
   def json_request?
     request.format.json?
+  end
+
+  # @return [Boolean]
+  def record_source_facet_param_present?
+    params.dig(:f, 'record_source').present?
   end
 
   def load_homepage_data
