@@ -3,8 +3,7 @@
     <h2 class="pl-margin-b-m"><%= t('homepage.collection_guides.heading') %></h2>
     <p class="pl-line-length pl-margin-b-xl">
       <%= t('homepage.collection_guides.intro_html',
-            browse_all_link: link_to(t('homepage.collection_guides.browse_all'),
-                                    search_catalog_path(q: '', search_field: 'all_fields'))) %>
+            browse_all_link: browse_all_link) %>
     </p>
 
     <ol class="pl-cards fa-cards--capped">
