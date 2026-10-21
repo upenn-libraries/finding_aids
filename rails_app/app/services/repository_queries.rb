@@ -6,6 +6,7 @@ class RepositoryQueries
   SOLR_FIELD_REPOSITORY = 'repository_ssi'
   SOLR_FIELD_TITLE = 'title_tsi'
   SOLR_FIELD_ADDRESS = 'repository_address_ssi'
+  SOLR_COUNT_SORT = 'count desc'
   TITLES_MAX_ROWS = 20_000
 
   class << self
@@ -48,7 +49,7 @@ class RepositoryQueries
                                           type: 'terms',
                                           field: SOLR_FIELD_ADDRESS,
                                           limit: 1,
-                                          sort: 'count desc'
+                                          sort: SOLR_COUNT_SORT
                                         }
                                       }
                                     }

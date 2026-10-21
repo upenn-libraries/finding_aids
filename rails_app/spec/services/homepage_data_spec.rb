@@ -46,15 +46,15 @@ describe HomepageData do
     end
 
     it 'builds Repository data objects' do
-      cache.store('Haverford College Quaker & Special Collections', **coords[:haverford])
-      cache.store('Historical Society of Pennsylvania', **coords[:hsp])
+      cache.store(name: 'Haverford College Quaker & Special Collections', **coords[:haverford])
+      cache.store(name: 'Historical Society of Pennsylvania', **coords[:hsp])
 
       repos = described_class.repositories(cache: cache)
       expect(repos).to all(be_a(HomepageData::Repository))
     end
 
     it 'reads coordinates from cache' do
-      cache.store('Haverford College Quaker & Special Collections', **coords[:haverford])
+      cache.store(name: 'Haverford College Quaker & Special Collections', **coords[:haverford])
 
       repos = described_class.repositories(cache: cache)
       haverford = repos.find { |r| r.name == 'Haverford College Quaker & Special Collections' }

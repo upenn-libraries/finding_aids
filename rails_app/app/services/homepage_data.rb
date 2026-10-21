@@ -47,7 +47,7 @@ module HomepageData
       cache.entries.filter_map do |repo, entry|
         next if entry.key?(:_failed)
 
-        count = counts.find { |e| e[:name] == repo }
+        count = counts.find { |facet| facet[:name] == repo }
         next unless count
 
         Repository.new(

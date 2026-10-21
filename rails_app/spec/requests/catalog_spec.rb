@@ -6,7 +6,7 @@ describe 'Catalog actions' do
   describe 'UPenn vanity route' do
     it 'routes to the search results with the penn source facet applied' do
       get upenn_path
-      expect(response).to redirect_to search_catalog_path({ 'f[record_source][]': 'upenn' })
+      expect(response).to redirect_to search_catalog_path({ 'f[record_source][]': 'upenn', sort: 'title-asc' })
     end
   end
 

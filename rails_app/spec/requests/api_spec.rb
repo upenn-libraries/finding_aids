@@ -59,7 +59,7 @@ describe 'API index endpoints' do
 
     context 'when a repository has cached coordinates' do
       before do
-        cache.store('Test Repo', **cached_coords)
+        cache.store(name: 'Test Repo', **cached_coords)
         allow(RepositoryQueries).to receive_messages(
           facet_counts: [{ name: 'Test Repo', count: 100 }],
           addresses: { 'Test Repo' => '1 Research Park' }
@@ -74,7 +74,7 @@ describe 'API index endpoints' do
     end
 
     it 'returns repository data with expected keys' do
-      cache.store('Test Repo', **cached_coords)
+      cache.store(name: 'Test Repo', **cached_coords)
       allow(RepositoryQueries).to receive_messages(
         facet_counts: [{ name: 'Test Repo', count: 100 }],
         addresses: { 'Test Repo' => '1 Research Park' }
@@ -102,7 +102,7 @@ describe 'API index endpoints' do
       HomepageData.instance_variable_set(:@repositories, nil)
       HomepageData.instance_variable_set(:@repositories_json, nil)
       seed_solr(e2e_docs)
-      cache.store('Mapped Repo', **e2e_coords)
+      cache.store(name: 'Mapped Repo', **e2e_coords)
       get map_data_api_path
     end
 
