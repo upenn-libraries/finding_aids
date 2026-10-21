@@ -1,5 +1,8 @@
 homepage_images:
   - alt_text: Demonstrators holding a banner for the Negro Trade Union Leadership Council and the Jewish Labor Committee
+    citation:
+      href: https://findingaids.library.upenn.edu/records/TUSCRC_SCRC170B
+      text: George D. McDowell Philadelphia Evening Bulletin Photograph Collection
     sources:
       - media: '(min-width: 48em)'
         srcset:
@@ -19,6 +22,9 @@ homepage_images:
             descriptor: 1400w
     default: temple-desktop-1440w.webp
   - alt_text: A hand-colored bird's-eye view of Philadelphia from the Delaware River, crowded with sailing ships and a paddle steamer
+    citation:
+      href: https://libwww.freelibrary.org/digital/item/zoom/44682
+      text: Bird's Eye View of Philadelphia Drawn from nature and on stone by J. Bachmann
     sources:
       - media: '(min-width: 48em)'
         srcset:
@@ -38,6 +44,9 @@ homepage_images:
             descriptor: 1400w
     default: free-desktop-1440w.webp
   - alt_text: A group portrait of women graduates in caps and gowns, seated in three rows
+    citation:
+      href: https://findingaids.library.upenn.edu/records/DUCOM_WM.AHE5
+      text: Woman's Medical College of Pennsylvania photograph collection
     sources:
       - media: '(min-width: 48em)'
         srcset:
@@ -57,6 +66,9 @@ homepage_images:
             descriptor: 1400w
     default: drexel-desktop-1440w.webp
   - alt_text: An open register with rows of names and hometowns written in fountain pen
+    citation:
+      href: https://jdc.jefferson.edu/medicalnotebooks/8/
+      text: Kerfoot, George, "Medical Notebook" (1830)
     sources:
       - media: '(min-width: 48em)'
         srcset:
@@ -76,6 +88,9 @@ homepage_images:
             descriptor: 1400w
     default: thomas-desktop-1440w.webp
   - alt_text: A hand-colored print of Quakers dancing in a ring on a green hillside
+    citation:
+      href: https://findingaids.library.upenn.edu/records/swarthmore_SFHL.PA.004
+      text: Friends Historical Library collection of art
     sources:
       - media: '(min-width: 48em)'
         srcset:
