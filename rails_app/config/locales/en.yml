@@ -40,12 +40,6 @@ en:
       contact_us:
         link_text: 'Contact us'
         remaining_text: "to get help finding what you're looking for."
-  common:
-    links:
-      home: 'Home'
-      about: 'About the site'
-      statement: 'Statement on Archival Description and Harmful Language'
-      admin: 'Site Administration'
   document:
     links:
       contact_us: "Contact Us"
@@ -57,17 +51,15 @@ en:
       Search collection guides from archives, libraries, and historical
       societies across the Philadelphia area, all in one place. Each guide
       shows you what a collection holds and where to see it.
-    headings:
-      overview: "What you'll find here"
-      contribute: 'Share your finding aids with us'
-      update: 'Update your finding aids'
-      add: 'Add your finding aids'
-      thanks: 'Special thanks'
+  for_archivists:
+    page_title: 'Information for Archivists'
+    header: 'Information for Archivists'
   footer:
     archives:
       heading: 'Philadelphia Area Archives'
       home: 'Home'
       about: 'About'
+      for_archivists: 'Information For Archivists'
       pacscl: 'PACSCL'
       statement: 'Statement on Archival Description and Harmful Language'
     admin:

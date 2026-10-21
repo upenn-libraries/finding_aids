@@ -5,4 +5,6 @@ class StaticPagesController < ApplicationController
   before_action :load_regional_repos, only: :about
 
   def about; end
+
+  def for_archivists; end
 end
