@@ -2,7 +2,7 @@ pennlibs_web_version: '1.6.0'
 
 aeon:
   url: 'https://aeon.library.upenn.edu'
-  ere_endpoint: 'https://aeon.library.upenn.edu/aeon/aeon.dll'
+  ere_endpoint: 'https://aeon.library.upenn.edu/logon/'
   locations:
     - label: 'University of Pennsylvania: Kislak Center for Special Collections, Rare Books and Manuscripts'
       site: KISLAK
