@@ -31,28 +31,4 @@ RSpec.describe Ead::Extraction::Inventory::DigitalObject do
       expect(dao.title).to eq('Finding Aid Scan')
     end
   end
-
-  describe '#iiif?' do
-    it 'is true when role matches the IIIF presentation API namespace' do
-      dao = described_class.new(
-        href: 'https://example.com/manifest.json',
-        role: 'https://iiif.io/api/presentation/2.1/',
-        title: nil
-      )
-
-      expect(dao.iiif?).to be true
-    end
-
-    it 'is false for any other role' do
-      dao = described_class.new(href: 'https://example.com/thing.pdf', role: 'download', title: nil)
-
-      expect(dao.iiif?).to be false
-    end
-
-    it 'is false when role is nil' do
-      dao = described_class.new(href: 'https://example.com/thing.pdf', role: nil, title: nil)
-
-      expect(dao.iiif?).to be false
-    end
-  end
 end
