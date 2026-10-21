@@ -6,6 +6,7 @@ class RepositoryQueries
   SOLR_FIELD_REPOSITORY = 'repository_ssi'
   SOLR_FIELD_TITLE = 'title_tsi'
   SOLR_FIELD_ADDRESS = 'repository_address_ssi'
+  SOLR_COUNT_SORT = 'count desc'
   TITLES_MAX_ROWS = 20_000
 
   class << self
@@ -31,25 +32,33 @@ class RepositoryQueries
       response.dig('facet_counts', 'facet_fields', SOLR_FIELD_REPOSITORY) || []
     end
 
-    # Returns one representative address per repository.
+    # Returns one representative address per repository, including repositories without address values present.
     #
     # @return [Hash{String => String}] repository name => address string
     def addresses
       response = connection.get('select', params: {
                                   q: '*:*',
-                                  rows: 100,
-                                  group: 'true',
-                                  'group.field': SOLR_FIELD_REPOSITORY,
-                                  'group.limit': 1,
-                                  fl: "#{SOLR_FIELD_REPOSITORY},#{SOLR_FIELD_ADDRESS}"
+                                  rows: 0,
+                                  'json.facet' => JSON.generate(
+                                    repositories: {
+                                      type: 'terms',
+                                      field: SOLR_FIELD_REPOSITORY,
+                                      limit: -1,
+                                      facet: {
+                                        addresses: {
+                                          type: 'terms',
+                                          field: SOLR_FIELD_ADDRESS,
+                                          limit: 1,
+                                          sort: SOLR_COUNT_SORT
+                                        }
+                                      }
+                                    }
+                                  )
                                 })
-      (response.dig('grouped', SOLR_FIELD_REPOSITORY, 'groups') || []).each_with_object({}) do |group, hash|
-        doc = group.dig('doclist', 'docs')&.first
-        next unless doc
+      response['facets']['repositories']['buckets'].to_h do |repository|
+        address = repository['addresses']['buckets'].first
 
-        name = doc[SOLR_FIELD_REPOSITORY]
-        addr = doc[SOLR_FIELD_ADDRESS]
-        hash[name] = addr if name && addr.present?
+        [repository['val'], address&.dig('val')]
       end
     end
 

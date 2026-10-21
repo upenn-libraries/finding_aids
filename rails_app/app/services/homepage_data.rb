@@ -8,7 +8,7 @@
 module HomepageData
   MAX_GUIDES = 8
 
-  Repository = Data.define(:name, :slug, :count, :lat, :lng, :records_url)
+  Repository = Data.define(:name, :count, :lat, :lng, :records_url)
 
   class << self
     # @return [Config::Options] homepage data from config
@@ -43,22 +43,18 @@ module HomepageData
     # @param cache [Geocoding::Cache]
     # @return [Array<Repository>]
     def build_repositories(cache)
-      repos = RepositoryQueries.facet_counts
-      addresses = RepositoryQueries.addresses
+      counts = RepositoryQueries.facet_counts
+      cache.entries.filter_map do |repo, entry|
+        next if entry.key?(:_failed)
 
-      repos.filter_map do |repo|
-        name = repo[:name]
-        coords = if addresses[name].present?
-                   cache.fetch(name)
-                 else
-                   Geocoding::Cache::BLANK
-                 end
+        count = counts.find { |facet| facet[:name] == repo }
+        next unless count
+
         Repository.new(
-          name: name,
-          slug: name.parameterize,
-          count: repo[:count],
-          records_url: records_url_for(name),
-          **coords
+          name: repo,
+          count: count[:count],
+          records_url: records_url_for(repo),
+          lat: entry[:lat], lng: entry[:lng]
         )
       end
     end

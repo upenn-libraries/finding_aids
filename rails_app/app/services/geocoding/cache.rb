@@ -25,44 +25,16 @@ module Geocoding
       @path = Pathname.new(path)
     end
 
-    # ── public query API ──────────────────────────────────────────────
-
     # @param name [String] repository name
     # @return [Hash, nil] the cached entry or nil
     delegate :[], to: :entries
 
-    # @param name [String] repository name
-    # @return [Boolean] true when a previously-failed entry exists
-    def failed?(name)
-      entries.dig(name, :_failed) == true
-    end
-
-    # @param name [String] repository name
-    # @return [Boolean] true when a successfully-cached coordinate entry exists
-    def cached?(name)
-      entries.dig(name, :lat).present?
-    end
-
-    # Look up an entry from cache.  Returns the coordinate hash on success,
-    # BLANK when the entry is missing or was previously recorded as failed.
-    #
-    # @param name [String] repository name
-    # @return [Hash]
-    def fetch(name)
-      return self[name] if cached?(name)
-      return BLANK if failed?(name)
-
-      BLANK
-    end
-
-    # ── write API ─────────────────────────────────────────────────────
-
     # Store a successful geocode result.
     #
     # @param name [String]
-    # @param lat  [Float]
-    # @param lng  [Float]
-    def store(name, lat:, lng:)
+    # @param lat [Float]
+    # @param lng [Float]
+    def store(name:, lat:, lng:)
       @entries = entries.merge(name => { lat: lat, lng: lng })
     end
 
@@ -73,7 +45,7 @@ module Geocoding
       @entries = entries.merge(name => FAILED.dup)
     end
 
-    # Atomic disk write via tempfile + rename.
+    # Disk write via tempfile + rename.
     #
     # @return [nil]
     def persist
@@ -93,20 +65,18 @@ module Geocoding
       @entries = {}
     end
 
-    private
-
     # Lazily loads the geocoding cache from disk (YAML file).
-    # Acquires a shared lock on the file, then reads from the locked handle.
     #
     # @return [Hash{String => Hash}] repository name → coordinate data
     def entries
       @entries ||= load_from_disk.freeze
     end
 
+    private
+
     # @return [Hash]
     def load_from_disk
       File.open(@path, File::RDONLY) do |f|
-        f.flock(File::LOCK_SH)
         YAML.safe_load(f.read, permitted_classes: [Symbol], aliases: true) || {}
       end
     rescue Errno::ENOENT
