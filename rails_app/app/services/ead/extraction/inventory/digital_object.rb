@@ -5,7 +5,6 @@ module Ead
     module Inventory
       # Represents a single EAD <dao> component. Use it to build links to digital objects.
       class DigitalObject
-        IIIF_MANIFEST_ROLE = 'https://iiif.io/api/presentation/2.1/'
         ONLINE_RESOURCE = 'Online Resource'
 
         attr_reader :href, :role, :title
@@ -23,11 +22,6 @@ module Ead
           @href = href
           @role = role
           @title = title || ONLINE_RESOURCE
-        end
-
-        # @return [Boolean]
-        def iiif?
-          role == IIIF_MANIFEST_ROLE
         end
       end
     end
