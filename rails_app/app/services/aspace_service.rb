@@ -28,7 +28,8 @@ class ASpaceService
   # @return [String]
   def resource_ead_xml(resource_id)
     params = { include_unpublished: false, include_daos: true }
-    client.get("resource_descriptions/#{resource_id}.xml?#{params.to_param}").body
+    body = client.get("resource_descriptions/#{resource_id}.xml?#{params.to_param}").body
+    body.force_encoding(Encoding::UTF_8)
   end
 
   private
