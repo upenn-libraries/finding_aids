@@ -87,7 +87,6 @@ RUN apk add --no-cache \
       curl \
       git \
       libc6-compat \
-      nodejs \
       postgresql-dev \
       shadow \
       su-exec \
@@ -150,7 +149,6 @@ COPY --from=base ${PROJECT_ROOT} ${PROJECT_ROOT}
 RUN apk add --no-cache \
       curl \
       libc6-compat \
-      nodejs \
       postgresql-dev \
       shadow \
       su-exec \
