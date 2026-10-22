@@ -102,8 +102,8 @@ en:
       upenn: 'University of Pennsylvania'
       non_upenn: 'Other PACSCL Partners'
     online_content:
-      yes: 'Has Online Content'
-      no: 'Not Available'
+      'yes': 'Has Online Content'
+      'no': 'Not Available'
     era:
         label: 'Era'
         century:
