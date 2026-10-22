@@ -2,7 +2,6 @@ en:
   header:
     service_name: 'Philadelphia Area Archives'
     sign_out: 'Sign Out'
-
   homepage:
     hero:
       heading: 'Stories held in archives'
@@ -23,11 +22,9 @@ en:
         holds, or %{browse_all_link}.
       browse_all: 'browse all institutions'
       guides_count: '%{count} guides'
-
   search:
     button:
       label: 'Find it'
-
   results:
     h1:
       singular: 'result'
@@ -40,12 +37,6 @@ en:
       contact_us:
         link_text: 'Contact us'
         remaining_text: "to get help finding what you're looking for."
-  common:
-    links:
-      home: 'Home'
-      about: 'About the site'
-      statement: 'Statement on Archival Description and Harmful Language'
-      admin: 'Site Administration'
   document:
     links:
       contact_us: "Contact Us"
@@ -75,28 +66,6 @@ en:
       link: 'Site administration'
   legacy:
     redirect: 'The identifier for this item has been updated. Please use this page URL to access this item.'
-  requests:
-    form:
-      header: 'Request to view materials'
-      fields:
-        title: 'Title'
-        containers: 'Items requested'
-        container: 'Container: '
-        special_request: 'Special request details'
-        notes: 'Notes'
-        retrieval_date: 'Retrieval date'
-        auth_types: 'Login status'
-        penn_auth: 'I am logged in as a Penn affiliate'
-        external_auth: 'I am logged in as a Visitor'
-        save_for_later: 'Save request to submit later?'
-        submit: 'Submit Request'
-      messages:
-        missing_container: 'Please select at least one container for requesting'
-        auth_help_html: "You must be logged in to your Special Collections Reference Account before submitting a request. Please %{aeon_link} and confirm your account type."
-  labels:
-    tabs:
-      show_overview: 'Collection Overview'
-      show_inventory: 'Collection Inventory'
   facets:
     record_source:
       upenn: 'University of Pennsylvania'
@@ -134,7 +103,6 @@ en:
     bulk_date: 'Bulk Date'
     pretty_unit_id: 'Call Number'
     abstract_scope_contents: 'Abstract'
-    raw_xml: 'Raw XML'
     creators: 'Creator'
     language: 'Language'
     language_note: 'Language Note'
@@ -192,9 +160,6 @@ en:
     year_asc: 'Year (oldest first)'
     title_desc: 'Title (Z-A)'
     title_asc: 'Title (A–Z)'
-  messages:
-    access_clarification_html: "This is a finding aid. It is a description of archival material held at the <b>%{repository}</b>. Unless otherwise noted, the materials described below are physically available in their reading room, and not digitally available through the web."
-    location_html: "Held at: %{repository} [%{email_link}]"
   inventory:
     sections:
       physdesc: 'Physical Description'
@@ -280,11 +245,9 @@ en:
         visit:
           title: 'Plan your visit'
           review_lede: "These are the items you'd like to view on your visit."
-          form_lede: "We'll reply to confirm your date and have your items ready."
         scan:
           title: 'Request copies'
           review_lede: "These are the items you'd like digital copies of. We'll scan them and deliver the files to your Research Account."
-          form_lede: "We'll review your request and be in touch about your scans."
         held_at: 'Held at'
         review_empty_html: 'Nothing selected yet. Use the <strong>checkbox</strong> next to any item to add it.'
         remove: 'Remove'
