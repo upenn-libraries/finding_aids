@@ -320,14 +320,6 @@ class EadParser
     split_repositories(doc)[0] == 'University of Pennsylvania' ? 'T' : 'F'
   end
 
-  # Determine if we will show any "Online Content" links
-  # @param [Nokogiri::XML::Document] doc
-  # @return [String]
-  def online_content(doc)
-    # T if dao node found anywhere in dsc - this handles deep nesting of <c*> nodes
-    doc.xpath('/ead/archdesc/dsc//dao').try(:any?) ? 'T' : 'F'
-  end
-
   # usage: { solr_field_name: value, ... }
   # @param [String] xml contents of xml file
   # @raise UnsupportedEadSpecError
@@ -363,7 +355,6 @@ class EadParser
       corpnames_ssim: corp_names(doc),
       subjects_ssim: subjects(doc),
       upenn_record_bsi: upenn_record(doc),
-      online_content_bsi: online_content(doc),
       repository_name_component_1_ssi: split_repositories(doc)[0],
       repository_name_component_2_ssi: split_repositories(doc)[1],
       repository_name_component_3_ssi: split_repositories(doc)[2],
