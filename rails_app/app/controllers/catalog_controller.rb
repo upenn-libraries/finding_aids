@@ -106,10 +106,6 @@ class CatalogController < ApplicationController
       upenn: { label: I18n.t('facets.record_source.upenn'), fq: 'upenn_record_bsi:true' },
       non_upenn: { label: I18n.t('facets.record_source.non_upenn'), fq: 'upenn_record_bsi:false' }
     }, if: :record_source_facet_param_present?
-    config.add_facet_field 'online_content', label: I18n.t('fields.online_content'), query: {
-      yes: { label: I18n.t('facets.online_content.yes'), fq: 'online_content_bsi:true' },
-      no: { label: I18n.t('facets.online_content.no'), fq: 'online_content_bsi:false' }
-    }
     config.add_facet_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), limit: true
     config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.topics.corpnames'), limit: true
     config.add_facet_field 'people_ssim', label: I18n.t('fields.topics.people'), limit: true
