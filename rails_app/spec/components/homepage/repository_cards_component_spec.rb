@@ -26,6 +26,11 @@ RSpec.describe Homepage::RepositoryCardsComponent, type: :component do
     expect(component).to have_link(I18n.t('homepage.regional_partnership.browse_all'))
   end
 
+  it 'renders the intro paragraph with a link to the PACSCL website' do
+    expect(component).to have_link(I18n.t('homepage.regional_partnership.pacscl_link'),
+                                   href: I18n.t('urls.pacscl'))
+  end
+
   it 'renders the card grid' do
     expect(component).to have_css('ol.pl-cards')
   end
