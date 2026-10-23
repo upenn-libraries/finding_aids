@@ -1,4 +1,8 @@
 en:
   urls:
+    clir: 'https://www.clir.org/'
     pacscl: 'https://www.pacscl.org/'
     statement: 'https://pacscl.org/what-we-believe/statement-on-archival-description-and-harmful-language/'
+  emails:
+    penn_contact: 'hmengel@pobox.upenn.edu'
+    pacscl_director: 'director@pacscl.org'

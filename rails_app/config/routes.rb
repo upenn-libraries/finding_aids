@@ -58,6 +58,7 @@ Rails.application.routes.draw do
   end
 
   get 'about', to: 'static_pages#about'
+  get 'for_archivists', to: 'static_pages#for_archivists'
 
   # Vanity route for Penn materials
   get 'upenn', to: 'catalog#upenn'
