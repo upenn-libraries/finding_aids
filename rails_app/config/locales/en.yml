@@ -18,10 +18,14 @@ en:
     regional_partnership:
       heading: 'A regional partnership'
       intro_html: >-
-        When you search here, you're searching across many archival institutions
-        at once. Focus in on a single institution from the sample to see what it
-        holds, or %{browse_all_link}.
+        When you search here, you search across collections from many archival
+        institutions at once. The %{pacscl_link} and Penn Libraries created this
+        website together.
+      sample_html: >-
+        Here's a sample of participating institutions. You can pick one to view
+        its collection guides, or %{browse_all_link}.
       browse_all: 'browse all institutions'
+      pacscl_link: 'Philadelphia Area Consortium of Special Collections Libraries (PACSCL)'
       guides_count: '%{count} guides'
 
   search:

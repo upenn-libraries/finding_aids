@@ -20,6 +20,11 @@ module Homepage
               data: { blacklight_modal: 'trigger', turbo: false })
     end
 
+    # @return [ActiveSupport::SafeBuffer]
+    def pacscl_link
+      link_to(t('homepage.regional_partnership.pacscl_link'), t('urls.pacscl'))
+    end
+
     # Build a facet-filtered search URL for a given repository name.
     #
     # @param repo_name [String] the repository display name
