@@ -12,15 +12,21 @@ class HeroPictureComponent < Blacklight::Component
     @image = image_data
   end
 
-  def call
-    picture_tag hero: 'art-direction' do
-      safe_join(image.sources.map { |source|
-        tag.source srcset: srcset_from(source), media: source.media, sizes: SOURCE_SIZE
-      } << default_image)
-    end
+  private
+
+  # @return [ActiveSupport::SafeBuffer]
+  def citation_link
+    link_to image.citation.text, image.citation.href
   end
 
-  private
+  # @return [ActiveSupport::SafeBuffer]
+  def image_sources
+    safe_join(
+      image.sources.map do |source|
+        tag.source srcset: srcset_from(source), media: source.media, sizes: SOURCE_SIZE
+      end
+    )
+  end
 
   # @return [String] alternate image version data formatted for use in a srcset attribute
   #                  see: https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/srcset
@@ -30,6 +36,7 @@ class HeroPictureComponent < Blacklight::Component
           .join(', ')
   end
 
+  # @return [ActionView::Helpers::TagHelper::TagBuilder, ActiveSupport::SafeBuffer]
   def default_image
     image_tag image.default, alt: image.alt_text
   end
