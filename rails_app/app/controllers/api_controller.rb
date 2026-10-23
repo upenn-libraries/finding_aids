@@ -19,6 +19,10 @@ class ApiController < ApplicationController
     render json: @entries
   end
 
+  def map_data
+    render json: HomepageData.repositories_json
+  end
+
   private
 
   # @param facet_field [String]

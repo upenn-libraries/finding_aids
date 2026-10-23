@@ -1,0 +1,431 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe InventoryComponent, type: :component do
+  include EadHelpers
+  describe 'rendering' do
+    it 'renders a details component with the expected title' do
+      entry = entry_for(<<~XML, xpath: '//c01')
+        <c01 level="series">
+          <did><unittitle>Series</unittitle>
+            <physdesc><extent>2.0 Linear Feet</extent></physdesc>
+            <origination>Kislak</origination>
+            <unitdate>1900</unitdate>
+            </did>
+            </c01>
+      XML
+
+      render_inline(described_class.new(entry: entry, index: 1))
+
+      expect(page).to have_css('details.fa-guide__details', text: 'Kislak. Series, 1900 2 Linear Feet.')
+    end
+
+    context 'when an entry has children' do
+      let(:entry) do
+        entry_for(<<~XML, xpath: '//c01')
+          <c01 level="series">
+            <did>
+              <unittitle>Series</unittitle><physloc>Some Archives</physloc>
+              <dao href="https://example.com/scan01.pdf" title="Scan01"/>
+            </did>
+            <bioghist><head>Biographical History</head><p>Some Biography</p></bioghist>
+            <c02>
+              <did>
+              <unittitle>Subseries A</unittitle>
+              </did>
+              <c03><did><unittitle>File</unittitle></did></c03>
+            </c02>
+            </c01>
+        XML
+      end
+
+      before { render_inline(described_class.new(entry: entry, index: 1)) }
+
+      it "renders the entry's translated descriptive metadata" do
+        expect(page).to have_css('details div.pl-flex.pl-flex-col.pl-gap-s div strong', text: 'Biographical History',
+                                                                                        visible: :all)
+        expect(page).to have_css('details div.pl-flex.pl-flex-col.pl-gap-s p', text: 'Some Biography',
+                                                                               visible: :all)
+      end
+
+      it "renders the entry's identification metadata in a description list" do
+        expect(page).to have_css('details div.pl-flex.pl-flex-col.pl-gap-s dl.pl-dl--inline dt',
+                                 text: 'Physical Location', visible: :all)
+        expect(page).to have_css('details div.pl-flex.pl-flex-col.pl-gap-s dl.pl-dl--inline dd',
+                                 text: 'Some Archives', visible: :all)
+      end
+
+      it "renders the entry's digital archival object links in a description list" do
+        expect(page).to have_css('details div.pl-flex.pl-flex-col.pl-gap-s dl.pl-dl--inline dt',
+                                 text: 'View Online', visible: :all)
+        expect(page).to have_css(
+          'details div.pl-flex.pl-flex-col.pl-gap-s dl.pl-dl--inline dd a[@href="https://example.com/scan01.pdf"]',
+          text: 'Scan01', visible: :all
+        )
+      end
+    end
+
+    context "when and entry's children all have children" do
+      let(:entry) do
+        entry_for(<<~XML, xpath: '//c01')
+          <c01 level="series">
+            <did><unittitle>Series</unittitle></did>
+            <c02>
+              <did>
+              <unittitle>Subseries A</unittitle>
+              </did>
+              <c03><did><unittitle>File</unittitle></did></c03>
+            </c02>
+             <c02>
+              <did><unittitle>Subseries B</unittitle></did>
+              <c03><did><unittitle>File</unittitle></did></c03>
+            </c02>
+          </c01>
+        XML
+      end
+
+      before { render_inline(described_class.new(entry: entry, index: 1)) }
+
+      it 'does not render a table' do
+        outer_entry_details = page.first('details.fa-guide__details')
+        expect(outer_entry_details).to have_no_css('> div > table.fa-table--responsive-small', visible: :all)
+      end
+
+      it 'renders child entries as nested details' do
+        outer_entry_details = page.first('details.fa-guide__details')
+        expect(outer_entry_details).to have_css('details.fa-guide__details--subseries', text: 'Subseries A',
+                                                                                        visible: :all)
+        expect(outer_entry_details).to have_css('details.fa-guide__details--subseries', text: 'Subseries B',
+                                                                                        visible: :all)
+      end
+    end
+
+    context "when an entry's children are all childless" do
+      let(:entry) do
+        entry_for(<<~XML, xpath: '//c01')
+          <c01 level="series">
+            <did><unittitle>Series</unittitle></did>
+            <c02>
+              <did><unittitle>Subseries A</unittitle><unitdate>1909</unitdate>
+              <container type="Box">1</container>
+              <container type="Folder">1</container>
+              </did>
+            </c02>
+            <c02>
+              <did><unittitle>Subseries B</unittitle><unitdate type="bulk">1910-1919</unitdate>
+              <container type="Box">2</container>
+              <container type="Folder">1-10</container>
+              </did>
+            </c02>
+          </c01>
+        XML
+      end
+
+      before { render_inline(described_class.new(entry: entry, index: 1)) }
+
+      it 'renders a table' do
+        outer_entry_details = page.first('details.fa-guide__details')
+        expect(outer_entry_details).to have_table(class: 'fa-table--responsive-small', visible: :all)
+      end
+
+      it 'renders the Contents table header' do
+        outer_entry_details = page.first('details.fa-guide__details')
+        table_header = '> div > table.fa-table--responsive-small > thead > tr > th'
+        expect(outer_entry_details).to have_css(table_header, count: 1,
+                                                              text: I18n.t('show.sections.inventory.contents'),
+                                                              visible: :all)
+      end
+
+      it 'renders the Dates table headers' do
+        outer_entry_details = page.first('details.fa-guide__details')
+        table_header = '> div > table.fa-table--responsive-small > thead > tr > th'
+        expect(outer_entry_details).to have_css(table_header, count: 1, text: I18n.t('show.sections.inventory.dates'),
+                                                              visible: :all)
+      end
+
+      it 'renders the Container table headers' do
+        outer_entry_details = page.first('details.fa-guide__details')
+        table_header = '> div > table.fa-table--responsive-small > thead > tr > th'
+        expect(outer_entry_details).to have_css(table_header, count: 1,
+                                                              text: I18n.t('show.sections.inventory.container'),
+                                                              visible: :all)
+      end
+
+      it 'renders a row for each entry' do
+        outer_entry_details = page.first('details.fa-guide__details')
+        expect(outer_entry_details).to have_css(' > div > table.fa-table--responsive-small > tr.fa-inventory__row',
+                                                count: 2, visible: :all)
+      end
+
+      it 'renders the Contents' do
+        outer_entry_details = page.first('details.fa-guide__details')
+        contents = ' > div > table.fa-table--responsive-small > tr.fa-inventory__row > td[data-th="Contents"]'
+        expect(outer_entry_details).to have_css(contents, text: 'Subseries A', count: 1, visible: :all)
+        expect(outer_entry_details).to have_css(contents, text: 'Subseries B', count: 1, visible: :all)
+      end
+
+      it 'renders the Dates' do
+        outer_entry_details = page.first('details.fa-guide__details')
+        dates = '> div > table.fa-table--responsive-small > tr.fa-inventory__row > td[data-th="Dates"]'
+        expect(outer_entry_details).to have_css(dates, text: '1909', count: 1, visible: :all)
+        expect(outer_entry_details).to have_css(dates, text: '1910-1919', count: 1, visible: :all)
+      end
+
+      it 'renders the Containers' do
+        outer_entry_details = page.first('details.fa-guide__details')
+        containers = ' > div > table.fa-table--responsive-small > tr.fa-inventory__row > td[data-th="Container"]'
+        expect(outer_entry_details).to have_css(containers, text: 'Box 1, Folder 1', count: 1, visible: :all)
+        expect(outer_entry_details).to have_css(containers, text: 'Box 2, Folder 1-10', count: 1, visible: :all)
+      end
+    end
+
+    context "when an entry's children have mixed nesting" do
+      let(:entry) do
+        entry_for(<<~XML, xpath: '//c01')
+          <c01 level="series">
+            <did><unittitle>Series</unittitle></did>
+            <c02>
+              <did><unittitle>Subseries A</unittitle><unitdate>2000</unitdate>
+              <container type="Box" >1</container>
+              <container type="Folder" >1</container>
+              </did>
+            </c02>
+             <c02>
+              <did><unittitle>Subseries B</unittitle></did>
+              <c03>
+              <did><unittitle>Journals</unittitle>
+              <container type="Box" >1</container>
+              </did>
+              </c03>
+            </c02>
+          </c01>
+        XML
+      end
+
+      before { render_inline(described_class.new(entry: entry, index: 1)) }
+
+      it 'renders a nested inventory detail as a table row' do
+        outer_entry_details = page.first('details.fa-guide__details')
+
+        expect(outer_entry_details).to have_css(
+          '> div > table > tr td[colspan="3"] details.fa-guide__details--subseries',
+          text: 'Subseries B', visible: :all
+        )
+      end
+
+      it 'maintains the order of the series' do
+        expect(page).to have_css('details.fa-guide__details--subseries summary > h4#series-1-2',
+                                 text: 'Subseries B', visible: :all)
+      end
+    end
+
+    context 'when an entry has no children' do
+      it 'renders the entry within a table' do
+        entry = entry_for(<<~XML, xpath: '//c01')
+          <c01 level="series">
+            <did><unittitle>Subseries A</unittitle><unitdate>2000</unitdate>
+             <container type="Box" >1</container>
+             <container type="Folder" >1</container>
+            </did>
+          </c01>
+        XML
+        render_inline(described_class.new(entry: entry, index: 1))
+
+        outer_entry_details = page.first('details.fa-guide__details')
+
+        expect(outer_entry_details).to have_css('> div > table > tr', text: 'Subseries A', visible: :all)
+        expect(page).to have_css('tr.fa-inventory__row', count: 1, visible: :all)
+      end
+    end
+
+    context 'when an entry is requestable' do
+      it 'renders the request-count span' do
+        entry = entry_for('<c01 level="series"><did><unittitle>Files</unittitle></did></c01>', xpath: '//c01')
+
+        render_inline(described_class.new(entry: entry, index: 1, requestable: true))
+
+        expect(page).to have_css('span.fa-request__section-count', visible: :all)
+      end
+
+      it 'renders the select column' do
+        entry = entry_for('<c01 level="series"><did><unittitle>Files</unittitle></did></c01>', xpath: '//c01')
+
+        render_inline(described_class.new(entry: entry, index: 1, requestable: true))
+
+        expect(page).to have_css('th', text: 'Select', visible: :all)
+        expect(page).to have_field(class: 'fa-request__checkbox', visible: :all)
+      end
+
+      it 'includes input tag with container data attributes' do
+        entry = entry_for(<<~XML, xpath: '//c01')
+          <c01 level="series">
+            <did><unittitle>Series</unittitle></did>
+            <c02>
+              <did><unittitle>Subseries A</unittitle><unitdate>1909</unitdate>
+              <container type="Box">1</container>
+              <container type="Folder">1</container>
+              </did>
+            </c02>
+            <c02>
+              <did><unittitle>Subseries B</unittitle><unitdate type="bulk">1910-1919</unitdate>
+              <container type="Box">2</container>
+              <container type="Folder">1-10</container>
+              </did>
+            </c02>
+          </c01>
+        XML
+
+        render_inline(described_class.new(entry: entry, index: 1, requestable: true))
+
+        expect(page).to have_css('input[data-volume="Box 1"]', visible: :all)
+        expect(page).to have_css('input[data-issue="Folder 1"]', visible: :all)
+      end
+
+      it 'renders visually hidden span' do
+        entry = entry_for('<c01 level="series"><did><unittitle>Files</unittitle></did></c01>', xpath: '//c01')
+
+        render_inline(described_class.new(entry: entry, index: 1, requestable: true))
+
+        expect(page).to have_css(
+          'td[data-th="Select"] span.visually-hidden',
+          text: I18n.t('show.sections.inventory.select_visually_hidden',
+                       title: entry.title_text), visible: :hidden
+        )
+      end
+
+      it 'renders a nested details that spans 4 columns' do
+        entry = entry_for(<<~XML, xpath: '//c01')
+          <c01 level="series">
+            <did><unittitle>Series</unittitle></did>
+            <c02><did><unittitle>Leaf</unittitle></did></c02>
+            <c02>
+              <did><unittitle>Branch subseries</unittitle></did>
+              <c03><did><unittitle>File</unittitle></did></c03>
+            </c02>
+          </c01>
+        XML
+        render_inline(described_class.new(entry: entry, index: 1, requestable: true))
+
+        expect(page).to have_css('td[colspan="4"]', visible: :all)
+        expect(page).to have_no_css('td[colspan="3"]')
+      end
+
+      it 'forwards requestable to its children' do
+        entry = entry_for(<<~XML, xpath: '//c01')
+          <c01 level="series">
+            <did><unittitle>Series</unittitle></did>
+            <c02>
+              <did><unittitle>Subseries</unittitle></did>
+              <c03><did><unittitle></unittitle><container type="Box">1</container></did></c03>
+            </c02>
+          </c01>
+        XML
+
+        render_inline(described_class.new(entry: entry, index: 1, requestable: true))
+        expect(page).to have_css('details.fa-guide__details--subseries th', text: 'Select', visible: :hidden)
+        expect(page).to have_css('details.fa-guide__details--subseries input.fa-request__checkbox', visible: :hidden)
+      end
+    end
+
+    context 'when an entry is not requestable' do
+      it 'omits the request-count span' do
+        entry = entry_for('<c01 level="series"><did><unittitle>Files</unittitle></did></c01>', xpath: '//c01')
+
+        render_inline(described_class.new(entry: entry, index: 1, requestable: false))
+
+        expect(page).to have_no_field('span.fa-request__section-count')
+      end
+
+      it 'does not render the select column' do
+        entry = entry_for(<<~XML, xpath: '//c01')
+          <c01 level="series">
+            <did><unittitle>Jesuits</unittitle></did>
+            <c02><did><unittitle></unittitle><container type="Box">JES.0001</container></did></c02>
+          </c01>
+        XML
+        render_inline(described_class.new(entry: entry, index: 1, requestable: false))
+
+        expect(page).to have_no_field('th', text: 'Select')
+        expect(page).to have_no_field('input.fa-request__checkbox')
+      end
+
+      it 'renders a nested details that span 3 columns' do
+        entry = entry_for(<<~XML, xpath: '//c01')
+          <c01 level="series">
+            <did><unittitle>Series</unittitle></did>
+            <c02><did><unittitle>Leaf</unittitle></did></c02>
+            <c02>
+              <did><unittitle>Branch subseries</unittitle></did>
+              <c03><did><unittitle>File</unittitle></did></c03>
+            </c02>
+          </c01>
+        XML
+
+        render_inline(described_class.new(entry: entry, index: 1, requestable: false))
+
+        expect(page).to have_css('td[colspan="3"]', visible: :hidden)
+        expect(page).to have_no_field('td[colspan="4"]')
+      end
+    end
+  end
+
+  context 'when an entry rendered in the table has additional metadata' do
+    it 'renders the title within a description list' do
+      entry = entry_for(<<~XML)
+        <c02>
+          <did><unittitle>Minutes</unittitle><origination>Some Organization</origination></did>
+          <scopecontent><head>Scope and Contents</head><p>Correspondence, 1960s.</p></scopecontent>
+        </c02>
+      XML
+
+      render_inline(described_class.new(entry: entry, index: 1))
+      contents = page.first('td[data-th="Contents"] dl.pl-dl--inline', visible: :all)
+      expect(contents).to have_css('dt', text: 'Title', visible: :hidden)
+      expect(contents).to have_css('dd', text: 'Some Organization. Minutes', visible: :hidden)
+    end
+
+    it 'renders the descriptive metadata within a description list' do
+      entry = entry_for(<<~XML)
+        <c02>
+          <did><unittitle>Series</unittitle></did>
+          <scopecontent><head>Scope and Content</head><p>Correspondence, 1960s.</p></scopecontent>
+        </c02>
+      XML
+
+      render_inline(described_class.new(entry: entry, index: 1))
+      contents = page.first('td[data-th="Contents"] dl.pl-dl--inline', visible: :all)
+
+      expect(contents).to have_css('dt', text: I18n.t('sections.scopecontent'), visible: :hidden)
+      expect(contents).to have_css('dd', text: 'Correspondence, 1960s.', visible: :hidden)
+    end
+
+    it 'renders identification metadata within a description list' do
+      entry = entry_for(<<~XML)
+        <c02>
+          <did><unittitle>Series</unittitle><physdesc label="Extent Note">3 folders</physdesc></did>
+        </c02>
+      XML
+
+      render_inline(described_class.new(entry: entry, index: 1))
+      contents = page.first('td[data-th="Contents"] dl.pl-dl--inline', visible: :all)
+
+      expect(contents).to have_css('dt', text: 'Extent Note', visible: :hidden)
+      expect(contents).to have_css('dd', text: '3 folders', visible: :hidden)
+    end
+
+    it "renders the entry's digital archival object links in a description list" do
+      entry = entry_for(<<~XML)
+        <c02>
+          <did><unittitle>Series</unittitle><dao href="https://example.com/scan01.pdf" title="Scan01"/></did>
+        </c02>
+      XML
+
+      render_inline(described_class.new(entry: entry, index: 1))
+      contents = page.first('td[data-th="Contents"] dl.pl-dl--inline', visible: :all)
+
+      expect(contents).to have_css('dt', text: 'View Online', visible: :hidden)
+      expect(contents).to have_css('dd a[@href="https://example.com/scan01.pdf"]', text: 'Scan01', visible: :hidden)
+    end
+  end
+end

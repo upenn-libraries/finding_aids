@@ -1,0 +1,289 @@
+html {
+    background: var(--pl-color-penn-blue);
+}
+
+body {
+    background: var(--pl-color-bg-default);
+}
+
+/* Any author display value (flex, grid, inline-flex…) silently defeats the
+   hidden attribute, which has bitten three separate elements now. Enforce it
+   globally: hidden means hidden. */
+[hidden] {
+    display: none !important;
+}
+
+.visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+/* Header search wrapper (the slot="end" div). flex:1 + min-width:0 lets it
+   shrink instead of forcing the service name to wrap; full width when the header
+   stacks, capped and right-aligned once the header is a row. Mirrors Digital
+   Collections' .dc-header-search. */
+.fa-header-search {
+    flex: 1;
+    min-width: 0;
+    margin-top: var(--pl-space-m);
+
+    @media (min-width: 1001px) {
+        margin-top: 0;
+        margin-left: var(--pl-space-3xl);
+    }
+}
+
+@media (max-width: 1000px) {
+    .fa-header-search {
+        width: 100%;
+    }
+}
+
+*:focus {
+    box-shadow: 0 0 0 2px var(--pl-color-bg-accent), 0 0 0 4px var(--pl-color-fg-default);
+    outline: none;
+}
+
+/* Guide-page header: stacked hero row (intro + institution) + metadata strip below */
+.fa-guide-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pl-space-l);
+}
+
+.fa-guide-header__hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--pl-space-m);
+}
+
+@media (min-width: 900px) {
+    .fa-guide-header__hero {
+        grid-template-columns: 2fr 1fr;
+        gap: var(--pl-space-2xl);
+    }
+}
+
+.fa-guide-header__institution {
+    align-self: flex-start;
+    background: var(--pl-color-bg-default);
+    margin-bottom: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: var(--pl-space-m);
+    align-items: flex-start;
+}
+
+.fa-guide-header__institution p {
+    margin: 0;
+}
+
+.fa-guide-header__institution .pl-margin-b-m {
+    margin-bottom: var(--pl-space-m);
+}
+
+.fa-metadata {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--pl-space-m);
+}
+
+.fa-section-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--pl-space-s);
+}
+
+.fa-guide__details {
+    border-radius: var(--pl-border-radius);
+    background: var(--pl-color-bg-subtle);
+    border: solid 1px transparent;
+
+    &[open] {
+        border: solid 1px var(--pl-color-fg-subtle);
+
+        & > summary {
+            border-bottom: solid 1px var(--pl-color-fg-subtle);
+        }
+    }
+
+    & h3, h4, h5, h6 {
+        scroll-margin-block: 1rem;
+        margin-bottom: 0;
+    }
+
+    & summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        list-style: none;
+        padding: var(--pl-space-xs) var(--pl-space-m);
+
+        &:hover {
+            text-decoration: underline;
+            text-underline-offset: var(--pl-link-text-underline-offset);
+        }
+    }
+
+    & summary + * {
+        padding: var(--pl-space-m);
+        background: var(--pl-color-bg-default);
+        border-radius: 0 0 var(--pl-border-radius) var(--pl-border-radius);
+    }
+
+    & summary::-webkit-details-marker {
+        display: none;
+    }
+
+    & summary::after {
+        content: '';
+        width: 1.25rem;
+        height: 1.25rem;
+        flex-shrink: 0;
+        background: currentColor;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9L12 15L18 9' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
+        mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9L12 15L18 9' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
+        transition: transform 0.2s ease;
+    }
+
+    &[open] summary::after {
+        transform: rotate(180deg);
+    }
+}
+
+/* Guide page layout — TOC sidebar is opt-in, so single column by default.
+ *
+ * The nav carries Bootstrap's `.offcanvas-lg`: below lg (992px) it is a slide-in panel,
+ * at lg and up it is an ordinary element and takes the sidebar column. Bootstrap scopes
+ * the panel's `position: fixed` to `@media (max-width: 991.98px)`, so everything that
+ * makes it a sidebar has to be scoped to lg and up to match — this stylesheet loads after
+ * Bootstrap's, so an unscoped `position: sticky` on .fa-toc would beat the fixed
+ * positioning the panel depends on and the panel would render inline. */
+.fa-guide-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--pl-space-2xl);
+}
+
+@media (min-width: 992px) {
+    .fa-guide-layout--with-toc {
+        grid-template-columns: 18rem 1fr;
+    }
+
+    .fa-toc {
+        position: sticky;
+        top: var(--pl-space-l);
+        align-self: start;
+        max-height: calc(100vh - var(--pl-space-2xl));
+        overflow-y: auto;
+        padding-right: var(--pl-space-m);
+        scrollbar-color: var(--pl-color-fg-subtle) var(--pl-color-bg-subtle);
+    }
+
+    /* Bootstrap turns .offcanvas-body into a flex container at this breakpoint; the TOC
+       is a plain list, so put it back into normal flow. */
+    .fa-toc .offcanvas-body {
+        display: block;
+    }
+}
+
+.fa-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.fa-toc ul ul {
+    margin-left: var(--pl-space-s);
+    padding-left: var(--pl-space-s);
+    border-left: 1px solid var(--pl-color-fg-subtle);
+}
+
+.fa-toc a {
+    display: block;
+    padding: var(--pl-space-2xs) 0;
+    color: var(--pl-color-fg-default);
+    text-decoration: none;
+    font-weight: 400;
+    font-size: var(--pl-font-size-s);
+}
+
+.fa-toc a:hover {
+    color: var(--pl-color-fg-default);
+    text-decoration: underline;
+}
+
+.fa-toc a.fa-toc--active {
+    font-weight: 600;
+    color: var(--pl-color-fg-default);
+}
+
+/* Scroll targets clear the sticky header */
+[id] {
+    scroll-margin-top: var(--pl-space-l);
+}
+
+/* Mobile table of contents — the panel, and the button that opens it. */
+.fa-toc {
+    --bs-offcanvas-width: min(90vw, 400px);
+}
+
+/* Stop a scroll gesture that reaches the end of the panel from carrying on into the page
+   behind it. */
+.fa-toc .offcanvas-body {
+    overscroll-behavior: contain;
+}
+
+/* The toggle defaults to hidden and is switched on only below the panel breakpoint:
+   failing closed means a stray override can't leak the button onto desktop. */
+.fa-toc-toggle {
+    display: none;
+    align-items: center;
+    gap: var(--pl-space-2xs);
+    margin-bottom: var(--pl-space-l);
+}
+
+@media (max-width: 991.98px) {
+    .fa-toc-toggle {
+        display: inline-flex;
+    }
+}
+
+a.pl-button {
+    text-decoration: none;
+}
+
+/* Subseries — nested within series, lazy rendered */
+.fa-guide__details--subseries > summary + * {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 300px;
+}
+
+.fa-guide__details--subseries summary h4 {
+    font-size: var(--pl-font-size-default);
+    margin: 0;
+}
+
+.pl-callout {
+    padding: var(--pl-space-m) var(--pl-space-l);
+    margin-bottom: var(--pl-space-l);
+    border: 1px solid var(--pl-color-fg-subtle);
+    border-left-width: 0.25rem;
+    border-radius: var(--pl-border-radius-subtle);
+    border-left-color: var(--pl-color-fg-accent);
+}
+
+h4, h5, h6 {
+    font-size: 1rem
+}

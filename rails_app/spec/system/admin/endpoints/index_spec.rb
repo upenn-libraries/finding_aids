@@ -11,7 +11,7 @@ describe 'Endpoints index page' do
     end
 
     it 'does not display user index page' do
-      expect(page).not_to have_text('Endpoints')
+      expect(page).to have_no_text('Endpoints')
     end
 
     it 'redirects to login page' do

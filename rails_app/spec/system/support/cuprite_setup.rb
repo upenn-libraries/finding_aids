@@ -28,7 +28,7 @@ class FerrumLogger
       when 'string'
         Kernel.puts arg['value']
       when 'object'
-        Kernel.puts arg['preview']['properties'].to_h do |x|
+        Kernel.puts arg['preview']['properties'] do |x|
           [x['name'], x['value']]
         end
       end
@@ -78,7 +78,8 @@ Capybara.register_driver(:better_cuprite) do |app|
       inspector: true,
       js_errors: true,
       logger: FerrumLogger.new,
-      timeout: 30
+      timeout: 30,
+      flatten: false
     }.merge(remote_options)
   )
 end

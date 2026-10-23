@@ -1,0 +1,8 @@
+<%= form_with(model: @guide, local: true) do |form| %>
+  <div class="mb-3">
+    <%= form.label :record_id, t('admin.featured_collections.form.record_id'), class: 'form-label' %>
+    <%= form.text_field :record_id, required: true %>
+  </div>
+
+  <%= form.submit t('admin.featured_collections.form.submit'), class: 'btn btn-primary' %>
+<% end %>

@@ -1,0 +1,6 @@
+<turbo-frame id="inventory-frame">
+  <%= turbo_stream.replace("toc-list") do %>
+    <%= render TableOfContentsComponent.new(document: @document, presenter: @presenter, entries: @entries) %>
+<% end %>
+  <%= render InventoryCollectionComponent.new(entries: @entries, requestable: @document.requestable?) %>
+</turbo-frame>

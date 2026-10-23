@@ -1,0 +1,64 @@
+<details class="<%= details_class %>">
+  <summary>
+    <%= heading %>
+  </summary>
+  <div class="pl-flex pl-flex-col pl-gap-s">
+    <% if @entry.children? %>
+      <%= parent_entry_metadata(@entry) %>
+    <% end %>
+
+    <% if all_children_have_children? %>
+      <pennlibs-accordion>
+        <% @entry.children.each_with_index do |child, i| %>
+          <%= render InventoryComponent.new(entry: child, level: @level + 1, parent_id: heading_id, index: i + 1,
+                                            requestable: @requestable) %>
+        <% end %>
+      </pennlibs-accordion>
+    <% else %>
+      <table class="fa-table fa-table--responsive-small">
+        <thead>
+        <tr>
+          <th><%= t('show.sections.inventory.contents') %></th>
+          <th><%= t('show.sections.inventory.dates') %></th>
+          <th><%= t('show.sections.inventory.container') %></th>
+          <% if @requestable %>
+            <th><%= t('show.sections.inventory.select') %></th>
+          <% end %>
+        </tr>
+        </thead>
+        <% row_entries.each_with_index do |row_entry, i| %>
+          <% if row_entry.children? %>
+            <tr class="fa-inventory__row">
+              <td colspan=<%= @requestable ? COLSPAN_MAX : COLSPAN_MIN %>>
+                <pennlibs-accordion>
+                  <%= render InventoryComponent.new(entry: row_entry, level: @level + 1, parent_id: heading_id,
+                                                    index: i + 1, requestable: @requestable) %>
+                </pennlibs-accordion>
+              </td>
+            </tr>
+          <% else %>
+            <% dates = row_entry.presenter.date %>
+            <% title_text = row_entry.presenter.title(title: row_entry.title_text, origination: row_entry.origination) %>
+
+            <tr class="fa-inventory__row">
+              <td data-th="<%= t('show.sections.inventory.contents') %>"><%= contents_column(row_entry) %></td>
+              <td data-th="<%= t('show.sections.inventory.dates') %>"><%= dates %></td>
+              <td data-th="<%= t('show.sections.inventory.container') %>"><%= row_entry.presenter.join_containers %></td>
+              <% if @requestable %>
+                <td class="fa-request__cell" data-th="<%= t('show.sections.inventory.select') %>">
+                  <label class="fa-request__label">
+                    <%= checkbox_tag :itm, class: 'fa-request__checkbox',
+                                     data: { 'request-target': 'containerCheckbox',
+                                             action: 'click->request#containerClicked' }
+                                       .merge(row_entry.presenter.requesting_data)  %>
+                    <span class="visually-hidden"><%= t('show.sections.inventory.select_visually_hidden', title: title_text) %></span>
+                  </label>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    <% end %>
+  </div>
+</details>

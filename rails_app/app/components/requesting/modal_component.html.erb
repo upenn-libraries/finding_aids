@@ -1,0 +1,20 @@
+<dialog class="fa-request__dialog" aria-modal="true" aria-labelledby="dialog-title" tabindex="-1"
+        data-request-target="requestDialog" data-action="close->request#close">
+  <button type="button" class="pl-button fa-request__dialog-close" aria-label="<%= t('show.sections.request.close') %>"
+          data-action="click->request#close">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  </button>
+
+  <p class="pl-caps fa-request__step"><%= t('show.sections.request.step_html') %></p>
+  <h2 id="dialog-title" data-request-target="modalTitle" class="pl-margin-b-2xs pl-margin-t-xs"
+      data-scan-title="<%= t('show.sections.request.scan.title') %>"
+      data-visit-title="<%= t('show.sections.request.visit.title') %>">
+  </h2>
+
+  <%= render Requesting::ReviewSectionComponent.new(request_type: RequestingComponent::VISIT_REQUEST, repository: repository_name) %>
+  <%= render Requesting::ReviewSectionComponent.new(request_type: RequestingComponent::SCAN_REQUEST, repository: repository_name) %>
+  <%= render Requesting::SubmitSectionComponent.new(request_type: RequestingComponent::VISIT_REQUEST) %>
+  <%= render Requesting::SubmitSectionComponent.new(request_type: RequestingComponent::SCAN_REQUEST) %>
+</dialog>
