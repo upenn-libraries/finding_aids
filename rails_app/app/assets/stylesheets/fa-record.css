@@ -23,33 +23,11 @@ body {
     width: 1px;
 }
 
-/* Header search wrapper (the slot="end" div). flex:1 + min-width:0 lets it
-   shrink instead of forcing the service name to wrap; full width when the header
-   stacks, capped and right-aligned once the header is a row. Mirrors Digital
-   Collections' .dc-header-search. */
-.fa-header-search {
-    flex: 1;
-    min-width: 0;
-    margin-top: var(--pl-space-m);
-
-    @media (min-width: 1001px) {
-        margin-top: 0;
-        margin-left: var(--pl-space-3xl);
-    }
-}
-
-@media (max-width: 1000px) {
-    .fa-header-search {
-        width: 100%;
-    }
-}
-
 *:focus {
     box-shadow: 0 0 0 2px var(--pl-color-bg-accent), 0 0 0 4px var(--pl-color-fg-default);
     outline: none;
 }
 
-/* Guide-page header: stacked hero row (intro + institution) + metadata strip below */
 .fa-guide-header {
     display: flex;
     flex-direction: column;
