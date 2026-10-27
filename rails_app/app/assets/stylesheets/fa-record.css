@@ -176,6 +176,10 @@ body {
     gap: var(--pl-space-2xl);
 }
 
+.fa-guide-content {
+    min-width: 0;
+}
+
 @media (min-width: 992px) {
     .fa-guide-layout--with-toc {
         grid-template-columns: 18rem 1fr;
