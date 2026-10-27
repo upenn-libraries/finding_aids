@@ -37,7 +37,7 @@ export default class AeonRequest {
         this.formData.append('Site', this.configData.requestSite);
         this.formData.append('Location', this.configData.requestLocation);
         this.formData.append('Sublocation', this.configData.requestSublocation);
-        this.formData.append('CallNumber', this.configData.requestCallNumber || 'n/a');
+        this.formData.append('CallNumber', this.configData.requestCallNum || 'n/a');
         this.formData.append('Title', this.configData.requestTitle);
     }
 
@@ -59,7 +59,7 @@ export default class AeonRequest {
             this.appendItemFields(this.items, {
                 ItemVolume: volume,
                 ItemIssue: [...data.issues].join(', ').slice(0, this.TEXT_FIELD_CHAR_LIMIT),
-                ItemNumber: data.barcode,
+                ItemNumber: data.barcode
             });
         });
     }
@@ -68,8 +68,7 @@ export default class AeonRequest {
         if (!processedItems.hasOwnProperty(item.dataset.volume)) {
             processedItems[item.dataset.volume] = {
                 issues: new Set,
-                barcode: item.dataset.barcode,
-                call_number: item.dataset.call_number
+                barcode: item.dataset.barcode
             };
         }
 
