@@ -1,4 +1,4 @@
-<pennlibs-header href="<%= root_path %>"
+<pennlibs-header service-href="<%= root_path %>"
                  service-name="<%= t('header.service_name') %>"
                  theme="<%= theme %>">
 
@@ -6,7 +6,7 @@
     <%= button_to t('header.sign_out'), destroy_user_session_path, method: :delete %>
   <% end %>
 
-  <div slot="end" class="fa-header-search">
+  <div slot="end">
     <%= search_bar %>
   </div>
 </pennlibs-header>
