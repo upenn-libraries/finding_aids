@@ -32,7 +32,7 @@ swarthmore,aspace,ccauste1@swarthmore.edu,specialcollections@swarthmore.edu,,tri
 UPENN_ANN,aspace,samantha.dodd@asc.upenn.edu,samantha.dodd@asc.upenn.edu,,upenn,2,https://upennapi.as.atlas-sys.com/
 WHYY,webpage,mgraham@drexelmed.edu,talkback@whyy.org,https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/whyy/,,
 SCIHIST,webpage,ERubeiz@sciencehistory.org,archivist@sciencehistory.org,https://ead.sciencehistory.org/,,
-PRIN_MUDD,webpage,digital-library@princeton.libanswers.com,mudd@princeton.edu,https://findingaids.princeton.edu/pacscl/production/,,
+PRIN_MUDD,webpage,digital-library@princeton.libanswers.com,specialcollections@princeton.libanswers.com,https://findingaids.princeton.edu/pacscl/production/,,
 CURTIS,webpage,barbara.benedett@curtis.edu,library@curtis.edu,http://www.curtisscripts.dreamhosters.com/PACSCL_Finding_Aids/Production/,,
 WWCC,webpage,janderies@waygay.org,archives@waygay.org,https://wilcoxarchives.org/ead/production/,,
 VILLA,webpage,demian.katz@villanova.edu,michael.foight@villanova.edu,http://archives.villanova.edu/paarp/,,
@@ -42,4 +42,4 @@ QuakMeet,aspace,ccauste1@swarthmore.edu,specialcollections@swarthmore.edu,,trico
 SJU,webpage,mgraham@drexelmed.edu,dlenert@sju.edu,https://drexel.edu/legacy-center/ead_harvest-other_pacscl_repositories/stjoseph_university/,,
 FLP,webpage,TranK@freelibrary.org,ErefRBD@freelibrary.org,https://libwww.freelibrary.org/assets/xml/ead/,,
 UPENN_AAUP,aspace,archarchives@design.upenn.edu,archarchives@design.upenn.edu,,upenn,17,https://upennapi.as.atlas-sys.com/
-UPENN_ARCHIVES,aspace,jmduffin@pobox.upenn.edu,uarc@lists.isc.upenn.edu,,upenn,16,https://upennapi.as.atlas-sys.com/
+UPENN_ARCHIVES,aspace,jmduffin@pobox.upenn.edu,uarc@pobox.upenn.edu,,upenn,16,https://upennapi.as.atlas-sys.com/
