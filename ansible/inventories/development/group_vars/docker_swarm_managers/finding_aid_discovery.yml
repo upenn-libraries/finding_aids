@@ -25,3 +25,7 @@ finding_aid_discovery_versioned_secrets:
     vault: aspace_vault_values
   drexelmed_aspace_password:
     vault: aspace_vault_values
+  pacscl_aspace_username:
+    vault: aspace_vault_values
+  pacscl_aspace_password:
+    vault: aspace_vault_values
