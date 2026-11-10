@@ -4,8 +4,26 @@
 class CatalogController < ApplicationController
   include Blacklight::Catalog
 
+  before_action :load_homepage_data, only: :index
+  before_action :load_regional_repos, unless: -> { request.format.json? || request.format.turbo_frame? }
+
+  def index
+    super
+  end
+
   configure_blacklight do |config|
-    config.bootstrap_version = 4
+    config.bootstrap_version = 5
+    config.header_component = HeaderComponent
+    config.index.search_bar_component = Catalog::SearchBarComponent
+    config.index.constraints_component = Catalog::ConstraintsComponent
+    config.index.search_header_component = Catalog::SearchHeaderComponent
+    config.show.document_component = Catalog::ShowDocumentComponent
+    config.show.document_presenter_class = Catalog::ShowDocumentPresenter
+    config.advanced_search.enabled = false
+
+    # Disable "dark mode" switcher, even though we don't render the BL default header content. If we want to enable
+    # support, changes to local styles and BL code for the <head> section needs to be added.
+    config.dark_mode_support = false
 
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository
@@ -29,6 +47,10 @@ class CatalogController < ApplicationController
 
     config.default_document_solr_params = {} # Use default in solrconfig
 
+    # Render at most 7 values per facet before the "more" link, matching DC and Find.
+    # Facets configured with `limit: true` use this default.
+    config.default_facet_limit = 7
+
     # disable tracking links since we don't allow paginating through a results set
     config.track_search_session = Blacklight::OpenStructWithHashAccess.new({ storage: false })
 
@@ -37,18 +59,8 @@ class CatalogController < ApplicationController
     # config.document_solr_path = 'get'
 
     # items to show per page, each number in the array represent another option to choose from.
-    config.per_page = [10, 20, 50, 100]
-
-    # Use local Document component to customize results and show page views
-    config.index.document_component = Catalog::ResultsDocumentComponent
-    config.show.document_component = Catalog::ShowDocumentComponent
-
-    # Use custom DocumentTitleComponent on results page
-    config.index.title_component = Catalog::DocumentTitleComponent
-    # TODO: we've found that setting this is required, even though it should be the default. otherwise the setting from
-    #       above applies in show contexts as well. this could be a blacklight bug, or by using distinct
-    #       DocumentComponents.
-    config.show.title_component = Blacklight::DocumentTitleComponent
+    # First value is the default page size (no default_per_page set), matching our other Blacklight apps.
+    config.per_page = [25, 50, 100]
 
     # solr field configuration for search results/index views
     config.index.title_field = :title_tsi
@@ -89,15 +101,11 @@ class CatalogController < ApplicationController
     # :index_range can be an array or range of prefixes that will be used to create the navigation
     #              (note: It is case sensitive when searching values)
 
-    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true
+    config.add_facet_field 'repository_ssi', label: I18n.t('fields.repository'), limit: true, collapse: false
     config.add_facet_field 'record_source', label: I18n.t('fields.record_source'), query: {
-      upenn: { label: 'University of Pennsylvania', fq: 'upenn_record_bsi:true' },
-      non_upenn: { label: 'Other PACSCL Partners', fq: 'upenn_record_bsi:false' }
-    }
-    config.add_facet_field 'online_content', label: I18n.t('fields.online_content'), query: {
-      yes: { label: 'Has Online Content', fq: 'online_content_bsi:true' },
-      no: { label: 'Not Available', fq: 'online_content_bsi:false' }
-    }
+      upenn: { label: I18n.t('facets.record_source.upenn'), fq: 'upenn_record_bsi:true' },
+      non_upenn: { label: I18n.t('facets.record_source.non_upenn'), fq: 'upenn_record_bsi:false' }
+    }, if: :record_source_facet_param_present?
     config.add_facet_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), limit: true
     config.add_facet_field 'corpnames_ssim', label: I18n.t('fields.topics.corpnames'), limit: true
     config.add_facet_field 'people_ssim', label: I18n.t('fields.topics.people'), limit: true
@@ -128,29 +136,62 @@ class CatalogController < ApplicationController
 
     config.add_index_field 'title_tsi', label: I18n.t('fields.title'), if: :json_request?
     config.add_index_field 'extent_ssim', label: I18n.t('fields.extent')
-    config.add_index_field 'display_date_ssim', label: I18n.t('fields.date'), if: :json_request?
+    config.add_index_field 'display_date_ssim', label: I18n.t('fields.date')
     config.add_index_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), if: :json_request?
     config.add_index_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), if: :json_request?
     config.add_index_field 'creators_ssim', label: I18n.t('fields.creators'), if: :json_request?
-    config.add_index_field 'repository_ssi', label: I18n.t('fields.repository'), if: :json_request?
+    config.add_index_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
     config.add_index_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents'),
-                                                          helper_method: :truncated_abstract
+                                                          helper_method: :expandable_text
 
-    config.add_show_field 'pretty_unit_id_ss', label: I18n.t('fields.pretty_unit_id')
-    config.add_show_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
-    config.add_show_field 'url_ss', label: I18n.t('fields.url')
-    config.add_show_field 'extent_ssim', label: I18n.t('fields.extent'), helper_method: :extent_display
-    config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true
-    config.add_show_field 'language_note', label: I18n.t('fields.language_note'), accessor: :language_note,
-                                           if: :render_language_note?
-    config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation')
-    config.add_show_field 'display_date_ssim', label: I18n.t('fields.date')
-    config.add_show_field 'creators_ssim', label: I18n.t('fields.creators'), link_to_facet: true
-    config.add_show_field 'donors_ssim', label: I18n.t('fields.donors'), link_to_facet: true
-    config.add_show_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), link_to_facet: true
     config.add_show_field 'abstract_scope_contents_tsi', label: I18n.t('fields.abstract_scope_contents')
-    config.add_show_field 'xml_ss', label: I18n.t('fields.xml'), if: :json_request?
+    config.add_show_field 'repository_ssi', label: I18n.t('fields.repository'), link_to_facet: true
 
+    # collection overview
+    config.add_show_field 'creators_ssim', label: I18n.t('fields.creators'), link_to_facet: true,
+                                           group: %i[collection_overview subjects_and_headings]
+    config.add_show_field 'display_date_ssim', label: I18n.t('fields.date'), group: :collection_overview
+    config.add_show_field 'extent_ssim', label: I18n.t('fields.extent'), group: :collection_overview
+    config.add_show_field 'pretty_unit_id_ss', label: I18n.t('fields.pretty_unit_id'), group: :collection_overview
+
+    # subject and headings
+    config.add_show_field 'subjects_ssim', label: I18n.t('fields.topics.subjects'), link_to_facet: true,
+                                           group: :subjects_and_headings
+    config.add_show_field 'people_ssim', label: I18n.t('fields.topics.people'), link_to_facet: true,
+                                         group: :subjects_and_headings
+    config.add_show_field 'corpnames_ssim', label: I18n.t('fields.topics.corpnames'), link_to_facet: true,
+                                            group: :subjects_and_headings
+    config.add_show_field 'places_ssim', label: I18n.t('fields.topics.places'), link_to_facet: true,
+                                         group: :subjects_and_headings
+    config.add_show_field 'occupations_ssim', label: I18n.t('fields.topics.occupations'), link_to_facet: true,
+                                              group: :subjects_and_headings
+    config.add_show_field 'languages_ssim', label: I18n.t('fields.language'), link_to_facet: true,
+                                            group: :subjects_and_headings
+    config.add_show_field 'language_note', label: I18n.t('fields.language_note'), accessor: :extract,
+                                           if: :render_language_note?, group: :subjects_and_headings,
+                                           presenter: Catalog::LanguageNotePresenter
+    config.add_show_field 'genre_form_ssim', label: I18n.t('fields.genre_form'), link_to_facet: true,
+                                             group: :subjects_and_headings
+
+    # rights and citations
+    config.add_show_field 'use_restrictions', label: I18n.t('fields.use'), group: :rights_and_citation,
+                                              accessor: :extract
+    config.add_show_field 'preferred_citation_ss', label: I18n.t('fields.citation'), group: :rights_and_citation
+    config.add_show_field 'publisher', label: I18n.t('fields.publisher'), group: :rights_and_citation,
+                                       accessor: :extract
+    config.add_show_field 'sponsor', label: I18n.t('fields.sponsor'), group: :rights_and_citation, accessor: :extract
+    config.add_show_field 'author', label: I18n.t('fields.author'), group: :rights_and_citation, accessor: :extract
+    config.add_show_field 'date', label: I18n.t('fields.date'), group: :rights_and_citation, accessor: :extract
+    config.add_show_field 'donors_ssim', label: I18n.t('fields.donors'), link_to_facet: true,
+                                         group: :rights_and_citation
+
+    # contact
+    config.add_show_field 'repository_address_ssi', label: I18n.t('fields.repository_address'), group: :contact
+    config.add_show_field 'contact_emails_ssm', label: I18n.t('fields.contact_email'), group: :contact,
+                                                presenter: Catalog::EmailFieldPresenter
+    config.add_show_field 'link_url_ss', label: I18n.t('fields.url'), group: :contact, presenter: Catalog::UrlFieldPresenter
+
+    config.add_show_field 'xml_ss', label: I18n.t('fields.xml')
     config.add_search_field 'all_fields', label: 'All Fields'
 
     # "sort results by" select (pulldown)
@@ -158,7 +199,7 @@ class CatalogController < ApplicationController
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case). Add the sort: option to configure a
     # custom Blacklight url parameter value separate from the Solr sort fields.
-    config.add_sort_field 'relevance', sort: 'score desc', label: I18n.t('sorts.relevance')
+    config.add_sort_field 'relevance', sort: 'score desc, title_ssort asc', label: I18n.t('sorts.relevance')
     config.add_sort_field 'year-desc', sort: 'years_iim desc, title_ssort asc, score desc',
                                        label: I18n.t('sorts.year_desc')
     config.add_sort_field 'year-asc', sort: 'years_iim asc, title_ssort asc, score desc',
@@ -170,34 +211,26 @@ class CatalogController < ApplicationController
     config.autocomplete_enabled = false
   end
 
-  def repositories
-    @facet_config = blacklight_config.facet_fields['repository_ssi']
-    raise ActionController::RoutingError, 'Not Found' unless @facet_config
-
-    @response = search_service.facet_field_response(@facet_config.key, { 'f.repository_ssi.facet.limit' => -1 })
-    @display_facet = @response.aggregations[@facet_config.field]
-
-    @presenter = @facet_config.presenter.new(@facet_config, @display_facet, view_context)
-    @pagination = @presenter.paginator
-  end
-
   def upenn
-    redirect_to search_catalog_path({ 'f[record_source][]': 'upenn' })
+    redirect_to search_catalog_path({ 'f[record_source][]': 'upenn', sort: 'title-asc' })
   end
 
   private
 
+  # @return [Boolean]
   def json_request?
     request.format.json?
   end
 
-  # render dynamically parsed language note if it's different from indexed language field
-  # @param document [SolrDocument]
   # @return [Boolean]
-  def render_language_note?(_field_config, document)
-    note = document.language_note
-    languages = document.fetch(:languages_ssim, []).join
+  def record_source_facet_param_present?
+    params.dig(:f, 'record_source').present?
+  end
 
-    note.present? && languages.gsub(/[^0-9a-zA-Z]/, '') != note.gsub(/[^0-9a-zA-Z]/, '')
+  def load_homepage_data
+    return if has_search_parameters?
+
+    @hero_image = HomepageData.hero_images.sample
+    @homepage_guides = HomepageData.collection_guides
   end
 end

@@ -1,0 +1,91 @@
+<% @page_title = t('for_archivists.page_title') %>
+
+<h1 class="pl-margin-t-xl"><%= t('for_archivists.header') %></h1>
+
+<h2>
+  I am a repository in the Philadelphia area with EAD Finding Aids. May I contribute my
+  finding aids?
+</h2>
+
+<p>
+  Yes! Philadelphia Area Archives welcomes finding aids from organizations that are
+  non-profit and make their collections open to the public.
+</p>
+
+<p>
+  If you use ArchivesSpace, and want to directly connect your ASpace instances with the
+  PACSCL Site Harvester (no need for a web folder), please
+  <%= mail_to t('emails.penn_contact'), 'contact Holly Mengel' %>. She will put you in
+  touch with UPenn developers, who will provide you with specific guidelines. In order
+  for UPenn's developers to complete this process, you will probably need to work with
+  your ArchivesSpace host (usually Atlas, Lyrasis, or on-site developers). They will
+  need to provision API access from UPenn's IP range; you will also need to create a
+  read-only user in ArchivesSpace and send the credentials to UPenn. Instructions for
+  each of these steps exist and can be shared once you begin your conversation with the
+  UPenn developers.
+</p>
+
+<p>
+  Another option is to post your finding aids in EAD-XML format to be displayed on the
+  site. (Note there are some additional assumptions about the formatting of the EAD, so if
+  your finding aids were generated outside ArchivesSpace or Archivists' Toolkit, you may
+  need to make some changes to the formatting.) To self-host your finding aids, they must
+  be placed in a web-accessible folder that includes nothing beyond the EAD files, and
+  that either includes an index.html file or has the "directory listing" functionality
+  enabled for the folder. More details about setting up a web folder are available upon
+  request. Please <%= mail_to t('emails.penn_contact'), 'contact Holly Mengel' %> to
+  begin this process.
+</p>
+
+<p>
+  If your institution is not able to self-host, PACSCL is able to host the finding aids
+  for you. (It is still necessary that these be in EAD-XML format.) Please contact the
+  <%= mail_to t('emails.pacscl_director'), 'PACSCL director' %> with any questions.
+</p>
+
+<h2>
+  My finding aids are already on Philadelphia Area Archives, but I have revisions and want
+  to update a guide or contact information. How do I do that?
+</h2>
+
+<p>
+  If you host your own web-folder, to revise a finding aid, simply make revisions,
+  re-export the finding aid and save the new file to your web-folder, replacing the
+  existing file. The site harvests web-folders on Monday, Wednesday, and Friday mornings,
+  and after those harvests, the updated version of your finding aid should be available.
+  If it does not, please
+  <%= mail_to t('emails.penn_contact'), 'contact Holly Mengel' %> for troubleshooting.
+</p>
+
+<p>
+  If you would like to change your contact email address, update the URL for your web
+  folder for harvesting, or set up direct harvesting from ArchivesSpace via API,
+  <%= mail_to t('emails.penn_contact'), 'contact Holly Mengel' %>.
+</p>
+
+<p>
+  If your finding aids were added through the Small Repositories Program: (When looking at
+  a finding aid, click on the "Contact us" button. If the email address is
+  small_repositories@hsp.org, that means PACSCL is currently hosting your finding aids. If
+  you want to make changes to your PACSCL-hosted finding aids, contact the
+  <%= mail_to t('emails.pacscl_director'), 'PACSCL director' %> and your email will be
+  directed appropriately. All finding aids on the PACSCL website are in EAD-XML format.
+  If you are comfortable editing EAD-XML files yourself, you may request copies of the
+  files, make your changes, and send them back. If not, you may send line edits or an
+  annotated document with desired changes via email. If changes are to be made to an
+  inventory list, a spreadsheet with columns for each data field (title, start year, end
+  year, top container, etc.) is preferred. It is better to consult in advance about how
+  to set up your spreadsheet.)
+</p>
+
+<p>
+  If your repository is Chester County History Center, Independence Seaport Museum,
+  National Archives and Records Administration, Philadelphia City Archives, Thomas
+  Jefferson University (Guttman Library files), St. Joseph's University, or Founding
+  Forward, the Drexel College of Medicine hosts your web folder. Please contact Drexel
+  Medicine Archives about making changes to the content of your finding aids.
+</p>
+
+<p class="pl-margin-b-3xl">
+  Still not sure? <%= mail_to t('emails.penn_contact'), 'Reach out to Holly Mengel' %>.
+</p>

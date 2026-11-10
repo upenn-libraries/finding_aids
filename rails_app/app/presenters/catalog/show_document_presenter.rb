@@ -1,0 +1,19 @@
+# frozen_string_literal: true
+
+module Catalog
+  # Custom DocumentPresenter copied from Blacklight v9.2.1 to facilitate rendering configured metadata fields across
+  # show page
+  class ShowDocumentPresenter < Blacklight::DocumentPresenter
+    # @param group [Symbol]
+    # [Enumerator<Blacklight::FieldPresenter>]
+    def field_presenters_by_group(group)
+      f = configuration[:show_fields].select { |_, field_config| Array.wrap(field_config.group).include?(group) }
+      field_presenters(f)
+    end
+
+    # @return [ActiveSupport::SafeBuffer, nil]
+    def render_single_value(field)
+      field_value(configuration.show_fields[field]).first
+    end
+  end
+end

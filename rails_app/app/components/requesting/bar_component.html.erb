@@ -1,0 +1,10 @@
+<%= wrapper_div do %>
+  <div class="pl-viewport-margins fa-request__bar-content">
+    <p class="fa-request__bar-text" role="status" aria-live="polite" data-request-target="requestBarText"></p>
+    <div class="pl-flex pl-gap-s" style="align-items: baseline;">
+      <%= scan_button %>
+      <span class="pl-caps"><%= t('show.sections.request.bar.or') %></span>
+      <%= visit_button %>
+    </div>
+  </div>
+<% end %>

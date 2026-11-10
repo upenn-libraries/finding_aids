@@ -102,6 +102,14 @@ The robots.txt file is generate and added to the `public` folder at deploy time.
 bundle exec rake tools:robotstxt
 ```
 
+#### Geocoding
+Repository locations are geocoded using the Nominatim (OpenStreetMap) API and cached in `data/geocoder_cache.yml`. The cache is (re)built automatically at the end of each harvest (`PartnerHarvestJob`) and can be refreshed on demand with the rake task below.
+
+```bash
+# Refresh the geocode cache
+bundle exec rake geocode:refresh
+```
+
 ### Harvesting Sample Endpoints
 
 To harvest some of the endpoints in a local development environment:
@@ -137,7 +145,7 @@ This application uses Rubocop to enforce Ruby and Rails style guidelines. We cen
 If there are rubocop offenses that you are not able to fix please do not edit the rubocop configuration instead regenerate the `rubocop_todo.yml` using the following command:
 
 ```bash
-rubocop --auto-gen-config  --auto-gen-only-exclude --exclude-limit 10000
+bundle exec rubocop --auto-gen-config  --auto-gen-only-exclude --exclude-limit 10000
 ```
 
 To change our default Rubocop config please open an MR in the `upennlib-rubocop` project.

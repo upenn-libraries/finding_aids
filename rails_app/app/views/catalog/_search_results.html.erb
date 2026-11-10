@@ -1,0 +1,36 @@
+<%# Overriding view from Blacklight v9.2.1 to:
+      - render both `search_results_header` and `search_header_component` in the container header
+      - set the page-name title segment to the search constraints (or "All" when there are none);
+        render_page_title appends the application and organization segments %>
+
+<% content_for :page_title do %>
+  <%= render_search_to_page_title(search_state).presence || t('blacklight.search.page_title.all') %>
+<% end %>
+
+<% content_for(:head) do -%>
+  <%= render 'catalog/opensearch_response_metadata', response: @response %>
+  <%= rss_feed_link_tag %>
+  <%= atom_feed_link_tag %>
+  <%= json_api_link_tag %>
+<% end %>
+
+<% content_for(:skip_links) do -%>
+  <%= render Blacklight::SkipLinkItemComponent.new(text: t('blacklight.skip_links.first_result'), href: '#documents') %>
+<% end %>
+
+<% content_for(:container_header) do -%>
+  <%= render 'search_results_header' %>
+  <%= render blacklight_config.view_config(document_index_view_type).search_header_component.new %>
+<% end %>
+
+<h2 class="visually-hidden"><%= t('blacklight.search.search_results') %></h2>
+
+<%- if @response.empty? %>
+  <%= render "zero_results" %>
+<%- elsif render_grouped_response? %>
+  <%= render 'group' %>
+<%- else %>
+  <%= render_document_index @response.documents %>
+<%- end %>
+
+<%= render 'results_pagination' %>

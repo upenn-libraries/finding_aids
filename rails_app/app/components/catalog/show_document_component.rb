@@ -1,58 +1,44 @@
 # frozen_string_literal: true
 
 module Catalog
-  # custom methods for our show page DocumentComponent
-  # Copied from Blacklight 8.12.3
+  # Override Blacklight v9.2.1 component to customize layout
   class ShowDocumentComponent < Blacklight::DocumentComponent
-    # Slot for the location details
-    renders_one :repository_info, RepositoryInfoComponent
-    # Slot for the collection inventory section
-    renders_one :collection_inventory
+    include Turbo::FramesHelper
 
-    # Slots for collapsable metadata sections
-    renders_many :collapsable_metadata_sections, 'CollapsableMetadataSection'
+    GUIDE_NAVIGATION_CONTROLLER = 'guide-navigation'
+    REQUEST_DIALOG_CONTROLLER = 'request'
 
-    # @return [ActiveSupport::SafeBuffer]
-    def access_clarification_message
-      content_tag :p, class: 'access-clarification' do
-        content_tag :i do
-          t('messages.access_clarification_html', repository: @document.repository)
-        end
-      end
+    # Stimulus controllers to connect to the document section
+    # @return [String]
+    def connected_controller_names
+      controllers = [GUIDE_NAVIGATION_CONTROLLER]
+      controllers << REQUEST_DIALOG_CONTROLLER if @document.requestable?
+      controllers.join(' ')
     end
 
     # @return [ActiveSupport::SafeBuffer]
-    def correction_email_link
-      RepositoryContactLinks.correction(document: @document, request_url: request.original_url)
+    def repository
+      presenter.render_single_value(:repository_ssi)
     end
 
-    def before_render
-      super
-      with_repository_info(document: @document).with_address unless repository_info
+    # @return [ActiveSupport::SafeBuffer]
+    def abstract
+      presenter.render_single_value(:abstract_scope_contents_tsi)
     end
 
-    # Component for a collapsable metadata section
-    class CollapsableMetadataSection < ViewComponent::Base
-      attr_reader :title, :open
+    # @return [Enumerator<Blacklight::FieldPresenter>]
+    def collection_overview
+      presenter.field_presenters_by_group(:collection_overview)
+    end
 
-      # @param title [String]
-      # @param open [Boolean]
-      def initialize(title:, open: false)
-        @title = title
-        @open = open
-      end
+    # @return [Enumerator<Blacklight::FieldPresenter>]
+    def contact
+      presenter.field_presenters_by_group(:contact)
+    end
 
-      # @return [Boolean]
-      def render?
-        content.present?
-      end
-
-      def call
-        render CollapsableSectionComponent.new(id: title.parameterize, open: open) do |section|
-          section.with_title { title }
-          section.with_body { content }
-        end
-      end
+    # @return [Array<Ead::Extraction::Inventory::Entry>]
+    def inventory_entries
+      @inventory_entries ||= Ead::Extraction::Inventory::Entry.build_entries(@document.parsed_ead.dsc)
     end
   end
 end

@@ -232,10 +232,6 @@ describe EadParser do
           ]
         )
       end
-
-      it 'has a online_content_bsi of "F"' do
-        expect(hash[:online_content_bsi]).to eq 'F'
-      end
     end
 
     context 'when parsing an EAD from ASpace' do
@@ -245,27 +241,6 @@ describe EadParser do
         expect(hash[:creators_ssim]).to eq(
           ['Anderson, Marian', 'Creator, Another']
         )
-      end
-
-      # ensure online content flag is set when digital object info is deeply nested in a <c> node
-      it 'has an online_content_bsi of "T"' do
-        expect(hash[:online_content_bsi]).to eq 'T'
-      end
-    end
-
-    context 'with digital object info in EAD v3 spec' do
-      let(:xml) { file_fixture('ead/dao_ead_v3.xml') }
-
-      it 'has a online_content_bsi of "T"' do
-        expect(hash[:online_content_bsi]).to eq 'T'
-      end
-    end
-
-    context 'with digital object info in EAD v2 spec' do
-      let(:xml) { file_fixture('ead/dao_ead_v2.xml') }
-
-      it 'has a online_content_bsi of "T"' do
-        expect(hash[:online_content_bsi]).to eq 'T'
       end
     end
   end

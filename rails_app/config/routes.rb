@@ -24,12 +24,12 @@ Rails.application.routes.draw do
       member { post :harvest }
     end
     resources :aspace_instances
+    resources :featured_collections
   end
 
-  defaults format: :json do
-    get '/api/endpoints', to: 'api#endpoints', as: :endpoints_api
-    get '/api/repositories', to: 'api#repositories', as: :repositories_api
-  end
+  get '/api/endpoints', to: 'api#endpoints', as: :endpoints_api
+  get '/api/repositories', to: 'api#repositories', as: :repositories_api
+  get '/api/map_data', to: 'api#map_data', as: :map_data_api
 
   mount Blacklight::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new
@@ -39,6 +39,11 @@ Rails.application.routes.draw do
     concerns :searchable
   end
 
+  get 'inventory/:id/details',
+      to: 'inventory#details',
+      as: :details_inventory,
+      constraints: { id: %r{[^/]+} }
+
   # Legacy ID lookup route
   get '/records/legacy/:id', to: 'legacy#redirect'
 
@@ -47,20 +52,13 @@ Rails.application.routes.draw do
     member { get '/ead', to: 'catalog#show', defaults: { format: 'ead' } } # get raw EAD XML
   end
 
-  resources :requests, only: %i[create] do
-    collection do
-      post 'prepare'
-    end
-  end
-
   scope :status do
     get '/', to: 'status#index', as: :endpoints_status
     get '/:id', to: 'status#show', as: :endpoint_status
   end
 
-  get 'repositories', to: 'catalog#repositories'
   get 'about', to: 'static_pages#about'
-  get 'how-to-use', to: 'static_pages#how_to_use'
+  get 'for_archivists', to: 'static_pages#for_archivists'
 
   # Vanity route for Penn materials
   get 'upenn', to: 'catalog#upenn'

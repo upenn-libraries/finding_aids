@@ -14,58 +14,20 @@ describe SolrDocument do
       corpnames_ssim: ['University of Pennsylvania'] }
   end
 
-  it 'creates a ParsedEad' do
-    expect(doc.parsed_ead).to be_an_instance_of SolrDocument::ParsedEad
+  it 'creates a parsed ead' do
+    expect(doc.parsed_ead).to be_an_instance_of Ead::Parsing::ArchivalDescription
   end
 
-  it 'returns expected topics in hash form' do
-    expect(doc.topics_hash.keys).to match_array(
-      %i[places_ssim people_ssim subjects_ssim corpnames_ssim occupations_ssim]
-    )
-    expect(doc.topics_hash[:places_ssim]).to eq ['Philadelphia']
+  it 'creates an ead extraction' do
+    expect(doc.ead_extraction).to be_an_instance_of Ead::Extraction::ArchivalDescription
   end
 
-  describe '#penn_item?' do
-    let(:fields) { { repository_name_component_1_ssi: repo } }
+  describe '#extract' do
+    before { allow(doc.ead_extraction).to receive(:access_restrictions) }
 
-    context 'with a penn item' do
-      let(:repo) { 'University of Pennsylvania' }
-
-      it { is_expected.to be_a_penn_item }
-    end
-
-    context 'with a non-Penn item' do
-      let(:repo) { 'Princeton University' }
-
-      it { is_expected.not_to be_a_penn_item }
-    end
-  end
-
-  describe '#language_note' do
-    context 'without text content' do
-      it 'returns a blank value' do
-        expect(doc.language_note).to be_blank
-      end
-    end
-
-    context 'with text content' do
-      let(:xml) do
-        <<~XML
-          <ead>
-            <archdesc>
-              <did>
-                <langmaterial>
-                  Mostly in <language langcode="eng">English</language>, but some materials contain Esperanto.
-                </langmaterial>
-              </did>
-            </archdesc>
-          </ead>
-        XML
-      end
-
-      it 'parses the expected data' do
-        expect(doc.language_note).to eq 'Mostly in English, but some materials contain Esperanto.'
-      end
+    it 'sends the message to the ead extraction' do
+      expect(doc.ead_extraction).to receive(:access_restrictions).once
+      doc.extract(:access_restrictions)
     end
   end
 
@@ -86,7 +48,7 @@ describe SolrDocument do
     end
 
     it 'responds to method calls for defined sections' do
-      SolrDocument::ParsedEad::OTHER_SECTIONS.each do |section|
+      Ead::Parsing::ArchivalDescription::DESCRIPTION_SECTIONS.each do |section|
         expect(parsed_ead).to respond_to section
       end
     end

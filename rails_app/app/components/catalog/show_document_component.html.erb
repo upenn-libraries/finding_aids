@@ -1,48 +1,129 @@
-<%# Copied from Blacklight 8.12.3 to add in display of additional metadata sections and other show page customizations. %>
+<%# Override Blacklight v9.2.1 template to implement custom layout %>
+<div class="document-main-section pl-margin-b-3xl"
+     data-controller="<%= connected_controller_names %>"
+     data-action="toggle->guide-navigation#handleDetailsToggle:capture click->guide-navigation#handleDetailLinkClick">
+  <div class="pl-padding-y-2xl" style="background: var(--pl-color-bg-subtle);">
+    <div class="pl-viewport-margins">
+      <p class="fa-print-url pl-caps"><%= helpers.solr_document_url(document) %></p>
+      <div class="fa-guide-header">
+        <div class="fa-guide-header__hero">
+          <div class="fa-guide-header__intro">
+            <h1 id="guide-title" class="pl-margin-b-l">
+              <pennlibs-expand-text lines="3" variant="outline" style="--pl-expand-text-fade-bg: var(--pl-color-bg-subtle);"><%= presenter.heading %></pennlibs-expand-text>
+            </h1>
 
-<%= content_tag @component,
-                id: @id,
-                data: {
-                  'document-id': @document.id.to_s.parameterize,
-                  'document-counter': @counter,
-                },
-                itemscope: true,
-                itemtype: @document.itemtype,
-                class: classes.flatten.join(' ') do %>
-  <%= header %>
-  <% if body.present? %>
-    <%= body %>
-  <% else %>
-    <div class="document-main-section">
-      <h2 id="main-content" class="bs4-visually-hidden">Main content</h2>
-      <%= title %>
-        <%= embed %>
-        <%= content %>
-        <div id="overview">
-          <h3 class="bs4-visually-hidden">Notifications</h3>
-          <%= repository_info %>
-          <%= access_clarification_message %>
-          <h3 class="bs4-visually-hidden">Overview and metadata sections</h3>
-          <%= render CollapsableMetadataSection.new(title: t('sections.collection_overview'), open: true) do %>
-            <%= render metadata %>
-          <% end %>
-          <% collapsable_metadata_sections.each do |section| %>
-            <%= section %>
-          <% end %>
+            <% if abstract.present? %>
+              <p style="font-size: var(--pl-font-size-l);">
+                <pennlibs-expand-text variant="outline" style="--pl-expand-text-fade-bg: var(--pl-color-bg-subtle);" lines="7"><%= abstract %></pennlibs-expand-text>
+              </p>
+            <% end %>
+          </div>
+
+          <aside class="fa-guide-header__institution pl-callout" aria-label="<%= t('show.aside.aria_label') %>">
+
+            <p>
+              <span class="pl-caps pl-block"><%= t('show.aside.held_at') %></span>
+              <%= repository %>
+            </p>
+            <% if document.extract(:access_restrictions) %>
+              <div class="pl-flex pl-flex-col pl-gap-2xs">
+                <span class="pl-caps pl-block"><%= t('show.aside.access') %></span>
+                <pennlibs-expand-text lines="5"><%= document.extract(:access_restrictions) %></pennlibs-expand-text>
+              </div>
+            <% end %>
+
+            <a href="#contact" class="pl-button pl-button--accent"><%=t('show.aside.contact') %></a>
+          </aside>
         </div>
-        <div id="inventory">
-          <h3><%= t('sections.collection_inventory') %></h3>
-          <%= collection_inventory %>
+        <div class="fa-guide-header__strip">
+          <%= render ShowMetadataFieldsComponent.new(fields: collection_overview,
+                                                     dl_class: 'fa-metadata',
+                                                     dt_class: 'pl-caps',
+                                                     wrapper_tag: 'div',
+                                                     truncate: true) %>
         </div>
-        <h3 class="bs4-visually-hidden">Print, Suggest</h3>
-        <ul class="show-page-links no-list-style clearfix">
-          <li class="print-all"><button onClick="window.print()"><%= t('document.links.print') %></button></li>
-          <li class="suggest">
-            <%= correction_email_link %>
-          </li>
-        </ul>
+      </div>
     </div>
-    <%= thumbnail %>
-  <% end %>
-  <%= footer %>
-<% end %>
+  </div>
+
+  <div class="fa-guide-layout pl-viewport-margins pl-margin-y-2xl fa-guide-layout--with-toc">
+    <nav id="guide-toc" class="offcanvas-lg offcanvas-end fa-toc" tabindex="-1"
+         aria-label="<%= t('show.toc.heading') %>" data-turbo="false">
+      <div class="offcanvas-header">
+        <h2 class="offcanvas-title"><%= t('show.toc.heading') %></h2>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#guide-toc"
+                aria-label="<%= t('blacklight.modal.close') %>"></button>
+      </div>
+      <div class="offcanvas-body" data-bs-dismiss="offcanvas" data-bs-target="#guide-toc">
+        <%= render(TableOfContentsComponent.new(document: @document, presenter: presenter, entries: inventory_entries, depth: 1)) %>
+      </div>
+    </nav>
+    <div class="fa-guide-content">
+      <button class="fa-toc-toggle pl-button" type="button" data-bs-toggle="offcanvas"
+              data-bs-target="#guide-toc" aria-controls="guide-toc">
+        <%= t('show.toc.jump_to') %>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M8 6H21M8 12H21M8 18H21M3 6H3.01M3 12H3.01M3 18H3.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div id="description-sections" class="pl-margin-b-2xl">
+        <div class="fa-section-header">
+          <div>
+            <h2 id="description"><%= t("show.sections.description.header") %></h2>
+            <p class="pl-font-size-l"><%= t("show.sections.description.guide") %></p>
+          </div>
+          <button id="toggle-description" type="button" class="pl-button pl-margin-b-m"
+                  data-pl-expand-label="<%= t('show.buttons.accordion_control.expand') %>"
+                  data-pl-collapse-label="<%= t('show.buttons.accordion_control.collapse') %>"
+                  data-pl-accordion-toggle="description-accordion"
+                  data-pl-accordion-toggle-deep>
+          </button>
+        </div>
+          <%= render(DescriptionComponent.new(document: document, presenter: @presenter, id: 'description-accordion')) %>
+      </div>
+      <div id="inventory-sections" class="pl-margin-b-2xl">
+        <div class="fa-section-header">
+          <div>
+            <h2 id="inventory"><%= t("show.sections.inventory.header") %></h2>
+            <p class="pl-font-size-l"><%= t("show.sections.inventory.guide") %></p>
+          </div>
+          <button id="toggle-inventory" type="button" class="pl-button pl-margin-b-m"
+                  data-pl-expand-label="<%= t('show.buttons.accordion_control.expand') %>"
+                  data-pl-collapse-label="<%= t('show.buttons.accordion_control.collapse') %>"
+                  data-pl-accordion-toggle="inventory-accordion"
+                  data-pl-accordion-toggle-deep>
+
+          </button>
+        </div>
+        <turbo-frame id="inventory-frame" src="<%= details_inventory_path(@document.id) %>">
+          <pennlibs-accordion class="pl-flex pl-flex-col pl-gap-m" id="inventory-accordion">
+              <% inventory_entries.each_with_index do |entry, i| %>
+                <details class="fa-guide__details">
+                  <summary>
+                    <h3 id="<%= entry.id(index: i + 1) %>"><%= entry.presenter.heading %></h3>
+                  </summary>
+                  <div>
+                    <p class="placeholder-glow mb-2">
+                      <span class="placeholder col-7"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                      <span class="placeholder col-8"></span>
+                    </p>
+                  </div>
+                </details>
+              <% end %>
+          </pennlibs-accordion>
+        </turbo-frame>
+      </div>
+      <section>
+        <h2 id="contact"><%= t('show.sections.contact.header') %></h2>
+        <p style="font-size: var(--pl-font-size-l);" class="pl-line-length pl-margin-b-m">
+          <%= t("show.sections.contact.guide_html", repository: @document.repository) %>
+        </p>
+        <%= render ShowMetadataFieldsComponent.new(fields: contact, dl_class: 'pl-dl pl-margin-t-l') %>
+      </section>
+    </div>
+  </div>
+  <%= render RequestingComponent.new(document: @document) %>
+</div>

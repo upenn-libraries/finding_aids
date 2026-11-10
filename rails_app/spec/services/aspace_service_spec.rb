@@ -32,9 +32,9 @@ describe ASpaceService do
     end
 
     before do
-      stub_request(:get, "#{aspace_instance.base_url}/repositories/#{repository_id}/resources?page=1")
+      stub_request(:get, "#{aspace_instance.base_url}/repositories/#{repository_id}/resources?page=1&page_size=50")
         .to_return(status: 200, body: page_one_response.to_json, headers: response_headers)
-      stub_request(:get, "#{aspace_instance.base_url}/repositories/#{repository_id}/resources?page=2")
+      stub_request(:get, "#{aspace_instance.base_url}/repositories/#{repository_id}/resources?page=2&page_size=50")
         .to_return(status: 200, body: page_two_response.to_json, headers: response_headers)
     end
 

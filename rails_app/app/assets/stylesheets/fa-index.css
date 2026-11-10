@@ -1,0 +1,42 @@
+/* Search results page — mobile facets offcanvas.
+ *
+ * Below the grid breakpoint the desktop sidebar is hidden (see bl-layout.css) and
+ * facets are surfaced in an offcanvas panel instead. The filter button (in
+ * catalog/_sort_and_per_page) toggles #facets-offcanvas; both the button and the
+ * panel are hidden on desktop. */
+
+.fa-filter-btn {
+  display: flex;
+}
+
+.fa-facets-offcanvas {
+  --bs-offcanvas-width: min(90vw, 400px);
+
+  & .offcanvas-body {
+    display: block;
+  }
+
+  /* Blacklight's facet sidebar wraps the facets in #facet-panel-collapse with
+   * `collapse` (no `show`), relying on `d-lg-block` to reveal them on desktop.
+   * That breakpoint is Bootstrap's lg (992px), but the offcanvas takes over at
+   * 820px — so below 992px the panel stays display:none and the offcanvas reads
+   * empty. Inside the offcanvas, always show the facets and drop the redundant
+   * mobile toggle button (the offcanvas header already serves that role). */
+  & .facets-collapse {
+    display: block;
+  }
+
+  & .facet-toggle-button {
+    display: none !important;
+  }
+}
+
+@media (min-width: 820px) {
+  .fa-filter-btn {
+    display: none;
+  }
+
+  .fa-facets-offcanvas {
+    display: none;
+  }
+}

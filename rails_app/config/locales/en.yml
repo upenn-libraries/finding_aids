@@ -1,68 +1,78 @@
 en:
-  common:
-    links:
-      home: 'Home'
-      about: 'About the site'
-      how_to: 'How to use this site'
-      browse_repositories: 'Browse Repositories'
-      statement: 'Statement on Archival Description and Harmful Language'
-      admin: 'Site Administration'
+  header:
+    service_name: 'Philadelphia Area Archives'
+    sign_out: 'Sign Out'
   homepage:
-    page_title: 'Finding Aids - Philadelphia Area Archives'
-    header: 'About the site'
-    links:
-      see_all: 'Show all records'
+    hero:
+      heading: 'Stories held in archives'
+      subheading: 'Find your way into archival material held by hundreds of archives, historical societies, libraries, and museums in the Philadelphia region.'
+    collection_guides:
+      heading: 'Collection guides'
+      intro_html: >-
+        A collection guide, sometimes called a finding aid, describes a single
+        archival collection. It tells you where the collection came from, what's
+        inside, and how it's arranged. Here's a featured sample, or
+        %{browse_all_link}.
+      browse_all: 'browse all collection guides'
+    regional_partnership:
+      heading: 'A regional partnership'
+      intro_html: >-
+        When you search here, you search across collections from many archival
+        institutions at once. The %{pacscl_link} and Penn Libraries created this
+        website together.
+      sample_html: >-
+        Here's a sample of participating institutions. You can pick one to view
+        its collection guides, or %{browse_all_link}.
+      browse_all: 'browse all institutions'
+      pacscl_link: 'Philadelphia Area Consortium of Special Collections Libraries (PACSCL)'
+      guides_count: '%{count} guides'
+  search:
+    button:
+      label: 'Find it'
+  results:
+    h1:
+      singular: 'result'
+      none: 'No results'
+    none:
+      h2: 'Your search found no results'
+      check_spelling: 'Check your spelling.'
+      adjust_search: 'Adjust what you searched for.'
+      different_keywords: 'Try different keywords that mean the same thing.'
+      contact_us:
+        link_text: 'Contact us'
+        remaining_text: "to get help finding what you're looking for."
   document:
     links:
-      print: 'Print the finding aid'
-      submit_correction: 'Suggest a correction'
       contact_us: "Contact Us"
+      submit_correction: "Suggest a correction"
   about:
     page_title: 'About'
-    header: 'About the Philadelphia Area Archives Site'
-  how_to_use:
-    page_title: 'How to Use'
-    header: 'How to Use the Philadelphia Area Archives Site'
+    header: 'About'
+    lede: >-
+      Search collection guides from archives, libraries, and historical
+      societies across the Philadelphia area, all in one place. Each guide
+      shows you what a collection holds and where to see it.
+  for_archivists:
+    page_title: 'Information for Archivists'
+    header: 'Information for Archivists'
   footer:
-    links:
+    archives:
+      heading: 'Philadelphia Area Archives'
+      home: 'Home'
+      about: 'About'
+      for_archivists: 'Information For Archivists'
       pacscl: 'PACSCL'
-      hidden_coll_init: 'Hidden Collections Initiative for Pennsylvania Small Archival Repositories'
-      disclaimer: 'Disclaimer'
-      privacy: 'Privacy Policy'
-      a11y: 'Report Accessibility Issues and Get Help'
-      statement: 'Archival Description and Harmful Language'
-    copyright: '© University of Pennsylvania'
-    delivered_by: 'Delivered by'
+      statement: 'Statement on Archival Description and Harmful Language'
+    admin:
+      heading: 'Administration'
+      link: 'Site administration'
   legacy:
     redirect: 'The identifier for this item has been updated. Please use this page URL to access this item.'
-  requests:
-    form:
-      header: 'Request to view materials'
-      fields:
-        title: 'Title'
-        containers: 'Items requested'
-        container: 'Container: '
-        special_request: 'Special request details'
-        notes: 'Notes'
-        retrieval_date: 'Retrieval date'
-        auth_types: 'Login status'
-        penn_auth: 'I am logged in as a Penn affiliate'
-        external_auth: 'I am logged in as a Visitor'
-        save_for_later: 'Save request to submit later?'
-        submit: 'Submit Request'
-      messages:
-        missing_container: 'Please select at least one container for requesting'
-        auth_help_html: "You must be logged in to your Special Collections Reference Account before submitting a request. Please %{aeon_link} and confirm your account type."
-  page_titles:
-    repositories_list: 'PACSCL Repositories'
-  labels:
-    tabs:
-      show_overview: 'Collection Overview'
-      show_inventory: 'Collection Inventory'
-    titles:
-      repositories_list: 'Repositories'
   facets:
-      era:
+    record_source:
+      upenn: 'University of Pennsylvania'
+      non_upenn: 'Other PACSCL Partners'
+    era:
         label: 'Era'
         century:
           tenth: '10th Century'
@@ -80,8 +90,10 @@ en:
         millennium:
           first: 'First Millennium'
   fields:
+    repository_address: 'Address'
+    contact_email: 'Email'
     endpoint: 'Endpoint'
-    repository: 'Repository'
+    repository: 'Institution'
     record_source: 'Record Source'
     online_content: 'Online Content'
     title: 'Title'
@@ -90,15 +102,17 @@ en:
     bulk_date: 'Bulk Date'
     pretty_unit_id: 'Call Number'
     abstract_scope_contents: 'Abstract'
-    raw_xml: 'Raw XML'
     creators: 'Creator'
     language: 'Language'
     language_note: 'Language Note'
     donors: 'Donor'
     genre_form: 'Form'
+    publisher: 'Publisher'
+    sponsor: 'Sponsor'
+    author: 'Finding aids author'
     citation: 'Preferred Citation'
     year: 'Year'
-    url: 'Original URL'
+    url: 'Website'
     xml: 'EAD XML'
     topics:
       corpnames: 'Organization'
@@ -106,6 +120,7 @@ en:
       places: 'Place'
       occupations: 'Occupation'
       people: 'People'
+    use: 'Use'
   sections:
     collection_inventory: 'Collection Inventory'
     collection_overview: 'Collection Overview'
@@ -136,15 +151,14 @@ en:
     topics: 'Name and Subject Headings'
     admin_info: 'Administrative Information'
     other_info: 'Other Information'
+    rights_and_citation: 'Rights and citation'
+    subjects_and_headings: 'Subjects and headings'
   sorts:
     relevance: 'Relevance'
-    year_desc: 'Year (descending)'
-    year_asc: 'Year (ascending)'
-    title_desc: 'Title (descending)'
-    title_asc: 'Title (ascending)'
-  messages:
-    access_clarification_html: "This is a finding aid. It is a description of archival material held at the <b>%{repository}</b>. Unless otherwise noted, the materials described below are physically available in their reading room, and not digitally available through the web."
-    location_html: "Held at: %{repository} [%{email_link}]"
+    year_desc: 'Year (newest first)'
+    year_asc: 'Year (oldest first)'
+    title_desc: 'Title (Z-A)'
+    title_asc: 'Title (A–Z)'
   inventory:
     sections:
       physdesc: 'Physical Description'
@@ -162,12 +176,13 @@ en:
       status: 'Status Page'
       sidekiq: 'Sidekiq'
       sign_out: 'Log Out'
+      featured_collections: 'Featured Collections'
     users:
       uid: 'PennKey'
     endpoints:
       aspace_repo_id: 'ASpace repository ID'
       aspace_instance:
-        include_blank: 'Select an ASpace instance'
+        include_blank: 'Select an ASpace instance...'
       last_harvest_results: 'Last Harvest Results'
     actions:
       create: 'Add'
@@ -175,17 +190,81 @@ en:
       destroy: 'Delete'
       harvest: 'Run Harvest'
     flash:
-      create:
-        success: "Successfully added %{class_name} %{identifier}."
-        failure: "Failed to add %{class_name}: %{error}."
-      update:
-        success: "Successfully updated %{class_name} %{identifier}."
-        failure: "Failed to update %{class_name} %{identifier}: %{error}."
-      destroy:
-        success: " Successfully deleted %{class_name} %{identifier}."
-        failure: "Failed to delete %{class_name} %{identifier}: %{error}."
       harvest:
         success: "Successfully enqueued harvest job for %{class_name} %{identifier}."
         failure: "Failed to enqueue harvest for %{class_name} %{identifier}: %{error}."
-
-
+    featured_collections:
+      heading: 'Featured collection guides'
+      description: 'Random selections from these records will be featured in the collection guides section on the homepage.'
+      new: 'Feature a Collection'
+      empty: 'No featured collections yet. Add some to display on the homepage.'
+      confirm_destroy: 'Remove this record?'
+      form:
+        record_id: 'Record ID'
+        title: 'Title'
+        repository: 'Repository'
+        submit: 'Add Featured Collection'
+      messages:
+        added: 'Successfully added featured collection.'
+        removed: 'Featured collection removed.'
+        not_found: 'No record with that ID exists.'
+  show:
+    buttons:
+      accordion_control:
+        collapse: 'Collapse all'
+        expand: 'Expand all'
+    toc:
+      heading: 'Table of contents'
+      jump_to: 'Jump to a section'
+    aside:
+        aria_label: 'Holding Institution'
+        access: 'Access'
+        held_at: 'Held At'
+        contact: 'Contact this archive'
+    sections:
+      overview:
+        see_all_entries: 'All %{field} values'
+      description:
+        header: 'Description'
+        guide: "Where the collection came from, what's inside, and how you can use it."
+      inventory:
+        header: 'Inventory'
+        guide: 'Everything in this collection, in the order the archivist chose to help you understand it.'
+        contents: 'Contents'
+        dates: 'Dates'
+        container: 'Container'
+        select: 'Select'
+        select_visually_hidden: 'Select %{title}'
+        title: 'Title'
+        none: 'Collection information not available'
+      contact:
+        header: 'Contact'
+        guide_html: 'These materials are held by <strong>%{repository}</strong>. Contact them to schedule a visit or ask about your research.'
+      request:
+        visit:
+          title: 'Plan your visit'
+          review_lede: "These are the items you'd like to view on your visit."
+        scan:
+          title: 'Request copies'
+          review_lede: "These are the items you'd like digital copies of. We'll scan them and deliver the files to your Research Account."
+        held_at: 'Held at'
+        review_empty_html: 'Nothing selected yet. Use the <strong>checkbox</strong> next to any item to add it.'
+        remove: 'Remove'
+        remove_all: 'Remove all'
+        continue: 'Continue'
+        back: 'Back'
+        close: 'Close'
+        date_label: 'What date would you like to visit?'
+        date_hint: 'Pick a date at least a week out.'
+        notes_label: 'Anything else we should know? (optional)'
+        user_review_label: 'Save this request for later'
+        submitting_note: 'Submitting this request will take you into your Research Account. You will be able to review, revise or cancel your request there.'
+        send: 'Send request'
+        step_html: 'Step <span data-request-target="stepNumber">1</span> of 2'
+        bar:
+          region: 'Selected materials'
+          or: 'OR'
+          scan:
+            button: 'Request copies'
+          visit:
+            button: 'Plan a visit'

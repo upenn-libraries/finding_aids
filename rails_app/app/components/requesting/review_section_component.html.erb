@@ -1,0 +1,30 @@
+<section data-request-target="stepSection" data-request-section="review" data-request-type="<%= request_type %>" hidden>
+  <p class="pl-caps pl-margin-t-l"><%= t('show.sections.request.held_at') %></p>
+  <p class="pl-margin-b-m"><%= repository %></p>
+  <div>
+    <p class="pl-margin-b-s fa-request__review-lede">
+      <%= review_lede %>
+    </p>
+    <p class="fa-request__empty pl-margin-t-l" hidden>
+      <%= t('show.sections.request.review_empty_html').html_safe %>
+    </p>
+    <template data-request-target="listItemTemplate">
+      <li class="fa-request__item">
+        <div>
+          <strong></strong>
+          <p class="fa-request__meta"></p>
+        </div>
+        <button type="button" class="pl-button" data-action="click->request#removeItem"><%= t('show.sections.request.remove') %></button>
+      </li>
+    </template>
+    <ul class="fa-request__list" data-request-target="<%= list_area_target %>"></ul>
+    <div class="fa-request__footer">
+      <button type="button" class="pl-button" data-action="click->request#clearAll">
+        <%= t('show.sections.request.remove_all') %>
+      </button>
+      <button type="button" class="pl-button pl-button--success" data-action="click->request#continueToSubmit">
+        <%= t('show.sections.request.continue') %>
+      </button>
+    </div>
+  </div>
+</section>

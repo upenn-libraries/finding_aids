@@ -1,0 +1,17 @@
+<% content_for(:header) do %>
+  <%= render HeaderHeroComponent.new(blacklight_config: blacklight_config) do |hero| %>
+    <% hero.with_picture image_data: @hero_image %>
+    <% hero.with_heading do %>
+      <h1 hero="heading"><%= t('homepage.hero.heading') %></h1>
+    <% end %>
+    <% hero.with_subheading do %>
+      <p hero="sub-heading"><%= t('homepage.hero.subheading') %></p>
+    <% end %>
+  <% end %>
+<% end %>
+
+<div class="fa-home-sections">
+  <%= render Homepage::CollectionGuideCardsComponent.new(guides: @homepage_guides || []) %>
+</div>
+
+<%= render Homepage::RegionalPartnershipComponent.new(repos: @regional_repos) %>
