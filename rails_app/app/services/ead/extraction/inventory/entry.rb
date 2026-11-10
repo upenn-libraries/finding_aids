@@ -98,10 +98,10 @@ module Ead
         # @return [Array<Ead::Extraction::Inventory::DigitalObject>]
         def digital_objects
           @digital_objects ||= parser.digital_objects.filter_map do |dao|
-            href = dao.attr('href').to_s
-            next unless DigitalObject.web_url?(href)
+            dao = DigitalObject.new href: dao.attr('href'), title: dao.attr('title'), role: dao.attr('role')
+            next unless dao.display?
 
-            DigitalObject.new href: href, title: dao.attr('title'), role: dao.attr('role')
+            dao
           end
         end
 

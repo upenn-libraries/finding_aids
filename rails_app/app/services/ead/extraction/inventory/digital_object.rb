@@ -9,19 +9,26 @@ module Ead
 
         attr_reader :href, :role, :title
 
-        # @param href [String]
-        # @return [Boolean]
-        def self.web_url?(href)
-          href.to_s.starts_with? 'http'
-        end
-
-        # @param href [String]
-        # @param role [String]
-        # @param title [String]
+        # @param href [String, nil]
+        # @param role [String, nil]
+        # @param title [String, nil]
         def initialize(href:, role:, title:)
           @href = href
           @role = role
           @title = title || ONLINE_RESOURCE
+        end
+
+        # Only display DAOs to web resources that are not IIIF URLS
+        # @return [Boolean]
+        def display?
+          href.to_s.starts_with?('http') && !iiif_link?
+        end
+
+        private
+
+        # @return [Boolean]
+        def iiif_link?
+          role.to_s.include?('https://iiif.io/api')
         end
       end
     end
