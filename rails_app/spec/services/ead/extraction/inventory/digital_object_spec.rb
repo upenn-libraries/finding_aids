@@ -3,32 +3,52 @@
 require 'rails_helper'
 
 RSpec.describe Ead::Extraction::Inventory::DigitalObject do
-  describe '.web_url?' do
-    it 'is true for an http(s) href' do
-      expect(described_class.web_url?('https://example.com/thing')).to be true
+  let(:dao) { described_class.new(**attributes) }
+
+  describe '#initialize' do
+    context 'when title is nil' do
+      let(:attributes) { { href: 'https://example.com', role: nil, title: nil } }
+
+      it 'defaults to the generic online resource label' do
+        expect(dao.title).to eq(Ead::Extraction::Inventory::DigitalObject::ONLINE_RESOURCE)
+      end
     end
 
-    it 'is false for a non-http href' do
-      expect(described_class.web_url?('ftp://example.com/thing')).to be false
-    end
+    context 'when a title is given' do
+      let(:attributes) { { href: 'https://example.com', role: nil, title: 'Finding Aid Scan' } }
 
-    it 'handles a nil parameter' do
-      expect { described_class.web_url?(nil) }.not_to raise_error
-      expect(described_class.web_url?(nil)).to be false
+      it 'preserves a given title' do
+        expect(dao.title).to eq(attributes[:title])
+      end
     end
   end
 
-  describe '#initialize' do
-    it 'defaults title to the generic online resource label when nil' do
-      dao = described_class.new(href: 'https://example.com', role: nil, title: nil)
+  describe '#display?' do
+    context 'with a link with an IIIF role' do
+      let(:attributes) do
+        { href: 'https://example.com', role: 'https://iiif.io/api/presentation/2.1/',
+          title: 'IIIF Manifest' }
+      end
 
-      expect(dao.title).to eq('Online Resource')
+      it 'returns false' do
+        expect(dao.display?).to be false
+      end
     end
 
-    it 'preserves a given title' do
-      dao = described_class.new(href: 'https://example.com', role: nil, title: 'Finding Aid Scan')
+    context 'with no role and an http link' do
+      let(:attributes) { { href: 'https://example.com', role: nil, title: 'Web Link' } }
 
-      expect(dao.title).to eq('Finding Aid Scan')
+      it 'returns true' do
+        expect(dao.display?).to be true
+      end
+    end
+
+    context 'with a non-http link' do
+      let(:attributes) { { href: 'ftp://example.com/file.zip', role: nil, title: 'FTP Link' } }
+
+      it 'returns false' do
+        expect(dao.display?).to be false
+      end
     end
   end
 end
